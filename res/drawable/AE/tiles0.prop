@@ -1,0 +1,62 @@
+TypeCount 10
+
+TypeDef 0 1 0
+TypeDef 1 1 5
+TypeDef 2 2 10
+TypeDef 3 2 10
+TypeDef 4 3 15
+TypeDef 5 3 0
+TypeDef 6 1 5
+TypeDef 7 1 15
+TypeDef 8 1 15
+TypeDef 9 1 15
+
+TileCount 47
+
+TileDef 0 5
+TileDef 1 5
+TileDef 2 5
+TileDef 3 5
+TileDef 4 5
+TileDef 5 5
+TileDef 6 5
+TileDef 7 5
+TileDef 8 5
+TileDef 9 5
+TileDef 10 5
+TileDef 11 5
+TileDef 12 5
+TileDef 13 5
+TileDef 14 5
+TileDef 15 2
+TileDef 16 2
+TileDef 17 4
+TileDef 18 1
+TileDef 19 3
+TileDef 20 0
+TileDef 21 0
+TileDef 22 0
+TileDef 23 0
+TileDef 24 0
+TileDef 25 0
+TileDef 26 0
+TileDef 27 8
+TileDef 28 0
+TileDef 29 6
+TileDef 30 6
+TileDef 31 7
+TileDef 32 7
+TileDef 33 3
+TileDef 34 7
+TileDef 35 3
+TileDef 36 3
+TileDef 37 8
+TileDef 38 9
+TileDef 39 8
+TileDef 40 9
+TileDef 41 8
+TileDef 42 9
+TileDef 43 8
+TileDef 44 9
+TileDef 45 8
+TileDef 46 9

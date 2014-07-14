@@ -1,0 +1,22 @@
+FrameCount 6
+
+FrameWidth 61
+FrameHeight 75
+
+FrameDef 0 0 0
+FrameDef 1 1 0
+FrameDef 2 2 0
+FrameDef 3 0 1
+FrameDef 4 1 1
+FrameDef 5 2 1
+
+Align 36
+
+FrameSeqCount 4
+FrameDelay 5
+
+FrameSeq 0 2 0 1
+FrameSeq 1 1 1
+FrameSeq 2 2 2 2
+FrameSeq 3 1 1
+

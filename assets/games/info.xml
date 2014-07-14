@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+	<games_folders>
+		<games_folder>campaigns</games_folder>
+		<games_folder>multiplayer</games_folder>
+		<games_folder>my_games</games_folder>
+	</games_folders>
+</info>

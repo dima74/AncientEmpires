@@ -1,0 +1,11 @@
+MoveRange 7
+Attack 70 80
+Defence 25
+AttackRange 1 1
+Cost 1000
+
+CharCount 1
+
+CharPos 0 0 92
+
+HasProperty 0

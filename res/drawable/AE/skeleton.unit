@@ -1,0 +1,14 @@
+MoveRange 5
+Attack 40 50
+Defence 2
+AttackRange 1 1
+Cost -1
+
+CharCount 5
+
+CharPos 0 26 63
+CharPos 1 26 101
+CharPos 2 4 80
+CharPos 3 4 123
+CharPos 4 4 45
+

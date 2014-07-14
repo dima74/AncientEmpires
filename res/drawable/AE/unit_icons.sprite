@@ -1,0 +1,34 @@
+FrameCount 24
+
+FrameWidth 24
+FrameHeight 24
+
+FrameDef 0 0 0
+FrameDef 1 1 0
+FrameDef 2 2 0
+FrameDef 3 3 0
+FrameDef 4 4 0
+FrameDef 5 5 0
+FrameDef 6 6 0
+FrameDef 7 7 0
+FrameDef 8 8 0
+FrameDef 9 9 0
+FrameDef 10 10 0
+FrameDef 11 11 0
+FrameDef 12 12 0
+FrameDef 13 13 0
+FrameDef 14 14 0
+FrameDef 15 15 0
+FrameDef 16 16 0
+FrameDef 17 17 0
+FrameDef 18 18 0
+FrameDef 19 19 0
+FrameDef 20 20 0
+FrameDef 21 21 0
+FrameDef 22 22 0
+FrameDef 23 23 0
+
+Align -1
+
+FrameSeqCount -1
+

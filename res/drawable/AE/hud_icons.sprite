@@ -1,0 +1,13 @@
+FrameCount 3
+
+FrameWidth 13
+FrameHeight 16
+
+FrameDef 0 0 0
+FrameDef 1 1 0
+FrameDef 2 2 0
+
+Align -1
+
+FrameSeqCount -1
+

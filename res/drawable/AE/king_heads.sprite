@@ -1,0 +1,48 @@
+FrameCount 16
+
+FrameWidth 22
+FrameHeight 19
+
+FrameDef 0 0 0
+FrameDef 1 0 0
+FrameDef 2 1 0
+FrameDef 3 1 0
+FrameDef 4 2 0
+FrameDef 5 2 0
+FrameDef 6 3 0
+FrameDef 7 3 0
+FrameDef 8 0 1
+FrameDef 9 0 1
+FrameDef 10 1 1
+FrameDef 11 1 1
+FrameDef 12 2 1
+FrameDef 13 2 1
+FrameDef 14 3 1
+FrameDef 15 3 1
+
+Align 20
+
+FrameSeqCount 4
+FrameDelay 5
+
+FrameSeq 0 2 0 1
+FrameSeq 1 2 2 3
+FrameSeq 2 2 4 5
+FrameSeq 3 2 6 7
+
+Translate 0 6 26
+Translate 1 6 25
+Translate 2 6 26
+Translate 3 6 25
+Translate 4 6 26
+Translate 5 6 25
+Translate 6 6 26
+Translate 7 6 25
+Translate 8 33 26
+Translate 9 33 25
+Translate 10 33 26
+Translate 11 33 25
+Translate 12 33 26
+Translate 13 33 25
+Translate 14 33 26
+Translate 15 33 25
