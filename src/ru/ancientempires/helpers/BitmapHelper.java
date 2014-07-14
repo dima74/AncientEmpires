@@ -72,7 +72,7 @@ public class BitmapHelper
 		}
 		else if (GameView.baseCellHeight != bitmapHeight || GameView.baseCellWidth != bitmapWidth)
 		{
-			// какая-нибудь норм обработка ошибки тут.
+			// РєР°РєР°СЏ-РЅРёР±СѓРґСЊ РЅРѕСЂРј РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєРё С‚СѓС‚.
 		}
 		
 		return bitmap;

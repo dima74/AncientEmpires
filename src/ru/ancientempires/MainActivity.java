@@ -33,7 +33,7 @@ public class MainActivity extends Activity
 		{
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			
-			// мой код
+			// РјРѕР№ РєРѕРґ
 			init();
 		}
 	}
@@ -42,7 +42,7 @@ public class MainActivity extends Activity
 	{
 		try
 		{
-			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
+			// РєРѕРїРёСЂСѓРµРј С„Р°Р№Р» games.zip РёР· assets РІ externalStorageCacheDir РґР»СЏ СѓРґРѕР±РЅРѕР№ СЂР°Р±РѕС‚С‹ СЃ РЅРёРј (РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РїР»СЋС€РµРє ZipFile).
 			
 			ZipInputStream zipInputStream = new ZipInputStream(getAssets().open("games.zip"));
 			File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), "games.zip");
@@ -66,14 +66,14 @@ public class MainActivity extends Activity
 			zipInputStream.close();
 			zipOutputStream.close();
 			
-			// скопировали - предаем клиенту, чтобы разобрал на части
+			// СЃРєРѕРїРёСЂРѕРІР°Р»Рё - РїСЂРµРґР°РµРј РєР»РёРµРЅС‚Сѓ, С‡С‚РѕР±С‹ СЂР°Р·РѕР±СЂР°Р» РЅР° С‡Р°СЃС‚Рё
 			
 			ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), "games.zip"));
 			Client.setGameInputStream(zipFile);
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace(); // какая-то странная ошибка тут
+			e.printStackTrace(); // РєР°РєР°СЏ-С‚Рѕ СЃС‚СЂР°РЅРЅР°СЏ РѕС€РёР±РєР° С‚СѓС‚
 		}
 		
 		Client.init();

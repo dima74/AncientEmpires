@@ -19,10 +19,10 @@ import client.Client;
 
 public class GameView extends View
 {
-	// Модель игры
+	// РњРѕРґРµР»СЊ РёРіСЂС‹
 	private Client				client					= Client.getClient();
 	
-	// Отображение игры
+	// РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РёРіСЂС‹
 	private Cursor				cursor					= (Cursor) new Cursor()
 																.setBitmapOne(getResources(), R.drawable.cursor_up)
 																.setBitmapTwo(getResources(), R.drawable.cursor_down);
@@ -54,7 +54,7 @@ public class GameView extends View
 															}
 														});
 	
-	// не знаю, как выводится эта константа
+	// РЅРµ Р·РЅР°СЋ, РєР°Рє РІС‹РІРѕРґРёС‚СЃСЏ СЌС‚Р° РєРѕРЅСЃС‚Р°РЅС‚Р°
 	private static final int	DELAY_BETWEEN_UPDATES	= 265;
 	private boolean				isOneBitmapLast			= false;
 	
@@ -131,7 +131,7 @@ public class GameView extends View
 	{
 		Unit.initResorces(res);
 		
-		// андроид говорит что так будет быстрее, чем HashMap<Integer, CellType>
+		// Р°РЅРґСЂРѕРёРґ РіРѕРІРѕСЂРёС‚ С‡С‚Рѕ С‚Р°Рє Р±СѓРґРµС‚ Р±С‹СЃС‚СЂРµРµ, С‡РµРј HashMap<Integer, CellType>
 		SparseArray<CellType> sparseArray = new SparseArray<CellType>();
 		sparseArray.append(R.drawable.one_three, CellType.ONE_TREE);
 		sparseArray.append(R.drawable.two_threes, CellType.TWO_TREES);
@@ -166,7 +166,7 @@ public class GameView extends View
 		// else return super.onTouchEvent(e);
 	}
 	
-	// TODO разобраться что это такое
+	// TODO СЂР°Р·РѕР±СЂР°С‚СЊСЃСЏ С‡С‚Рѕ СЌС‚Рѕ С‚Р°РєРѕРµ
 	@Override
 	public boolean performClick()
 	{
@@ -177,7 +177,7 @@ public class GameView extends View
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		// рисуем игровое поле
+		// СЂРёСЃСѓРµРј РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
 		final byte[][] field = this.client.getFieldMap();// .game.map.getField();
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
@@ -188,7 +188,7 @@ public class GameView extends View
 				canvas.drawBitmap(bitmap, x, y, null);
 			}
 		
-		// рисуем курсор (если есть)
+		// СЂРёСЃСѓРµРј РєСѓСЂСЃРѕСЂ (РµСЃР»Рё РµСЃС‚СЊ)
 		if (this.cursor.isVisible)
 		{
 			final int y = GameView.baseCellHeight * this.cursor.i - (Cursor.height - GameView.baseCellHeight) / 2 + this.offsetY;
