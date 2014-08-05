@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<map_info>
+	<map_file>map.map</map_file>
+	<map_height>3</map_height>
+	<map_width>2</map_width>
+	<map_content>
+		<cell_types>
+			<cell_type name="ONE_TREE" value="0" />
+			<cell_type name="TWO_TREES" value="1" />
+			<cell_type name="THREE_TREES" value="2" />
+		</cell_types>
+	</map_content>
+</map_info>

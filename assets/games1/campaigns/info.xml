@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+	<games_folders>
+		<games_folder>first</games_folder>
+		<games_folder>second</games_folder>
+		<games_folder>third</games_folder>
+	</games_folders>
+</info>

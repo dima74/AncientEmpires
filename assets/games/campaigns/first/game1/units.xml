@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<units>
+	<unit>
+		<property name="unitType" value="SOLDIER" />
+		<property name="health" value="0.5" />
+		<property name="i" value="2" />
+		<property name="j" value="3" />
+	</unit>
+</units>
