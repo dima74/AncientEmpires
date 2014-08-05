@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 
-public class Cursor extends FigureTwoBitmaps
+public class Cursor extends SomeWithBitmaps
 {
 	
 	public int				i;
@@ -17,7 +17,7 @@ public class Cursor extends FigureTwoBitmaps
 	
 	public boolean			isVisible		= false;
 	
-	@Override
+	/*@Override
 	public FigureTwoBitmaps setBitmapOne(Resources res, int id)
 	{
 		this.bitmupOne = BitmapHelper.getBitmap(res, id);
@@ -31,7 +31,7 @@ public class Cursor extends FigureTwoBitmaps
 		this.bitmupTwo = BitmapHelper.getBitmap(res, id);
 		updateSize(this.bitmupTwo);
 		return this;
-	}
+	}*/
 	
 	private void updateSize(Bitmap bitmap)
 	{
@@ -42,6 +42,5 @@ public class Cursor extends FigureTwoBitmaps
 		}
 		// TODO сделать нормальную ошибку
 		else if (Cursor.height != bitmap.getHeight() || Cursor.width != bitmap.getWidth()) Assert.assertTrue(false);
-		;
 	}
 }

@@ -2,13 +2,14 @@
 
 <map_info>
 	<map_file>map.map</map_file>
-	<map_height>3</map_height>
-	<map_width>2</map_width>
+	<map_height>5</map_height>
+	<map_width>5</map_width>
+	<map_cell_size>4</map_cell_size>
 	<map_content>
 		<cell_types>
-			<cell_type name="ONE_TREE" value="0" />
-			<cell_type name="TWO_TREES" value="1" />
-			<cell_type name="THREE_TREES" value="2" />
+			<cell_type name="ONE_TREE" value="1" />
+			<cell_type name="TWO_TREES" value="2" />
+			<cell_type name="THREE_TREES" value="3" />
 		</cell_types>
 	</map_content>
 </map_info>

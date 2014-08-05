@@ -2,4 +2,5 @@
 
 <info>
 	<map_info_file>map_info.xml</map_info_file>
+	<units_file>units.xml</units_file>
 </info>

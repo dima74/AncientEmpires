@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import client.Client;
+import android.util.*;
+import android.content.res.*;
 
 public class MainActivity extends Activity
 {
@@ -34,43 +36,23 @@ public class MainActivity extends Activity
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			
 			// мой код
+			
+			Log.e("ae", "0");
 			init();
 		}
 	}
 	
 	private void init()
 	{
-		ZipEntry zipEntry;
 		try
 		{
 			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
+			ZipFile gameZipFile = getZipFileFromAssets(getAssets(), "games.zip");
+			Client.setGameZipFile(gameZipFile);
 			
-			ZipInputStream zipInputStream = new ZipInputStream(getAssets().open("games.zip"));
-			File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), "games.zip");
-			ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileOutput));
-			
-			int b;
-			
-			while ((zipEntry = zipInputStream.getNextEntry()) != null)
-			{
-				// можно было бы просто написать ...putNextEntry(zipEntry.getName()); но тогда java не будет работать (её проблемы)
-				zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
-				if (!zipEntry.isDirectory())
-					while ((b = zipInputStream.read()) != -1)
-						zipOutputStream.write(b);
-				zipOutputStream.closeEntry();
-				
-				System.out.print(zipEntry);
-				System.out.println();
-			}
-			
-			zipInputStream.close();
-			zipOutputStream.close();
-			
-			// скопировали - предаем клиенту, чтобы разобрал на части
-			
-			ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), "games.zip"));
-			Client.setGameInputStream(zipFile);
+			//
+			ZipFile rulesZipFile = getZipFileFromAssets(getAssets(), "rules.zip");
+			Client.setRulesZipFile(rulesZipFile);
 		}
 		catch (IOException e)
 		{
@@ -83,10 +65,41 @@ public class MainActivity extends Activity
 		}
 		catch (IOException e)
 		{
+			Log.e("ae", e.toString());
 			// TODO оповещение пользователю, что что-то не так + вывод сообщения
 			e.printStackTrace();
 		}
 		GameView.initResources(getResources());
+	}
+	
+	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException
+	{
+		ZipInputStream zipInputStream = new ZipInputStream(assets.open(name));
+		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
+		ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileOutput));
+
+		ZipEntry zipEntry;
+		int b;
+		while ((zipEntry = zipInputStream.getNextEntry()) != null)
+		{
+			// можно было бы просто написать ...putNextEntry(zipEntry.getName()); но тогда java не будет работать (её ошибка)
+			zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
+			if (!zipEntry.isDirectory())
+				while ((b = zipInputStream.read()) != -1)
+					zipOutputStream.write(b);
+			zipOutputStream.closeEntry();
+
+			System.out.print(zipEntry);
+			System.out.println();
+		}
+
+		zipInputStream.close();
+		zipOutputStream.close();
+
+		// скопировали - предаем клиенту, чтобы разобрал на части
+
+		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
+		return zipFile;
 	}
 	
 	@Override
