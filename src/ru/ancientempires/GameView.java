@@ -67,9 +67,13 @@ public class GameView extends View
 		setFocusable(true);
 		setWillNotDraw(false);
 		
+		// TODO выпилить
 		this.cursor.i = 3;
 		this.cursor.j = 5;
-		// this.cursor.isVisible = true;
+		
+		// client.getClient().
+		
+		//
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{

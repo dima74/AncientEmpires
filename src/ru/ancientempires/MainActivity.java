@@ -40,6 +40,7 @@ public class MainActivity extends Activity
 	
 	private void init()
 	{
+		ZipEntry zipEntry;
 		try
 		{
 			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
@@ -50,10 +51,10 @@ public class MainActivity extends Activity
 			
 			int b;
 			
-			ZipEntry zipEntry;
 			while ((zipEntry = zipInputStream.getNextEntry()) != null)
 			{
-				zipOutputStream.putNextEntry(zipEntry);
+				// можно было бы просто написать ...putNextEntry(zipEntry.getName()); но тогда java не будет работать (её проблемы)
+				zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
 				if (!zipEntry.isDirectory())
 					while ((b = zipInputStream.read()) != -1)
 						zipOutputStream.write(b);
@@ -73,10 +74,18 @@ public class MainActivity extends Activity
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace(); // какая-то странная ошибка тут
+			e.printStackTrace();
 		}
 		
-		Client.init();
+		try
+		{
+			Client.init();
+		}
+		catch (IOException e)
+		{
+			// TODO оповещение пользователю, что что-то не так + вывод сообщения
+			e.printStackTrace();
+		}
 		GameView.initResources(getResources());
 	}
 	
