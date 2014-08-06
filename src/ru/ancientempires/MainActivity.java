@@ -12,15 +12,15 @@ import ru.ancientempires.gamelife.GameLifeStartActivity;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import client.Client;
-import android.util.*;
-import android.content.res.*;
 
 public class MainActivity extends Activity
 {
@@ -36,21 +36,21 @@ public class MainActivity extends Activity
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			
 			// мой код
-			
-			Log.e("ae", "0");
 			init();
 		}
 	}
 	
 	private void init()
 	{
+		System.out.println();
+		
 		try
 		{
 			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
 			ZipFile gameZipFile = getZipFileFromAssets(getAssets(), "games.zip");
 			Client.setGameZipFile(gameZipFile);
 			
-			//
+			// то же самое с rules.zip
 			ZipFile rulesZipFile = getZipFileFromAssets(getAssets(), "rules.zip");
 			Client.setRulesZipFile(rulesZipFile);
 		}
@@ -77,7 +77,7 @@ public class MainActivity extends Activity
 		ZipInputStream zipInputStream = new ZipInputStream(assets.open(name));
 		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
 		ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileOutput));
-
+		
 		ZipEntry zipEntry;
 		int b;
 		while ((zipEntry = zipInputStream.getNextEntry()) != null)
@@ -88,16 +88,16 @@ public class MainActivity extends Activity
 				while ((b = zipInputStream.read()) != -1)
 					zipOutputStream.write(b);
 			zipOutputStream.closeEntry();
-
+			
 			System.out.print(zipEntry);
 			System.out.println();
 		}
-
+		
 		zipInputStream.close();
 		zipOutputStream.close();
-
+		
 		// скопировали - предаем клиенту, чтобы разобрал на части
-
+		
 		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
 		return zipFile;
 	}
