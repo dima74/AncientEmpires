@@ -189,38 +189,9 @@ public class GameView extends View
 			this.unitJ = j;
 			final Way way = this.client.getWay(this.cursor.i, this.cursor.j, unit);
 			
-			// Log.e("ae", "------");
-			// log(way.pointWayStart, "");
-			// Log.e("ae", "------");
-			
-			// Log.e("aed", way.toString());
-			
-			/*LinkedList<PointWay> handlePointWays = new LinkedList<PointWay>();
-			LinkedList<PointWay> nextPointWays = new LinkedList<PointWay>();
-			LinkedList<PointWay> allPointWays = new LinkedList<PointWay>();
-			handlePointWays.add(way.pointWayStart);
-			int lastAllPointWaysSize = -1;
-			while (lastAllPointWaysSize != allPointWays.size())
-			{
-				lastAllPointWaysSize = allPointWays.size();
-				for (PointWay handlePointWay : handlePointWays)
-				{
-					//Log.e("aez", "1 " + handlePointWays.size() + " " + handlePointWays);
-					//Log.e("aez", "2 " + nextPointWays.size() + " " + nextPointWays);
-					//Log.e("aez", "3 " + allPointWays.size() + " " + allPointWays);
-					if (!allPointWays.contains(handlePointWay)) allPointWays.add(handlePointWay);
-					for (PointWay nextPointWay : handlePointWay.nextPointWays)
-						if (!nextPointWays.contains(nextPointWay) && !allPointWays.contains(nextPointWay)) nextPointWays.add(nextPointWay);
-					//nextPointWay.hashCode();
-				}
-
-				//Log.e("ae", "tapu");
-				handlePointWays = nextPointWays;
-				nextPointWays = new LinkedList<PointWay>();
-			}*/
-			
-			// pointWays = allPointWays.toArray(new PointWay[0]);
 			this.pointWays = way.allPointWays.toArray(new PointWay[0]);
+			
+			log(way.pointWayStart, "");
 		}
 		else if (this.isWayVisible)
 		{
@@ -229,7 +200,6 @@ public class GameView extends View
 				if (tempPointWay.i == i && tempPointWay.j == j) allPointWaysContains = true;
 			if (allPointWaysContains)
 			{
-				Log.e("ae", "asf");
 				this.isWayVisible = false;
 				Unit unit1 = fieldUnits[this.unitI][this.unitJ];
 				fieldUnits[this.unitI][this.unitJ] = null;
@@ -241,6 +211,13 @@ public class GameView extends View
 		else this.isWayVisible = false;
 		
 		invalidate();
+	}
+	
+	private void log(PointWay pointWay, String s)
+	{
+		Log.e("ae", s + pointWay.i + " " + pointWay.j);
+		for (PointWay nextPointWay : pointWay.nextPointWays)
+			log(nextPointWay, s + "->");
 	}
 	
 	@Override
