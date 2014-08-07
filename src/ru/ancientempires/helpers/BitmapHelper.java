@@ -48,7 +48,7 @@ public class BitmapHelper
 		return bitmap;
 	}*/
 	
-	public static Bitmap getBitmap(Resources res, int id)
+	public static Bitmap getBitmap1(Resources res, int id)
 	{
 		Bitmap bitmap = BitmapFactory.decodeResource(res, id);
 		int height = (int) (bitmap.getHeight() * GameView.baseCellHeightMulti);
@@ -58,9 +58,9 @@ public class BitmapHelper
 		return bitmap;
 	}
 	
-	public static Bitmap getCellBitmap(Resources res, int id)
+	public static Bitmap getCellBitmap1(Resources res, int id)
 	{
-		Bitmap bitmap = BitmapHelper.getBitmap(res, id);
+		Bitmap bitmap = BitmapHelper.getBitmap1(res, id);
 		
 		int bitmapHeight = bitmap.getHeight();
 		int bitmapWidth = bitmap.getWidth();
@@ -77,4 +77,27 @@ public class BitmapHelper
 		
 		return bitmap;
 	}
+	
+	public static Bitmap getResizeBitmap(Bitmap bitmap)
+	{
+		int height = (int) (bitmap.getHeight() * GameView.baseCellHeightMulti);
+		int width = (int) (bitmap.getWidth() * GameView.baseCellWidthMulti);
+		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+		
+		int bitmapHeight = bitmap.getHeight();
+		int bitmapWidth = bitmap.getWidth();
+		if (!GameView.isBaseCellSizeDetermine)
+		{
+			GameView.isBaseCellSizeDetermine = true;
+			GameView.baseCellHeight = bitmapHeight;
+			GameView.baseCellWidth = bitmapWidth;
+		}
+		else if (GameView.baseCellHeight != bitmapHeight || GameView.baseCellWidth != bitmapWidth)
+		{
+			// какая-нибудь норм обработка ошибки тут.
+		}
+		
+		return bitmap;
+	}
+	
 }

@@ -1,8 +1,6 @@
 package ru.ancientempires;
 
-import ru.ancientempires.helpers.BitmapHelper;
 import junit.framework.Assert;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 public class Cursor extends SomeWithBitmaps

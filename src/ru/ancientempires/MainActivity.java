@@ -14,7 +14,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +52,10 @@ public class MainActivity extends Activity
 			// то же самое с rules.zip
 			ZipFile rulesZipFile = getZipFileFromAssets(getAssets(), "rules.zip");
 			Client.setRulesZipFile(rulesZipFile);
+			
+			// то же самое с images.zip
+			ZipFile imagesZipFile = getZipFileFromAssets(getAssets(), "images.zip");
+			Client.setImagesZipFile(imagesZipFile);
 		}
 		catch (IOException e)
 		{
@@ -65,11 +68,18 @@ public class MainActivity extends Activity
 		}
 		catch (IOException e)
 		{
-			Log.e("ae", e.toString());
 			// TODO оповещение пользователю, что что-то не так + вывод сообщения
 			e.printStackTrace();
 		}
-		GameView.initResources(getResources());
+		
+		try
+		{
+			GameView.initResources(getResources());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException
@@ -88,9 +98,6 @@ public class MainActivity extends Activity
 				while ((b = zipInputStream.read()) != -1)
 					zipOutputStream.write(b);
 			zipOutputStream.closeEntry();
-			
-			System.out.print(zipEntry);
-			System.out.println();
 		}
 		
 		zipInputStream.close();

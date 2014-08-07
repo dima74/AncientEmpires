@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<unit_types>
-	<unit_type>
-		<property name="name" value="SOLDIER" />
-		<property name="baseHealth" value="1.0F" />
-		<property name="baseMaxWay" value="5" />
-	</unit_type>
-</unit_types>

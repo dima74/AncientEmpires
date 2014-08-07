@@ -62,7 +62,7 @@ public class GameLifeActivity extends Activity
 		
 		public static final String	EXT_ROWS			= "rows";
 		public static final String	EXT_COLUMNS			= "columns";
-		public static final String	EXT_CELLS			= "cells";
+		public static final String	EXT_CELLS			= "cell1s";
 		private GridView			gameGridView;
 		private GameLifeAdapter		gameAdapter;
 		private Timer				timer;

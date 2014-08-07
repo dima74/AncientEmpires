@@ -1,16 +1,13 @@
 package ru.ancientempires;
 
-import ru.ancientempires.helpers.BitmapHelper;
-import model.Cell.CellType;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 
+/*
 public class Cell
 {
 	
 	public Bitmap	bitmap;
 	
-	public CellType	cellType;
+	public CellType1	cellType1;
 	
 	public Cell setBitmap(Resources res, int id)
 	{
@@ -18,10 +15,11 @@ public class Cell
 		return this;
 	}
 	
-	public Cell setCellType(CellType cellType)
+	public Cell setCellType(CellType1 cellType1)
 	{
-		this.cellType = cellType;
+		this.cellType1 = cellType1;
 		return this;
 	}
 	
 }
+*/

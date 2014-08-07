@@ -1,14 +1,18 @@
 package ru.ancientempires;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import model.Cell.CellType;
+import model.Cell;
 import model.Game;
+import model.Map;
+import model.Point;
 import model.PointWay;
 import model.Unit;
 import model.UnitType;
 import model.Way;
+import ru.ancientempires.helpers.ImageHelper;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,7 +20,6 @@ import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,11 +37,12 @@ public class GameView extends View
 			R.drawable.cursor_up, R.drawable.cursor_down
 																});
 	
-	private static Cell[]		cells					= new Cell[CellType.values().length];
+	// private static Cell[] cells = new Cell[CellType1.values().length];
+	private Bitmap[][]			bitmaps;
 	
 	private SomeWithBitmaps		cursorWay				= new SomeWithBitmaps().setBitmaps(getResources(), new int[]
 														{
-																R.drawable.cursor_down
+																R.drawable.cursor_way
 														});
 	
 	private GestureDetector		gestureDetector;
@@ -80,17 +84,10 @@ public class GameView extends View
 		super(context);
 		
 		this.client.startGame("first");
+		initBitmaps(this.client.getGame().map);
 		
 		setFocusable(true);
 		setWillNotDraw(false);
-		
-		// TODO выпилить
-		this.cursor.i = 3;
-		this.cursor.j = 5;
-		
-		// client.getClient().
-		
-		//
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
@@ -150,24 +147,19 @@ public class GameView extends View
 		
 	}
 	
-	public static void initResources(Resources res)
+	public static void initResources(Resources res) throws IOException
 	{
 		UnitDraw.initResorces(res);
 		
-		// андроид говорит что так будет быстрее, чем HashMap<Integer, CellType>
-		SparseArray<CellType> sparseArray = new SparseArray<CellType>();
-		sparseArray.append(R.drawable.one_three, CellType.ONE_TREE);
-		sparseArray.append(R.drawable.two_threes, CellType.TWO_TREES);
-		sparseArray.append(R.drawable.three_trees, CellType.THREE_TREES);
-		
-		CellType cellType;
-		int i = 0;
-		while ((cellType = sparseArray.valueAt(i)) != null)
-		{
-			int id = sparseArray.keyAt(i);
-			GameView.cells[i] = new Cell().setBitmap(res, id).setCellType(cellType);
-			i++;
-		}
+		ImageLoader.initResources(Client.imagesZipFile);
+	}
+	
+	public void initBitmaps(Map map)
+	{
+		this.bitmaps = new Bitmap[map.height][map.width];
+		for (int i = 0; i < map.height; i++)
+			for (int j = 0; j < map.width; j++)
+				this.bitmaps[i][j] = ImageHelper.getBitmap(map.field[i][j]);
 	}
 	
 	protected void updateCells()
@@ -180,9 +172,9 @@ public class GameView extends View
 	private void tap(int i, int j)
 	{
 		final Game game = this.client.getGame();
-		final model.Map map = game.map;
+		final Map map = game.map;
 		
-		if (!map.validateCellPoint(new model.Point(i, j))) return;
+		if (!map.validateCellPoint(new Point(i, j))) return;
 		this.cursor.i = i;
 		this.cursor.j = j;
 		
@@ -227,17 +219,14 @@ public class GameView extends View
 				nextPointWays = new LinkedList<PointWay>();
 			}*/
 			
-			// Log.e("ae", "" + allPointWays);
 			// pointWays = allPointWays.toArray(new PointWay[0]);
 			this.pointWays = way.allPointWays.toArray(new PointWay[0]);
-			// Log.e("ae", "" + allPointWays);
 		}
 		else if (this.isWayVisible)
 		{
 			boolean allPointWaysContains = false;
 			for (PointWay tempPointWay : this.pointWays)
 				if (tempPointWay.i == i && tempPointWay.j == j) allPointWaysContains = true;
-			// Log.e("aeass", allPointWaysContains + " " + allPointWays.contains(nextPoint));
 			if (allPointWaysContains)
 			{
 				Log.e("ae", "asf");
@@ -252,13 +241,6 @@ public class GameView extends View
 		else this.isWayVisible = false;
 		
 		invalidate();
-	}
-	
-	private void log(PointWay pointWay, String s)
-	{
-		Log.e("ae", s + pointWay.i + " " + pointWay.j);
-		for (PointWay pointWayNext : pointWay.nextPointWays)
-			log(pointWayNext, s + "->");
 	}
 	
 	@Override
@@ -289,13 +271,13 @@ public class GameView extends View
 		
 		final Game game = this.client.getGame();
 		
-		final int[][] field = game.map.getField();
-		final model.Unit[][] fieldUnits = game.fieldUnits;
+		final Cell[][] field = game.map.getField();
+		final Unit[][] fieldUnits = game.fieldUnits;
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
 			{
 				// карта
-				final Bitmap bitmapCell = GameView.cells[field[i][j]].bitmap;
+				final Bitmap bitmapCell = this.bitmaps[i][j];
 				final int y = bitmapCell.getHeight() * i + this.offsetY;
 				final int x = bitmapCell.getWidth() * j + this.offsetX;
 				canvas.drawBitmap(bitmapCell, x, y, null);
@@ -304,7 +286,7 @@ public class GameView extends View
 				
 				if (fieldUnits[i][j] != null)
 				{
-					model.Unit unit = fieldUnits[i][j];
+					Unit unit = fieldUnits[i][j];
 					final UnitType unitType = unit.unitType;
 					final UnitDraw unitDraw = UnitDraw.getUnitDraw(unitType);
 					final Bitmap bitmapUnit = unitDraw.getBitmap();
@@ -336,5 +318,4 @@ public class GameView extends View
 		}
 		
 	}
-	
 }
