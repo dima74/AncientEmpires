@@ -10,7 +10,6 @@ import model.Map;
 import model.Point;
 import model.PointWay;
 import model.Unit;
-import model.UnitType;
 import model.Way;
 import ru.ancientempires.helpers.ImageHelper;
 import android.content.Context;
@@ -151,7 +150,7 @@ public class GameView extends View
 	{
 		UnitDraw.initResorces(res);
 		
-		ImageLoader.initResources(Client.imagesZipFile);
+		ImageLoader.loadResources(Client.imagesZipFile);
 	}
 	
 	public void initBitmaps(Map map)
@@ -159,7 +158,7 @@ public class GameView extends View
 		this.bitmaps = new Bitmap[map.height][map.width];
 		for (int i = 0; i < map.height; i++)
 			for (int j = 0; j < map.width; j++)
-				this.bitmaps[i][j] = ImageHelper.getBitmap(map.field[i][j]);
+				this.bitmaps[i][j] = ImageHelper.getCellBitmap(map.field[i][j]);
 	}
 	
 	protected void updateCells()
@@ -263,10 +262,13 @@ public class GameView extends View
 				
 				if (fieldUnits[i][j] != null)
 				{
-					Unit unit = fieldUnits[i][j];
-					final UnitType unitType = unit.unitType;
+					final Unit unit = fieldUnits[i][j];
+					/*
+					final UnitType unitType = unit.type;
 					final UnitDraw unitDraw = UnitDraw.getUnitDraw(unitType);
 					final Bitmap bitmapUnit = unitDraw.getBitmap();
+					*/
+					Bitmap bitmapUnit = ImageHelper.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
 				}
 				

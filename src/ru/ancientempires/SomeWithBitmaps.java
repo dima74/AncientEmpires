@@ -20,6 +20,12 @@ public class SomeWithBitmaps
 		return this;
 	}
 	
+	public SomeWithBitmaps setBitmaps(Bitmap[] bitmaps)
+	{
+		this.bitmaps = bitmaps;
+		return this;
+	}
+	
 	public Bitmap getBitmap()
 	{
 		return this.bitmaps[SomeWithBitmaps.ordinal % this.bitmaps.length];
