@@ -152,8 +152,8 @@ public class GameView extends View
 	
 	public static void startGame(Game game) throws IOException
 	{
-		ImageLoader.loadResources(Client.imagesZipFile, game);
-		// Images.loadResources(Client.imagesZipFile, game);
+		// ImageLoader.loadResources(Client.imagesZipFile, game);
+		Images.loadResources(Client.imagesZipFile, game);
 	}
 	
 	public void initBitmaps(Map map)

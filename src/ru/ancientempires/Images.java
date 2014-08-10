@@ -5,11 +5,11 @@ import helpers.ZIPHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.zip.ZipFile;
 
 import model.CellType;
 import model.Game;
-import model.UnitType;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -57,6 +57,27 @@ public class Images
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		
+		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
+		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "color_folder");
+		Вот тут я в прошлый раз закончил
+		и не вздумай комментить эту строку
+		и эту
+		и еще 7
+		1
+		2
+		3
+		4
+		5
+		6
+		7
+		
+		System.out.println();
+		
+		// Node colorFoldersNode = XMLHelper.
+		// Map<String, String> mapColors= XMLHelper.getMapFromNode(node, namePartNodes)
+		
+		/*
+		
 		NodeList images = infoDocument.getElementsByTagName("unit_image");
 		
 		int length = images.getLength();
@@ -78,6 +99,6 @@ public class Images
 			UnitView view = new UnitView(UnitType.getType(typeName));
 			view.bitmaps = bitmaps;
 		}
+		*/
 	}
-	
 }
