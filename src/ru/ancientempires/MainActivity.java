@@ -103,7 +103,7 @@ public class MainActivity extends Activity
 		zipInputStream.close();
 		zipOutputStream.close();
 		
-		// скопировали - предаем клиенту, чтобы разобрал на части
+		// // скопировали - предаем клиенту, чтобы разобрал на части
 		
 		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
 		return zipFile;
@@ -135,6 +135,16 @@ public class MainActivity extends Activity
 		}
 		if (id == R.id.action_ancient_empires)
 		{
+			Client.getClient().startGame("first");
+			try
+			{
+				GameView.startGame(Client.getClient().getGame());
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			
 			Intent intent = new Intent();
 			intent.setClass(this, GameActivity.class);
 			startActivity(intent);

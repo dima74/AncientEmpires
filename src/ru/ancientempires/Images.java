@@ -19,17 +19,20 @@ import ru.ancientempires.helpers.BitmapHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class ImageLoader
+public class Images
 {
+	
+	public static Bitmap[][]	unitBitmaps;
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
 	{
 		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
 		
 		String cellsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "cell_images_folder_path");
-		ImageLoader.loadCellsResources(imagesZipFile, cellsImagesFolderPath);
 		String unitsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "unit_images_folder_path");
-		ImageLoader.loadUnitsResources(imagesZipFile, unitsImagesFolderPath, game);
+		
+		Images.loadCellsResources(imagesZipFile, cellsImagesFolderPath);
+		Images.loadUnitsResources(imagesZipFile, unitsImagesFolderPath, game);
 	}
 	
 	public static void loadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
@@ -75,7 +78,6 @@ public class ImageLoader
 			UnitView view = new UnitView(UnitType.getType(typeName));
 			view.bitmaps = bitmaps;
 		}
-		
 	}
 	
 }

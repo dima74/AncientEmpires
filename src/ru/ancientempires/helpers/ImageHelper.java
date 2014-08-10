@@ -2,7 +2,6 @@ package ru.ancientempires.helpers;
 
 import model.Cell;
 import model.Unit;
-import model.UnitType;
 import ru.ancientempires.CellView;
 import ru.ancientempires.UnitView;
 import android.graphics.Bitmap;
@@ -17,8 +16,8 @@ public class ImageHelper
 	
 	public static Bitmap getUnitBitmap(Unit unit)
 	{
-		unit.UnitType и unit.color -> getNewImg -> Bitmap, но все это делать надо при старте игры.
-		return UnitView.getView(unit.type).getBitmap()
+		// unit.UnitType и unit.color -> getNewImg -> Bitmap, но все это делать надо при старте игры.
+		return UnitView.getView(unit.type).getBitmap();
 	}
 	
 	public static int[][] getNewImg(int[][] dataRed, int[][] dataGreen, int[][] dataBlue, int color)

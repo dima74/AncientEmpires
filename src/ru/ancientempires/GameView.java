@@ -82,7 +82,6 @@ public class GameView extends View
 	{
 		super(context);
 		
-		this.client.startGame("first");
 		initBitmaps(this.client.getGame().map);
 		
 		setFocusable(true);
@@ -149,8 +148,12 @@ public class GameView extends View
 	public static void initResources(Resources res) throws IOException
 	{
 		UnitDraw.initResorces(res);
-		
-		ImageLoader.loadResources(Client.imagesZipFile);
+	}
+	
+	public static void startGame(Game game) throws IOException
+	{
+		ImageLoader.loadResources(Client.imagesZipFile, game);
+		// Images.loadResources(Client.imagesZipFile, game);
 	}
 	
 	public void initBitmaps(Map map)
@@ -190,7 +193,7 @@ public class GameView extends View
 			
 			this.pointWays = way.allPointWays.toArray(new PointWay[0]);
 			
-			log(way.pointWayStart, "");
+			Log.e("ae", way.toString());
 		}
 		else if (this.isWayVisible)
 		{
@@ -210,13 +213,6 @@ public class GameView extends View
 		else this.isWayVisible = false;
 		
 		invalidate();
-	}
-	
-	private void log(PointWay pointWay, String s)
-	{
-		Log.e("ae", s + pointWay.i + " " + pointWay.j);
-		for (PointWay nextPointWay : pointWay.nextPointWays)
-			log(nextPointWay, s + "->");
 	}
 	
 	@Override
