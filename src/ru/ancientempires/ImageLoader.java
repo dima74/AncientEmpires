@@ -45,7 +45,7 @@ public class ImageLoader
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
 			CellView view = new CellView(CellType.getType(typeName));
 			
-			InputStream inputStream = ZIPHelper.getISFromZipFile(imagesZipFile, zipPath + imageName);
+			InputStream inputStream = ZIPHelper.getIS(imagesZipFile, zipPath + imageName);
 			view.bitmap = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
 		}
 	}
@@ -68,8 +68,10 @@ public class ImageLoader
 			for (int j = 0; j < amountImages; j++)
 			{
 				String imageName = XMLHelper.getNodeAttributeValue(node, "image" + j);
-				InputStream inputStream = ZIPHelper.getISFromZipFile(imagesZipFile, zipPath + imageName);
-				bitmaps[j] = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
+				InputStream inputStream = ZIPHelper.getIS(imagesZipFile, zipPath + imageName);
+				Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+				bitmap = BitmapHelper.getResizeBitmap(bitmap);
+				bitmaps[j] = bitmap;
 			}
 			
 			UnitView view = new UnitView(UnitType.getType(typeName));
@@ -77,5 +79,4 @@ public class ImageLoader
 		}
 		
 	}
-	
 }

@@ -12,6 +12,18 @@ public class SomeWithBitmaps
 	
 	public Bitmap[]		bitmaps;
 	
+	public SomeWithBitmaps setAmount(int amount)
+	{
+		this.bitmaps = new Bitmap[amount];
+		return this;
+	}
+	
+	public SomeWithBitmaps setBitmaps(int i, Bitmap bitmap)
+	{
+		this.bitmaps[i] = bitmap;
+		return this;
+	}
+	
 	public SomeWithBitmaps setBitmaps(Resources res, int[] ids)
 	{
 		this.bitmaps = new Bitmap[ids.length];

@@ -264,7 +264,8 @@ public class GameView extends View
 					final UnitDraw unitDraw = UnitDraw.getUnitDraw(unitType);
 					final Bitmap bitmapUnit = unitDraw.getBitmap();
 					*/
-					Bitmap bitmapUnit = ImageHelper.getUnitBitmap(unit);
+					// Bitmap bitmapUnit = ImageHelper.getUnitBitmap(unit);
+					Bitmap bitmapUnit = Images.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
 				}
 				
