@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 import client.Client;
 
 public class GameView extends View
@@ -158,10 +159,14 @@ public class GameView extends View
 	
 	public void initBitmaps(Map map)
 	{
-		this.bitmaps = new Bitmap[map.height][map.width];
-		for (int i = 0; i < map.height; i++)
-			for (int j = 0; j < map.width; j++)
-				this.bitmaps[i][j] = ImageHelper.getCellBitmap(map.field[i][j]);
+		final int height = map.getHeight();
+		final int width = map.getWidth();
+		final Cell[][] field = map.getField();
+		
+		this.bitmaps = new Bitmap[height][width];
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++)
+				this.bitmaps[i][j] = ImageHelper.getCellBitmap(field[i][j]);
 	}
 	
 	protected void updateCells()
@@ -176,7 +181,7 @@ public class GameView extends View
 		final Game game = this.client.getGame();
 		final Map map = game.map;
 		
-		if (!map.validateCellPoint(new Point(i, j))) return;
+		if (!map.validateCoord(new Point(i, j))) return;
 		this.cursor.i = i;
 		this.cursor.j = j;
 		
@@ -208,6 +213,12 @@ public class GameView extends View
 				unit1.i = i;
 				unit1.j = j;
 				fieldUnits[i][j] = unit1;
+				
+				Context context = getContext();
+				String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)", unit1.type.name, this.unitI, this.unitJ, i, j);
+				int duration = Toast.LENGTH_SHORT;
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 			}
 		}
 		else this.isWayVisible = false;

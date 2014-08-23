@@ -1,5 +1,6 @@
 package ru.ancientempires;
 
+import helpers.ColorHelper;
 import helpers.ImageHelper;
 import helpers.XMLHelper;
 import helpers.ZIPHelper;
@@ -166,7 +167,7 @@ public class Images
 	{
 		for (int i = 0; i < data.length; i++)
 			for (int j = 0; j < data[0].length; j++)
-				data[i][j] = ImageHelper.toNormalColor(data[i][j]);
+				data[i][j] = ColorHelper.toNormalColor(data[i][j]);
 	}
 	
 	public static int[][] getMatrixFromArray(int[] array, int height, int width)
