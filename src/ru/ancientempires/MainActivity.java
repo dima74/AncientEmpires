@@ -3,10 +3,8 @@ package ru.ancientempires;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
+import java.io.InputStream;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import ru.ancientempires.gamelife.GameLifeStartActivity;
 import android.app.Activity;
@@ -47,7 +45,7 @@ public class MainActivity extends Activity
 		{
 			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
 			ZipFile gameZipFile = getZipFileFromAssets(getAssets(), "games.zip");
-			Client.setGameZipFile(gameZipFile);
+			Client.setGamesZipFile(gameZipFile);
 			
 			// то же самое с rules.zip
 			ZipFile rulesZipFile = getZipFileFromAssets(getAssets(), "rules.zip");
@@ -84,6 +82,7 @@ public class MainActivity extends Activity
 	
 	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException
 	{
+		/*
 		ZipInputStream zipInputStream = new ZipInputStream(assets.open(name));
 		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
 		ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileOutput));
@@ -93,9 +92,10 @@ public class MainActivity extends Activity
 		while ((zipEntry = zipInputStream.getNextEntry()) != null)
 		{
 			// можно было бы просто написать ...putNextEntry(zipEntry.getName()); но тогда java не будет работать (её ошибка)
+			BufferedInputStream bufferedInputStream = new BufferedInputStream(zipInputStream);
 			zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
 			if (!zipEntry.isDirectory())
-				while ((b = zipInputStream.read()) != -1)
+				while ((b = bufferedInputStream.read()) != -1)
 					zipOutputStream.write(b);
 			zipOutputStream.closeEntry();
 		}
@@ -104,6 +104,20 @@ public class MainActivity extends Activity
 		zipOutputStream.close();
 		
 		// // скопировали - предаем клиенту, чтобы разобрал на части
+		
+		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
+		return zipFile;
+		*/
+		
+		InputStream inputStream = assets.open(name);
+		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
+		FileOutputStream fileOutputStream = new FileOutputStream(zipFileOutput);
+		
+		int b;
+		while ((b = inputStream.read()) != -1)
+			fileOutputStream.write(b);
+		
+		fileOutputStream.close();
 		
 		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
 		return zipFile;
