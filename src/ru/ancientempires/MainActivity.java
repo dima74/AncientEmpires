@@ -82,40 +82,14 @@ public class MainActivity extends Activity
 	
 	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException
 	{
-		/*
-		ZipInputStream zipInputStream = new ZipInputStream(assets.open(name));
-		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
-		ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileOutput));
-		
-		ZipEntry zipEntry;
-		int b;
-		while ((zipEntry = zipInputStream.getNextEntry()) != null)
-		{
-			// можно было бы просто написать ...putNextEntry(zipEntry.getName()); но тогда java не будет работать (её ошибка)
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(zipInputStream);
-			zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
-			if (!zipEntry.isDirectory())
-				while ((b = bufferedInputStream.read()) != -1)
-					zipOutputStream.write(b);
-			zipOutputStream.closeEntry();
-		}
-		
-		zipInputStream.close();
-		zipOutputStream.close();
-		
-		// // скопировали - предаем клиенту, чтобы разобрал на части
-		
-		ZipFile zipFile = new ZipFile(new File(getBaseContext().getExternalCacheDir(), name));
-		return zipFile;
-		*/
-		
 		InputStream inputStream = assets.open(name);
 		File zipFileOutput = new File(getBaseContext().getExternalCacheDir(), name);
 		FileOutputStream fileOutputStream = new FileOutputStream(zipFileOutput);
 		
-		int b;
-		while ((b = inputStream.read()) != -1)
-			fileOutputStream.write(b);
+		// TODO расширить, если файл > 1МБ
+		byte[] buffer = new byte[1000 * 1000];
+		int length = inputStream.read(buffer);
+		fileOutputStream.write(buffer, 0, length);
 		
 		fileOutputStream.close();
 		

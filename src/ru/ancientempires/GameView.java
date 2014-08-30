@@ -34,10 +34,9 @@ public class GameView extends View
 	private Cursor				cursor					= (Cursor) new Cursor()
 																.setBitmaps(getResources(), new int[]
 																{
-			R.drawable.cursor_up, R.drawable.cursor_down
+																R.drawable.cursor_up, R.drawable.cursor_down
 																});
 	
-	// private static Cell[] cells = new Cell[CellType1.values().length];
 	private Bitmap[][]			bitmaps;
 	
 	private SomeWithBitmaps		cursorWay				= new SomeWithBitmaps().setBitmaps(getResources(), new int[]
@@ -77,13 +76,12 @@ public class GameView extends View
 	
 	// не знаю, как выводится эта константа
 	private static final int	DELAY_BETWEEN_UPDATES	= 265;
-	private boolean				isOneBitmapLast			= false;
 	
 	public GameView(Context context)
 	{
 		super(context);
 		
-		initBitmaps(this.client.getGame().map);
+		intiBitmaps(this.client.getGame().map);
 		
 		setFocusable(true);
 		setWillNotDraw(false);
@@ -157,7 +155,7 @@ public class GameView extends View
 		Images.loadResources(Client.imagesZipFile, game);
 	}
 	
-	public void initBitmaps(Map map)
+	public void intiBitmaps(Map map)
 	{
 		final int height = map.getHeight();
 		final int width = map.getWidth();
@@ -169,10 +167,27 @@ public class GameView extends View
 				this.bitmaps[i][j] = ImageHelper.getCellBitmap(field[i][j]);
 	}
 	
+	public void updateBitmaps(Map map)
+	{
+		final int height = map.getHeight();
+		final int width = map.getWidth();
+		final Cell[][] field = map.getField();
+		
+		assert height == this.bitmaps.length;
+		assert width == this.bitmaps[0].length;
+		
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++)
+			{
+				Cell cell = field[i][j];
+				if (!cell.type.isStatic())
+					this.bitmaps[i][j] = Images.getCellBitmap(cell);
+			}
+	}
+	
 	protected void updateCells()
 	{
 		SomeWithBitmaps.ordinal++;
-		this.isOneBitmapLast = !this.isOneBitmapLast;
 		invalidate();
 	}
 	
@@ -270,12 +285,6 @@ public class GameView extends View
 				if (fieldUnits[i][j] != null)
 				{
 					final Unit unit = fieldUnits[i][j];
-					/*
-					final UnitType unitType = unit.type;
-					final UnitDraw unitDraw = UnitDraw.getUnitDraw(unitType);
-					final Bitmap bitmapUnit = unitDraw.getBitmap();
-					*/
-					// Bitmap bitmapUnit = ImageHelper.getUnitBitmap(unit);
 					Bitmap bitmapUnit = Images.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
 				}

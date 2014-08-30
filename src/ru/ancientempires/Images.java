@@ -11,6 +11,7 @@ import java.nio.IntBuffer;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
+import model.Cell;
 import model.CellType;
 import model.Game;
 import model.Unit;
@@ -35,6 +36,13 @@ public class Images
 		return Images.unitBitmaps[unit.player.ordinal][unit.type.ordinal].getBitmap();
 	}
 	
+	public static SomeWithBitmaps[][]	cellsBitmaps;
+	
+	public static Bitmap getCellBitmap(Cell cell)
+	{
+		return CellView.getView(cell.type).bitmap;
+	}
+	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
 	{
 		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
@@ -49,15 +57,16 @@ public class Images
 	public static void loadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		
 		NodeList images = infoDocument.getElementsByTagName("cell_image");
 		
 		for (int i = 0; i < images.getLength(); i++)
 		{
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
+			CellType type = CellType.getType(typeName);
+			CellView view = new CellView(type);
+			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			CellView view = new CellView(CellType.getType(typeName));
 			
 			InputStream inputStream = ZIPHelper.getIS(imagesZipFile, zipPath + imageName);
 			view.bitmap = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
@@ -87,17 +96,14 @@ public class Images
 			Node colorTypeNode = colorTypes.item(j);
 			Map<String, String> attributes = XMLHelper.getNodeAttributesMap(colorTypeNode);
 			
-			String type = attributes.get("type");
-			UnitType unitType = UnitType.getType(type);
 			int colorTypeAmountImages = Integer.valueOf(attributes.get("amountImages"));
-			// String[] colorTypeImages = new String[colorTypeAmountImages];
 			for (int k = 0; k < colorTypeAmountImages; k++)
 			{
 				String typeImagePath = attributes.get("image" + k);
 				
-				String imageRedPath = zipPath + "red/" + typeImagePath;
-				String imageGreenPath = zipPath + "green/" + typeImagePath;
-				String imageBluePath = zipPath + "blue/" + typeImagePath;
+				String imageRedPath = zipPath + mapColorsFolders.get("0xFFFF0000") + typeImagePath;
+				String imageGreenPath = zipPath + mapColorsFolders.get("0xFF00FF00") + typeImagePath;
+				String imageBluePath = zipPath + mapColorsFolders.get("0xFF0000FF") + typeImagePath;
 				
 				int[][] dataRed = Images.getMatrixDataImage(imagesZipFile, imageRedPath);
 				int[][] dataGreen = Images.getMatrixDataImage(imagesZipFile, imageGreenPath);
@@ -110,14 +116,17 @@ public class Images
 				
 				for (int i = 0; i < playerLength; i++)
 				{
-					// Images.unitBitmaps[i][j] = new SomeWithBitmaps();
 					int color = game.players[i].color;
 					int[][] data = ImageHelper.getNewImg(dataRed, dataGreen, dataBlue, color);
 					int[] dataArray = Images.getArrayFromMatrix(data);
 					
 					Bitmap bitmap = Bitmap.createBitmap(dataArray, data[0].length, data.length, Config.ARGB_8888);
 					bitmap = BitmapHelper.getResizeBitmap(bitmap);
-					if (k == 0) Images.unitBitmaps[i][j] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
+					if (k == 0)
+					{
+						int jType = UnitType.getType(attributes.get("type")).ordinal;
+						Images.unitBitmaps[i][jType] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
+					}
 					Images.unitBitmaps[i][j].setBitmaps(k, bitmap);
 				}
 			}
@@ -125,25 +134,6 @@ public class Images
 		
 		System.out.println();
 	}
-	
-	/*
-	public static byte[] intArrayToByteArray(int[] array)
-	{
-		byte[] result = new byte[array.length * 4];
-		
-		for (int i = 0; i < array.length; i++)
-		{
-			int color = array[i];
-			color = ImageHelper.toBitmapColor(color);
-			result[i * 4 + 0] = (byte) ImageHelper.getA(color);
-			result[i * 4 + 1] = (byte) ImageHelper.getR(color);
-			result[i * 4 + 2] = (byte) ImageHelper.getG(color);
-			result[i * 4 + 3] = (byte) ImageHelper.getB(color);
-		}
-		
-		return result;
-	}
-	*/
 	
 	public static int[][] getMatrixDataImage(ZipFile imagesZipFile, String path) throws IOException
 	{
