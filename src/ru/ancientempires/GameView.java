@@ -112,8 +112,10 @@ public class GameView extends View
 				int i = (int) y / GameView.baseCellHeight;
 				int j = (int) x / GameView.baseCellWidth;
 				
-				if (y < 0) i--;
-				if (x < 0) j--;
+				if (y < 0)
+					i--;
+				if (x < 0)
+					j--;
 				
 				tap(i, j);
 				return true;
@@ -196,11 +198,13 @@ public class GameView extends View
 		final Game game = this.client.getGame();
 		final Map map = game.map;
 		
-		if (!map.validateCoord(new Point(i, j))) return;
+		if (!map.validateCoord(new Point(i, j)))
+			return;
 		this.cursor.i = i;
 		this.cursor.j = j;
 		
-		if (!this.cursor.isVisible) this.cursor.isVisible = true;
+		if (!this.cursor.isVisible)
+			this.cursor.isVisible = true;
 		
 		Unit[][] fieldUnits = game.fieldUnits;
 		Unit unit;
@@ -219,7 +223,8 @@ public class GameView extends View
 		{
 			boolean allPointWaysContains = false;
 			for (PointWay tempPointWay : this.pointWays)
-				if (tempPointWay.i == i && tempPointWay.j == j) allPointWaysContains = true;
+				if (tempPointWay.i == i && tempPointWay.j == j)
+					allPointWaysContains = true;
 			if (allPointWaysContains)
 			{
 				this.isWayVisible = false;
@@ -236,7 +241,8 @@ public class GameView extends View
 				toast.show();
 			}
 		}
-		else this.isWayVisible = false;
+		else
+			this.isWayVisible = false;
 		
 		invalidate();
 	}
@@ -250,7 +256,8 @@ public class GameView extends View
 			invalidate();
 			return true;
 		}
-		else return performClick();
+		else
+			return performClick();
 		// else return super.onTouchEvent(e);
 	}
 	

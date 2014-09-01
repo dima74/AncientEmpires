@@ -1,7 +1,9 @@
 package ru.ancientempires;
 
+import helpers.ArrayHelper;
 import helpers.ColorHelper;
 import helpers.ImageHelper;
+import helpers.MatrixHelper;
 import helpers.XMLHelper;
 import helpers.ZIPHelper;
 
@@ -37,10 +39,15 @@ public class Images
 	}
 	
 	public static SomeWithBitmaps[][]	cellsBitmaps;
+	public static Bitmap[]				cellsStaticBitmaps;
 	
 	public static Bitmap getCellBitmap(Cell cell)
 	{
-		return CellView.getView(cell.type).bitmap;
+		CellType type = cell.type;
+		if (type.isStatic())
+			return Images.cellsStaticBitmaps[type.ordinal];
+		else
+			return CellView.getView(type).bitmap;
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
@@ -59,6 +66,8 @@ public class Images
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		NodeList images = infoDocument.getElementsByTagName("cell_image");
 		
+		Images.cellsStaticBitmaps = new Bitmap[CellType.staticAmount];
+		
 		for (int i = 0; i < images.getLength(); i++)
 		{
 			Node node = images.item(i);
@@ -69,7 +78,11 @@ public class Images
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
 			
 			InputStream inputStream = ZIPHelper.getIS(imagesZipFile, zipPath + imageName);
-			view.bitmap = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
+			Bitmap bitmap = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
+			
+			Images.cellsStaticBitmaps[type.staticOrdinal] = bitmap;
+			
+			view.bitmap = bitmap;
 		}
 	}
 	
@@ -78,9 +91,7 @@ public class Images
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		
 		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
-		Node colorTypesNode = XMLHelper.getOneNode(infoDocument, "color_types");
 		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "color_folder");
-		// Map<String, String> mapColorTypes = XMLHelper.getMapFromNode(colorTypesNode, "color_type");
 		
 		NodeList colorTypes = infoDocument.getElementsByTagName("color_type");
 		
@@ -118,7 +129,7 @@ public class Images
 				{
 					int color = game.players[i].color;
 					int[][] data = ImageHelper.getNewImg(dataRed, dataGreen, dataBlue, color);
-					int[] dataArray = Images.getArrayFromMatrix(data);
+					int[] dataArray = MatrixHelper.getArrayFromMatrix(data);
 					
 					Bitmap bitmap = Bitmap.createBitmap(dataArray, data[0].length, data.length, Config.ARGB_8888);
 					bitmap = BitmapHelper.getResizeBitmap(bitmap);
@@ -145,7 +156,7 @@ public class Images
 		bitmap.copyPixelsToBuffer(buffer);
 		int[] dataArray = buffer.array();
 		
-		int[][] data = Images.getMatrixFromArray(dataArray, height, width);
+		int[][] data = ArrayHelper.getMatrixFromArray(dataArray, height, width);
 		
 		// TODO если вот тут BitmapFactory.decodeStream в Options поставить inPreMultiPlied (API 19) в false, то вроде можно без костыля
 		Images.costil(data);
@@ -158,38 +169,6 @@ public class Images
 		for (int i = 0; i < data.length; i++)
 			for (int j = 0; j < data[0].length; j++)
 				data[i][j] = ColorHelper.toNormalColor(data[i][j]);
-	}
-	
-	public static int[][] getMatrixFromArray(int[] array, int height, int width)
-	{
-		int[][] matrix = new int[height][width];
-		
-		int k = 0;
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++)
-			{
-				matrix[i][j] = array[k];
-				k++;
-			}
-		
-		return matrix;
-	}
-	
-	public static int[] getArrayFromMatrix(int[][] matrix)
-	{
-		int height = matrix.length;
-		int width = matrix[0].length;
-		int[] array = new int[height * width];
-		
-		int k = 0;
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++)
-			{
-				array[k] = matrix[i][j];
-				k++;
-			}
-		
-		return array;
 	}
 	
 }

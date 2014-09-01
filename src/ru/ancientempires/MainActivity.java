@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import client.Client;
 
 public class MainActivity extends Activity
@@ -33,7 +34,12 @@ public class MainActivity extends Activity
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			
 			// мой код
+			long s = System.nanoTime();
 			init();
+			long e = System.nanoTime();
+			
+			String text = String.format("Время инита приложения %s секунд", (e - s) / 1000000000.0f);
+			Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -126,7 +132,12 @@ public class MainActivity extends Activity
 			Client.getClient().startGame("first");
 			try
 			{
+				long s = System.nanoTime();
 				GameView.startGame(Client.getClient().getGame());
+				long e = System.nanoTime();
+				
+				String text = String.format("Время инита игры %s секунд", (e - s) / 1000000000.0f);
+				Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
 			}
 			catch (IOException e)
 			{
