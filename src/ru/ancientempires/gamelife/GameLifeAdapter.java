@@ -59,9 +59,7 @@ public class GameLifeAdapter extends BaseAdapter
 			imageView.setPadding(1, 1, 1, 1);
 		}
 		else
-		{
 			imageView = (ImageView) convertView;
-		}
 		
 		imageView.setImageResource(this.gameModel.isLive(position) ? R.drawable.cell : R.drawable.empty);
 		return imageView;

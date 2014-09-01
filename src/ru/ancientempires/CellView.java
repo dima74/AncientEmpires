@@ -1,12 +1,7 @@
 package ru.ancientempires;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
-import model.CellType;
-import android.graphics.Bitmap;
-
+/*
 public class CellView
 {
 	
@@ -28,3 +23,4 @@ public class CellView
 	}
 	
 }
+*/

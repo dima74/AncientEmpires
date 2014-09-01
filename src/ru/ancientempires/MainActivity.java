@@ -75,15 +75,6 @@ public class MainActivity extends Activity
 			// TODO оповещение пользователю, что что-то не так + вывод сообщения
 			e.printStackTrace();
 		}
-		
-		try
-		{
-			GameView.initResources(getResources());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException

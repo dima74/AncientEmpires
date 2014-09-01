@@ -35,7 +35,7 @@ public class Images
 	
 	public static Bitmap getUnitBitmap(Unit unit)
 	{
-		return Images.unitBitmaps[unit.player.ordinal][unit.type.ordinal].getBitmap();
+		return Images.unitBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
 	}
 	
 	public static SomeWithBitmaps[][]	cellsBitmaps;
@@ -45,9 +45,9 @@ public class Images
 	{
 		CellType type = cell.type;
 		if (type.isStatic())
-			return Images.cellsStaticBitmaps[type.ordinal];
+			return Images.cellsStaticBitmaps[type.staticOrdinal];
 		else
-			return CellView.getView(type).bitmap;
+			return null;
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
@@ -73,7 +73,7 @@ public class Images
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
 			CellType type = CellType.getType(typeName);
-			CellView view = new CellView(type);
+			// CellView view = new CellView(type);
 			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
 			
@@ -82,7 +82,7 @@ public class Images
 			
 			Images.cellsStaticBitmaps[type.staticOrdinal] = bitmap;
 			
-			view.bitmap = bitmap;
+			// view.bitmap = bitmap;
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class Images
 		int typesLength = colorTypes.getLength();
 		int playerLength = game.players.length;
 		
-		Images.unitBitmaps = new SomeWithBitmaps[playerLength][typesLength];
+		Images.unitBitmaps = new SomeWithBitmaps[typesLength][playerLength];
 		
 		for (int j = 0; j < typesLength; j++)
 		{
@@ -136,9 +136,9 @@ public class Images
 					if (k == 0)
 					{
 						int jType = UnitType.getType(attributes.get("type")).ordinal;
-						Images.unitBitmaps[i][jType] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
+						Images.unitBitmaps[jType][i] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
 					}
-					Images.unitBitmaps[i][j].setBitmaps(k, bitmap);
+					Images.unitBitmaps[j][i].setBitmaps(k, bitmap);
 				}
 			}
 		}

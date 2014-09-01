@@ -11,7 +11,7 @@ import model.Point;
 import model.PointWay;
 import model.Unit;
 import model.Way;
-import ru.ancientempires.helpers.ImageHelper;
+import ru.ancientempires.helpers.BitmapHelper;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -31,18 +31,11 @@ public class GameView extends View
 	private Client				client					= Client.getClient();
 	
 	// Отображение игры
-	private Cursor				cursor					= (Cursor) new Cursor()
-																.setBitmaps(getResources(), new int[]
-																{
-																R.drawable.cursor_up, R.drawable.cursor_down
-																});
+	private Cursor				cursor					= new Cursor();
 	
 	private Bitmap[][]			bitmaps;
 	
-	private SomeWithBitmaps		cursorWay				= new SomeWithBitmaps().setBitmaps(getResources(), new int[]
-														{
-																R.drawable.cursor_way
-														});
+	private SomeWithBitmaps		cursorWay				= new SomeWithBitmaps();
 	
 	private GestureDetector		gestureDetector;
 	
@@ -77,11 +70,12 @@ public class GameView extends View
 	// не знаю, как выводится эта константа
 	private static final int	DELAY_BETWEEN_UPDATES	= 265;
 	
-	public GameView(Context context)
+	public GameView(Context context) throws IOException
 	{
 		super(context);
 		
-		intiBitmaps(this.client.getGame().map);
+		initResources(getResources());
+		initBitmaps(this.client.getGame().map);
 		
 		setFocusable(true);
 		setWillNotDraw(false);
@@ -146,18 +140,25 @@ public class GameView extends View
 		
 	}
 	
-	public static void initResources(Resources res) throws IOException
+	public void initResources(Resources res) throws IOException
 	{
-		UnitDraw.initResorces(res);
+		this.cursor.setBitmaps(new Bitmap[]
+		{
+				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_down.png"),
+				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_up.png")
+		});
+		this.cursorWay.setBitmaps(new Bitmap[]
+		{
+				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_way.png")
+		});
 	}
 	
 	public static void startGame(Game game) throws IOException
 	{
-		// ImageLoader.loadResources(Client.imagesZipFile, game);
 		Images.loadResources(Client.imagesZipFile, game);
 	}
 	
-	public void intiBitmaps(Map map)
+	public void initBitmaps(Map map)
 	{
 		final int height = map.getHeight();
 		final int width = map.getWidth();
@@ -166,7 +167,7 @@ public class GameView extends View
 		this.bitmaps = new Bitmap[height][width];
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
-				this.bitmaps[i][j] = ImageHelper.getCellBitmap(field[i][j]);
+				this.bitmaps[i][j] = Images.getCellBitmap(field[i][j]);
 	}
 	
 	public void updateBitmaps(Map map)
@@ -292,7 +293,7 @@ public class GameView extends View
 				if (fieldUnits[i][j] != null)
 				{
 					final Unit unit = fieldUnits[i][j];
-					Bitmap bitmapUnit = Images.getUnitBitmap(unit);
+					final Bitmap bitmapUnit = Images.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
 				}
 				

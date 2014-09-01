@@ -1,5 +1,7 @@
 package ru.ancientempires;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,9 +20,10 @@ public class GameActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 		
-		if (savedInstanceState == null) getFragmentManager().beginTransaction()
-				.add(R.id.container, new PlaceholderFragment())
-				.commit();
+		if (savedInstanceState == null)
+			getFragmentManager().beginTransaction()
+					.add(R.id.container, new PlaceholderFragment())
+					.commit();
 	}
 	
 	@Override
@@ -56,7 +59,14 @@ public class GameActivity extends Activity
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState)
 		{
-			this.gameView = new GameView(getActivity());
+			try
+			{
+				this.gameView = new GameView(getActivity());
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 			return this.gameView;
 		}
 		

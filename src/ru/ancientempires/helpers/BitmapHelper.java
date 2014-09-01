@@ -1,5 +1,11 @@
 package ru.ancientempires.helpers;
 
+import helpers.ZIPHelper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipFile;
+
 import ru.ancientempires.GameView;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -7,6 +13,14 @@ import android.graphics.BitmapFactory;
 
 public class BitmapHelper
 {
+	
+	public static Bitmap getBitmap(ZipFile zipFile, String zipPath) throws IOException
+	{
+		InputStream inputStream = ZIPHelper.getIS(zipFile, zipPath);
+		Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+		bitmap = BitmapHelper.getResizeBitmap(bitmap);
+		return bitmap;
+	}
 	
 	/*public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
 	{
