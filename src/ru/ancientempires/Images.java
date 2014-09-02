@@ -8,7 +8,6 @@ import helpers.XMLHelper;
 import helpers.ZIPHelper;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.IntBuffer;
 import java.util.Map;
 import java.util.zip.ZipFile;
@@ -38,16 +37,28 @@ public class Images
 		return Images.unitBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
 	}
 	
-	public static SomeWithBitmaps[][]	cellsBitmaps;
-	public static Bitmap[]				cellsStaticBitmaps;
+	public static CellBitmap[]	cellsBitmaps;
+	public static Bitmap[]		cellsStaticBitmaps;
 	
 	public static Bitmap getCellBitmap(Cell cell)
 	{
+		if (true)
+			return Images.cellsBitmaps[cell.type.ordinal].getBitmap(cell);
+		
 		CellType type = cell.type;
 		if (type.isStatic())
 			return Images.cellsStaticBitmaps[type.staticOrdinal];
 		else
 			return null;
+	}
+	
+	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	{
+		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
+		
+		String cellsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "cell_images_folder_path");
+		
+		Images.preloadCellsResources(imagesZipFile, cellsImagesFolderPath);
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
@@ -57,32 +68,51 @@ public class Images
 		String cellsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "cell_images_folder_path");
 		String unitsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "unit_images_folder_path");
 		
-		Images.loadCellsResources(imagesZipFile, cellsImagesFolderPath);
 		Images.loadUnitsResources(imagesZipFile, unitsImagesFolderPath, game);
 	}
 	
-	public static void loadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
+	public static void preloadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		NodeList images = infoDocument.getElementsByTagName("cell_image");
 		
+		/*
 		Images.cellsStaticBitmaps = new Bitmap[CellType.staticAmount];
-		
 		for (int i = 0; i < images.getLength(); i++)
 		{
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
 			CellType type = CellType.getType(typeName);
-			// CellView view = new CellView(type);
 			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			
-			InputStream inputStream = ZIPHelper.getIS(imagesZipFile, zipPath + imageName);
-			Bitmap bitmap = BitmapHelper.getResizeBitmap(BitmapFactory.decodeStream(inputStream));
+			Bitmap bitmap = BitmapHelper.getBitmap(imagesZipFile, zipPath + imageName);
 			
 			Images.cellsStaticBitmaps[type.staticOrdinal] = bitmap;
+		}
+		*/
+		
+		assert images.getLength() == CellType.amount;
+		int length = images.getLength();
+		
+		Images.cellsBitmaps = new CellBitmap[length];
+		for (int i = 0; i < length; i++)
+		{
+			Node node = images.item(i);
+			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
+			CellType type = CellType.getType(typeName);
 			
-			// view.bitmap = bitmap;
+			CellBitmap cellBitmap = new CellBitmap();
+			
+			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
+			cellBitmap.defaultBitmap = BitmapHelper.getBitmap(imagesZipFile, zipPath + imageName);
+			
+			if (type.isDestroying)
+			{
+				String destroyingImageName = XMLHelper.getNodeAttributeValue(node, "destroyingImage");
+				cellBitmap.destroyingBitmap = BitmapHelper.getBitmap(imagesZipFile, zipPath + destroyingImageName);
+			}
+			
+			Images.cellsBitmaps[i] = cellBitmap;
 		}
 	}
 	
