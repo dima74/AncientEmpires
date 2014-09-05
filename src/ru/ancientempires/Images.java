@@ -31,12 +31,10 @@ public class Images
 	
 	public static Bitmap getUnitBitmap(Unit unit)
 	{
-		return Images.unitBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
+		return Images.unitBitmaps[unit.type.ordinal][unit.capturePlayer.ordinal].getBitmap();
 	}
 	
 	public static CellBitmap[]	cellsBitmaps;
-	
-	// public static Bitmap[] cellsStaticBitmaps;
 	
 	public static Bitmap getCellBitmap(Cell cell)
 	{
@@ -47,7 +45,7 @@ public class Images
 	{
 		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
 		
-		String cellsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "cell_images_folder_path");
+		String cellsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "cell_images_folder_path");
 		
 		Images.preloadCellsResources(imagesZipFile, cellsImagesFolderPath);
 	}
@@ -104,8 +102,8 @@ public class Images
 	{
 		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
 		
-		String cellsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "cell_images_folder_path");
-		String unitsImagesFolderPath = XMLHelper.getOneTagNameFromDocument(imageInfoDocument, "unit_images_folder_path");
+		String cellsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "cell_images_folder_path");
+		String unitsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "unit_images_folder_path");
 		
 		Images.loadCellsResources(imagesZipFile, cellsImagesFolderPath, game);
 		Images.loadUnitsResources(imagesZipFile, unitsImagesFolderPath, game);
@@ -163,7 +161,7 @@ public class Images
 		
 		NodeList colorTypes = infoDocument.getElementsByTagName("color_type");
 		
-		assert colorTypes.getLength() == UnitType.types.length;
+		assert colorTypes.getLength() == UnitType.amount;
 		
 		int typesLength = colorTypes.getLength();
 		int playerLength = game.players.length;

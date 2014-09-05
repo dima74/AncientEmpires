@@ -218,36 +218,6 @@ public class GameView extends View
 			this.unitI = i;
 			this.unitJ = j;
 			
-			int rep = 100;
-			
-			long t2 = 0;
-			for (int k = 0; k < rep; k++)
-			{
-				long s = System.nanoTime();
-				final Way way = this.client.getWay(this.cursor.i, this.cursor.j, tapUnit);
-				long e = System.nanoTime();
-				t2 += e - s;
-			}
-			
-			long t1 = 0;
-			for (int k = 0; k < rep; k++)
-			{
-				long s = System.nanoTime();
-				Action action = new Action(ActionType.GET_MOVE_UNIT_WAY);
-				action.setProperty("i", i);
-				action.setProperty("j", j);
-				ActionResult result = Client.action(action);
-				final Way way = (Way) result.getProperty("way");
-				long e = System.nanoTime();
-				t1 += e - s;
-			}
-			
-			t1 /= rep;
-			t2 /= rep;
-			
-			String text = String.format("1: %s мс, 2: %s мс", t1 / 1000000.0f, t2 / 1000000.0f);
-			Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-			
 			Action action = new Action(ActionType.GET_MOVE_UNIT_WAY);
 			action.setProperty("i", i);
 			action.setProperty("j", j);
@@ -281,7 +251,7 @@ public class GameView extends View
 				
 				String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)",
 						fieldUnits[i][j].type.name, this.unitI, this.unitJ, i, j);
-				// Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 			}
 		}
 		else
