@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import model.Cell;
-import model.Game;
-import model.Map;
-import model.Point;
-import model.PointWay;
-import model.Unit;
-import model.Way;
+import ru.ancientempires.action.Action;
+import ru.ancientempires.action.ActionResult;
+import ru.ancientempires.action.ActionType;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.BitmapHelper;
-import action.Action;
-import action.ActionResult;
-import action.ActionType;
+import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Map;
+import ru.ancientempires.model.Point;
+import ru.ancientempires.model.PointWay;
+import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.Way;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -26,7 +27,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-import client.Client;
 
 public class GameView extends View
 {

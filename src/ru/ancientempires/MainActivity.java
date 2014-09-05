@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipFile;
 
+import ru.ancientempires.client.Client;
 import ru.ancientempires.gamelife.GameLifeStartActivity;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import client.Client;
 
 public class MainActivity extends Activity
 {

@@ -1,7 +1,7 @@
 package ru.ancientempires;
 
-import model.Cell;
-import model.CellType;
+import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.CellType;
 import android.graphics.Bitmap;
 
 public class CellBitmap

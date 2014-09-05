@@ -1,28 +1,26 @@
 package ru.ancientempires;
 
-import helpers.ArrayHelper;
-import helpers.ColorHelper;
-import helpers.ImageHelper;
-import helpers.XMLHelper;
-import helpers.ZIPHelper;
-
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
-import model.Cell;
-import model.CellType;
-import model.Game;
-import model.Player;
-import model.Unit;
-import model.UnitType;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import ru.ancientempires.helpers.ArrayHelper;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.helpers.ColorHelper;
+import ru.ancientempires.helpers.ImageHelper;
+import ru.ancientempires.helpers.XMLHelper;
+import ru.ancientempires.helpers.ZIPHelper;
+import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.CellType;
+import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Player;
+import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.UnitType;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
