@@ -1,5 +1,6 @@
 package ru.ancientempires.helpers;
 
+import helpers.MatrixHelper;
 import helpers.ZIPHelper;
 
 import java.io.IOException;
@@ -9,10 +10,19 @@ import java.util.zip.ZipFile;
 import ru.ancientempires.GameView;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
 public class BitmapHelper
 {
+	
+	public static Bitmap getResizeBitmap(int[][] data)
+	{
+		int[] dataArray = MatrixHelper.getArrayFromMatrix(data);
+		Bitmap bitmap = Bitmap.createBitmap(dataArray, data[0].length, data.length, Config.ARGB_8888);
+		bitmap = BitmapHelper.getResizeBitmap(bitmap);
+		return bitmap;
+	}
 	
 	public static Bitmap getBitmap(ZipFile zipFile, String zipPath) throws IOException
 	{

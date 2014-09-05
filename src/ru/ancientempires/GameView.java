@@ -12,6 +12,9 @@ import model.PointWay;
 import model.Unit;
 import model.Way;
 import ru.ancientempires.helpers.BitmapHelper;
+import action.Action;
+import action.ActionResult;
+import action.ActionType;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -208,13 +211,48 @@ public class GameView extends View
 			this.cursor.isVisible = true;
 		
 		Unit[][] fieldUnits = game.fieldUnits;
-		Unit unit;
-		if ((unit = fieldUnits[i][j]) != null)
+		Unit tapUnit = fieldUnits[i][j];
+		if (tapUnit != null)
 		{
 			this.isWayVisible = true;
 			this.unitI = i;
 			this.unitJ = j;
-			final Way way = this.client.getWay(this.cursor.i, this.cursor.j, unit);
+			
+			int rep = 100;
+			
+			long t2 = 0;
+			for (int k = 0; k < rep; k++)
+			{
+				long s = System.nanoTime();
+				final Way way = this.client.getWay(this.cursor.i, this.cursor.j, tapUnit);
+				long e = System.nanoTime();
+				t2 += e - s;
+			}
+			
+			long t1 = 0;
+			for (int k = 0; k < rep; k++)
+			{
+				long s = System.nanoTime();
+				Action action = new Action(ActionType.GET_MOVE_UNIT_WAY);
+				action.setProperty("i", i);
+				action.setProperty("j", j);
+				ActionResult result = Client.action(action);
+				final Way way = (Way) result.getProperty("way");
+				long e = System.nanoTime();
+				t1 += e - s;
+			}
+			
+			t1 /= rep;
+			t2 /= rep;
+			
+			String text = String.format("1: %s мс, 2: %s мс", t1 / 1000000.0f, t2 / 1000000.0f);
+			Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+			
+			Action action = new Action(ActionType.GET_MOVE_UNIT_WAY);
+			action.setProperty("i", i);
+			action.setProperty("j", j);
+			ActionResult result = Client.action(action);
+			final Way way = (Way) result.getProperty("way");
 			
 			this.pointWays = way.allPointWays.toArray(new PointWay[0]);
 			
@@ -222,24 +260,28 @@ public class GameView extends View
 		}
 		else if (this.isWayVisible)
 		{
-			boolean allPointWaysContains = false;
+			boolean pointWaysContains = false;
 			for (PointWay tempPointWay : this.pointWays)
 				if (tempPointWay.i == i && tempPointWay.j == j)
-					allPointWaysContains = true;
-			if (allPointWaysContains)
+				{
+					pointWaysContains = true;
+					break;
+				}
+			if (pointWaysContains)
 			{
 				this.isWayVisible = false;
-				Unit unit1 = fieldUnits[this.unitI][this.unitJ];
-				fieldUnits[this.unitI][this.unitJ] = null;
-				unit1.i = i;
-				unit1.j = j;
-				fieldUnits[i][j] = unit1;
 				
-				Context context = getContext();
-				String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)", unit1.type.name, this.unitI, this.unitJ, i, j);
-				int duration = Toast.LENGTH_SHORT;
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
+				Action action = new Action(ActionType.ACTION_MOVE_UNIT);
+				action.setProperty("oldI", this.unitI);
+				action.setProperty("oldJ", this.unitJ);
+				action.setProperty("newI", i);
+				action.setProperty("newJ", j);
+				
+				Client.action(action);
+				
+				String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)",
+						fieldUnits[i][j].type.name, this.unitI, this.unitJ, i, j);
+				// Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 			}
 		}
 		else
