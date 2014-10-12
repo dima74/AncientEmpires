@@ -7,7 +7,10 @@ import java.io.InputStream;
 import java.util.zip.ZipFile;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.ALog;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.gamelife.GameLifeStartActivity;
+import ru.ancientempires.images.Images;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -34,6 +37,8 @@ public class MainActivity extends Activity
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 			
 			// мой код
+			MyLog.currLog = new ALog();
+			
 			long s = System.nanoTime();
 			init();
 			long e = System.nanoTime();
@@ -137,7 +142,7 @@ public class MainActivity extends Activity
 				long e = System.nanoTime();
 				
 				String text = String.format("Время инита игры %s секунд", (e - s) / 1000000000.0f);
-				Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
+				// Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
 			}
 			catch (IOException e)
 			{

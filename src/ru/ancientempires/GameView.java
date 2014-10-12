@@ -1,6 +1,7 @@
 package ru.ancientempires;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,11 +9,16 @@ import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.images.ActionImages;
+import ru.ancientempires.images.CellImages;
+import ru.ancientempires.images.Images;
+import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Map;
-import ru.ancientempires.model.Point;
 import ru.ancientempires.model.PointWay;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.Way;
@@ -25,10 +31,10 @@ import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class GameView extends View
+public class GameView extends FrameLayout
 {
 	// Модель игры
 	private Client				client					= Client.getClient();
@@ -37,6 +43,7 @@ public class GameView extends View
 	private Cursor				cursor					= new Cursor();
 	
 	private Bitmap[][]			bitmaps;
+	private GameActionView		gameActionView			= new GameActionView(getContext());
 	
 	private SomeWithBitmaps		cursorWay				= new SomeWithBitmaps();
 	
@@ -55,8 +62,8 @@ public class GameView extends View
 	private float				difY;
 	
 	private boolean				isWayVisible			= false;
-	private int					unitI;
-	private int					unitJ;
+	private int					lastTapI;
+	private int					lastTapJ;
 	private PointWay[]			pointWays;
 	
 	private Timer				timer;
@@ -78,10 +85,13 @@ public class GameView extends View
 		super(context);
 		
 		initResources(getResources());
-		initBitmaps(this.client.getGame().map);
+		initBitmaps();
 		
 		setFocusable(true);
 		setWillNotDraw(false);
+		
+		addView(this.gameActionView);
+		this.gameActionView.gameView = this;
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
@@ -154,6 +164,8 @@ public class GameView extends View
 		{
 				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_way.png")
 		});
+		this.gameActionView.initResources();
+		this.gameActionView.setAlpha(1);
 	}
 	
 	public static void startGame(Game game) throws IOException
@@ -161,34 +173,28 @@ public class GameView extends View
 		Images.loadResources(Client.imagesZipFile, game);
 	}
 	
-	public void initBitmaps(Map map)
+	public void initBitmaps()
 	{
-		final int height = map.getHeight();
-		final int width = map.getWidth();
-		final Cell[][] field = map.getField();
-		
-		this.bitmaps = new Bitmap[height][width];
-		for (int i = 0; i < height; i++)
-			for (int j = 0; j < width; j++)
-				this.bitmaps[i][j] = Images.getCellBitmap(field[i][j]);
+		Map map = this.client.getGame().map;
+		this.bitmaps = new Bitmap[map.getHeight()][map.getWidth()];
+		updateBitmaps();
 	}
 	
-	public void updateBitmaps(Map map)
+	private void updateBitmaps()
 	{
+		Map map = this.client.getGame().map;
 		final int height = map.getHeight();
 		final int width = map.getWidth();
 		final Cell[][] field = map.getField();
 		
-		assert height == this.bitmaps.length;
-		assert width == this.bitmaps[0].length;
+		MyAssert.a(height == this.bitmaps.length);
+		MyAssert.a(width == this.bitmaps[0].length);
 		
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
-			{
-				Cell cell = field[i][j];
-				if (!cell.type.isStatic())
-					this.bitmaps[i][j] = Images.getCellBitmap(cell);
-			}
+				this.bitmaps[i][j] = CellImages.getCellBitmap(field[i][j]);
+		
+		invalidate();
 	}
 	
 	protected void updateCells()
@@ -202,62 +208,134 @@ public class GameView extends View
 		final Game game = this.client.getGame();
 		final Map map = game.map;
 		
-		if (!map.validateCoord(new Point(i, j)))
+		if (!map.validateCoord(i, j))
 			return;
+		updateCursorState(i, j);
+		
+		boolean isAction = false;
+		if (this.isWayVisible)
+			isAction |= tryUnitMove(i, j, game);
+		if (!isAction || true)
+			showActions(i, j);
+		
+		invalidate();
+	}
+	
+	private void updateCursorState(int i, int j)
+	{
 		this.cursor.i = i;
 		this.cursor.j = j;
 		
 		if (!this.cursor.isVisible)
 			this.cursor.isVisible = true;
-		
-		Unit[][] fieldUnits = game.fieldUnits;
-		Unit tapUnit = fieldUnits[i][j];
-		if (tapUnit != null)
-		{
-			this.isWayVisible = true;
-			this.unitI = i;
-			this.unitJ = j;
-			
-			Action action = new Action(ActionType.GET_MOVE_UNIT_WAY);
-			action.setProperty("i", i);
-			action.setProperty("j", j);
-			ActionResult result = Client.action(action);
-			final Way way = (Way) result.getProperty("way");
-			
-			this.pointWays = way.allPointWays.toArray(new PointWay[0]);
-			
-			Log.e("ae", way.toString());
-		}
-		else if (this.isWayVisible)
-		{
-			boolean pointWaysContains = false;
-			for (PointWay tempPointWay : this.pointWays)
-				if (tempPointWay.i == i && tempPointWay.j == j)
-				{
-					pointWaysContains = true;
-					break;
-				}
-			if (pointWaysContains)
+	}
+	
+	private boolean tryUnitMove(int i, int j, final Game game)
+	{
+		final Unit[][] fieldUnits = game.fieldUnits;
+		boolean pointWaysContains = false;
+		for (final PointWay tempPointWay : this.pointWays)
+			if (tempPointWay.i == i && tempPointWay.j == j)
 			{
-				this.isWayVisible = false;
-				
-				Action action = new Action(ActionType.ACTION_MOVE_UNIT);
-				action.setProperty("oldI", this.unitI);
-				action.setProperty("oldJ", this.unitJ);
-				action.setProperty("newI", i);
-				action.setProperty("newJ", j);
-				
-				Client.action(action);
-				
-				String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)",
-						fieldUnits[i][j].type.name, this.unitI, this.unitJ, i, j);
+				pointWaysContains = true;
+				break;
+			}
+		if (pointWaysContains)
+		{
+			this.isWayVisible = false;
+			
+			final Action action = new Action(ActionType.ACTION_UNIT_MOVE);
+			action.setProperty("oldI", this.lastTapI);
+			action.setProperty("oldJ", this.lastTapJ);
+			action.setProperty("newI", i);
+			action.setProperty("newJ", j);
+			
+			Client.action(action);
+			
+			if (false)
+			{
+				final String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)",
+						fieldUnits[i][j].type.name, this.lastTapI, this.lastTapJ, i, j);
 				Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 			}
+			
+			return true;
 		}
 		else
 			this.isWayVisible = false;
+		return false;
+	}
+	
+	private void showActions(int i, int j)
+	{
+		Action action = new Action(ActionType.GET_AVAILABLE_ACTIONS_FOR_CELL);
+		action.setProperty("i", i);
+		action.setProperty("j", j);
 		
-		invalidate();
+		final ActionResult result = Client.action(action);
+		
+		final int amount = (int) result.getProperty("amountActions");
+		// MyLog.log(amount);
+		ArrayList<ActionType> actionTypes = new ArrayList<ActionType>(amount);
+		for (int k = 0; k < amount; k++)
+		{
+			final ActionType actionType = (ActionType) result.getProperty("action" + k);
+			actionTypes.add(actionType);
+		}
+		
+		if (actionTypes.contains(ActionType.ACTION_UNIT_MOVE))
+			showNewUnitWay(i, j);
+		
+		ArrayList<Bitmap> actionBitmaps = new ArrayList<Bitmap>(amount);
+		for (ActionType actionType : actionTypes)
+		{
+			Bitmap actionBitmap = ActionImages.getActionBitmap(actionType);
+			// MyLog.log(actionType, " ", actionBitmap, " ");
+			actionBitmaps.add(actionBitmap);
+		}
+		this.gameActionView.updateActionBitmapsState(actionBitmaps, actionTypes);
+	}
+	
+	public void performAction(ActionType actionType)
+	{
+		MyLog.log(actionType);
+		
+		if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
+		{
+			Action action = new Action(actionType);
+			action.setProperty("i", this.lastTapI);
+			action.setProperty("j", this.lastTapJ);
+			ActionResult actionResult = Client.action(action);
+		}
+		
+		updateBitmaps();
+	}
+	
+	private void showNewUnitWay(int i, int j)
+	{
+		this.isWayVisible = true;
+		this.lastTapI = i;
+		this.lastTapJ = j;
+		
+		Action actionGetWay = new Action(ActionType.GET_MOVE_UNIT_WAY);
+		actionGetWay.setProperty("i", i);
+		actionGetWay.setProperty("j", j);
+		
+		final long s1 = System.nanoTime();
+		
+		final ActionResult result3 = Client.action(actionGetWay);
+		final Way way = (Way) result3.getProperty("way");
+		
+		this.pointWays = way.allPointWays.toArray(new PointWay[0]);
+		
+		if (false)
+		{
+			final long s2 = System.nanoTime();
+			Log.e("ae", way.toString());
+			final long e = System.nanoTime();
+			final String text = String.format("%s мс из %s мс", (e - s2) / 1000000.0d, (e - s1) / 1000000.0d);
+			Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	@Override
@@ -280,6 +358,34 @@ public class GameView extends View
 	{
 		Log.d("AE", "performClick");
 		return super.performClick();
+	}
+	
+	public int	height;
+	public int	width;
+	
+	public int	actionRectHeight;
+	
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh)
+	{
+		super.onSizeChanged(w, h, oldw, oldh);
+		
+		this.height = h;
+		this.width = w;
+		
+		this.actionRectHeight = (int) (0.2f * h);
+		this.gameActionView.setY(h - this.actionRectHeight);
+		this.gameActionView.setX(0);
+		FrameLayout.LayoutParams actionViewLayoutParams = new FrameLayout.LayoutParams(w, this.actionRectHeight);
+		this.gameActionView.setLayoutParams(actionViewLayoutParams);
+		// this.gameActionView.setSize(w, this.actionRectHeight);
+		/*
+		LayoutParams actionViewLayoutParams2 = new LayoutParams(w, this.actionRectHeight);
+		actionViewLayoutParams.setMargins(0, h - this.actionRectHeight, w, h);
+		updateViewLayout(this.gameActionView, actionViewLayoutParams);
+		this.gameActionView.refreshDrawableState();
+		this.gameActionView.requestLayout();
+		*/
 	}
 	
 	@Override
@@ -305,7 +411,7 @@ public class GameView extends View
 				if (fieldUnits[i][j] != null)
 				{
 					final Unit unit = fieldUnits[i][j];
-					final Bitmap bitmapUnit = Images.getUnitBitmap(unit);
+					final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
 				}
 				
@@ -332,6 +438,6 @@ public class GameView extends View
 				canvas.drawBitmap(bitmapCursorWay, x, y, null);
 			}
 		}
-		
 	}
+	
 }
