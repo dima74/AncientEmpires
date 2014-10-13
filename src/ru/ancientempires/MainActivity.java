@@ -21,7 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
@@ -43,8 +43,9 @@ public class MainActivity extends Activity
 			init();
 			long e = System.nanoTime();
 			
-			String text = String.format("Время инита приложения %s секунд", (e - s) / 1000000000.0f);
-			Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
+			String text = String.format("инит %s секунд", (e - s) / 1000000000.0f);
+			// Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
+			MainActivity.text += text += "\n";
 		}
 	}
 	
@@ -52,6 +53,7 @@ public class MainActivity extends Activity
 	{
 		System.out.println();
 		
+		long s1 = System.nanoTime();
 		try
 		{
 			// копируем файл games.zip из assets в externalStorageCacheDir для удобной работы с ним (использование плюшек ZipFile).
@@ -70,7 +72,12 @@ public class MainActivity extends Activity
 		{
 			e.printStackTrace();
 		}
+		long e1 = System.nanoTime();
+		String text1 = String.format("zip %s секунд", (e1 - s1) / 1000000000.0f);
+		MainActivity.text += text1 += "\n";
+		// Toast.makeText(getBaseContext(), text1, Toast.LENGTH_LONG).show();
 		
+		long s2 = System.nanoTime();
 		try
 		{
 			Client.init();
@@ -80,7 +87,12 @@ public class MainActivity extends Activity
 			// TODO оповещение пользователю, что что-то не так + вывод сообщения
 			e.printStackTrace();
 		}
+		long e2 = System.nanoTime();
+		String text2 = String.format("Client.init() %s секунд", (e2 - s2) / 1000000000.0f);
+		MainActivity.text += text2 += "\n";
+		// Toast.makeText(getBaseContext(), text2, Toast.LENGTH_LONG).show();
 		
+		long s3 = System.nanoTime();
 		try
 		{
 			Images.preloadResources(Client.imagesZipFile);
@@ -89,6 +101,10 @@ public class MainActivity extends Activity
 		{
 			e.printStackTrace();
 		}
+		long e3 = System.nanoTime();
+		String text3 = String.format("images %s секунд", (e3 - s3) / 1000000000.0f);
+		// Toast.makeText(getBaseContext(), text3, Toast.LENGTH_LONG).show();
+		MainActivity.text += text3 += "\n";
 	}
 	
 	public ZipFile getZipFileFromAssets(AssetManager assets, String name) throws IOException
@@ -157,6 +173,8 @@ public class MainActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public static String	text	= "";
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -167,7 +185,8 @@ public class MainActivity extends Activity
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-			
+			TextView textView = (TextView) rootView.findViewById(R.id.text_hello_word);
+			textView.setText(MainActivity.text);
 			return rootView;
 		}
 	}
