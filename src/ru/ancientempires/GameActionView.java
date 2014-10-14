@@ -18,6 +18,8 @@ public class GameActionView extends View
 	public GameActionView(Context context)
 	{
 		super(context);
+		
+		setVisibility(View.GONE);
 	}
 	
 	public GameView					gameView;
@@ -30,21 +32,19 @@ public class GameActionView extends View
 	private int						width;
 	float							bitmapDeltaWidth;
 	
-	private float					actionBitmapHeight;
-	private float					actionBitmapWidth;
+	private static float			actionBitmapHeight;
+	private static float			actionBitmapWidth;
 	
-	Paint							whitePaint		= new Paint();
+	private static Paint			whitePaint		= new Paint();
 	
-	public void initResources()
+	public static void initResources()
 	{
-		setVisibility(View.GONE);
-		
 		Bitmap defaultActionBitmap = ActionImages.getActionBitmap(ActionType.ACTION_UNIT_MOVE);
 		
-		this.actionBitmapHeight = defaultActionBitmap.getHeight();
-		this.actionBitmapWidth = defaultActionBitmap.getWidth();
+		GameActionView.actionBitmapHeight = defaultActionBitmap.getHeight();
+		GameActionView.actionBitmapWidth = defaultActionBitmap.getWidth();
 		
-		this.whitePaint.setARGB(0xBB, 0xFF, 0xFF, 0xFF);
+		GameActionView.whitePaint.setARGB(0xBB, 0xFF, 0xFF, 0xFF);
 	}
 	
 	@Override
@@ -72,8 +72,8 @@ public class GameActionView extends View
 			this.actionsPoints.clear();
 			for (int i = 0; i < this.actionBitmaps.size(); i++)
 			{
-				int x = (int) (this.bitmapDeltaWidth * (i + 1) - this.actionBitmapWidth / 2.0f);
-				int y = (int) (this.height / 2 - this.actionBitmapHeight / 2.0f);
+				int x = (int) (this.bitmapDeltaWidth * (i + 1) - GameActionView.actionBitmapWidth / 2.0f);
+				int y = (int) (this.height / 2 - GameActionView.actionBitmapHeight / 2.0f);
 				this.actionsPoints.add(new Point(x, y));
 			}
 		}
@@ -102,7 +102,7 @@ public class GameActionView extends View
 	{
 		if (!this.actionBitmaps.isEmpty())
 		{
-			canvas.drawRect(0, 0, this.width, this.height, this.whitePaint);
+			canvas.drawRect(0, 0, this.width, this.height, GameActionView.whitePaint);
 			for (int i = 0; i < this.actionBitmaps.size(); i++)
 			{
 				Bitmap bitmap = this.actionBitmaps.get(i);

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity
 {
@@ -96,6 +97,7 @@ public class MainActivity extends Activity
 		try
 		{
 			Images.preloadResources(Client.imagesZipFile);
+			GameView.initResources(getResources());
 		}
 		catch (IOException e)
 		{
@@ -158,7 +160,7 @@ public class MainActivity extends Activity
 				long e = System.nanoTime();
 				
 				String text = String.format("Время инита игры %s секунд", (e - s) / 1000000000.0f);
-				// Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
 			}
 			catch (IOException e)
 			{
