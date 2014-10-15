@@ -35,7 +35,7 @@ public class GameActionView extends View
 	private static float			actionBitmapHeight;
 	private static float			actionBitmapWidth;
 	
-	private static Paint			whitePaint		= new Paint();
+	public static Paint				whitePaint		= new Paint();
 	
 	public static void initResources()
 	{

@@ -15,6 +15,7 @@ import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
+import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
@@ -54,7 +55,7 @@ public class GameView extends FrameLayout
 	public static boolean			isBaseCellSizeDetermine	= false;
 	public static int				baseCellHeight;
 	public static int				baseCellWidth;
-	public static float				baseCellHeightMulti		= (float) (4 / 3.0);
+	public static float				baseCellHeightMulti		= 6 / 3.0f;
 	public static float				baseCellWidthMulti		= GameView.baseCellHeightMulti;
 	
 	private int						offsetX					= 0;
@@ -165,16 +166,16 @@ public class GameView extends FrameLayout
 	{
 		GameView.cursor.setBitmaps(new Bitmap[]
 		{
-				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_down.png"),
-				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_up.png")
+				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_down.png"),
+				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_up.png")
 		});
 		GameView.cursorWay.setBitmaps(new Bitmap[]
 		{
-				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_way.png")
+				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_way.png")
 		});
 		GameView.cursorAttack.setBitmaps(new Bitmap[]
 		{
-				BitmapHelper.getBitmap(Client.imagesZipFile, "cursor_attack.png")
+				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_attack.png")
 		});
 		GameActionView.initResources();
 	}
@@ -471,26 +472,46 @@ public class GameView extends FrameLayout
 		
 		final Game game = this.client.getGame();
 		
+		// карта
 		final Cell[][] field = game.map.getField();
+		for (int i = 0; i < field.length; i++)
+			for (int j = 0; j < field[i].length; j++)
+			{
+				final Bitmap bitmapCell = this.bitmaps[i][j];
+				final int y = GameView.baseCellHeight * i + this.offsetY;
+				final int x = GameView.baseCellWidth * j + this.offsetX;
+				canvas.drawBitmap(bitmapCell, x, y, null);
+			}
+		// сверху юниты
 		final Unit[][] fieldUnits = game.fieldUnits;
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
 			{
-				// карта
-				final Bitmap bitmapCell = this.bitmaps[i][j];
-				final int y = bitmapCell.getHeight() * i + this.offsetY;
-				final int x = bitmapCell.getWidth() * j + this.offsetX;
-				canvas.drawBitmap(bitmapCell, x, y, null);
-				
-				// сверху юниты
-				
-				if (fieldUnits[i][j] != null)
+				final Unit unit = fieldUnits[i][j];
+				if (unit != null)
 				{
-					final Unit unit = fieldUnits[i][j];
+					final int y = GameView.baseCellHeight * i + this.offsetY;
+					final int x = GameView.baseCellWidth * j + this.offsetX;
+					
 					final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
+					
+					final int health = Math.round(unit.health * 100);
+					
+					final int one = health / 10;
+					final int two = health % 10;
+					
+					final int textX = x;
+					final int textY = y + GameView.baseCellHeight - NumberImages.height;
+					
+					if (one == 0)
+						canvas.drawBitmap(NumberImages.getNumberBitmap(two), textX, textY, null);
+					else
+					{
+						canvas.drawBitmap(NumberImages.getNumberBitmap(one), textX, textY, null);
+						canvas.drawBitmap(NumberImages.getNumberBitmap(two), textX + NumberImages.width, textY, null);
+					}
 				}
-				
 			}
 		
 		// рисуем курсор (если есть)
@@ -528,5 +549,4 @@ public class GameView extends FrameLayout
 			}
 		}
 	}
-	
 }

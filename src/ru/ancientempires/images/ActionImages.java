@@ -51,7 +51,7 @@ public class ActionImages
 		
 		for (int i = 0; i < actionImageNames.length; i++)
 		{
-			Bitmap bitmap = BitmapHelper.getBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 4, 4);
+			Bitmap bitmap = BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 4, 4);
 			ActionImages.actionBitmaps.put(actionTypes[i], bitmap);
 		}
 	}

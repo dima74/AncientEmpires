@@ -57,10 +57,10 @@ public class CellImages
 			CellBitmap cellBitmap = new CellBitmap();
 			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			cellBitmap.defaultBitmap = BitmapHelper.getBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageName);
+			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageName);
 			
 			if (type.isDestroying)
-				cellBitmap.destroyingBitmap = BitmapHelper.getBitmap(imagesZipFile, zipPath + destroyingImagesFolder + imageName);
+				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + destroyingImagesFolder + imageName);
 			
 			CellImages.cellsBitmaps[i] = cellBitmap;
 		}

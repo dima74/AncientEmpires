@@ -18,6 +18,7 @@ public class Images
 	{
 		CellImages.preloadResources(imagesZipFile);
 		ActionImages.preloadResources(imagesZipFile);
+		NumberImages.preloadResources(imagesZipFile);
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException

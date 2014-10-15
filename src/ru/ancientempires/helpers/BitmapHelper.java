@@ -12,6 +12,28 @@ import android.graphics.BitmapFactory;
 public class BitmapHelper
 {
 	
+	public static Bitmap getBitmap(ZipFile zipFile, String zipPath) throws IOException
+	{
+		InputStream inputStream = ZIPHelper.getIS(zipFile, zipPath);
+		Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+		return bitmap;
+	}
+	
+	public static Bitmap getMultiBitmap(ZipFile zipFile, String zipPath, float multiHeight, float multiWidth) throws IOException
+	{
+		Bitmap bitmap = BitmapHelper.getBitmap(zipFile, zipPath);
+		return BitmapHelper.getMultiBitmap(bitmap, multiHeight, multiWidth);
+	}
+	
+	public static Bitmap getMultiBitmap(Bitmap bitmap, float multiHeight, float multiWidth)
+	{
+		int height = (int) (bitmap.getHeight() * multiHeight);
+		int width = (int) (bitmap.getWidth() * multiWidth);
+		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+		
+		return bitmap;
+	}
+	
 	public static Bitmap getResizeBitmap(int[][] data)
 	{
 		int[] dataArray = MatrixHelper.getArrayFromMatrix(data);
@@ -20,32 +42,16 @@ public class BitmapHelper
 		return bitmap;
 	}
 	
-	public static Bitmap getBitmap(ZipFile zipFile, String zipPath) throws IOException
+	public static Bitmap getResizeBitmap(ZipFile zipFile, String zipPath) throws IOException
 	{
-		InputStream inputStream = ZIPHelper.getIS(zipFile, zipPath);
-		Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+		Bitmap bitmap = BitmapHelper.getBitmap(zipFile, zipPath);
 		bitmap = BitmapHelper.getResizeBitmap(bitmap);
-		return bitmap;
-	}
-	
-	public static Bitmap getBitmap(ZipFile zipFile, String zipPath, float multiHeight, float multiWidth) throws IOException
-	{
-		InputStream inputStream = ZIPHelper.getIS(zipFile, zipPath);
-		Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-		// bitmap = BitmapHelper.getResizeBitmap(bitmap);
-		
-		int height = (int) (bitmap.getHeight() * multiHeight);
-		int width = (int) (bitmap.getWidth() * multiWidth);
-		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-		
 		return bitmap;
 	}
 	
 	public static Bitmap getResizeBitmap(Bitmap bitmap)
 	{
-		int height = (int) (bitmap.getHeight() * GameView.baseCellHeightMulti);
-		int width = (int) (bitmap.getWidth() * GameView.baseCellWidthMulti);
-		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+		bitmap = BitmapHelper.getMultiBitmap(bitmap, GameView.baseCellHeightMulti, GameView.baseCellWidthMulti);
 		
 		int bitmapHeight = bitmap.getHeight();
 		int bitmapWidth = bitmap.getWidth();
