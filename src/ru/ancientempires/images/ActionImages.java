@@ -35,7 +35,7 @@ public class ActionImages
 				"action_unit_capture.png",
 				"action_unit_attack.png",
 				"action_unit_raise.png",
-				"action_game_end_turn.png",
+				"action_end_turn.png",
 		};
 		
 		ActionType[] actionTypes = new ActionType[]
@@ -46,7 +46,7 @@ public class ActionImages
 				ActionType.ACTION_UNIT_CAPTURE,
 				ActionType.ACTION_UNIT_ATTACK,
 				ActionType.ACTION_UNIT_RAISE,
-				ActionType.ACTION_GAME_END_TURN
+				ActionType.ACTION_END_TURN
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)

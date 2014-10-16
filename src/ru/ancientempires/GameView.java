@@ -249,7 +249,6 @@ public class GameView extends FrameLayout
 	
 	private boolean tryUnitMove(int i, int j, final Game game)
 	{
-		final Unit[][] fieldUnits = game.fieldUnits;
 		boolean pointWaysContains = false;
 		for (final PointWay tempPointWay : this.pointWays)
 			if (tempPointWay.i == i && tempPointWay.j == j)
@@ -271,6 +270,7 @@ public class GameView extends FrameLayout
 			
 			if (false)
 			{
+				final Unit[][] fieldUnits = game.fieldUnits;
 				final String text = String.format("Юнит %s сходил c (%s, %s) на (%s, %s)",
 						fieldUnits[i][j].type.name, this.lastUnitI, this.lastUnitJ, i, j);
 				Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();

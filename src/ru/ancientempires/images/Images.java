@@ -17,6 +17,7 @@ public class Images
 	public static void preloadResources(ZipFile imagesZipFile) throws IOException
 	{
 		CellImages.preloadResources(imagesZipFile);
+		UnitImages.preloadResources(imagesZipFile);
 		ActionImages.preloadResources(imagesZipFile);
 		NumberImages.preloadResources(imagesZipFile);
 	}

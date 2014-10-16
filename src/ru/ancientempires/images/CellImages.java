@@ -93,8 +93,8 @@ public class CellImages
 			
 			if (type.isCapture)
 			{
-				int playerLength = Player.players.length;
-				cellBitmap.colorsBitmaps = new Bitmap[playerLength];
+				int playerAmount = Player.amount;
+				cellBitmap.colorsBitmaps = new Bitmap[playerAmount];
 				
 				Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
 				Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
@@ -107,9 +107,9 @@ public class CellImages
 				int[][] dataGreen = Images.getMatrixDataImage(imagesZipFile, imageGreenPath);
 				int[][] dataBlue = Images.getMatrixDataImage(imagesZipFile, imageBluePath);
 				
-				for (int j = 0; j < playerLength; j++)
+				for (int j = 0; j < playerAmount; j++)
 				{
-					int[][] data = ImageHelper.getNewImg(dataRed, dataGreen, dataBlue, Player.players[j].color);
+					int[][] data = ImageHelper.getNewImg(dataRed, dataGreen, dataBlue, Player.getPlayer(j).color);
 					cellBitmap.colorsBitmaps[j] = BitmapHelper.getResizeBitmap(data);
 				}
 			}

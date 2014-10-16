@@ -21,11 +21,43 @@ import android.graphics.Bitmap;
 public class UnitImages
 {
 	
-	public static SomeWithBitmaps[][]	unitBitmaps;
+	public static SomeWithBitmaps[][]	unitsBitmaps;
+	public static SomeWithBitmaps[]		greyUnitsBitmaps;
 	
 	public static Bitmap getUnitBitmap(Unit unit)
 	{
-		return UnitImages.unitBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
+		return (unit.isTurn ? UnitImages.greyUnitsBitmaps[unit.type.ordinal] :
+				UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal]).getBitmap();
+	}
+	
+	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	{
+		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
+		String unitsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "unit_images_folder_path");
+		UnitImages.preloadUnitsResources(imagesZipFile, unitsImagesFolderPath);
+	}
+	
+	public static void preloadUnitsResources(ZipFile imagesZipFile, String zipPath) throws IOException
+	{
+		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
+		NodeList colorTypes = infoDocument.getElementsByTagName("color_type");
+		
+		int typesLength = UnitType.amount;
+		UnitImages.greyUnitsBitmaps = new SomeWithBitmaps[typesLength];
+		for (int i = 0; i < typesLength; i++)
+		{
+			Node colorTypeNode = colorTypes.item(i);
+			Map<String, String> attributes = XMLHelper.getNodeAttributesMap(colorTypeNode);
+			
+			int colorTypeAmountImages = Integer.valueOf(attributes.get("amountImages"));
+			Bitmap[] greyUnitBitmaps = new Bitmap[colorTypeAmountImages];
+			for (int k = 0; k < colorTypeAmountImages; k++)
+			{
+				String imageName = attributes.get("image" + k);
+				greyUnitBitmaps[k] = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + "grey/" + imageName);
+			}
+			UnitImages.greyUnitsBitmaps[i] = new SomeWithBitmaps().setBitmaps(greyUnitBitmaps);
+		}
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
@@ -41,15 +73,18 @@ public class UnitImages
 		
 		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
 		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
+		String imagesRedPath = zipPath + mapColorsFolders.get("0xFFFF0000");
+		String imagesGreenPath = zipPath + mapColorsFolders.get("0xFF00FF00");
+		String imagesBluePath = zipPath + mapColorsFolders.get("0xFF0000FF");
 		
 		NodeList colorTypes = infoDocument.getElementsByTagName("color_type");
-		
-		MyAssert.a(colorTypes.getLength() == UnitType.amount);
 		
 		int typesLength = colorTypes.getLength();
 		int playerLength = game.players.length;
 		
-		UnitImages.unitBitmaps = new SomeWithBitmaps[typesLength][playerLength];
+		MyAssert.a(typesLength == UnitType.amount);
+		
+		UnitImages.unitsBitmaps = new SomeWithBitmaps[typesLength][playerLength];
 		
 		for (int j = 0; j < typesLength; j++)
 		{
@@ -61,9 +96,9 @@ public class UnitImages
 			{
 				String imageName = attributes.get("image" + k);
 				
-				String imageRedPath = zipPath + mapColorsFolders.get("0xFFFF0000") + imageName;
-				String imageGreenPath = zipPath + mapColorsFolders.get("0xFF00FF00") + imageName;
-				String imageBluePath = zipPath + mapColorsFolders.get("0xFF0000FF") + imageName;
+				String imageRedPath = imagesRedPath + imageName;
+				String imageGreenPath = imagesGreenPath + imageName;
+				String imageBluePath = imagesBluePath + imageName;
 				
 				int[][] dataRed = Images.getMatrixDataImage(imagesZipFile, imageRedPath);
 				int[][] dataGreen = Images.getMatrixDataImage(imagesZipFile, imageGreenPath);
@@ -82,9 +117,9 @@ public class UnitImages
 					if (k == 0)
 					{
 						int jType = UnitType.getType(attributes.get("type")).ordinal;
-						UnitImages.unitBitmaps[jType][i] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
+						UnitImages.unitsBitmaps[jType][i] = new SomeWithBitmaps().setAmount(colorTypeAmountImages);
 					}
-					UnitImages.unitBitmaps[j][i].setBitmaps(k, bitmap);
+					UnitImages.unitsBitmaps[j][i].setBitmaps(k, bitmap);
 				}
 			}
 		}
