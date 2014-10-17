@@ -1,5 +1,8 @@
 package ru.ancientempires;
 
+import java.io.IOException;
+
+import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.BitmapHelper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -35,6 +38,14 @@ public class SomeWithBitmaps
 	public SomeWithBitmaps setBitmaps(Bitmap[] bitmaps)
 	{
 		this.bitmaps = bitmaps;
+		return this;
+	}
+	
+	public SomeWithBitmaps setBitmaps(String[] names) throws IOException
+	{
+		this.bitmaps = new Bitmap[names.length];
+		for (int i = 0; i < names.length; i++)
+			this.bitmaps[i] = BitmapHelper.getResizeBitmap(Client.imagesZipFile, names[i]);
 		return this;
 	}
 	

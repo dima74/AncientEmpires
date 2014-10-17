@@ -11,7 +11,6 @@ import ru.ancientempires.action.ActionType;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
@@ -49,6 +48,7 @@ public class GameView extends FrameLayout
 	
 	private static SomeWithBitmaps	cursorWay				= new SomeWithBitmaps();
 	private static SomeWithBitmaps	cursorAttack			= new SomeWithBitmaps();
+	private static SomeWithBitmaps	cursorPointer			= new SomeWithBitmaps();
 	
 	private GestureDetector			gestureDetector;
 	
@@ -69,6 +69,8 @@ public class GameView extends FrameLayout
 	
 	private PointWay[]				pointWays;
 	private Point[]					attackedPoints;
+	private Point[]					realAttackedPoints;
+	private Point					currentAttackedPoint;
 	
 	private int						lastTapI;
 	private int						lastTapJ;
@@ -164,18 +166,24 @@ public class GameView extends FrameLayout
 	
 	public static void initResources(Resources res) throws IOException
 	{
-		GameView.cursor.setBitmaps(new Bitmap[]
+		GameView.cursor.setBitmaps(new String[]
 		{
-				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_down.png"),
-				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_up.png")
+				"cursor_down.png",
+				"cursor_up.png"
 		});
-		GameView.cursorWay.setBitmaps(new Bitmap[]
+		GameView.cursorWay.setBitmaps(new String[]
 		{
-				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_way.png")
+				"cursor_way.png"
 		});
-		GameView.cursorAttack.setBitmaps(new Bitmap[]
+		GameView.cursorAttack.setBitmaps(new String[]
 		{
-				BitmapHelper.getResizeBitmap(Client.imagesZipFile, "cursor_attack.png")
+				"cursor_attack.png"
+		});
+		GameView.cursorPointer.setBitmaps(new String[]
+		{
+				"cursor_pointer_0.png",
+				"cursor_pointer_1.png",
+				"cursor_pointer_2.png"
 		});
 		GameActionView.initResources();
 	}
@@ -383,16 +391,25 @@ public class GameView extends FrameLayout
 	{
 		MyLog.log(actionType);
 		
+		this.isWayVisible = false;
+		this.isAttackVisible = false;
+		
 		if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
 		{
 			Action action = new Action(actionType);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
 			ActionResult actionResult = Client.action(action);
-			MyAssert.a(actionResult.successfully);
 		}
 		else if (actionType == ActionType.ACTION_UNIT_ATTACK)
 			showNewAttackZone(this.lastTapI, this.lastTapJ);
+		else if (actionType == ActionType.ACTION_END_TURN)
+		{
+			Action action = new Action(actionType);
+			ActionResult actionResult = Client.action(action);
+			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
+		}
+		showActions(this.lastTapI, this.lastTapJ);
 		
 		updateBitmaps();
 	}
@@ -409,10 +426,9 @@ public class GameView extends FrameLayout
 		actionGetWay.setProperty("j", j);
 		
 		final ActionResult result = Client.action(actionGetWay);
-		final Point[] attackedPoints = (Point[]) result.getProperty("allAttackPoints");
-		this.attackedPoints = new Point[attackedPoints.length];
-		for (int k = 0; k < attackedPoints.length; k++)
-			this.attackedPoints[k] = new Point(i + attackedPoints[k].i, j + attackedPoints[k].j);
+		this.attackedPoints = (Point[]) result.getProperty("allAttackedPoints");
+		this.realAttackedPoints = (Point[]) result.getProperty("realAttackedPoints");
+		this.currentAttackedPoint = this.realAttackedPoints[0];
 	}
 	
 	@Override
@@ -455,21 +471,12 @@ public class GameView extends FrameLayout
 		this.gameActionView.setX(0);
 		FrameLayout.LayoutParams actionViewLayoutParams = new FrameLayout.LayoutParams(w, this.actionRectHeight);
 		this.gameActionView.setLayoutParams(actionViewLayoutParams);
-		// this.gameActionView.setSize(w, this.actionRectHeight);
-		/*
-		LayoutParams actionViewLayoutParams2 = new LayoutParams(w, this.actionRectHeight);
-		actionViewLayoutParams.setMargins(0, h - this.actionRectHeight, w, h);
-		updateViewLayout(this.gameActionView, actionViewLayoutParams);
-		this.gameActionView.refreshDrawableState();
-		this.gameActionView.requestLayout();
-		*/
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
 		// рисуем игровое поле
-		
 		final Game game = this.client.getGame();
 		
 		// карта
@@ -482,7 +489,34 @@ public class GameView extends FrameLayout
 				final int x = GameView.baseCellWidth * j + this.offsetX;
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
-		// сверху юниты
+		
+		if (this.isWayVisible)
+		{
+			final Bitmap bitmapCursorWay = GameView.cursorWay.getBitmap();
+			final int height = bitmapCursorWay.getHeight();
+			final int width = bitmapCursorWay.getWidth();
+			for (PointWay pointWay : this.pointWays)
+			{
+				final int y = GameView.baseCellHeight * pointWay.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
+				final int x = GameView.baseCellWidth * pointWay.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+				canvas.drawBitmap(bitmapCursorWay, x, y, null);
+			}
+		}
+		
+		if (this.isAttackVisible)
+		{
+			final Bitmap bitmapCursorAttack = GameView.cursorAttack.getBitmap();
+			final int height = bitmapCursorAttack.getHeight();
+			final int width = bitmapCursorAttack.getWidth();
+			for (Point point : this.attackedPoints)
+			{
+				final int y = GameView.baseCellHeight * point.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
+				final int x = GameView.baseCellWidth * point.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+				canvas.drawBitmap(bitmapCursorAttack, x, y, null);
+			}
+		}
+		
+		// юниты
 		final Unit[][] fieldUnits = game.fieldUnits;
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
@@ -514,6 +548,18 @@ public class GameView extends FrameLayout
 				}
 			}
 		
+		if (this.isAttackVisible)
+		{
+			final Bitmap bitmapCursorPointer = GameView.cursorPointer.getBitmap();
+			final int height = bitmapCursorPointer.getHeight();
+			final int width = bitmapCursorPointer.getWidth();
+			final int currAttackedI = this.currentAttackedPoint.i;
+			final int currAttackedJ = this.currentAttackedPoint.j;
+			final int y = GameView.baseCellHeight * currAttackedI - (height - GameView.baseCellHeight) / 2 + this.offsetY;
+			final int x = GameView.baseCellWidth * currAttackedJ - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+			canvas.drawBitmap(bitmapCursorPointer, x, y, null);
+		}
+		
 		// рисуем курсор (если есть)
 		if (GameView.cursor.isVisible)
 		{
@@ -523,30 +569,5 @@ public class GameView extends FrameLayout
 			canvas.drawBitmap(bitmapCursor, x, y, null);
 		}
 		
-		if (this.isWayVisible)
-		{
-			final Bitmap bitmapCursorWay = GameView.cursorWay.getBitmap();
-			final int height = bitmapCursorWay.getHeight();
-			final int width = bitmapCursorWay.getWidth();
-			for (PointWay pointWay : this.pointWays)
-			{
-				final int y = GameView.baseCellHeight * pointWay.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
-				final int x = GameView.baseCellWidth * pointWay.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
-				canvas.drawBitmap(bitmapCursorWay, x, y, null);
-			}
-		}
-		
-		if (this.isAttackVisible)
-		{
-			final Bitmap bitmapCursorAttack = GameView.cursorAttack.getBitmap();
-			final int height = bitmapCursorAttack.getHeight();
-			final int width = bitmapCursorAttack.getWidth();
-			for (Point point : this.attackedPoints)
-			{
-				final int y = GameView.baseCellHeight * point.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
-				final int x = GameView.baseCellWidth * point.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
-				canvas.drawBitmap(bitmapCursorAttack, x, y, null);
-			}
-		}
 	}
 }
