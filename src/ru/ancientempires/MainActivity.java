@@ -116,7 +116,7 @@ public class MainActivity extends Activity
 		FileOutputStream fileOutputStream = new FileOutputStream(zipFileOutput);
 		
 		// TODO расширить, если файл > 1МБ
-		byte[] buffer = new byte[1000 * 1000];
+		byte[] buffer = new byte[1024 * 1024];
 		int length = inputStream.read(buffer);
 		fileOutputStream.write(buffer, 0, length);
 		
@@ -191,6 +191,7 @@ public class MainActivity extends Activity
 			textView.setText(MainActivity.text);
 			return rootView;
 		}
+		
 	}
 	
 }
