@@ -28,10 +28,8 @@ public class GameLifeStartActivity extends Activity
 		setContentView(R.layout.activity_game_life_start);
 		
 		if (savedInstanceState == null)
-		{
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 	}
 	
 	@Override
@@ -95,17 +93,17 @@ public class GameLifeStartActivity extends Activity
 			int columnsAmount = Integer.valueOf(columnsEditText.getText().toString());
 			int cellsAmount = Integer.valueOf(cellsEditText.getText().toString());
 			
-			if (!check(rowsAmount, MIN_ROWS_AMOUNT, MAX_ROWS_AMOUNT))
+			if (!check(rowsAmount, PlaceholderFragment.MIN_ROWS_AMOUNT, PlaceholderFragment.MAX_ROWS_AMOUNT))
 			{
 				showDialog(R.string.alert_rows);
 				return;
 			}
-			if (!check(columnsAmount, MIN_COLUMNS_AMOUNT, MAX_COLUMNS_AMOUNT))
+			if (!check(columnsAmount, PlaceholderFragment.MIN_COLUMNS_AMOUNT, PlaceholderFragment.MAX_COLUMNS_AMOUNT))
 			{
 				showDialog(R.string.alert_columns);
 				return;
 			}
-			if (!check(cellsAmount, 1, MAX_ROWS_AMOUNT * MAX_COLUMNS_AMOUNT))
+			if (!check(cellsAmount, 1, PlaceholderFragment.MAX_ROWS_AMOUNT * PlaceholderFragment.MAX_COLUMNS_AMOUNT))
 			{
 				showDialog(R.string.alert_cells);
 				return;

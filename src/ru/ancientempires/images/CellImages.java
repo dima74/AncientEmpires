@@ -39,16 +39,16 @@ public class CellImages
 	private static void preloadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		NodeList images = infoDocument.getElementsByTagName("cell_image");
+		NodeList images = infoDocument.getElementsByTagName("image");
 		
 		String defaultImagesFolder = XMLHelper.getOneNode(infoDocument, "default_images_folder").getTextContent();
 		String destroyingImagesFolder = XMLHelper.getOneNode(infoDocument, "destroying_images_folder").getTextContent();
 		
 		MyAssert.a(images.getLength() == CellType.amount);
-		int length = images.getLength();
+		int typeAmount = CellType.amount;
 		
-		CellImages.cellsBitmaps = new CellBitmap[length];
-		for (int i = 0; i < length; i++)
+		CellImages.cellsBitmaps = new CellBitmap[typeAmount];
+		for (int i = 0; i < typeAmount; i++)
 		{
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
@@ -76,41 +76,59 @@ public class CellImages
 	private static void loadCellsResources(ZipFile imagesZipFile, String zipPath, Game game) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		NodeList images = infoDocument.getElementsByTagName("cell_image");
+		
+		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
+		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
+		String imagesPathR = zipPath + mapColorsFolders.get("0xFFFF0000");
+		String imagesPathG = zipPath + mapColorsFolders.get("0xFF00FF00");
+		String imagesPathB = zipPath + mapColorsFolders.get("0xFF0000FF");
+		
+		NodeList images = infoDocument.getElementsByTagName("image");
 		
 		MyAssert.a(images.getLength() == CellType.amount);
-		int length = images.getLength();
+		int typeAmount = CellType.amount;
+		int playerAmount = Player.amount;
 		
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < typeAmount; i++)
 		{
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
 			CellType type = CellType.getType(typeName);
-			
-			CellBitmap cellBitmap = CellImages.cellsBitmaps[i];
-			
-			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			
 			if (type.isCapture)
 			{
-				int playerAmount = Player.amount;
+				CellBitmap cellBitmap = CellImages.cellsBitmaps[i];
 				cellBitmap.colorsBitmaps = new Bitmap[playerAmount];
 				
-				Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
-				Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
+				String imageName = XMLHelper.getNodeAttributeValue(node, "image");
+				String imagePathR = imagesPathR + imageName;
+				String imagePathG = imagesPathG + imageName;
+				String imagePathB = imagesPathB + imageName;
 				
-				String imageRedPath = zipPath + mapColorsFolders.get("0xFFFF0000") + imageName;
-				String imageGreenPath = zipPath + mapColorsFolders.get("0xFF00FF00") + imageName;
-				String imageBluePath = zipPath + mapColorsFolders.get("0xFF0000FF") + imageName;
+				// *
+				int[][] dataR = Images.getMatrixDataImage(imagesZipFile, imagePathR);
+				int[][] dataG = Images.getMatrixDataImage(imagesZipFile, imagePathG);
+				int[][] dataB = Images.getMatrixDataImage(imagesZipFile, imagePathB);
+				// */
 				
-				int[][] dataRed = Images.getMatrixDataImage(imagesZipFile, imageRedPath);
-				int[][] dataGreen = Images.getMatrixDataImage(imagesZipFile, imageGreenPath);
-				int[][] dataBlue = Images.getMatrixDataImage(imagesZipFile, imageBluePath);
+				/*
+				RenderScriptCellImages rs = new RenderScriptCellImages();
+				rs.createScript(MainActivity.context);
+				
+				Bitmap bitmapR = BitmapHelper.getBitmap(imagesZipFile, imagePathR);
+				Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagePathG);
+				Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagePathB);
+				rs.setBitmaps(bitmapR, bitmapG, bitmapB);
+				// */
 				
 				for (int j = 0; j < playerAmount; j++)
 				{
-					int[][] data = ImageHelper.getNewImg(dataRed, dataGreen, dataBlue, Player.getPlayer(j).color);
-					cellBitmap.colorsBitmaps[j] = BitmapHelper.getResizeBitmap(data);
+					int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
+					Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
+					
+					// Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
+					// bitmap = BitmapHelper.getResizeBitmap(bitmap);
+					
+					cellBitmap.colorsBitmaps[j] = bitmap;
 				}
 			}
 		}

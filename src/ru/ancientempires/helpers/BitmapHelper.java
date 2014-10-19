@@ -1,7 +1,6 @@
 package ru.ancientempires.helpers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.zip.ZipFile;
 
 import ru.ancientempires.GameView;
@@ -14,9 +13,7 @@ public class BitmapHelper
 	
 	public static Bitmap getBitmap(ZipFile zipFile, String zipPath) throws IOException
 	{
-		InputStream inputStream = ZIPHelper.getIS(zipFile, zipPath);
-		Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-		return bitmap;
+		return BitmapFactory.decodeStream(ZIPHelper.getIS(zipFile, zipPath));
 	}
 	
 	public static Bitmap getMultiBitmap(ZipFile zipFile, String zipPath, float multiHeight, float multiWidth) throws IOException

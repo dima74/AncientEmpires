@@ -16,7 +16,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity1 extends Activity
+public class MainActivity2 extends Activity
 {
 	
 	public Bitmap				mBitmapIn;
@@ -80,8 +80,8 @@ public class MainActivity1 extends Activity
 		@Override
 		protected void onDraw(Canvas canvas)
 		{
-			canvas.drawBitmap(MainActivity1.this.mBitmapIn, 100, 100, null);
-			canvas.drawBitmap(MainActivity1.this.mBitmapOut, 100, 200, null);
+			canvas.drawBitmap(MainActivity2.this.mBitmapIn, 100, 100, null);
+			canvas.drawBitmap(MainActivity2.this.mBitmapOut, 100, 200, null);
 		}
 	}
 	

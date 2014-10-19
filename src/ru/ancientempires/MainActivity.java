@@ -13,6 +13,7 @@ import ru.ancientempires.gamelife.GameLifeStartActivity;
 import ru.ancientempires.images.Images;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -22,16 +23,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity
 {
+	
+	public static Context	context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		String string = getText(R.string.app_name).toString();
+		
 		setContentView(R.layout.activity_main);
+		
+		MainActivity.context = getBaseContext();
 		
 		if (savedInstanceState == null)
 		{
@@ -159,8 +166,7 @@ public class MainActivity extends Activity
 				GameView.startGame(Client.getClient().getGame());
 				long e = System.nanoTime();
 				
-				String text = String.format("Время инита игры %s секунд", (e - s) / 1000000000.0f);
-				Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG).show();
+				GameActivity.title = String.valueOf((e - s) / 1000000000.0f);
 			}
 			catch (IOException e)
 			{

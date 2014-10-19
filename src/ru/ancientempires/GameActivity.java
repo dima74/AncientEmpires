@@ -14,11 +14,15 @@ import android.view.ViewGroup;
 public class GameActivity extends Activity
 {
 	
+	public static String	title;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+		
+		setTitle(GameActivity.title);
 		
 		if (savedInstanceState == null)
 			getFragmentManager().beginTransaction()
