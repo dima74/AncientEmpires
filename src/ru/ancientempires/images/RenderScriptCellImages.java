@@ -3,10 +3,10 @@ package ru.ancientempires.images;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.Short4;
-import android.support.v8.renderscript.Type;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+import android.renderscript.Short4;
+import android.renderscript.Type;
 
 public class RenderScriptCellImages
 {

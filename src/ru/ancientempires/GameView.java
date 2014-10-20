@@ -339,7 +339,7 @@ public class GameView extends FrameLayout
 		
 		final ActionResult result = Client.action(action);
 		
-		final int amount = (int) result.getProperty("amountActions");
+		final int amount = (Integer) result.getProperty("amountActions");
 		ArrayList<ActionType> actionTypes = new ArrayList<ActionType>(amount);
 		for (int k = 0; k < amount; k++)
 		{

@@ -8,10 +8,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import ru.ancientempires.MainActivity;
 import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.ImageHelper;
 import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
@@ -102,13 +102,13 @@ public class UnitImages
 				String imagePathG = imagesPathG + imageName;
 				String imagePathB = imagesPathB + imageName;
 				
-				// *
+				/*
 				int[][] dataR = Images.getMatrixDataImage(imagesZipFile, imagePathR);
 				int[][] dataG = Images.getMatrixDataImage(imagesZipFile, imagePathG);
 				int[][] dataB = Images.getMatrixDataImage(imagesZipFile, imagePathB);
 				// */
 				
-				/*
+				//*
 				RenderScriptCellImages rs = new RenderScriptCellImages();
 				rs.createScript(MainActivity.context);
 				
@@ -120,11 +120,11 @@ public class UnitImages
 				
 				for (int j = 0; j < playerAmount; j++)
 				{
-					int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
-					Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
+					//int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
+					//Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
 					
-					// Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
-					// bitmap = BitmapHelper.getResizeBitmap(bitmap);
+					Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
+					bitmap = BitmapHelper.getResizeBitmap(bitmap);
 					
 					if (k == 0)
 						UnitImages.unitsBitmaps[iType][j] = new SomeWithBitmaps().setAmount(amountImages);
