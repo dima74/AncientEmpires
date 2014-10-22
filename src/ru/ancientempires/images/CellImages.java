@@ -110,7 +110,7 @@ public class CellImages
 				int[][] dataB = Images.getMatrixDataImage(imagesZipFile, imagePathB);
 				// */
 				
-				//*
+				// *
 				RenderScriptCellImages rs = new RenderScriptCellImages();
 				rs.createScript(MainActivity.context);
 				
@@ -122,11 +122,11 @@ public class CellImages
 				
 				for (int j = 0; j < playerAmount; j++)
 				{
-					//int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
-					//Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
+					// int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
+					// Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
 					
-					 Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
-					 bitmap = BitmapHelper.getResizeBitmap(bitmap);
+					Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
+					bitmap = BitmapHelper.getResizeBitmap(bitmap);
 					
 					cellBitmap.colorsBitmaps[j] = bitmap;
 				}

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="ru.ancientempires"
 	android:installLocation="preferExternal"
@@ -6,8 +7,8 @@
 	android:versionName="1.0" >
 
 	<uses-sdk
-		android:minSdkVersion="16"
-		android:targetSdkVersion="20" />
+		android:minSdkVersion="17"
+		android:targetSdkVersion="21" />
 
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -17,7 +18,7 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme" >
 		<activity
-			android:name="ru.ancientempires.MainActivity"
+			android:name=".MainActivity"
 			android:label="@string/app_name" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -26,23 +27,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="ru.ancientempires.gamelife.GameLifeStartActivity"
-			android:label="@string/title_activity_game_life"
-			android:parentActivityName="ru.ancientempires.MainActivity" >
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="ru.ancientempires.MainActivity" />
-		</activity>
-		<activity
-			android:name="ru.ancientempires.gamelife.GameLifeActivity"
-			android:label="@string/title_activity_game_life"
-			android:parentActivityName="ru.ancientempires.gamelife.GameLifeStartActivity" >
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="ru.ancientempires.gamelife.GameLifeStartActivity" />
-		</activity>
-		<activity
-			android:name="ru.ancientempires.GameActivity"
+			android:name=".GameActivity"
 			android:label="@string/title_activity_game" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
