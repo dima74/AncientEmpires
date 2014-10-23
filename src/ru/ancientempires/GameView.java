@@ -23,10 +23,16 @@ import ru.ancientempires.model.Point;
 import ru.ancientempires.model.PointWay;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.Way;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -53,10 +59,10 @@ public class GameView extends FrameLayout
 	private GestureDetector			gestureDetector;
 	
 	public static boolean			isBaseCellSizeDetermine	= false;
-	public static int				baseCellHeight;
-	public static int				baseCellWidth;
-	public static float				baseCellHeightMulti		= 6 / 3.0f;
-	public static float				baseCellWidthMulti		= GameView.baseCellHeightMulti;
+	public static int				baseH;
+	public static int				baseW;
+	public static float				baseHMulti				= 6 / 3.0f;
+	public static float				baseWMulti				= GameView.baseHMulti;
 	
 	private int						offsetX					= 0;
 	private int						offsetY					= 0;
@@ -66,6 +72,13 @@ public class GameView extends FrameLayout
 	
 	private boolean					isWayVisible			= false;
 	private boolean					isAttackVisible			= false;
+	
+	private Bitmap					pointWaysBitmapStart;
+	private Bitmap					pointWaysBitmap;
+	private int						pointWayRadius;
+	
+	private int						startWayY;
+	private int						startWayX;
 	
 	private PointWay[]				pointWays;
 	private Point[]					attackedPoints;
@@ -91,7 +104,7 @@ public class GameView extends FrameLayout
 	// не знаю, как выводится эта константа
 	private static final int		DELAY_BETWEEN_UPDATES	= 265;
 	
-	public GameView(Context context) throws IOException
+	public GameView(Context context)
 	{
 		super(context);
 		
@@ -127,8 +140,8 @@ public class GameView extends FrameLayout
 				float y = e.getY() - GameView.this.offsetY;
 				float x = e.getX() - GameView.this.offsetX;
 				
-				int i = (int) y / GameView.baseCellHeight;
-				int j = (int) x / GameView.baseCellWidth;
+				int i = (int) y / GameView.baseH;
+				int j = (int) x / GameView.baseW;
 				
 				if (y < 0)
 					i--;
@@ -374,8 +387,28 @@ public class GameView extends FrameLayout
 		
 		final ActionResult result = Client.action(actionGetWay);
 		final Way way = (Way) result.getProperty("way");
+		// MyLog.log(way.maxLength);
 		
 		this.pointWays = way.allPointWays.toArray(new PointWay[0]);
+		
+		this.pointWaysBitmapStart = createPointsWaysBitmap(way);
+		
+		// updatePointWaysBitmap(100);
+		MyLog.log(this.pointWaysBitmapStart);
+		
+		ValueAnimator animator = ValueAnimator.ofInt(0, way.maxLength * GameView.baseH);
+		animator.setDuration(2000);
+		MyLog.log(ValueAnimator.getFrameDelay());
+		animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+		{
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation)
+			{
+				GameView.this.pointWayRadius = (int) animation.getAnimatedValue();
+				updatePointWaysBitmap(GameView.this.pointWayRadius);
+			}
+		});
+		animator.start();
 		
 		if (false)
 		{
@@ -385,6 +418,64 @@ public class GameView extends FrameLayout
 			final String text = String.format("%s мс из %s мс", (e - s2) / 1000000.0d, (e - s1) / 1000000.0d);
 			Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	private Bitmap createPointsWaysBitmap(Way way)
+	{
+		int radius = way.maxLength - 1;
+		int startI = way.pointWayStart.i - radius;
+		int startJ = way.pointWayStart.j - radius;
+		
+		Bitmap bitmap = Bitmap.createBitmap((radius * 2 + 1) * GameView.baseW,
+				(radius * 2 + 1) * GameView.baseH, Config.ARGB_8888);
+		Canvas bitmapCanvas = new Canvas(bitmap);
+		for (PointWay pointWay : this.pointWays)
+		{
+			int relI = pointWay.i - startI;
+			int relJ = pointWay.j - startJ;
+			bitmapCanvas.drawBitmap(GameView.cursorWay.getBitmap(), relJ * GameView.baseW,
+					relI * GameView.baseH, null);
+		}
+		
+		this.startWayY = startI * GameView.baseH;
+		this.startWayX = startJ * GameView.baseW;
+		
+		return bitmap;
+	}
+	
+	Paint	clearPaint	= new Paint();
+	
+	Bitmap	circleBitmap;
+	
+	public void updatePointWaysBitmap(int radius)
+	{
+		// this.maskPaint.setColor(Color.GREEN);
+		this.clearPaint.setColor(Color.TRANSPARENT);
+		this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		this.clearPaint.setStyle(Paint.Style.FILL);
+		
+		int height = this.pointWaysBitmapStart.getHeight();
+		int width = this.pointWaysBitmapStart.getWidth();
+		if (this.circleBitmap == null)
+			this.circleBitmap = Bitmap.createBitmap(width, height, Config.ALPHA_8);
+		Canvas circleCanvas = new Canvas(this.circleBitmap);
+		
+		Paint blackPaint = new Paint();
+		blackPaint.setColor(Color.BLACK);
+		
+		circleCanvas.drawRect(0, 0, width, height, blackPaint);
+		circleCanvas.drawCircle(width / 2, height / 2, radius, this.clearPaint);
+		
+		if (this.pointWaysBitmap == null)
+			this.pointWaysBitmap = Bitmap.createBitmap(this.pointWaysBitmapStart);
+		else
+		{
+			Canvas canvas = new Canvas(this.pointWaysBitmap);
+			canvas.drawRect(0, 0, width, height, this.clearPaint);
+			canvas.drawBitmap(this.pointWaysBitmapStart, 0, 0, null);
+		}
+		Canvas bitmapCanvas = new Canvas(this.pointWaysBitmap);
+		bitmapCanvas.drawBitmap(this.circleBitmap, 0, 0, this.clearPaint);
 	}
 	
 	public void performAction(ActionType actionType)
@@ -485,23 +576,26 @@ public class GameView extends FrameLayout
 			for (int j = 0; j < field[i].length; j++)
 			{
 				final Bitmap bitmapCell = this.bitmaps[i][j];
-				final int y = GameView.baseCellHeight * i + this.offsetY;
-				final int x = GameView.baseCellWidth * j + this.offsetX;
+				final int y = GameView.baseH * i + this.offsetY;
+				final int x = GameView.baseW * j + this.offsetX;
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 		
-		if (this.isWayVisible)
+		if (this.isWayVisible && false)
 		{
 			final Bitmap bitmapCursorWay = GameView.cursorWay.getBitmap();
 			final int height = bitmapCursorWay.getHeight();
 			final int width = bitmapCursorWay.getWidth();
 			for (PointWay pointWay : this.pointWays)
 			{
-				final int y = GameView.baseCellHeight * pointWay.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
-				final int x = GameView.baseCellWidth * pointWay.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+				final int y = GameView.baseH * pointWay.i - (height - GameView.baseH) / 2 + this.offsetY;
+				final int x = GameView.baseW * pointWay.j - (width - GameView.baseW) / 2 + this.offsetX;
 				canvas.drawBitmap(bitmapCursorWay, x, y, null);
 			}
 		}
+		
+		if (this.isWayVisible)
+			canvas.drawBitmap(this.pointWaysBitmap, this.startWayX + this.offsetX, this.startWayY + this.offsetY, null);
 		
 		if (this.isAttackVisible)
 		{
@@ -510,8 +604,8 @@ public class GameView extends FrameLayout
 			final int width = bitmapCursorAttack.getWidth();
 			for (Point point : this.attackedPoints)
 			{
-				final int y = GameView.baseCellHeight * point.i - (height - GameView.baseCellHeight) / 2 + this.offsetY;
-				final int x = GameView.baseCellWidth * point.j - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+				final int y = GameView.baseH * point.i - (height - GameView.baseH) / 2 + this.offsetY;
+				final int x = GameView.baseW * point.j - (width - GameView.baseW) / 2 + this.offsetX;
 				canvas.drawBitmap(bitmapCursorAttack, x, y, null);
 			}
 		}
@@ -524,8 +618,8 @@ public class GameView extends FrameLayout
 				final Unit unit = fieldUnits[i][j];
 				if (unit != null)
 				{
-					final int y = GameView.baseCellHeight * i + this.offsetY;
-					final int x = GameView.baseCellWidth * j + this.offsetX;
+					final int y = GameView.baseH * i + this.offsetY;
+					final int x = GameView.baseW * j + this.offsetX;
 					
 					final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit);
 					canvas.drawBitmap(bitmapUnit, x, y, null);
@@ -536,7 +630,7 @@ public class GameView extends FrameLayout
 					final int two = health % 10;
 					
 					final int textX = x;
-					final int textY = y + GameView.baseCellHeight - NumberImages.height;
+					final int textY = y + GameView.baseH - NumberImages.height;
 					
 					if (one == 0)
 						canvas.drawBitmap(NumberImages.getNumberBitmap(two), textX, textY, null);
@@ -555,8 +649,8 @@ public class GameView extends FrameLayout
 			final int width = bitmapCursorPointer.getWidth();
 			final int currAttackedI = this.currentAttackedPoint.i;
 			final int currAttackedJ = this.currentAttackedPoint.j;
-			final int y = GameView.baseCellHeight * currAttackedI - (height - GameView.baseCellHeight) / 2 + this.offsetY;
-			final int x = GameView.baseCellWidth * currAttackedJ - (width - GameView.baseCellWidth) / 2 + this.offsetX;
+			final int y = GameView.baseH * currAttackedI - (height - GameView.baseH) / 2 + this.offsetY;
+			final int x = GameView.baseW * currAttackedJ - (width - GameView.baseW) / 2 + this.offsetX;
 			canvas.drawBitmap(bitmapCursorPointer, x, y, null);
 		}
 		
@@ -564,8 +658,8 @@ public class GameView extends FrameLayout
 		if (GameView.cursor.isVisible)
 		{
 			final Bitmap bitmapCursor = GameView.cursor.getBitmap();
-			final int y = GameView.baseCellHeight * GameView.cursor.i - (bitmapCursor.getHeight() - GameView.baseCellHeight) / 2 + this.offsetY;
-			final int x = GameView.baseCellWidth * GameView.cursor.j - (bitmapCursor.getWidth() - GameView.baseCellWidth) / 2 + this.offsetX;
+			final int y = GameView.baseH * GameView.cursor.i - (bitmapCursor.getHeight() - GameView.baseH) / 2 + this.offsetY;
+			final int x = GameView.baseW * GameView.cursor.j - (bitmapCursor.getWidth() - GameView.baseW) / 2 + this.offsetX;
 			canvas.drawBitmap(bitmapCursor, x, y, null);
 		}
 		

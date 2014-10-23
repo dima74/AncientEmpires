@@ -48,17 +48,17 @@ public class BitmapHelper
 	
 	public static Bitmap getResizeBitmap(Bitmap bitmap)
 	{
-		bitmap = BitmapHelper.getMultiBitmap(bitmap, GameView.baseCellHeightMulti, GameView.baseCellWidthMulti);
+		bitmap = BitmapHelper.getMultiBitmap(bitmap, GameView.baseHMulti, GameView.baseWMulti);
 		
 		int bitmapHeight = bitmap.getHeight();
 		int bitmapWidth = bitmap.getWidth();
 		if (!GameView.isBaseCellSizeDetermine)
 		{
 			GameView.isBaseCellSizeDetermine = true;
-			GameView.baseCellHeight = bitmapHeight;
-			GameView.baseCellWidth = bitmapWidth;
+			GameView.baseH = bitmapHeight;
+			GameView.baseW = bitmapWidth;
 		}
-		else if (GameView.baseCellHeight != bitmapHeight || GameView.baseCellWidth != bitmapWidth)
+		else if (GameView.baseH != bitmapHeight || GameView.baseW != bitmapWidth)
 		{
 			// какая-нибудь норм обработка ошибки тут.
 		}
