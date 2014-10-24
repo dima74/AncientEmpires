@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.MainActivity;
+import ru.ancientempires.activity.MainActivity;
 
 public class AZipHelper
 {

@@ -1,10 +1,12 @@
-package ru.ancientempires;
+package ru.ancientempires.view;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ru.ancientempires.Cursor;
+import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
@@ -38,6 +40,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -73,6 +76,8 @@ public class GameView extends FrameLayout
 	private boolean					isWayVisible			= false;
 	private boolean					isAttackVisible			= false;
 	
+	private CircleView				circleViewWay			= new CircleView(getContext());
+	private int						radiusAttack;
 	private Bitmap					pointWaysBitmapStart;
 	private Bitmap					pointWaysBitmap;
 	private int						pointWayRadius;
@@ -112,6 +117,8 @@ public class GameView extends FrameLayout
 		
 		setFocusable(true);
 		setWillNotDraw(false);
+		setClipChildren(false);
+		setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		
 		addView(this.gameActionView);
 		this.gameActionView.setAlpha(1);
@@ -155,11 +162,13 @@ public class GameView extends FrameLayout
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
 			{
-				GameView.this.difX = -distanceX;
 				GameView.this.difY = -distanceY;
+				GameView.this.difX = -distanceX;
 				
-				GameView.this.offsetX += GameView.this.difX;
 				GameView.this.offsetY += GameView.this.difY;
+				GameView.this.offsetX += GameView.this.difX;
+				
+				updateOffset();
 				
 				return true;
 			}
@@ -175,6 +184,12 @@ public class GameView extends FrameLayout
 			}
 		}, 0, GameView.DELAY_BETWEEN_UPDATES);
 		
+	}
+	
+	protected void updateOffset()
+	{
+		GameView.this.circleViewWay.setY(this.offsetY + (this.lastUnitI - this.radiusAttack) * GameView.baseH);
+		GameView.this.circleViewWay.setX(this.offsetX + (this.lastUnitJ - this.radiusAttack) * GameView.baseW);
 	}
 	
 	public static void initResources(Resources res) throws IOException
@@ -280,6 +295,7 @@ public class GameView extends FrameLayout
 		if (pointWaysContains)
 		{
 			this.isWayVisible = false;
+			removeView(this.circleViewWay);
 			
 			final Action action = new Action(ActionType.ACTION_UNIT_MOVE);
 			action.setProperty("oldI", this.lastUnitI);
@@ -391,10 +407,19 @@ public class GameView extends FrameLayout
 		
 		this.pointWays = way.allPointWays.toArray(new PointWay[0]);
 		
-		this.pointWaysBitmapStart = createPointsWaysBitmap(way);
+		// this.pointWaysBitmapStart = createPointsWaysBitmap(way);
+		this.radiusAttack = way.maxLength - 1;
+		this.circleViewWay = new CircleView(getContext());
 		
-		// updatePointWaysBitmap(100);
-		MyLog.log(this.pointWaysBitmapStart);
+		Point[] points = (Point[]) result.getProperty("allPoints");
+		this.circleViewWay.setView(new ZoneView(getContext()).setRadius(this.radiusAttack)
+				.setZone(points).setBitmap(GameView.cursorWay.getBitmap()));
+		
+		addView(this.circleViewWay);
+		
+		this.circleViewWay.setRadius(this.radiusAttack * GameView.baseH);
+		this.circleViewWay.setCenter((this.radiusAttack + 0.5f) * GameView.baseH, (this.radiusAttack + 0.5f) * GameView.baseW);
+		updateOffset();
 		
 		ValueAnimator animator = ValueAnimator.ofInt(0, way.maxLength * GameView.baseH);
 		animator.setDuration(2000);
@@ -404,8 +429,8 @@ public class GameView extends FrameLayout
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation)
 			{
-				GameView.this.pointWayRadius = (int) animation.getAnimatedValue();
-				updatePointWaysBitmap(GameView.this.pointWayRadius);
+				// GameView.this.pointWayRadius = (int) animation.getAnimatedValue();
+				// updatePointWaysBitmap(GameView.this.pointWayRadius);
 			}
 		});
 		animator.start();
@@ -447,7 +472,7 @@ public class GameView extends FrameLayout
 	
 	Bitmap	circleBitmap;
 	
-	public void updatePointWaysBitmap(int radius)
+	private void updatePointWaysBitmap(int radius)
 	{
 		// this.maskPaint.setColor(Color.GREEN);
 		this.clearPaint.setColor(Color.TRANSPARENT);
@@ -483,6 +508,7 @@ public class GameView extends FrameLayout
 		MyLog.log(actionType);
 		
 		this.isWayVisible = false;
+		removeView(this.circleViewWay);
 		this.isAttackVisible = false;
 		
 		if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
@@ -507,16 +533,15 @@ public class GameView extends FrameLayout
 	
 	private void showNewAttackZone(int i, int j)
 	{
-		this.isWayVisible = false;
 		this.isAttackVisible = true;
 		this.lastUnitI = i;
 		this.lastUnitJ = j;
 		
-		Action actionGetWay = new Action(ActionType.GET_UNIT_ATTACK);
-		actionGetWay.setProperty("i", i);
-		actionGetWay.setProperty("j", j);
+		Action action = new Action(ActionType.GET_UNIT_ATTACK);
+		action.setProperty("i", i);
+		action.setProperty("j", j);
 		
-		final ActionResult result = Client.action(actionGetWay);
+		final ActionResult result = Client.action(action);
 		this.attackedPoints = (Point[]) result.getProperty("allAttackedPoints");
 		this.realAttackedPoints = (Point[]) result.getProperty("realAttackedPoints");
 		this.currentAttackedPoint = this.realAttackedPoints[0];
@@ -594,7 +619,7 @@ public class GameView extends FrameLayout
 			}
 		}
 		
-		if (this.isWayVisible)
+		if (this.isWayVisible && false)
 			canvas.drawBitmap(this.pointWaysBitmap, this.startWayX + this.offsetX, this.startWayY + this.offsetY, null);
 		
 		if (this.isAttackVisible)

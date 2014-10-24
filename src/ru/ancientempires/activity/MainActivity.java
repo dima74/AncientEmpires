@@ -1,11 +1,17 @@
-package ru.ancientempires;
+package ru.ancientempires.activity;
 
 import java.io.IOException;
 
+import ru.ancientempires.GameInit;
+import ru.ancientempires.R;
+import ru.ancientempires.R.id;
+import ru.ancientempires.R.layout;
+import ru.ancientempires.R.string;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.graphics.RippleDrawable;
+import ru.ancientempires.view.GameView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

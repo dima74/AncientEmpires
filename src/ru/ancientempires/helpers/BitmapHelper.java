@@ -3,7 +3,7 @@ package ru.ancientempires.helpers;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.GameView;
+import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;

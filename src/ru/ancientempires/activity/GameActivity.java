@@ -1,5 +1,7 @@
-package ru.ancientempires;
+package ru.ancientempires.activity;
 
+import ru.ancientempires.R;
+import ru.ancientempires.view.GameView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,14 +10,21 @@ import android.view.MenuItem;
 public class GameActivity extends Activity
 {
 	
-	public GameView	gameView;
+	public static GameView	gameView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.gameView = new GameView(this);
-		setContentView(this.gameView);
+		// if (GameActivity.gameView == null)
+		GameActivity.gameView = new GameView(this);
+		setContentView(GameActivity.gameView);
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
 	}
 	
 	@Override

@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import ru.ancientempires.CellBitmap;
-import ru.ancientempires.MainActivity;
+import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.XMLHelper;

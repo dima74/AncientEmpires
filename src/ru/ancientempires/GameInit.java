@@ -3,9 +3,11 @@ package ru.ancientempires;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.AZipHelper;
 import ru.ancientempires.images.Images;
+import ru.ancientempires.view.GameView;
 import android.os.AsyncTask;
 
 public class GameInit
