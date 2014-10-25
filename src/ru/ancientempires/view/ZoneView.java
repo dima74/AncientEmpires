@@ -1,14 +1,17 @@
 package ru.ancientempires.view;
 
-import ru.ancientempires.model.Point;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout.LayoutParams;
 
 public class ZoneView extends View
 {
@@ -17,13 +20,22 @@ public class ZoneView extends View
 	{
 		super(context);
 		setWillNotDraw(false);
-		// setLayerType(View.LAYER_TYPE_HARDWARE, null);
+		
+		this.circlePaint = new Paint();
+		this.circlePaint.setColor(Color.TRANSPARENT);
+		this.circlePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		this.circlePaint.setStyle(Paint.Style.STROKE);
+		
+		setLayerType(View.LAYER_TYPE_HARDWARE, null);
 	}
 	
+	private final Paint	circlePaint;
 	private Bitmap		bitmap;
-	private int			n;
-	private float		r;
+	private int			amount;
 	private boolean[][]	zone;
+	
+	private int			radiusStart;
+	private int			radiusEnd;
 	
 	public ZoneView setBitmap(Bitmap bitmap)
 	{
@@ -31,22 +43,43 @@ public class ZoneView extends View
 		return this;
 	}
 	
-	public ZoneView setRadius(int n)
+	public ZoneView setRadius(int amount)
 	{
-		this.n = n;
-		this.zone = new boolean[2 * n + 1][2 * n + 1];
-		this.r = (n + 0.5f) * GameView.baseH;
+		this.amount = amount;
+		
+		this.radiusStart = GameView.baseH / 2;
+		this.radiusEnd = (int) ((ZoneView.this.amount + 0.5f) * GameView.baseH);
+		
+		LayoutParams layoutParams = new LayoutParams(this.radiusEnd * 2, this.radiusEnd * 2);
+		setLayoutParams(layoutParams);
+		
 		return this;
 	}
 	
-	public ZoneView setZone(Point[] points)
+	public ZoneView setZone(boolean[][] is)
 	{
-		for (Point point : points)
-			this.zone[this.n + point.i][this.n + point.j] = true;
+		this.zone = is;
 		return this;
 	}
 	
-	Paint	clearPaint;
+	public ZoneView startAnimate()
+	{
+		ValueAnimator animator = ValueAnimator.ofInt((this.radiusEnd - this.radiusStart) * 2, 0);
+		animator.setInterpolator(new LinearInterpolator());
+		animator.setDuration(500);
+		animator.addUpdateListener(new AnimatorUpdateListener()
+		{
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation)
+			{
+				ZoneView.this.circlePaint.setStrokeWidth((int) animation.getAnimatedValue());
+				postInvalidate();
+			}
+		});
+		animator.start();
+		
+		return this;
+	}
 	
 	@Override
 	protected void onDraw(Canvas canvas)
@@ -56,13 +89,8 @@ public class ZoneView extends View
 				if (this.zone[i][j])
 					canvas.drawBitmap(this.bitmap, j * GameView.baseW, i * GameView.baseH, null);
 		
-		// canvas.translate(this.r, this.r);
-		
-		Paint ovalPaint = new Paint();
-		// ovalPaint.setColor(Color.TRANSPARENT);
-		ovalPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-		ovalPaint.setStyle(Paint.Style.STROKE);
-		ovalPaint.setStrokeWidth(this.r / 2);
-		canvas.drawOval(new RectF(this.r * 0.5f, this.r * 0.5f, this.r * 1.5f, this.r * 1.5f), ovalPaint);
+		// canvas.translate(this.radiusEnd, this.radiusEnd);
+		canvas.drawCircle(this.radiusEnd, this.radiusEnd, this.radiusEnd, this.circlePaint);
 	}
+	
 }
