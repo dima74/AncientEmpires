@@ -1,12 +1,10 @@
 package ru.ancientempires.activity;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import ru.ancientempires.GameInit;
 import ru.ancientempires.R;
-import ru.ancientempires.R.id;
-import ru.ancientempires.R.layout;
-import ru.ancientempires.R.string;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyLog;
@@ -88,27 +86,24 @@ public class MainActivity extends Activity
 	
 	protected void checkInit()
 	{
-		MainActivity.amn++;
-		MyLog.log(MainActivity.amn);
-		// Toast.makeText(MainActivity.context, "to" + new Random().nextInt() % 100, Toast.LENGTH_SHORT).show();
-		if (!GameInit.initClient || !GameInit.initImages)
+		try
 		{
-			
-			try
-			{
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-			checkInit();
+			GameInit.initAsyncTask.get();
 		}
-		
+		catch (InterruptedException | ExecutionException e)
+		{
+			e.printStackTrace();
+		}
 	}
+	
+	public boolean	isStartCampaign	= false;
 	
 	protected void startCampaign()
 	{
+		if (this.isStartCampaign)
+			return;
+		this.isStartCampaign = true;
+		MyLog.log("MainActivity.startCampaign()");
 		ProgressDialog progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage(getString(R.string.loading));
 		progressDialog.show();
@@ -138,6 +133,7 @@ public class MainActivity extends Activity
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, GameActivity.class);
 				startActivity(intent);
+				MainActivity.this.isStartCampaign = false;
 			};
 		}.execute();
 	}

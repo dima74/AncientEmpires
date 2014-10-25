@@ -1,7 +1,6 @@
 package ru.ancientempires;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.client.Client;
@@ -13,122 +12,22 @@ import android.os.AsyncTask;
 public class GameInit
 {
 	
-	public static class MyAsyncTask extends AsyncTask<String, Void, ZipFile>
-	{
-		@Override
-		protected ZipFile doInBackground(String... params)
-		{
-			try
-			{
-				ZipFile zipFile = AZipHelper.getZipFileFromAssets(params[0]);
-				return zipFile;
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
-	
-	private static boolean	initGames;
-	private static boolean	initRules;
-	public static boolean	initClient;
-	public static boolean	initImages;
+	public static AsyncTask<Void, Void, Void>	initAsyncTask;
 	
 	public static void init()
 	{
-		new MyAsyncTask()
-		{
-			@Override
-			protected void onPostExecute(ZipFile zipFile)
-			{
-				Client.setGamesZipFile(zipFile);
-				GameInit.initGames();
-			};
-		}.execute("games.zip");
-		
-		new MyAsyncTask()
-		{
-			@Override
-			protected void onPostExecute(ZipFile zipFile)
-			{
-				Client.setRulesZipFile(zipFile);
-				GameInit.initRules();
-			};
-		}.execute("rules.zip");
-		
-		new MyAsyncTask()
-		{
-			@Override
-			protected void onPostExecute(ZipFile zipFile)
-			{
-				Client.setImagesZipFile(zipFile);
-				GameInit.initImages();
-			};
-		}.execute("images.zip");
-	}
-	
-	protected static void initGames()
-	{
-		if (GameInit.initRules)
-			GameInit.initClient();
-		else
-			GameInit.initGames = true;
-	}
-	
-	protected static void initRules()
-	{
-		if (GameInit.initGames)
-			GameInit.initClient();
-		else
-			GameInit.initRules = true;
-	}
-	
-	private static void initClient()
-	{
-		new AsyncTask<Void, Void, Void>()
+		GameInit.initAsyncTask = new AsyncTask<Void, Void, Void>()
 		{
 			@Override
 			protected Void doInBackground(Void... params)
 			{
 				try
 				{
+					Client.setGamesZipFile(AZipHelper.getZipFileFromAssets("games.zip"));
+					Client.setRulesZipFile(AZipHelper.getZipFileFromAssets("rules.zip"));
 					Client.init();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				GameInit.initClient = true;
-			}
-		}.execute();
-	}
-	
-	protected static void initImages()
-	{
-		new AsyncTask<Void, Void, Void>()
-		{
-			@Override
-			protected Void doInBackground(Void... params)
-			{
-				try
-				{
-					try
-					{
-						Thread.sleep(000);
-					}
-					catch (InterruptedException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
+					Client.setImagesZipFile(AZipHelper.getZipFileFromAssets("images.zip"));
 					Images.preloadResources(Client.imagesZipFile);
 					GameView.initResources(MainActivity.resources);
 				}
@@ -137,14 +36,7 @@ public class GameInit
 					e.printStackTrace();
 				}
 				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				GameInit.initImages = true;
-			}
+			};
 		}.execute();
 	}
-	
 }

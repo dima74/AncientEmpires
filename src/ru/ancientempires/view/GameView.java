@@ -274,19 +274,9 @@ public class GameView extends FrameLayout
 	
 	private boolean tryUnitMove(int i, int j, final Game game)
 	{
-		boolean pointWaysContains = false;
-		/*
-		for (final PointWay tempPointWay : this.pointWays)
-			if (tempPointWay.i == i && tempPointWay.j == j)
-			{
-				pointWaysContains = true;
-				break;
-			}
-		*/
-		
-		pointWaysContains = this.fieldCellWays
-							[this.radiusAttack + i - this.lastUnitI]
-							[this.radiusAttack + j - this.lastUnitJ];
+		boolean pointWaysContains = this.fieldCellWays
+									[this.radiusAttack + i - this.lastUnitI]
+									[this.radiusAttack + j - this.lastUnitJ];
 		
 		if (pointWaysContains)
 		{
@@ -380,7 +370,6 @@ public class GameView extends FrameLayout
 		for (ActionType actionType : actionTypes)
 		{
 			Bitmap actionBitmap = ActionImages.getActionBitmap(actionType);
-			// MyLog.log(actionType, " ", actionBitmap, " ");
 			actionBitmaps.add(actionBitmap);
 		}
 		this.gameActionView.updateActionBitmapsState(actionBitmaps, actionTypes);

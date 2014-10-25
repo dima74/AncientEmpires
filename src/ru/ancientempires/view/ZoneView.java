@@ -89,8 +89,7 @@ public class ZoneView extends View
 				if (this.zone[i][j])
 					canvas.drawBitmap(this.bitmap, j * GameView.baseW, i * GameView.baseH, null);
 		
-		// canvas.translate(this.radiusEnd, this.radiusEnd);
-		canvas.drawCircle(this.radiusEnd, this.radiusEnd, this.radiusEnd, this.circlePaint);
+		canvas.translate(this.radiusEnd, this.radiusEnd);
+		canvas.drawCircle(0, 0, this.radiusEnd, this.circlePaint);
 	}
-	
 }

@@ -66,5 +66,4 @@ public class RenderScriptCellImages
 		
 		return mBitmapOut;
 	}
-	
 }
