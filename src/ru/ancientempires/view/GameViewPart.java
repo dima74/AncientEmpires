@@ -1,11 +1,10 @@
 package ru.ancientempires.view;
 
 import android.content.Context;
-import android.widget.FrameLayout;
+import android.view.View;
 
-public abstract class GameViewPart extends FrameLayout
+public abstract class GameViewPart extends View
 {
-	
 	protected GameView	gameView;
 	
 	public GameViewPart(Context context, GameView gameView)

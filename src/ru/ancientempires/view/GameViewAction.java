@@ -128,7 +128,6 @@ public class GameViewAction extends GameViewPart
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			float x = event.getX();
-			float y = event.getY();
 			
 			int i = Math.round(x / this.bitmapDeltaWidth);
 			i--;
@@ -149,11 +148,6 @@ public class GameViewAction extends GameViewPart
 				final Bitmap bitmap = this.actionBitmaps.get(i);
 				final int x = this.actionsPoints.get(i).x;
 				final int y = this.actionsPoints.get(i).y;
-				
-				// canvas.drawCircle(x + GameActionView.actionBitmapH / 2, y + GameActionView.actionBitmapW / 2,
-				// GameActionView.actionBitmapH / 2 * 1.1f, GameActionView.circlePaintInternal);
-				// canvas.drawCircle(x + GameActionView.actionBitmapH / 2, y + GameActionView.actionBitmapW / 2,
-				// GameActionView.actionBitmapH / 2, GameActionView.whitePaint);
 				
 				canvas.drawBitmap(bitmap, x, y, null);
 			}

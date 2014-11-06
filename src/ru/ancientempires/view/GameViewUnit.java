@@ -55,8 +55,8 @@ public class GameViewUnit extends GameViewPart
 		return this;
 	}
 	
-	public boolean		isWayVisible	= false;
-	public boolean		isAttackVisible	= false;
+	private boolean		isWayVisible	= false;
+	private boolean		isAttackVisible	= false;
 	
 	private int			lastUnitI;
 	private int			lastUnitJ;
@@ -86,16 +86,9 @@ public class GameViewUnit extends GameViewPart
 	private boolean[][]	fieldAttack;
 	private boolean[][]	realFieldAttack;
 	
-	// private Point[] attackedPoints;
-	// private Point[] realAttackedPoints;
-	// private Point currentAttackedPoint;
-	
 	@Override
 	public boolean update()
 	{
-		if (!(this.gameView.isWayVisible || this.gameView.isAttackVisible))
-			return false;
-		
 		int i = this.gameView.lastTapI;
 		int j = this.gameView.lastTapJ;
 		
@@ -152,6 +145,11 @@ public class GameViewUnit extends GameViewPart
 				
 				return true;
 			}
+		else
+		{
+			this.wayView.setVisibility(View.GONE);
+			this.isWayVisible = false;
+		}
 		
 		if (this.gameView.isAttackVisible)
 			if (this.isAttackVisible)
@@ -206,6 +204,11 @@ public class GameViewUnit extends GameViewPart
 				
 				return true;
 			}
+		else
+		{
+			this.attackView.setVisibility(View.GONE);
+			this.isAttackVisible = false;
+		}
 		
 		return false;
 	}
@@ -230,9 +233,6 @@ public class GameViewUnit extends GameViewPart
 		this.isAttackVisible = true;
 		this.attackView.setVisibility(View.VISIBLE);
 		
-		// this.attackedPoints = (Point[]) result.getProperty("allAttackedPoints");
-		// this.realAttackedPoints = (Point[]) result.getProperty("realAttackedPoints");
-		// this.currentAttackedPoint = this.realAttackedPoints[0];
 		this.fieldAttack = (boolean[][]) result.getProperty("all");
 		this.realFieldAttack = (boolean[][]) result.getProperty("real");
 		this.size = this.fieldAttack.length;
