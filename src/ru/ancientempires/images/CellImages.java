@@ -11,12 +11,14 @@ import org.w3c.dom.NodeList;
 import ru.ancientempires.CellBitmap;
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
+import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 
 public class CellImages
@@ -54,10 +56,21 @@ public class CellImages
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
 			CellType type = CellType.getType(typeName);
 			
+			if ("CASTLE".equals(typeName))
+				MyLog.log();
+			
 			CellBitmap cellBitmap = new CellBitmap();
 			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
 			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageName);
+			
+			cellBitmap.changeSize();
+			cellBitmap.isNormal = cellBitmap.h == GameView.baseH && cellBitmap.w == GameView.baseW;
+			if (!cellBitmap.isNormal)
+			{
+				cellBitmap.offsetI = Integer.valueOf(XMLHelper.getNodeAttributeValue(node, "offsetI"));
+				cellBitmap.offsetJ = Integer.valueOf(XMLHelper.getNodeAttributeValue(node, "offsetJ"));
+			}
 			
 			if (type.isDestroying)
 				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + destroyingImagesFolder + imageName);

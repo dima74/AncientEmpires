@@ -9,7 +9,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.graphics.RippleDrawable;
-import ru.ancientempires.view.GameView;
+import ru.ancientempires.images.Images;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -117,7 +117,7 @@ public class MainActivity extends Activity
 				try
 				{
 					long s = System.nanoTime();
-					GameView.startGame(Client.getClient().getGame());
+					Images.loadResources(Client.imagesZipFile, Client.getClient().getGame());
 					long e = System.nanoTime();
 				}
 				catch (IOException e)

@@ -20,6 +20,7 @@ public class ZoneView extends View
 	{
 		super(context);
 		setWillNotDraw(false);
+		setVisibility(View.GONE);
 		
 		this.circlePaint = new Paint();
 		this.circlePaint.setColor(Color.TRANSPARENT);
@@ -66,7 +67,7 @@ public class ZoneView extends View
 	{
 		ValueAnimator animator = ValueAnimator.ofInt((this.radiusEnd - this.radiusStart) * 2, 0);
 		animator.setInterpolator(new LinearInterpolator());
-		animator.setDuration(500);
+		animator.setDuration(this.amount * 1000 / 7);
 		animator.addUpdateListener(new AnimatorUpdateListener()
 		{
 			@Override

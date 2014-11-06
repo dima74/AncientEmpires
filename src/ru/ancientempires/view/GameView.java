@@ -5,24 +5,16 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ru.ancientempires.Cursor;
 import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.ActionImages;
-import ru.ancientempires.images.CellImages;
-import ru.ancientempires.images.Images;
-import ru.ancientempires.images.NumberImages;
-import ru.ancientempires.images.UnitImages;
-import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Map;
 import ru.ancientempires.model.Point;
-import ru.ancientempires.model.PointWay;
 import ru.ancientempires.model.Unit;
 import android.content.Context;
 import android.content.res.Resources;
@@ -34,7 +26,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -42,12 +33,21 @@ public class GameView extends FrameLayout
 {
 	// Модель игры
 	private Client					client					= Client.getClient();
+	public Game						game					= this.client.getGame();
 	
 	// Отображение игры
-	private static Cursor			cursor					= new Cursor();
+	// public static Cursor cursor = new Cursor();
 	
-	private Bitmap[][]				bitmaps;
-	private GameActionView			gameActionView			= new GameActionView(getContext());
+	protected Bitmap[][]			bitmaps;
+	protected int[][]				offsetI, offsetJ;
+	
+	private ArrayList<GameViewPart>	gameViewParts			= new ArrayList<GameViewPart>();
+	private GameViewPart			gameViewCell;
+	private ZoneView				wayZoneView;
+	private ZoneView				attackZoneView;
+	private GameViewPart			gameViewUnit;
+	private GameViewPart			gameViewAction;
+	private GameViewPart			gameViewCursor;
 	
 	private static SomeWithBitmaps	cursorWay				= new SomeWithBitmaps();
 	private static SomeWithBitmaps	cursorAttack			= new SomeWithBitmaps();
@@ -61,26 +61,25 @@ public class GameView extends FrameLayout
 	public static float				baseHMulti				= 6 / 3.0f;
 	public static float				baseWMulti				= GameView.baseHMulti;
 	
-	private int						offsetX					= 0;
-	private int						offsetY					= 0;
+	public int						offsetX					= 0;
+	public int						offsetY					= 0;
 	
 	private float					difX;
 	private float					difY;
 	
-	private boolean					isWayVisible			= false;
-	private boolean					isAttackVisible			= false;
+	public boolean					isWayVisible			= false;
+	public boolean					isAttackVisible			= false;
 	
 	private ZoneView				zoneView				= new ZoneView(getContext());
 	private int						radiusAttack;
 	
 	boolean[][]						fieldCellWays;
-	private PointWay[]				pointWays;
 	private Point[]					attackedPoints;
 	private Point[]					realAttackedPoints;
 	private Point					currentAttackedPoint;
 	
-	private int						lastTapI;
-	private int						lastTapJ;
+	public int						lastTapI;
+	public int						lastTapJ;
 	private int						lastUnitI;
 	private int						lastUnitJ;
 	
@@ -102,16 +101,31 @@ public class GameView extends FrameLayout
 	{
 		super(context);
 		
-		initBitmaps();
+		// initBitmaps();
 		
-		setFocusable(true);
 		setWillNotDraw(false);
 		setClipChildren(false);
-		setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		
-		addView(this.gameActionView);
-		this.gameActionView.setAlpha(1);
-		this.gameActionView.gameView = this;
+		this.gameViewCell = new GameViewCell(getContext(), this).setField(this.game.map.getField());
+		this.wayZoneView = new ZoneView(getContext());
+		this.attackZoneView = new ZoneView(getContext());
+		this.gameViewUnit = new GameViewUnit(getContext(), this)
+				.setField(this.game.fieldUnits)
+				.setWayView(this.wayZoneView)
+				.setAttackView(this.attackZoneView);
+		this.gameViewCursor = new GameViewCursor(getContext(), this);
+		this.gameViewAction = new GameViewAction(getContext(), this);
+		
+		addView(this.gameViewCell);
+		addView(this.wayZoneView);
+		addView(this.attackZoneView);
+		addView(this.gameViewUnit);
+		addView(this.gameViewAction);
+		addView(this.gameViewCursor);
+		
+		this.gameViewParts.add(this.gameViewCell);
+		this.gameViewParts.add(this.gameViewUnit);
+		this.gameViewParts.add(this.gameViewCursor);
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
@@ -129,12 +143,12 @@ public class GameView extends FrameLayout
 			}
 			
 			@Override
-			public boolean onSingleTapUp(MotionEvent e)
+			public boolean onSingleTapUp(MotionEvent event)
 			{
 				Log.d("AE", "up");
 				
-				float y = e.getY() - GameView.this.offsetY;
-				float x = e.getX() - GameView.this.offsetX;
+				float y = event.getY() - GameView.this.offsetY;
+				float x = event.getX() - GameView.this.offsetX;
 				
 				int i = (int) y / GameView.baseH;
 				int j = (int) x / GameView.baseW;
@@ -177,12 +191,24 @@ public class GameView extends FrameLayout
 	
 	protected void updateOffset()
 	{
-		this.zoneView.setY(this.offsetY + (this.lastUnitI - this.radiusAttack) * GameView.baseH);
-		this.zoneView.setX(this.offsetX + (this.lastUnitJ - this.radiusAttack) * GameView.baseW);
+		// this.zoneView.setY(this.offsetY + (this.lastUnitI - this.radiusAttack) * GameView.baseH);
+		// this.zoneView.setX(this.offsetX + (this.lastUnitJ - this.radiusAttack) * GameView.baseW);
+		
+		for (GameViewPart gameViewPart : this.gameViewParts)
+		{
+			// gameViewPart.offsetX = this.offsetX;
+			// gameViewPart.offsetY = this.offsetY;
+			gameViewPart.updateOffset();
+			gameViewPart.invalidate();
+		}
 	}
 	
 	public static void initResources(Resources res) throws IOException
 	{
+		GameViewCursor.init();
+		GameViewUnit.init();
+		GameViewAction.initResources();
+		/*
 		GameView.cursor.setBitmaps(new String[]
 		{
 				"cursor_down.png",
@@ -202,22 +228,22 @@ public class GameView extends FrameLayout
 				"cursor_pointer_1.png",
 				"cursor_pointer_2.png"
 		});
-		GameActionView.initResources();
+		*/
 	}
 	
-	public static void startGame(Game game) throws IOException
-	{
-		Images.loadResources(Client.imagesZipFile, game);
-	}
-	
-	public void initBitmaps()
+	/*
+	public void initBitmaps1()
 	{
 		Map map = this.client.getGame().map;
 		this.bitmaps = new Bitmap[map.getHeight()][map.getWidth()];
-		updateBitmaps();
+		this.offsetI = new int[map.getHeight()][map.getWidth()];
+		this.offsetJ = new int[map.getHeight()][map.getWidth()];
+		updateBitmaps1();
 	}
+	*/
 	
-	private void updateBitmaps()
+	/*
+	private void updateBitmaps1()
 	{
 		Map map = this.client.getGame().map;
 		final int height = map.getHeight();
@@ -229,40 +255,60 @@ public class GameView extends FrameLayout
 		
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
-				this.bitmaps[i][j] = CellImages.getCellBitmap(field[i][j]);
+			{
+				Cell cell = field[i][j];
+				CellBitmap cellBitmap = CellImages.cellsBitmaps[cell.type.ordinal];
+				this.bitmaps[i][j] = cellBitmap.getBitmap(cell);
+				this.offsetI[i][j] = cellBitmap.offsetI;
+				this.offsetJ[i][j] = cellBitmap.offsetJ;
+			}
 		
 		invalidate();
 	}
+	*/
 	
 	protected void updateCells()
 	{
 		SomeWithBitmaps.ordinal++;
+		for (GameViewPart gameViewPart : this.gameViewParts)
+			gameViewPart.invalidate();
 		invalidate();
 	}
 	
-	private void tap(int i, int j)
+	protected void tap(int i, int j)
 	{
+		if (i == this.lastTapI && j == this.lastTapJ)
+			return;
+		
 		this.lastTapI = i;
 		this.lastTapJ = j;
 		
-		final Game game = this.client.getGame();
-		final Map map = game.map;
+		final Map map = this.game.map;
 		
 		if (!map.validateCoord(i, j))
 			return;
-		updateCursorState(i, j);
+		// updateCursorState(i, j);
 		
 		boolean isAction = false;
-		if (this.isWayVisible)
-			isAction |= tryUnitMove(i, j, game);
-		else if (this.isAttackVisible)
-			isAction |= tryUnitAttack(i, j, game);
-		if (!isAction || true)
+		if (this.isWayVisible && false)
+			isAction |= tryUnitMove(i, j, this.game);
+		else if (this.isAttackVisible && false)
+			isAction |= tryUnitAttack(i, j, this.game);
+		if (!isAction && false)
 			showActions(i, j);
+		
+		for (int k = this.gameViewParts.size() - 1; k >= 0; k--)
+		{
+			GameViewPart gameViewPart = this.gameViewParts.get(k);
+			if (gameViewPart.update())
+				break;
+		}
+		GameView.this.gameViewAction.update();
 		
 		invalidate();
 	}
 	
+	/*
 	private void updateCursorState(int i, int j)
 	{
 		GameView.cursor.i = i;
@@ -271,6 +317,7 @@ public class GameView extends FrameLayout
 		if (!GameView.cursor.isVisible)
 			GameView.cursor.isVisible = true;
 	}
+	*/
 	
 	private boolean tryUnitMove(int i, int j, final Game game)
 	{
@@ -372,10 +419,10 @@ public class GameView extends FrameLayout
 			Bitmap actionBitmap = ActionImages.getActionBitmap(actionType);
 			actionBitmaps.add(actionBitmap);
 		}
-		this.gameActionView.updateActionBitmapsState(actionBitmaps, actionTypes);
+		// this.gameViewAction.updateActionBitmapsState(actionBitmaps, actionTypes);
 	}
 	
-	private void showNewUnitWay(int i, int j)
+	public void showNewUnitWay(int i, int j)
 	{
 		this.isWayVisible = true;
 		this.lastUnitI = i;
@@ -457,27 +504,38 @@ public class GameView extends FrameLayout
 		MyLog.log(actionType);
 		
 		this.isWayVisible = false;
-		removeView(this.zoneView);
 		this.isAttackVisible = false;
+		// removeView(this.zoneView);
 		
-		if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
+		if (actionType == ActionType.ACTION_UNIT_MOVE)
+		{
+			this.isWayVisible = true;
+			this.gameViewUnit.update();
+		}
+		else if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
 		{
 			Action action = new Action(actionType);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
 			ActionResult actionResult = Client.action(action);
+			
+			this.gameViewCell.update();
 		}
 		else if (actionType == ActionType.ACTION_UNIT_ATTACK)
-			showNewAttackZone(this.lastTapI, this.lastTapJ);
+		{
+			// showNewAttackZone(this.lastTapI, this.lastTapJ);
+			this.isAttackVisible = true;
+			this.gameViewUnit.update();
+		}
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{
 			Action action = new Action(actionType);
 			ActionResult actionResult = Client.action(action);
 			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
-		showActions(this.lastTapI, this.lastTapJ);
-		
-		updateBitmaps();
+		// showActions(this.lastTapI, this.lastTapJ);
+		this.gameViewAction.update();
+		// updateBitmaps();
 	}
 	
 	private void showNewAttackZone(int i, int j)
@@ -532,30 +590,31 @@ public class GameView extends FrameLayout
 		this.width = w;
 		
 		this.actionRectHeight = (int) (0.2f * h);
-		this.gameActionView.setY(h - this.actionRectHeight);
-		this.gameActionView.setX(0);
+		this.gameViewAction.setY(h - this.actionRectHeight);
+		this.gameViewAction.setX(0);
 		FrameLayout.LayoutParams actionViewLayoutParams = new FrameLayout.LayoutParams(w, this.actionRectHeight);
-		this.gameActionView.setLayoutParams(actionViewLayoutParams);
+		this.gameViewAction.setLayoutParams(actionViewLayoutParams);
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
 		// рисуем игровое поле
-		final Game game = this.client.getGame();
 		
 		// карта
-		final Cell[][] field = game.map.getField();
+		/*
+		final Cell[][] field = this.game.map.getField();
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
 			{
 				final Bitmap bitmapCell = this.bitmaps[i][j];
-				final int y = GameView.baseH * i + this.offsetY;
-				final int x = GameView.baseW * j + this.offsetX;
+				final int y = GameView.baseH * (i + this.offsetI[i][j]) + this.offsetY;
+				final int x = GameView.baseW * (j + this.offsetJ[i][j]) + this.offsetX;
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
+		*/
 		
-		if (this.isAttackVisible)
+		if (this.isAttackVisible && false)
 		{
 			final Bitmap bitmapCursorAttack = GameView.cursorAttack.getBitmap();
 			final int height = bitmapCursorAttack.getHeight();
@@ -568,8 +627,9 @@ public class GameView extends FrameLayout
 			}
 		}
 		
+		/*
 		// юниты
-		final Unit[][] fieldUnits = game.fieldUnits;
+		final Unit[][] fieldUnits = this.game.fieldUnits;
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field[i].length; j++)
 			{
@@ -599,8 +659,9 @@ public class GameView extends FrameLayout
 					}
 				}
 			}
+		*/
 		
-		if (this.isAttackVisible)
+		if (this.isAttackVisible && false)
 		{
 			final Bitmap bitmapCursorPointer = GameView.cursorPointer.getBitmap();
 			final int height = bitmapCursorPointer.getHeight();
@@ -612,14 +673,15 @@ public class GameView extends FrameLayout
 			canvas.drawBitmap(bitmapCursorPointer, x, y, null);
 		}
 		
+		/*
 		// рисуем курсор (если есть)
-		if (GameView.cursor.isVisible)
+		if (GameView.cursor.isVisible && false)
 		{
 			final Bitmap bitmapCursor = GameView.cursor.getBitmap();
 			final int y = GameView.baseH * GameView.cursor.i - (bitmapCursor.getHeight() - GameView.baseH) / 2 + this.offsetY;
 			final int x = GameView.baseW * GameView.cursor.j - (bitmapCursor.getWidth() - GameView.baseW) / 2 + this.offsetX;
 			canvas.drawBitmap(bitmapCursor, x, y, null);
 		}
-		
+		*/
 	}
 }
