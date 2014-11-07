@@ -11,24 +11,30 @@ import org.w3c.dom.NodeList;
 import ru.ancientempires.CellBitmap;
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
-import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 
 public class CellImages
 {
 	
-	public static CellBitmap[]	cellsBitmaps;
+	private static CellBitmap[]	cellBitmaps;
+	private static CellBitmap[]	cellBitmapsDual;
 	
-	public static Bitmap getCellBitmap(Cell cell)
+	public static Bitmap getCellBitmap(Cell cell, boolean dual)
 	{
-		return CellImages.cellsBitmaps[cell.type.ordinal].getBitmap(cell);
+		CellBitmap cellBitmap = CellImages.cellBitmaps[cell.type.ordinal];
+		return dual ?
+				cellBitmap.isDual ?
+						CellImages.cellBitmapsDual[cell.type.ordinal].getBitmap(cell)
+						:
+						null
+				:
+				cellBitmap.getBitmap(cell);
 	}
 	
 	public static void preloadResources(ZipFile imagesZipFile) throws IOException
@@ -49,33 +55,31 @@ public class CellImages
 		MyAssert.a(images.getLength() == CellType.amount);
 		int typeAmount = CellType.amount;
 		
-		CellImages.cellsBitmaps = new CellBitmap[typeAmount];
+		CellImages.cellBitmaps = new CellBitmap[typeAmount];
+		CellImages.cellBitmapsDual = new CellBitmap[typeAmount];
 		for (int i = 0; i < typeAmount; i++)
 		{
 			Node node = images.item(i);
 			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
 			CellType type = CellType.getType(typeName);
 			
-			if ("CASTLE".equals(typeName))
-				MyLog.log();
-			
 			CellBitmap cellBitmap = new CellBitmap();
-			
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
 			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageName);
 			
-			cellBitmap.changeSize();
-			cellBitmap.isNormal = cellBitmap.h == GameView.baseH && cellBitmap.w == GameView.baseW;
-			if (!cellBitmap.isNormal)
+			if ("true".equals(XMLHelper.getNodeAttributesMap(node).get("isDual")))
 			{
-				cellBitmap.offsetI = Integer.valueOf(XMLHelper.getNodeAttributeValue(node, "offsetI"));
-				cellBitmap.offsetJ = Integer.valueOf(XMLHelper.getNodeAttributeValue(node, "offsetJ"));
+				cellBitmap.isDual = true;
+				CellBitmap cellBitmapDual = new CellBitmap();
+				String imageNameDual = XMLHelper.getNodeAttributeValue(node, "imageDual");
+				cellBitmapDual.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageNameDual);
+				CellImages.cellBitmapsDual[i] = cellBitmapDual;
 			}
 			
 			if (type.isDestroying)
 				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + destroyingImagesFolder + imageName);
 			
-			CellImages.cellsBitmaps[i] = cellBitmap;
+			CellImages.cellBitmaps[i] = cellBitmap;
 		}
 	}
 	
@@ -100,7 +104,6 @@ public class CellImages
 		
 		MyAssert.a(images.getLength() == CellType.amount);
 		int typeAmount = CellType.amount;
-		int playerAmount = Player.amount;
 		
 		for (int i = 0; i < typeAmount; i++)
 		{
@@ -109,42 +112,42 @@ public class CellImages
 			CellType type = CellType.getType(typeName);
 			if (type.isCapture)
 			{
-				CellBitmap cellBitmap = CellImages.cellsBitmaps[i];
-				cellBitmap.colorsBitmaps = new Bitmap[playerAmount];
-				
+				CellBitmap cellBitmap = CellImages.cellBitmaps[i];
 				String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-				String imagePathR = imagesPathR + imageName;
-				String imagePathG = imagesPathG + imageName;
-				String imagePathB = imagesPathB + imageName;
+				cellBitmap.colorsBitmaps = CellImages.loadOneColorBitmap(imagesZipFile, game,
+						imagesPathR, imagesPathG, imagesPathB, imageName);
 				
-				/*
-				int[][] dataR = Images.getMatrixDataImage(imagesZipFile, imagePathR);
-				int[][] dataG = Images.getMatrixDataImage(imagesZipFile, imagePathG);
-				int[][] dataB = Images.getMatrixDataImage(imagesZipFile, imagePathB);
-				// */
-				
-				// *
-				RenderScriptCellImages rs = new RenderScriptCellImages();
-				rs.createScript(MainActivity.context);
-				
-				Bitmap bitmapR = BitmapHelper.getBitmap(imagesZipFile, imagePathR);
-				Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagePathG);
-				Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagePathB);
-				rs.setBitmaps(bitmapR, bitmapG, bitmapB);
-				// */
-				
-				for (int j = 0; j < playerAmount; j++)
+				if (cellBitmap.isDual)
 				{
-					// int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
-					// Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
-					
-					Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
-					bitmap = BitmapHelper.getResizeBitmap(bitmap);
-					
-					cellBitmap.colorsBitmaps[j] = bitmap;
+					CellBitmap cellBitmapDual = CellImages.cellBitmapsDual[i];
+					String imageNameDual = XMLHelper.getNodeAttributeValue(node, "imageDual");
+					cellBitmapDual.colorsBitmaps = CellImages.loadOneColorBitmap(imagesZipFile,
+							game, imagesPathR, imagesPathG, imagesPathB, imageNameDual);
 				}
 			}
 		}
+	}
+	
+	private static Bitmap[] loadOneColorBitmap(ZipFile imagesZipFile, Game game, String imagesPathR, String imagesPathG, String imagesPathB, String imageName)
+			throws IOException
+	{
+		Bitmap[] bitmaps = new Bitmap[Player.amount];
+		
+		RenderScriptCellImages rs = new RenderScriptCellImages();
+		rs.createScript(MainActivity.context);
+		
+		Bitmap bitmapR = BitmapHelper.getBitmap(imagesZipFile, imagesPathR + imageName);
+		Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagesPathG + imageName);
+		Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagesPathB + imageName);
+		rs.setBitmaps(bitmapR, bitmapG, bitmapB);
+		
+		for (int j = 0; j < Player.amount; j++)
+		{
+			Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
+			bitmap = BitmapHelper.getResizeBitmap(bitmap);
+			bitmaps[j] = bitmap;
+		}
+		return bitmaps;
 	}
 	
 }

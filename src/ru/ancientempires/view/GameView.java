@@ -51,6 +51,7 @@ public class GameView extends FrameLayout
 	private GameViewPart			gameViewCell;
 	private ZoneView				wayZoneView;
 	private ZoneView				attackZoneView;
+	private GameViewPart			gameViewCellDual;
 	private GameViewPart			gameViewUnit;
 	private GameViewPart			gameViewAction;
 	private GameViewPart			gameViewCursor;
@@ -75,9 +76,13 @@ public class GameView extends FrameLayout
 		setWillNotDraw(false);
 		setClipChildren(false);
 		
-		this.gameViewCell = new GameViewCell(getContext(), this).setField(this.game.map.getField());
+		this.gameViewCell = new GameViewCell(getContext(), this)
+				.setDual(false).setField(this.game.map.getField());
 		this.wayZoneView = new ZoneView(getContext());
 		this.attackZoneView = new ZoneView(getContext());
+		this.gameViewCellDual = new GameViewCell(getContext(), this)
+				.setDual(true).setField(this.game.map.getField());
+		
 		this.gameViewUnit = new GameViewUnit(getContext(), this)
 				.setField(this.game.fieldUnits)
 				.setWayView(this.wayZoneView)
@@ -88,6 +93,7 @@ public class GameView extends FrameLayout
 		addView(this.gameViewCell);
 		addView(this.wayZoneView);
 		addView(this.attackZoneView);
+		addView(this.gameViewCellDual);
 		addView(this.gameViewUnit);
 		addView(this.gameViewAction);
 		addView(this.gameViewCursor);
@@ -95,6 +101,7 @@ public class GameView extends FrameLayout
 		this.gameViewParts.add(this.gameViewCell);
 		this.gameViewParts.add(this.gameViewUnit);
 		this.gameViewParts.add(this.gameViewCursor);
+		this.gameViewParts.add(this.gameViewCellDual);
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
@@ -259,17 +266,15 @@ public class GameView extends FrameLayout
 		return super.performClick();
 	}
 	
-	private int	actionRectHeight;
-	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
 		super.onSizeChanged(w, h, oldw, oldh);
 		
-		this.actionRectHeight = (int) (0.2f * h);
-		this.gameViewAction.setY(h - this.actionRectHeight);
+		int actionRectH = (int) (0.2f * h);
+		this.gameViewAction.setY(h - actionRectH);
 		this.gameViewAction.setX(0);
-		FrameLayout.LayoutParams actionViewLayoutParams = new FrameLayout.LayoutParams(w, this.actionRectHeight);
+		LayoutParams actionViewLayoutParams = new LayoutParams(w, actionRectH);
 		this.gameViewAction.setLayoutParams(actionViewLayoutParams);
 	}
 	

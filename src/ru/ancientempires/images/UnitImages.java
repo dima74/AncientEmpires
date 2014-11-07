@@ -102,13 +102,6 @@ public class UnitImages
 				String imagePathG = imagesPathG + imageName;
 				String imagePathB = imagesPathB + imageName;
 				
-				/*
-				int[][] dataR = Images.getMatrixDataImage(imagesZipFile, imagePathR);
-				int[][] dataG = Images.getMatrixDataImage(imagesZipFile, imagePathG);
-				int[][] dataB = Images.getMatrixDataImage(imagesZipFile, imagePathB);
-				// */
-				
-				// *
 				RenderScriptCellImages rs = new RenderScriptCellImages();
 				rs.createScript(MainActivity.context);
 				
@@ -116,16 +109,11 @@ public class UnitImages
 				Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagePathG);
 				Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagePathB);
 				rs.setBitmaps(bitmapR, bitmapG, bitmapB);
-				// */
 				
 				for (int j = 0; j < playerAmount; j++)
 				{
-					// int[][] data = ImageHelper.getNewImg(dataR, dataG, dataB, game.players[j].color);
-					// Bitmap bitmap = BitmapHelper.getResizeBitmap(data);
-					
 					Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
 					bitmap = BitmapHelper.getResizeBitmap(bitmap);
-					
 					if (k == 0)
 						UnitImages.unitsBitmaps[iType][j] = new SomeWithBitmaps().setAmount(amountImages);
 					UnitImages.unitsBitmaps[i][j].setBitmaps(k, bitmap);

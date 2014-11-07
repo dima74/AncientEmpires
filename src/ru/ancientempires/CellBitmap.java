@@ -7,12 +7,7 @@ import android.graphics.Bitmap;
 public class CellBitmap
 {
 	
-	public int		h;
-	public int		w;
-	
-	public boolean	isNormal;
-	public int		offsetI;
-	public int		offsetJ;
+	public boolean	isDual	= false;
 	
 	public Bitmap	defaultBitmap;
 	public Bitmap	destroyingBitmap;
@@ -29,9 +24,4 @@ public class CellBitmap
 			return this.defaultBitmap;
 	}
 	
-	public void changeSize()
-	{
-		this.h = this.defaultBitmap.getHeight();
-		this.w = this.defaultBitmap.getWidth();
-	}
 }

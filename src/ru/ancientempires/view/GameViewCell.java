@@ -1,6 +1,5 @@
 package ru.ancientempires.view;
 
-import ru.ancientempires.CellBitmap;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
 import android.content.Context;
@@ -16,37 +15,38 @@ public class GameViewCell extends GameViewPart
 	}
 	
 	private Cell[][]	field;
-	private int			height;
-	private int			width;
+	private int			h;
+	private int			w;
 	
 	public GameViewCell setField(Cell[][] field)
 	{
 		this.field = field;
-		this.height = field.length;
-		this.width = field[0].length;
+		this.h = field.length;
+		this.w = field[0].length;
 		
-		this.bitmaps = new Bitmap[this.height][this.width];
-		this.offsetI = new int[this.height][this.width];
-		this.offsetJ = new int[this.height][this.width];
+		this.bitmaps = new Bitmap[this.h][this.w];
 		update();
 		
 		return this;
 	}
 	
-	protected Bitmap[][]	bitmaps;
-	protected int[][]		offsetI, offsetJ;
+	private Bitmap[][]	bitmaps;
+	private boolean		isDual;
+	
+	public GameViewCell setDual(boolean isDual)
+	{
+		this.isDual = isDual;
+		return this;
+	}
 	
 	@Override
 	public boolean update()
 	{
-		for (int i = 0; i < this.height; i++)
-			for (int j = 0; j < this.width; j++)
+		for (int i = this.h - 1 - (this.isDual ? 1 : 0); i >= 0; i--)
+			for (int j = this.w - 1; j >= 0; j--)
 			{
-				Cell cell = this.field[i][j];
-				CellBitmap cellBitmap = CellImages.cellsBitmaps[cell.type.ordinal];
-				this.bitmaps[i][j] = cellBitmap.getBitmap(cell);
-				this.offsetI[i][j] = cellBitmap.offsetI;
-				this.offsetJ[i][j] = cellBitmap.offsetJ;
+				Cell cell = this.isDual ? this.field[i + 1][j] : this.field[i][j];
+				this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
 			}
 		invalidate();
 		return false;
@@ -57,14 +57,15 @@ public class GameViewCell extends GameViewPart
 	{
 		canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
 		// карта
-		for (int i = 0; i < this.height; i++)
-			for (int j = 0; j < this.width; j++)
+		for (int i = 0; i < this.h; i++)
+			for (int j = 0; j < this.w; j++)
 			{
 				final Bitmap bitmapCell = this.bitmaps[i][j];
-				final int y = GameView.baseH * (i + this.offsetI[i][j]);
-				final int x = GameView.baseW * (j + this.offsetJ[i][j]);
+				if (bitmapCell == null)
+					continue;
+				final int y = GameView.baseH * i;
+				final int x = GameView.baseW * j;
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 	}
-	
 }
