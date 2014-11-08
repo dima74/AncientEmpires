@@ -18,7 +18,7 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme" >
 		<activity
-			android:name="ru.ancientempires.activity.MainActivity"
+			android:name=".activity.MainActivity"
 			android:label="@string/app_name" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -27,12 +27,20 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="ru.ancientempires.activity.GameActivity"
+			android:name=".activity.GameActivity"
 			android:label="@string/title_activity_game"
-			android:parentActivityName="ru.ancientempires.activity.MainActivity" >
+			android:parentActivityName=".activity.MainActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="ru.ancientempires.MainActivity" />
+		</activity>
+		<activity
+			android:name="ru.ancientempires.activity.UnitBuyActivity"
+			android:label="@string/title_activity_unit_buy"
+			android:parentActivityName=".activity.GameActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="ru.ancientempires.activity.GameActivity" />
 		</activity>
 	</application>
 

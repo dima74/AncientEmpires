@@ -3,6 +3,7 @@ package ru.ancientempires.activity;
 import ru.ancientempires.R;
 import ru.ancientempires.view.GameView;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ public class GameActivity extends Activity
 		super.onCreate(savedInstanceState);
 		// if (GameActivity.gameView == null)
 		GameActivity.gameView = new GameView(this);
+		GameActivity.gameView.gameActivity = this;
 		setContentView(GameActivity.gameView);
 	}
 	
@@ -46,4 +48,12 @@ public class GameActivity extends Activity
 			return true;
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void startUnitBuyActivity()
+	{
+		Intent intent = new Intent();
+		intent.setClass(this, UnitBuyActivity.class);
+		startActivity(intent);
+	}
+	
 }

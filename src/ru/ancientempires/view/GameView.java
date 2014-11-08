@@ -9,10 +9,12 @@ import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Map;
+import ru.ancientempires.model.UnitType;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -41,6 +43,8 @@ public class GameView extends FrameLayout
 		GameViewUnit.init();
 		GameViewAction.initResources();
 	}
+	
+	public GameActivity				gameActivity;
 	
 	// Модель игры
 	private Client					client			= Client.getClient();
@@ -232,6 +236,8 @@ public class GameView extends FrameLayout
 			this.isAttackVisible = true;
 			this.gameViewUnit.update();
 		}
+		else if (actionType == ActionType.ACTION_CELL_BUY)
+			this.gameActivity.startUnitBuyActivity();
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{
 			Action action = new Action(actionType);
@@ -241,6 +247,18 @@ public class GameView extends FrameLayout
 			
 			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
+		this.gameViewAction.update();
+	}
+	
+	public void performActionBuy(UnitType type)
+	{
+		Action action = new Action(ActionType.ACTION_CELL_BUY);
+		action.setProperty("i", this.lastTapI);
+		action.setProperty("j", this.lastTapJ);
+		action.setProperty("type", type.ordinal);
+		Client.action(action);
+		
+		this.gameViewCell.update();
 		this.gameViewAction.update();
 	}
 	
