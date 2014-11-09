@@ -86,25 +86,29 @@ public class GameViewUnit extends GameViewPart
 	private boolean[][]	fieldAttack;
 	private boolean[][]	realFieldAttack;
 	
+	private boolean		wayChanged;
+	private boolean		attackChanged;
+	
 	@Override
-	public boolean update()
+	public boolean performAction(ActionType actionType)
 	{
 		int i = this.gameView.lastTapI;
 		int j = this.gameView.lastTapJ;
-		
-		if (this.gameView.isWayVisible)
+		if (actionType == ActionType.ACTION_UNIT_MOVE)
+		{
+			if (this.isAttackVisible)
+			{
+				hideAttack();
+				this.gameView.lastTapI = this.lastUnitI;
+				this.gameView.lastTapJ = this.lastUnitJ;
+				i = this.lastUnitI;
+				j = this.lastUnitJ;
+				this.gameView.gameViewCursor.update();
+			}
 			if (this.isWayVisible)
 			{
-				this.gameView.isWayVisible = false;
-				this.isWayVisible = false;
-				this.wayView.setVisibility(View.GONE);
-				
-				int relI = this.radius + i - this.lastUnitI;
-				int relJ = this.radius + j - this.lastUnitJ;
-				boolean contains = relI >= 0 && relI < this.size && relJ >= 0 && relJ < this.size
-					&& this.fieldWay[relI][relJ];
-				
-				if (contains)
+				hideWay();
+				if (this.wayChanged)
 				{
 					final Action action = new Action(ActionType.ACTION_UNIT_MOVE);
 					action.setProperty("oldI", this.lastUnitI);
@@ -114,10 +118,8 @@ public class GameViewUnit extends GameViewPart
 					Client.action(action);
 					
 					invalidate();
-					return true;
 				}
-				else
-					return false;
+				return true;
 			}
 			else
 			{
@@ -142,28 +144,24 @@ public class GameViewUnit extends GameViewPart
 						performAnimateWay(result);
 					}
 				}.execute(action);
-				
-				return true;
+				return false;
 			}
-		else
-		{
-			this.wayView.setVisibility(View.GONE);
-			this.isWayVisible = false;
 		}
-		
-		if (this.gameView.isAttackVisible)
+		else if (actionType == ActionType.ACTION_UNIT_ATTACK)
+		{
+			if (this.isWayVisible)
+			{
+				hideWay();
+				this.gameView.lastTapI = this.lastUnitI;
+				this.gameView.lastTapJ = this.lastUnitJ;
+				i = this.lastUnitI;
+				j = this.lastUnitJ;
+				this.gameView.gameViewCursor.update();
+			}
 			if (this.isAttackVisible)
 			{
-				this.gameView.isAttackVisible = false;
-				this.isAttackVisible = false;
-				this.attackView.setVisibility(View.GONE);
-				
-				int relI = this.radius + i - this.lastUnitI;
-				int relJ = this.radius + j - this.lastUnitJ;
-				boolean contains = relI >= 0 && relI < this.size && relJ >= 0 && relJ < this.size
-					&& this.realFieldAttack[relI][relJ];
-				
-				if (contains)
+				hideAttack();
+				if (this.attackChanged)
 				{
 					final Action action = new Action(ActionType.ACTION_UNIT_ATTACK);
 					action.setProperty("attackingI", this.lastUnitI);
@@ -173,10 +171,8 @@ public class GameViewUnit extends GameViewPart
 					Client.action(action);
 					
 					invalidate();
-					return true;
 				}
-				else
-					return false;
+				return true;
 			}
 			else
 			{
@@ -201,16 +197,53 @@ public class GameViewUnit extends GameViewPart
 						performAnimateAttack(result);
 					}
 				}.execute(action);
-				
-				return true;
+				return false;
 			}
+		}
 		else
 		{
-			this.attackView.setVisibility(View.GONE);
-			this.isAttackVisible = false;
+			hideWay();
+			hideAttack();
+			return true;
 		}
+	}
+	
+	private void hideWay()
+	{
+		this.wayView.setVisibility(View.GONE);
+		this.isWayVisible = false;
+		this.gameView.isWayVisible = false;
+	}
+	
+	private void hideAttack()
+	{
+		this.attackView.setVisibility(View.GONE);
+		this.isAttackVisible = false;
+		this.gameView.isAttackVisible = false;
+	}
+	
+	@Override
+	public boolean update()
+	{
+		int i = this.gameView.lastTapI;
+		int j = this.gameView.lastTapJ;
 		
-		return false;
+		boolean isAction = false;
+		
+		int relI = this.radius + i - this.lastUnitI;
+		int relJ = this.radius + j - this.lastUnitJ;
+		boolean boundsNorm = relI >= 0 && relI < this.size && relJ >= 0 && relJ < this.size;
+		if (boundsNorm)
+			if (this.isWayVisible)
+				isAction = this.wayChanged = this.fieldWay[relI][relJ];
+			else if (this.isAttackVisible)
+				isAction = this.attackChanged = this.fieldAttack[relI][relJ];
+		if (!this.wayChanged)
+			hideWay();
+		else if (!this.attackChanged)
+			hideAttack();
+		
+		return isAction;
 	}
 	
 	private void performAnimateWay(ActionResult result)

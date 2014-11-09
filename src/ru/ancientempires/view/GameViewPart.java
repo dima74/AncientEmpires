@@ -1,5 +1,6 @@
 package ru.ancientempires.view;
 
+import ru.ancientempires.action.ActionType;
 import android.content.Context;
 import android.view.View;
 
@@ -22,6 +23,11 @@ public abstract class GameViewPart extends View
 	public void updateOffset()
 	{
 		
+	}
+	
+	public boolean performAction(ActionType actionType)
+	{
+		return true;
 	}
 	
 }

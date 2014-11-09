@@ -11,6 +11,7 @@ import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Map;
@@ -58,7 +59,7 @@ public class GameView extends FrameLayout
 	private GameViewPart			gameViewCellDual;
 	private GameViewPart			gameViewUnit;
 	private GameViewPart			gameViewAction;
-	private GameViewPart			gameViewCursor;
+	public GameViewPart				gameViewCursor;
 	
 	private GestureDetector			gestureDetector;
 	private Timer					timer;
@@ -99,8 +100,8 @@ public class GameView extends FrameLayout
 		addView(this.attackZoneView);
 		addView(this.gameViewCellDual);
 		addView(this.gameViewUnit);
-		addView(this.gameViewAction);
 		addView(this.gameViewCursor);
+		addView(this.gameViewAction);
 		
 		this.gameViewParts.add(this.gameViewCell);
 		this.gameViewParts.add(this.gameViewUnit);
@@ -199,19 +200,26 @@ public class GameView extends FrameLayout
 		if (!map.validateCoord(i, j))
 			return;
 		
+		boolean isAction = true;
 		for (int k = this.gameViewParts.size() - 1; k >= 0; k--)
 		{
 			GameViewPart gameViewPart = this.gameViewParts.get(k);
 			if (gameViewPart.update())
+			{
+				isAction = false;
 				break;
+			}
 		}
-		GameView.this.gameViewAction.update();
+		if (isAction)
+			GameView.this.gameViewAction.update();
 		
 		invalidate();
 	}
 	
 	public void performAction(ActionType actionType)
 	{
+		boolean isAction;
+		
 		MyLog.log(actionType);
 		
 		this.isWayVisible = false;
@@ -220,7 +228,7 @@ public class GameView extends FrameLayout
 		if (actionType == ActionType.ACTION_UNIT_MOVE)
 		{
 			this.isWayVisible = true;
-			this.gameViewUnit.update();
+			isAction = this.gameViewUnit.performAction(actionType);
 		}
 		else if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
 		{
@@ -229,25 +237,34 @@ public class GameView extends FrameLayout
 			action.setProperty("j", this.lastTapJ);
 			ActionResult actionResult = Client.action(action);
 			
-			this.gameViewCell.update();
+			isAction = this.gameViewCell.update() || this.gameViewUnit.performAction(actionType);
 		}
 		else if (actionType == ActionType.ACTION_UNIT_ATTACK)
 		{
 			this.isAttackVisible = true;
-			this.gameViewUnit.update();
+			isAction = this.gameViewUnit.performAction(actionType);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
+		{
 			this.gameActivity.startUnitBuyActivity();
+			isAction = false;
+		}
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{
 			Action action = new Action(actionType);
 			ActionResult actionResult = Client.action(action);
 			
-			this.gameViewUnit.update();
+			isAction = this.gameViewUnit.performAction(actionType);
 			
 			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
-		this.gameViewAction.update();
+		else
+		{
+			MyAssert.a(false);
+			isAction = false;
+		}
+		if (isAction)
+			this.gameViewAction.update();
 	}
 	
 	public void performActionBuy(UnitType type)

@@ -80,6 +80,7 @@ public class MainActivity extends Activity
 		GameInit.init();
 		long e = System.nanoTime();
 		// Toast.makeText(MainActivity.context, "" + (e - s) / 1e9, Toast.LENGTH_LONG).show();
+		startCampaign();
 	}
 	
 	public static int	amn	= 0;

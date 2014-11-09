@@ -1,7 +1,5 @@
 package ru.ancientempires.view;
 
-import java.util.ArrayList;
-
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
@@ -25,21 +23,22 @@ public class GameViewAction extends GameViewPart
 		super(context, gameView);
 	}
 	
-	private ArrayList<Bitmap>		actionBitmaps		= new ArrayList<Bitmap>();
-	private ArrayList<ActionType>	actionTypes			= new ArrayList<ActionType>();
-	private ArrayList<Point>		actionsPoints		= new ArrayList<Point>();
+	private Bitmap[]		actionBitmaps		= new Bitmap[0];
+	private ActionType[]	actionTypes			= new ActionType[0];
+	private Point[]			actionsPoints		= new Point[0];
+	private int				amount				= 0;
 	
-	private int						height;
-	private int						width;
-	float							bitmapDeltaWidth;
+	private int				height;
+	private int				width;
+	float					bitmapDeltaWidth;
 	
-	private static float			actionBitmapH;
-	private static float			actionBitmapW;
+	private static float	actionBitmapH;
+	private static float	actionBitmapW;
 	
-	public static Paint				whiteAlphaPaint		= new Paint();
-	public static Paint				whitePaint			= new Paint();
-	private static Paint			circlePaintExternal	= new Paint();
-	private static Paint			circlePaintInternal	= new Paint();
+	public static Paint		whiteAlphaPaint		= new Paint();
+	public static Paint		whitePaint			= new Paint();
+	private static Paint	circlePaintExternal	= new Paint();
+	private static Paint	circlePaintInternal	= new Paint();
 	
 	public static void initResources()
 	{
@@ -73,50 +72,45 @@ public class GameViewAction extends GameViewPart
 	@Override
 	public boolean update()
 	{
-		final Action action = new Action(ActionType.GET_AVAILABLE_ACTIONS_FOR_CELL);
+		final Action action = new Action(ActionType.GET_ACTIONS);
 		action.setProperty("i", this.gameView.lastTapI);
 		action.setProperty("j", this.gameView.lastTapJ);
 		
 		final ActionResult result = Client.action(action);
-		
-		final int amount = (Integer) result.getProperty("amountActions");
-		final ArrayList<ActionType> actionTypes = new ArrayList<ActionType>(amount);
-		for (int k = 0; k < amount; k++)
-		{
-			final ActionType actionType = (ActionType) result.getProperty("action" + k);
-			actionTypes.add(actionType);
-		}
+		final ActionType[] actionTypes = (ActionType[]) result.getProperty("actions");
+		this.amount = actionTypes.length;
 		
 		// if (actionTypes.contains(ActionType.ACTION_UNIT_MOVE))
 		// this.gameView.showNewUnitWay(this.gameView.lastTapI, this.gameView.lastTapJ);
 		
-		final ArrayList<Bitmap> actionBitmaps = new ArrayList<Bitmap>(amount);
-		for (ActionType actionType : actionTypes)
+		final Bitmap[] actionBitmaps = new Bitmap[this.amount];
+		for (int i = 0; i < this.amount; i++)
 		{
+			ActionType actionType = actionTypes[i];
 			final Bitmap actionBitmap = ActionImages.getActionBitmap(actionType);
-			actionBitmaps.add(actionBitmap);
+			actionBitmaps[i] = actionBitmap;
 		}
 		updateActionBitmapsState(actionBitmaps, actionTypes);
 		return true;
 	}
 	
-	public void updateActionBitmapsState(ArrayList<Bitmap> actionBitmaps, ArrayList<ActionType> actionTypes)
+	public void updateActionBitmapsState(Bitmap[] actionBitmaps, ActionType[] actionTypes)
 	{
-		if (actionBitmaps.size() == 0)
+		if (this.amount == 0)
 			setVisibility(View.GONE);
 		else
 		{
 			setVisibility(View.VISIBLE);
 			this.actionBitmaps = actionBitmaps;
 			this.actionTypes = actionTypes;
-			this.bitmapDeltaWidth = this.width / (this.actionBitmaps.size() + 1);
+			this.bitmapDeltaWidth = this.width / (this.actionBitmaps.length + 1);
 			
-			this.actionsPoints.clear();
-			for (int i = 0; i < this.actionBitmaps.size(); i++)
+			this.actionsPoints = new Point[this.amount];
+			for (int i = 0; i < this.amount; i++)
 			{
 				int x = (int) (this.bitmapDeltaWidth * (i + 1) - GameViewAction.actionBitmapW / 2.0f);
 				int y = (int) (this.height / 2 - GameViewAction.actionBitmapH / 2.0f);
-				this.actionsPoints.add(new Point(x, y));
+				this.actionsPoints[i] = new Point(x, y);
 			}
 		}
 		invalidate();
@@ -131,8 +125,8 @@ public class GameViewAction extends GameViewPart
 			
 			int i = Math.round(x / this.bitmapDeltaWidth);
 			i--;
-			if (i >= 0 && i < this.actionBitmaps.size())
-				this.gameView.performAction(this.actionTypes.get(i));
+			if (i >= 0 && i < this.actionBitmaps.length)
+				this.gameView.performAction(this.actionTypes[i]);
 		}
 		return true;
 	}
@@ -140,15 +134,14 @@ public class GameViewAction extends GameViewPart
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		if (!this.actionBitmaps.isEmpty())
+		if (!(this.amount == 0))
 		{
 			canvas.drawRect(0, 0, this.width, this.height, GameViewAction.whiteAlphaPaint);
-			for (int i = 0; i < this.actionBitmaps.size(); i++)
+			for (int i = 0; i < this.amount; i++)
 			{
-				final Bitmap bitmap = this.actionBitmaps.get(i);
-				final int x = this.actionsPoints.get(i).x;
-				final int y = this.actionsPoints.get(i).y;
-				
+				final Bitmap bitmap = this.actionBitmaps[i];
+				final int x = this.actionsPoints[i].x;
+				final int y = this.actionsPoints[i].y;
 				canvas.drawBitmap(bitmap, x, y, null);
 			}
 		}
