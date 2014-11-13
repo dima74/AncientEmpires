@@ -57,9 +57,9 @@ public class GameView extends FrameLayout
 	private ZoneView				wayZoneView;
 	private ZoneView				attackZoneView;
 	private GameViewPart			gameViewCellDual;
-	private GameViewPart			gameViewUnit;
+	private GameViewUnit			gameViewUnit;
 	private GameViewPart			gameViewAction;
-	public GameViewPart				gameViewCursor;
+	public GameViewCursor			gameViewCursor;
 	
 	private GestureDetector			gestureDetector;
 	private Timer					timer;
@@ -92,8 +92,11 @@ public class GameView extends FrameLayout
 				.setField(this.game.fieldUnits)
 				.setWayView(this.wayZoneView)
 				.setAttackView(this.attackZoneView);
-		this.gameViewCursor = new GameViewCursor(getContext(), this);
+		this.gameViewCursor = new GameViewCursor(getContext(), this)
+				.setGameViewUnit(this.gameViewUnit);
 		this.gameViewAction = new GameViewAction(getContext(), this);
+		
+		this.gameViewUnit.setGameViewCursor(this.gameViewCursor);
 		
 		addView(this.gameViewCell);
 		addView(this.wayZoneView);

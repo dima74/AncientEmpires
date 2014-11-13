@@ -30,7 +30,7 @@ public class GameViewAction extends GameViewPart
 	
 	private int				height;
 	private int				width;
-	float					bitmapDeltaWidth;
+	private float			bitmapDeltaWidth;
 	
 	private static float	actionBitmapH;
 	private static float	actionBitmapW;

@@ -68,4 +68,5 @@ public class GameViewCell extends GameViewPart
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 	}
+	
 }

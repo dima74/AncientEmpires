@@ -20,7 +20,8 @@ public class ZoneView extends View
 	{
 		super(context);
 		setWillNotDraw(false);
-		setVisibility(View.GONE);
+		// setVisibility(View.GONE);
+		setZone(new boolean[0][0]);
 		
 		this.circlePaint = new Paint();
 		this.circlePaint.setColor(Color.TRANSPARENT);
@@ -37,6 +38,8 @@ public class ZoneView extends View
 	
 	private int			radiusStart;
 	private int			radiusEnd;
+	
+	public boolean		isInverse	= false;
 	
 	public ZoneView setBitmap(Bitmap bitmap)
 	{
@@ -57,17 +60,22 @@ public class ZoneView extends View
 		return this;
 	}
 	
-	public ZoneView setZone(boolean[][] is)
+	public ZoneView setZone(boolean[][] zone)
 	{
-		this.zone = is;
+		this.zone = zone;
 		return this;
 	}
 	
 	public ZoneView startAnimate()
 	{
 		ValueAnimator animator = ValueAnimator.ofInt((this.radiusEnd - this.radiusStart) * 2, 0);
-		animator.setInterpolator(new LinearInterpolator());
 		animator.setDuration(this.amount * 1000 / 7);
+		if (this.isInverse)
+		{
+			animator = ValueAnimator.ofInt(0, (this.radiusEnd - this.radiusStart) * 2);
+			animator.setDuration(this.amount * 1000 / 20);
+		}
+		animator.setInterpolator(new LinearInterpolator());
 		animator.addUpdateListener(new AnimatorUpdateListener()
 		{
 			@Override
