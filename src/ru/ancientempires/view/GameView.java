@@ -214,7 +214,7 @@ public class GameView extends FrameLayout
 			}
 		}
 		if (isAction)
-			GameView.this.gameViewAction.update();
+			this.gameViewAction.update();
 		
 		invalidate();
 	}

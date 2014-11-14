@@ -1,5 +1,6 @@
 package ru.ancientempires.view;
 
+import ru.ancientempires.AbstractActionAsyncTask;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
@@ -72,11 +73,29 @@ public class GameViewAction extends GameViewPart
 	@Override
 	public boolean update()
 	{
-		final Action action = new Action(ActionType.GET_ACTIONS);
-		action.setProperty("i", this.gameView.lastTapI);
-		action.setProperty("j", this.gameView.lastTapJ);
-		
-		final ActionResult result = Client.action(action);
+		new AbstractActionAsyncTask()
+		{
+			@Override
+			protected ActionResult doInBackground(Action... params)
+			{
+				final Action action = new Action(ActionType.GET_ACTIONS);
+				action.setProperty("i", GameViewAction.this.gameView.lastTapI);
+				action.setProperty("j", GameViewAction.this.gameView.lastTapJ);
+				
+				return Client.action(action);
+			}
+			
+			@Override
+			protected void onPostExecute(ActionResult result)
+			{
+				updateAsync(result);
+			}
+		}.execute();
+		return true;
+	}
+	
+	public void updateAsync(ActionResult result)
+	{
 		final ActionType[] actionTypes = (ActionType[]) result.getProperty("actions");
 		this.amount = actionTypes.length;
 		
@@ -91,7 +110,6 @@ public class GameViewAction extends GameViewPart
 			actionBitmaps[i] = actionBitmap;
 		}
 		updateActionBitmapsState(actionBitmaps, actionTypes);
-		return true;
 	}
 	
 	public void updateActionBitmapsState(Bitmap[] actionBitmaps, ActionType[] actionTypes)

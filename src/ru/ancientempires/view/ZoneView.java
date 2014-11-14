@@ -20,7 +20,6 @@ public class ZoneView extends View
 	{
 		super(context);
 		setWillNotDraw(false);
-		// setVisibility(View.GONE);
 		setZone(new boolean[0][0]);
 		
 		this.circlePaint = new Paint();
