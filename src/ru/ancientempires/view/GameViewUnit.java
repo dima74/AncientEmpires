@@ -474,20 +474,23 @@ public class GameViewUnit extends GameViewPart
 		canvas.drawBitmap(bitmapUnit, x, y, null);
 		
 		final int health = Math.round(unit.health * 100);
-		final int one = health / 10;
-		final int two = health % 10;
-		
-		final int textX = x;
-		final int textY = y + GameView.baseH - NumberImages.height;
-		
-		final Bitmap bitmapOne = NumberImages.getNumberBitmap(one);
-		final Bitmap bitmapTwo = NumberImages.getNumberBitmap(two);
-		if (one == 0)
-			canvas.drawBitmap(bitmapTwo, textX, textY, null);
-		else
+		if (health < 100)
 		{
-			canvas.drawBitmap(bitmapOne, textX, textY, null);
-			canvas.drawBitmap(bitmapTwo, textX + NumberImages.width, textY, null);
+			final int one = health / 10;
+			final int two = health % 10;
+			
+			final int textX = x;
+			final int textY = y + GameView.baseH - NumberImages.height;
+			
+			final Bitmap bitmapOne = NumberImages.getNumberBitmap(one);
+			final Bitmap bitmapTwo = NumberImages.getNumberBitmap(two);
+			if (one == 0)
+				canvas.drawBitmap(bitmapTwo, textX, textY, null);
+			else
+			{
+				canvas.drawBitmap(bitmapOne, textX, textY, null);
+				canvas.drawBitmap(bitmapTwo, textX + NumberImages.width, textY, null);
+			}
 		}
 	}
 	

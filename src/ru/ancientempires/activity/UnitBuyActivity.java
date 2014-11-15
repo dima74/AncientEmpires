@@ -123,7 +123,7 @@ public class UnitBuyActivity extends Activity
 		}
 		
 		public PlaceholderFragment()
-		{
+		{	
 			
 		}
 		
@@ -137,8 +137,12 @@ public class UnitBuyActivity extends Activity
 			this.unitType = UnitType.getType(sectionNumber - 1);
 			
 			View rootView = inflater.inflate(R.layout.fragment_unit_buy, container, false);
-			TextView textView = (TextView) rootView.findViewById(R.id.textView);
-			textView.setText(this.unitType.name);
+			PlaceholderFragment.setText(rootView, R.id.textViewName, this.unitType.name);
+			PlaceholderFragment.setText(rootView, R.id.textViewCost, this.unitType.cost);
+			PlaceholderFragment.setText(rootView, R.id.textViewAttack,
+					this.unitType.baseAttackMin + "-" + this.unitType.baseAttackMax);
+			PlaceholderFragment.setText(rootView, R.id.textViewDefence, this.unitType.baseDefence);
+			PlaceholderFragment.setText(rootView, R.id.textViewWay, this.unitType.baseMaxWay);
 			
 			Button buttonCampaign = (Button) rootView.findViewById(R.id.button_buy);
 			RippleDrawable.createRipple(buttonCampaign, 0xff00ffff);
@@ -152,6 +156,11 @@ public class UnitBuyActivity extends Activity
 			});
 			
 			return rootView;
+		}
+		
+		private static void setText(View rootView, int id, Object text)
+		{
+			((TextView) rootView.findViewById(id)).setText(text.toString());
 		}
 		
 		protected void performAction()

@@ -16,11 +16,93 @@
 		android:text="@string/action_buy" />
 
 	<TextView
-		android:id="@+id/textView"
+		android:id="@+id/textViewName"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_centerVertical="true"
+		android:layout_alignParentTop="true"
+		android:layout_alignStart="@+id/button_buy"
+		android:layout_marginTop="20dp"
+		android:text="Name"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+		android:id="@+id/textViewCostTitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignStart="@+id/textViewName"
+		android:layout_below="@+id/textViewName"
+		android:layout_marginTop="40dp"
+		android:text="@string/textview_title_cost"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewCost"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/textViewCostTitle"
+		android:layout_alignBottom="@+id/textViewCostTitle"
+		android:layout_centerHorizontal="true"
+		android:text="150"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewAttackTitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignStart="@+id/textViewName"
+		android:layout_below="@+id/textViewName"
+		android:layout_marginTop="80dp"
+		android:text="@string/textview_title_attack"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewAttack"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/textViewAttackTitle"
+		android:layout_alignBottom="@+id/textViewAttackTitle"
+		android:layout_centerHorizontal="true"
+		android:text="50-55"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewDefenceTitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignStart="@+id/textViewName"
+		android:layout_below="@+id/textViewName"
+		android:layout_marginTop="120dp"
+		android:text="@string/textview_title_defence"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewDefence"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/textViewDefenceTitle"
+		android:layout_alignBottom="@+id/textViewDefenceTitle"
+		android:layout_centerHorizontal="true"
+		android:text="5"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewWayTitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignStart="@+id/textViewName"
+		android:layout_below="@+id/textViewName"
+		android:layout_marginTop="160dp"
+		android:text="@string/textview_title_way"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+		android:id="@+id/textViewWay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/textViewWayTitle"
+		android:layout_alignBottom="@+id/textViewWayTitle"
+		android:layout_centerHorizontal="true"
+		android:text="5"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
