@@ -30,7 +30,7 @@ public class GameViewUnit extends GameViewPart
 	{
 		super(context, gameView);
 		GameViewUnit.LINE_PAINT.setStrokeWidth(GameView.baseH / 3);
-		GameViewUnit.LINE_PAINT.setColor(0xffe10052);
+		GameViewUnit.LINE_PAINT.setColor(0xFFE10052);
 	}
 	
 	private static SomeWithBitmaps	cursorWay		= new SomeWithBitmaps();
@@ -261,7 +261,7 @@ public class GameViewUnit extends GameViewPart
 		zoneView.isInverse = false;
 		zoneView.setRadius(this.radius).setZone(field);
 		zoneView.startAnimate();
-		updateOffset();
+		setZoneViewOffset();
 	}
 	
 	@Override
@@ -364,11 +364,10 @@ public class GameViewUnit extends GameViewPart
 		invalidate();
 	}
 	
-	@Override
-	public void updateOffset()
+	public void setZoneViewOffset()
 	{
-		int y = this.gameView.offsetY + (this.lastUnitI - this.radius) * GameView.baseH;
-		int x = this.gameView.offsetX + (this.lastUnitJ - this.radius) * GameView.baseW;
+		final int y = this.gameView.offsetY + (this.lastUnitI - this.radius) * GameView.baseH;
+		final int x = this.gameView.offsetX + (this.lastUnitJ - this.radius) * GameView.baseW;
 		if (this.isWayVisible)
 		{
 			this.wayView.setY(y);
@@ -433,7 +432,7 @@ public class GameViewUnit extends GameViewPart
 	
 	protected void updateUnitWay(float value)
 	{
-		int i = (int) value;
+		final int i = (int) value;
 		value -= i;
 		this.wayUnitY = this.wayYs[i + 1] * value + this.wayYs[i] * (1 - value);
 		this.wayUnitX = this.wayXs[i + 1] * value + this.wayXs[i] * (1 - value);
@@ -443,7 +442,7 @@ public class GameViewUnit extends GameViewPart
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
+		// canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
 		// юниты
 		for (int i = 0; i < this.fieldH; i++)
 			for (int j = 0; j < this.fieldW; j++)
@@ -476,20 +475,17 @@ public class GameViewUnit extends GameViewPart
 		final int health = Math.round(unit.health * 100);
 		if (health < 100)
 		{
-			final int one = health / 10;
-			final int two = health % 10;
-			
 			final int textX = x;
-			final int textY = y + GameView.baseH - NumberImages.height;
+			final int textY = y + GameView.baseH - NumberImages.h;
 			
-			final Bitmap bitmapOne = NumberImages.getNumberBitmap(one);
-			final Bitmap bitmapTwo = NumberImages.getNumberBitmap(two);
-			if (one == 0)
+			final Bitmap bitmapOne = NumberImages.getNumberBitmap(health / 10);
+			final Bitmap bitmapTwo = NumberImages.getNumberBitmap(health % 10);
+			if (health / 10 == 0)
 				canvas.drawBitmap(bitmapTwo, textX, textY, null);
 			else
 			{
 				canvas.drawBitmap(bitmapOne, textX, textY, null);
-				canvas.drawBitmap(bitmapTwo, textX + NumberImages.width, textY, null);
+				canvas.drawBitmap(bitmapTwo, textX + NumberImages.w, textY, null);
 			}
 		}
 	}

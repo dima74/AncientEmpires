@@ -9,11 +9,13 @@ import android.graphics.Bitmap;
 public class NumberImages
 {
 	
-	public static final int	amountNumbers	= 10;
-	private static Bitmap[]	numberBitmaps	= new Bitmap[NumberImages.amountNumbers];
+	public static final int			amountNumbers	= 10;
+	private static final Bitmap[]	numberBitmaps	= new Bitmap[NumberImages.amountNumbers];
+	public static Bitmap			minusBitmap;
+	public static Bitmap			defenceBitmap;
 	
-	public static int		height;
-	public static int		width;
+	public static int				h;
+	public static int				w;
 	
 	public static Bitmap getNumberBitmap(int number)
 	{
@@ -23,8 +25,12 @@ public class NumberImages
 	public static void preloadResources(ZipFile imagesZipFile) throws IOException
 	{
 		for (int i = 0; i < NumberImages.amountNumbers; i++)
-			NumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(imagesZipFile, "numbers/" + i + ".png");
-		NumberImages.height = NumberImages.numberBitmaps[0].getHeight();
-		NumberImages.width = NumberImages.numberBitmaps[0].getWidth();
+			NumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(
+					imagesZipFile, "numbers/" + i + ".png");
+		NumberImages.minusBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, "numbers/-.png");
+		NumberImages.defenceBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, "numbers/11.png");
+		NumberImages.h = NumberImages.numberBitmaps[0].getHeight();
+		NumberImages.w = NumberImages.numberBitmaps[0].getWidth();
 	}
+	
 }

@@ -45,7 +45,7 @@ public class GameViewCell extends GameViewPart
 		for (int i = this.h - 1 - (this.isDual ? 1 : 0); i >= 0; i--)
 			for (int j = this.w - 1; j >= 0; j--)
 			{
-				Cell cell = this.isDual ? this.field[i + 1][j] : this.field[i][j];
+				Cell cell = this.field[i + (this.isDual ? 1 : 0)][j];
 				this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
 			}
 		invalidate();
@@ -55,7 +55,7 @@ public class GameViewCell extends GameViewPart
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
+		// canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
 		// карта
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)

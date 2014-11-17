@@ -51,25 +51,28 @@ public class GameViewCursor extends GameViewPart
 		GameViewCursor.cursorAttackW = GameViewCursor.cursorPointerAttack.getBitmap().getWidth();
 	}
 	
-	private GameViewUnit	gameViewUnit;
-	
-	public GameViewCursor setGameViewUnit(GameViewUnit gameViewUnit)
-	{
-		this.gameViewUnit = gameViewUnit;
-		return this;
-	}
-	
 	private boolean	isCursorVisible			= false;
 	private boolean	isCursorWayVisible		= false;
 	private boolean	isCursorAttackVisible	= false;
-	private int		cursorI;
-	private int		cursorJ;
+	private float	cursorY;
+	private float	cursorX;
+	private float	cursorWayY;
+	private float	cursorWayX;
+	private float	cursorAttackY;
+	private float	cursorAttackX;
 	
 	@Override
 	public boolean update()
 	{
-		this.cursorI = this.gameView.lastTapI;
-		this.cursorJ = this.gameView.lastTapJ;
+		final float y = GameView.baseH * this.gameView.lastTapI;
+		final float x = GameView.baseW * this.gameView.lastTapJ;
+		this.cursorY = y - GameViewCursor.cursorH / 2;
+		this.cursorX = x - GameViewCursor.cursorW / 2;
+		this.cursorWayY = y - GameViewCursor.cursorWayH / 2;
+		this.cursorWayX = x - GameViewCursor.cursorWayW / 2;
+		this.cursorAttackY = y - GameViewCursor.cursorAttackH / 2;
+		this.cursorAttackX = x - GameViewCursor.cursorAttackW / 2;
+		
 		this.isCursorVisible = true;
 		invalidate();
 		return false;
@@ -103,30 +106,24 @@ public class GameViewCursor extends GameViewPart
 	protected void onDraw(Canvas canvas)
 	{
 		// рисуем курсор (если есть)
-		canvas.translate(
-				this.gameView.offsetX + GameView.baseH / 2,
-				this.gameView.offsetY + GameView.baseW / 2);
-		
+		// canvas.translate(
+		// this.gameView.offsetX + GameView.baseH / 2,
+		// this.gameView.offsetY + GameView.baseW / 2);
+		canvas.translate(GameView.baseH / 2, GameView.baseW / 2);
 		if (this.isCursorWayVisible)
 		{
 			final Bitmap bitmap = GameViewCursor.cursorPointerWay.getBitmap();
-			final int y = GameView.baseH * this.cursorI - GameViewCursor.cursorWayH / 2;
-			final int x = GameView.baseW * this.cursorJ - GameViewCursor.cursorWayW / 2;
-			canvas.drawBitmap(bitmap, x, y, null);
+			canvas.drawBitmap(bitmap, this.cursorX, this.cursorY, null);
 		}
 		if (this.isCursorAttackVisible)
 		{
 			final Bitmap bitmap = GameViewCursor.cursorPointerAttack.getBitmap();
-			final int y = GameView.baseH * this.cursorI - GameViewCursor.cursorAttackH / 2;
-			final int x = GameView.baseW * this.cursorJ - GameViewCursor.cursorAttackW / 2;
-			canvas.drawBitmap(bitmap, x, y, null);
+			canvas.drawBitmap(bitmap, this.cursorAttackX, this.cursorAttackY, null);
 		}
 		if (this.isCursorVisible && !this.isCursorAttackVisible)
 		{
 			final Bitmap bitmap = GameViewCursor.cursor.getBitmap();
-			final int y = GameView.baseH * this.cursorI - GameViewCursor.cursorH / 2;
-			final int x = GameView.baseW * this.cursorJ - GameViewCursor.cursorW / 2;
-			canvas.drawBitmap(bitmap, x, y, null);
+			canvas.drawBitmap(bitmap, this.cursorX, this.cursorY, null);
 		}
 	}
 	

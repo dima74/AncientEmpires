@@ -15,11 +15,12 @@ import android.widget.FrameLayout.LayoutParams;
 
 public class ZoneView extends View
 {
+	protected GameView	gameView;
 	
-	public ZoneView(Context context)
+	public ZoneView(Context context, GameView gameView)
 	{
 		super(context);
-		setWillNotDraw(false);
+		this.gameView = gameView;
 		setZone(new boolean[0][0]);
 		
 		this.circlePaint = new Paint();
@@ -31,7 +32,15 @@ public class ZoneView extends View
 	}
 	
 	private final Paint	circlePaint;
+	
 	private Bitmap		bitmap;
+	
+	public ZoneView setBitmap(Bitmap bitmap)
+	{
+		this.bitmap = bitmap;
+		return this;
+	}
+	
 	private int			amount;
 	private boolean[][]	zone;
 	
@@ -39,12 +48,6 @@ public class ZoneView extends View
 	private int			radiusEnd;
 	
 	public boolean		isInverse	= false;
-	
-	public ZoneView setBitmap(Bitmap bitmap)
-	{
-		this.bitmap = bitmap;
-		return this;
-	}
 	
 	public ZoneView setRadius(int amount)
 	{
@@ -85,7 +88,6 @@ public class ZoneView extends View
 			}
 		});
 		animator.start();
-		
 		return this;
 	}
 	
@@ -100,4 +102,5 @@ public class ZoneView extends View
 		canvas.translate(this.radiusEnd, this.radiusEnd);
 		canvas.drawCircle(0, 0, this.radiusEnd, this.circlePaint);
 	}
+	
 }

@@ -50,10 +50,9 @@ public class ActionImages
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-		{
-			Bitmap bitmap = BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 4, 4);
-			ActionImages.actionBitmaps.put(actionTypes[i], bitmap);
-		}
+			// /Bitmap bitmap = BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 4, 4);
+			ActionImages.actionBitmaps.put(actionTypes[i],
+					BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 3, 3));
 	}
 	
 	// Это слишком сложный способ

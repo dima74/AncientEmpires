@@ -1,20 +1,17 @@
 package ru.ancientempires.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Map;
 import ru.ancientempires.model.UnitType;
 import android.content.Context;
 import android.content.res.Resources;
@@ -45,34 +42,35 @@ public class GameView extends FrameLayout
 		GameViewAction.initResources();
 	}
 	
-	public GameActivity				gameActivity;
+	public GameActivity		gameActivity;
 	
 	// Модель игры
-	private Client					client			= Client.getClient();
-	private Game					game			= this.client.getGame();
+	private final Client	client			= Client.getClient();
+	private final Game		game			= this.client.getGame();
 	
 	// Отображение игры
-	private ArrayList<GameViewPart>	gameViewParts	= new ArrayList<GameViewPart>();
-	private GameViewPart			gameViewCell;
-	private ZoneView				wayZoneView;
-	private ZoneView				attackZoneView;
-	private GameViewPart			gameViewCellDual;
-	private GameViewUnit			gameViewUnit;
-	private GameViewPart			gameViewAction;
-	public GameViewCursor			gameViewCursor;
+	// private ArrayList<GameViewPart> gameViewParts = new ArrayList<GameViewPart>();
+	private GameViewPart	gameViewCell;
+	private ZoneView		zoneViewWay;
+	private ZoneView		zoneViewAttack;
+	private GameViewPart	gameViewCellDual;
+	private GameViewUnit	gameViewUnit;
+	private GameViewPart	gameViewAction;
+	private GameViewInfo	gameViewInfo;
+	public GameViewCursor	gameViewCursor;
 	
-	private GestureDetector			gestureDetector;
-	private Timer					timer;
-	private Handler					updateHandler;
+	private GestureDetector	gestureDetector;
+	private Timer			timer;
+	private Handler			updateHandler;
 	
-	public int						offsetX			= 0;
-	public int						offsetY			= 0;
+	public int				offsetY			= 0;
+	public int				offsetX			= 0;
 	
-	public int						lastTapI;
-	public int						lastTapJ;
+	public int				lastTapI;
+	public int				lastTapJ;
 	
-	public boolean					isWayVisible	= false;
-	public boolean					isAttackVisible	= false;
+	public boolean			isWayVisible	= false;
+	public boolean			isAttackVisible	= false;
 	
 	public GameView(Context context)
 	{
@@ -83,33 +81,36 @@ public class GameView extends FrameLayout
 		
 		this.gameViewCell = new GameViewCell(getContext(), this)
 				.setDual(false).setField(this.game.map.getField());
-		this.wayZoneView = new ZoneView(getContext());
-		this.attackZoneView = new ZoneView(getContext());
+		this.zoneViewWay = new ZoneView(getContext(), this);
+		this.zoneViewAttack = new ZoneView(getContext(), this);
 		this.gameViewCellDual = new GameViewCell(getContext(), this)
 				.setDual(true).setField(this.game.map.getField());
 		
 		this.gameViewUnit = new GameViewUnit(getContext(), this)
 				.setField(this.game.fieldUnits)
-				.setWayView(this.wayZoneView)
-				.setAttackView(this.attackZoneView);
-		this.gameViewCursor = new GameViewCursor(getContext(), this)
-				.setGameViewUnit(this.gameViewUnit);
+				.setWayView(this.zoneViewWay)
+				.setAttackView(this.zoneViewAttack);
+		this.gameViewCursor = new GameViewCursor(getContext(), this);
 		this.gameViewAction = new GameViewAction(getContext(), this);
+		this.gameViewInfo = new GameViewInfo(getContext(), this).setField(this.game.map.getField())
+				.updateGradient(this.game.currentPlayer.color);
 		
 		this.gameViewUnit.setGameViewCursor(this.gameViewCursor);
 		
 		addView(this.gameViewCell);
-		addView(this.wayZoneView);
-		addView(this.attackZoneView);
+		addView(this.zoneViewWay);
+		addView(this.zoneViewAttack);
 		addView(this.gameViewCellDual);
 		addView(this.gameViewUnit);
 		addView(this.gameViewCursor);
 		addView(this.gameViewAction);
+		addView(this.gameViewInfo);
 		
-		this.gameViewParts.add(this.gameViewCell);
-		this.gameViewParts.add(this.gameViewUnit);
-		this.gameViewParts.add(this.gameViewCursor);
-		this.gameViewParts.add(this.gameViewCellDual);
+		LayoutParams layoutParams = new LayoutParams(
+				this.game.map.getW() * GameView.baseW, this.game.map.getH() * GameView.baseH);
+		this.gameViewCell.setLayoutParams(layoutParams);
+		this.gameViewUnit.setLayoutParams(layoutParams);
+		this.gameViewCellDual.setLayoutParams(layoutParams);
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
@@ -122,21 +123,13 @@ public class GameView extends FrameLayout
 			@Override
 			public boolean onSingleTapUp(MotionEvent event)
 			{
-				Log.d("AE", "up");
+				final float y = event.getY() - GameView.this.offsetY;
+				final float x = event.getX() - GameView.this.offsetX;
 				
-				float y = event.getY() - GameView.this.offsetY;
-				float x = event.getX() - GameView.this.offsetX;
+				final int i = (int) y / GameView.baseH - (y < 0 ? 1 : 0);
+				final int j = (int) x / GameView.baseW - (x < 0 ? 1 : 0);
 				
-				int i = (int) y / GameView.baseH;
-				int j = (int) x / GameView.baseW;
-				
-				if (y < 0)
-					i--;
-				if (x < 0)
-					j--;
-				
-				tap(i, j);
-				return true;
+				return tap(i, j);
 			}
 			
 			@Override
@@ -144,9 +137,7 @@ public class GameView extends FrameLayout
 			{
 				GameView.this.offsetY -= distanceY;
 				GameView.this.offsetX -= distanceX;
-				
 				updateOffset();
-				
 				return true;
 			}
 		});
@@ -170,53 +161,43 @@ public class GameView extends FrameLayout
 				GameView.this.updateHandler.sendMessage(new Message());
 			}
 		}, 0, GameView.DELAY_BETWEEN_UPDATES);
-		
 	}
 	
 	private void updateOffset()
 	{
-		for (GameViewPart gameViewPart : this.gameViewParts)
-		{
-			gameViewPart.updateOffset();
-			gameViewPart.invalidate();
-		}
+		this.gameViewCell.setY(this.offsetY);
+		this.gameViewCell.setX(this.offsetX);
+		this.gameViewUnit.setY(this.offsetY);
+		this.gameViewUnit.setX(this.offsetX);
+		this.gameViewCellDual.setY(this.offsetY);
+		this.gameViewCellDual.setX(this.offsetX);
+		this.gameViewCursor.setY(this.offsetY);
+		this.gameViewCursor.setX(this.offsetX);
+		this.gameViewUnit.setZoneViewOffset();
 	}
 	
 	private void updateCells()
 	{
 		SomeWithBitmaps.ordinal++;
-		for (GameViewPart gameViewPart : this.gameViewParts)
-			gameViewPart.invalidate();
-		invalidate();
+		this.gameViewUnit.invalidate();
+		this.gameViewCursor.invalidate();
 	}
 	
-	private void tap(int i, int j)
+	private boolean tap(int i, int j)
 	{
 		if (i == this.lastTapI && j == this.lastTapJ)
-			return;
+			return false;
 		
 		this.lastTapI = i;
 		this.lastTapJ = j;
 		
-		final Map map = this.game.map;
+		if (!this.game.map.validateCoord(i, j))
+			return false;
 		
-		if (!map.validateCoord(i, j))
-			return;
-		
-		boolean isAction = true;
-		for (int k = this.gameViewParts.size() - 1; k >= 0; k--)
-		{
-			GameViewPart gameViewPart = this.gameViewParts.get(k);
-			if (gameViewPart.update())
-			{
-				isAction = false;
-				break;
-			}
-		}
-		if (isAction)
-			this.gameViewAction.update();
-		
-		invalidate();
+		return this.gameViewInfo.update()
+			|| this.gameViewCursor.update()
+			|| this.gameViewUnit.update()
+			|| this.gameViewAction.update();
 	}
 	
 	public void performAction(ActionType actionType)
@@ -238,7 +219,7 @@ public class GameView extends FrameLayout
 			Action action = new Action(actionType);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
-			ActionResult actionResult = Client.action(action);
+			Client.action(action);
 			
 			isAction = this.gameViewCell.update() || this.gameViewUnit.performAction(actionType);
 		}
@@ -255,10 +236,10 @@ public class GameView extends FrameLayout
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{
 			Action action = new Action(actionType);
-			ActionResult actionResult = Client.action(action);
+			Client.action(action);
 			
 			isAction = this.gameViewUnit.performAction(actionType);
-			
+			this.gameViewInfo.updateGradient(this.game.currentPlayer.color);
 			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
 		else
@@ -287,13 +268,9 @@ public class GameView extends FrameLayout
 	{
 		Log.d("AE", "" + e.getAction());
 		if (this.gestureDetector.onTouchEvent(e))
-		{
-			invalidate();
 			return true;
-		}
 		else
 			return performClick();
-		// else return super.onTouchEvent(e);
 	}
 	
 	// TODO разобраться что это такое
@@ -309,11 +286,16 @@ public class GameView extends FrameLayout
 	{
 		super.onSizeChanged(w, h, oldw, oldh);
 		
-		int actionRectH = (int) (0.2f * h);
-		this.gameViewAction.setY(h - actionRectH);
+		int rectH = (int) (GameView.baseH * 4 / 3.0);
+		this.gameViewAction.setY(h - rectH);
 		this.gameViewAction.setX(0);
-		LayoutParams actionViewLayoutParams = new LayoutParams(w, actionRectH);
-		this.gameViewAction.setLayoutParams(actionViewLayoutParams);
+		LayoutParams layoutParamsAction = new LayoutParams(w, rectH);
+		this.gameViewAction.setLayoutParams(layoutParamsAction);
+		
+		this.gameViewInfo.setY(0);
+		this.gameViewInfo.setX(0);
+		LayoutParams layoutParamsInfo = new LayoutParams(w, rectH);
+		this.gameViewInfo.setLayoutParams(layoutParamsInfo);
 	}
 	
 }
