@@ -1,18 +1,29 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.nio.IntBuffer;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.helpers.ArrayHelper;
-import ru.ancientempires.helpers.ColorHelper;
-import ru.ancientempires.helpers.ZIPHelper;
+import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.model.Game;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class Images
 {
+	
+	public static Bitmap	amountGold;
+	public static Bitmap	amountUnits;
+	public static Bitmap	arrowStrange;
+	public static Bitmap	arrowIncrease;
+	public static Bitmap	arrowDecrease;
+	public static Bitmap	attack;
+	public static Bitmap	defence;
+	public static Bitmap	levelIncrease;
+	public static Bitmap	levelUp;
+	
+	public static int		amountGoldH;
+	public static int		amountGoldW;
+	public static int		amountUnitsH;
+	public static int		amountUnitsW;
 	
 	public static void preloadResources(ZipFile imagesZipFile) throws IOException
 	{
@@ -20,6 +31,8 @@ public class Images
 		UnitImages.preloadResources(imagesZipFile);
 		ActionImages.preloadResources(imagesZipFile);
 		NumberImages.preloadResources(imagesZipFile);
+		BigNumberImages.preloadResources(imagesZipFile);
+		Images.preloadSelfResources(imagesZipFile);
 	}
 	
 	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
@@ -28,29 +41,22 @@ public class Images
 		UnitImages.loadResources(imagesZipFile, game);
 	}
 	
-	public static int[][] getMatrixDataImage(ZipFile imagesZipFile, String path) throws IOException
+	private static void preloadSelfResources(ZipFile imagesZipFile) throws IOException
 	{
-		Bitmap bitmap = BitmapFactory.decodeStream(ZIPHelper.getIS(imagesZipFile, path));
+		Images.amountGold = BitmapHelper.getResizeBitmap(imagesZipFile, "amountGold.png");
+		Images.amountUnits = BitmapHelper.getResizeBitmap(imagesZipFile, "amountUnits.png");
+		Images.arrowStrange = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowStrange.png");
+		Images.arrowIncrease = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowIncrease.png");
+		Images.arrowDecrease = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowDecrease.png");
+		Images.attack = BitmapHelper.getResizeBitmap(imagesZipFile, "attack.png");
+		Images.defence = BitmapHelper.getResizeBitmap(imagesZipFile, "defence.png");
+		Images.levelIncrease = BitmapHelper.getResizeBitmap(imagesZipFile, "levelIncrease.png");
+		Images.levelUp = BitmapHelper.getResizeBitmap(imagesZipFile, "levelUp.png");
 		
-		int height = bitmap.getHeight();
-		int width = bitmap.getWidth();
-		IntBuffer buffer = IntBuffer.allocate(height * width);
-		bitmap.copyPixelsToBuffer(buffer);
-		int[] dataArray = buffer.array();
-		
-		int[][] data = ArrayHelper.getMatrixFromArray(dataArray, height, width);
-		
-		// TODO если вот тут BitmapFactory.decodeStream в Options поставить inPreMultiPlied (API 19) в false, то вроде можно без костыля
-		Images.costil(data);
-		
-		return data;
-	}
-	
-	private static void costil(int[][] data)
-	{
-		for (int i = 0; i < data.length; i++)
-			for (int j = 0; j < data[0].length; j++)
-				data[i][j] = ColorHelper.toNormalColor(data[i][j]);
+		Images.amountGoldH = Images.amountGold.getHeight();
+		Images.amountGoldW = Images.amountGold.getWidth();
+		Images.amountUnitsH = Images.amountUnits.getHeight();
+		Images.amountUnitsW = Images.amountUnits.getWidth();
 	}
 	
 }

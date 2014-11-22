@@ -3,7 +3,6 @@ package ru.ancientempires.helpers;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -60,11 +59,8 @@ public class BitmapHelper
 			GameView.baseW = bitmapWidth;
 		}
 		else if (GameView.baseH != bitmapHeight || GameView.baseW != bitmapWidth)
-		{
 			// какая-нибудь норм обработка ошибки тут.
 			assert true;
-			MyLog.log("wrong size");
-		}
 		
 		return bitmap;
 	}

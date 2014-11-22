@@ -22,13 +22,12 @@ public class NumberImages
 		return NumberImages.numberBitmaps[number];
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	public static void preloadResources(ZipFile images) throws IOException
 	{
 		for (int i = 0; i < NumberImages.amountNumbers; i++)
-			NumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(
-					imagesZipFile, "numbers/" + i + ".png");
-		NumberImages.minusBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, "numbers/-.png");
-		NumberImages.defenceBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, "numbers/11.png");
+			NumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, "numbers/" + i + ".png");
+		NumberImages.minusBitmap = BitmapHelper.getResizeBitmap(images, "numbers/-.png");
+		NumberImages.defenceBitmap = BitmapHelper.getResizeBitmap(images, "numbers/11.png");
 		NumberImages.h = NumberImages.numberBitmaps[0].getHeight();
 		NumberImages.w = NumberImages.numberBitmaps[0].getWidth();
 	}

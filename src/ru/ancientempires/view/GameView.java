@@ -93,7 +93,7 @@ public class GameView extends FrameLayout
 		this.gameViewCursor = new GameViewCursor(getContext(), this);
 		this.gameViewAction = new GameViewAction(getContext(), this);
 		this.gameViewInfo = new GameViewInfo(getContext(), this).setField(this.game.map.getField())
-				.updateGradient(this.game.currentPlayer.color);
+				.updatePlayer(this.game.currentPlayer);
 		
 		this.gameViewUnit.setGameViewCursor(this.gameViewCursor);
 		
@@ -204,7 +204,7 @@ public class GameView extends FrameLayout
 	{
 		boolean isAction;
 		
-		MyLog.log(actionType);
+		MyLog.l(actionType);
 		
 		this.isWayVisible = false;
 		this.isAttackVisible = false;
@@ -239,7 +239,7 @@ public class GameView extends FrameLayout
 			Client.action(action);
 			
 			isAction = this.gameViewUnit.performAction(actionType);
-			this.gameViewInfo.updateGradient(this.game.currentPlayer.color);
+			this.gameViewInfo.updatePlayer(this.game.currentPlayer);
 			Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
 		else

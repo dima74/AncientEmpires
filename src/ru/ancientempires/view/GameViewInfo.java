@@ -1,9 +1,12 @@
 package ru.ancientempires.view;
 
 import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.images.BigNumberImages;
 import ru.ancientempires.images.CellImages;
+import ru.ancientempires.images.Images;
 import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Player;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -33,6 +36,8 @@ public class GameViewInfo extends GameViewPart
 	private int					w;
 	private float				mW;
 	private int					color;
+	private int					gold;
+	private int					amountUnits;
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh)
@@ -84,9 +89,11 @@ public class GameViewInfo extends GameViewPart
 		canvas.drawRect(8 * this.a, 5 * this.a, w - 8 * this.a, h - 5 * this.a, GameViewInfo.color4);
 	}
 	
-	public GameViewInfo updateGradient(int color)
+	public GameViewInfo updatePlayer(Player player)
 	{
-		this.color = color;
+		this.color = player.color;
+		this.gold = player.gold;
+		this.amountUnits = player.units.size();
 		invalidate();
 		return this;
 	}
@@ -134,7 +141,7 @@ public class GameViewInfo extends GameViewPart
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
-		MyLog.log("GameViewInfo.onTouchEvent()");
+		MyLog.l("GameViewInfo.onTouchEvent()");
 		return performClick();
 	}
 	
@@ -158,12 +165,13 @@ public class GameViewInfo extends GameViewPart
 			int x = this.w - this.a * 4 - NumberImages.w;
 			final int y = this.h - this.a * 4 - NumberImages.h;
 			int defense = this.defense;
-			while (defense > 0)
+			do
 			{
 				canvas.drawBitmap(NumberImages.getNumberBitmap(defense % 10), x, y, null);
 				defense /= 10;
 				x -= NumberImages.w;
 			}
+			while (defense > 0);
 			canvas.drawBitmap(NumberImages.defenceBitmap, x, y, null);
 		}
 		
@@ -171,8 +179,7 @@ public class GameViewInfo extends GameViewPart
 		int amn = 8;
 		for (int i = 0; i < amn; i++)
 		{
-			GameViewInfo.paint.setColor(this.color & 0x00FFFFFF |
-				(int) (0xFF * (amn - i) / (amn + 0.0)) << 24);
+			GameViewInfo.paint.setColor(this.color & 0x00FFFFFF | 0xFF * (amn - i) / amn << 24);
 			
 			float y1 = (5 + i) * this.a;
 			float x1 = (i < 3 ? 8 : 5) * this.a;
@@ -181,5 +188,34 @@ public class GameViewInfo extends GameViewPart
 			for (int k = 0; k < this.a; k++)
 				canvas.drawLine(x1, y1 + k, x2, y2 + k, GameViewInfo.paint);
 		}
+		
+		int xGold = (int) (this.mW * .075f);
+		int xUnits = (int) (this.mW * .5f);
+		int yGold = (this.h - Images.amountGoldH) / 2;
+		int yUnits = (this.h - Images.amountUnitsH) / 2;
+		canvas.drawBitmap(Images.amountGold, xGold, this.a * 11, null);
+		canvas.drawBitmap(Images.amountUnits, xUnits, this.a * 11, null);
+		drawNumber(canvas, yGold + 1, xGold + Images.amountGoldW + this.a, this.gold);
+		drawNumber(canvas, yUnits, xUnits + Images.amountUnitsW + this.a, this.amountUnits);
 	}
+	
+	private void drawNumber(Canvas canvas, int y, int x, int n)
+	{
+		int amn = 0;
+		int copyN = n;
+		while (copyN > 0)
+		{
+			copyN /= 10;
+			amn++;
+		}
+		int i = 0;
+		while (n > 0)
+		{
+			i++;
+			canvas.drawBitmap(BigNumberImages.getBitmap(n % 10),
+					x + (amn - i) * BigNumberImages.w, y, null);
+			n /= 10;
+		}
+	}
+	
 }

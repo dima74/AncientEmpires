@@ -9,6 +9,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,9 @@ public class UnitBuyActivity extends Activity
 		// Set up the ViewPager with the sections adapter.
 		this.mViewPager = (ViewPager) findViewById(R.id.pager);
 		this.mViewPager.setAdapter(this.mSectionsPagerAdapter);
+		this.mViewPager.setCurrentItem(1);
 		
+		this.mSectionsPagerAdapter.setPager(this.mViewPager);
 	}
 	
 	@Override
@@ -74,6 +77,39 @@ public class UnitBuyActivity extends Activity
 	public class SectionsPagerAdapter extends FragmentPagerAdapter
 	{
 		
+		public ViewPager	pager;
+		
+		public void setPager(ViewPager pager)
+		{
+			this.pager = pager;
+			pager.setOnPageChangeListener(new OnPageChangeListener()
+			{
+				@Override
+				public void onPageSelected(int position)
+				{}
+				
+				@Override
+				public void onPageScrolled(int position, float positionOffset, int pixels)
+				{}
+				
+				@Override
+				public void onPageScrollStateChanged(int state)
+				{
+					if (state == ViewPager.SCROLL_STATE_IDLE)
+					{
+						int position = SectionsPagerAdapter.this.pager.getCurrentItem();
+						if (position > 0 && position < getCount() - 1)
+							return;
+						if (position == 0)
+							position = getCount() - 2;
+						else if (position == getCount() - 1)
+							position = 1;
+						SectionsPagerAdapter.this.pager.setCurrentItem(position, false);
+					}
+				}
+			});
+		}
+		
 		public SectionsPagerAdapter(FragmentManager fm)
 		{
 			super(fm);
@@ -84,13 +120,17 @@ public class UnitBuyActivity extends Activity
 		{
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class below).
-			return PlaceholderFragment.newInstance(position + 1);
+			if (position == 0)
+				position = getCount() - 2;
+			else if (position == getCount() - 1)
+				position = 1;
+			return PlaceholderFragment.newInstance(position - 1);
 		}
 		
 		@Override
 		public int getCount()
 		{
-			return UnitType.amount;
+			return UnitType.amount + 2;
 		}
 		
 		@Override
@@ -123,9 +163,7 @@ public class UnitBuyActivity extends Activity
 		}
 		
 		public PlaceholderFragment()
-		{	
-			
-		}
+		{}
 		
 		private UnitType	unitType;
 		
@@ -134,7 +172,7 @@ public class UnitBuyActivity extends Activity
 				Bundle savedInstanceState)
 		{
 			int sectionNumber = getArguments().getInt(PlaceholderFragment.ARG_SECTION_NUMBER);
-			this.unitType = UnitType.getType(sectionNumber - 1);
+			this.unitType = UnitType.getType(sectionNumber);
 			
 			View rootView = inflater.inflate(R.layout.fragment_unit_buy, container, false);
 			PlaceholderFragment.setText(rootView, R.id.textViewName, this.unitType.name);

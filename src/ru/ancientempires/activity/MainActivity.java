@@ -104,7 +104,7 @@ public class MainActivity extends Activity
 		if (this.isStartCampaign)
 			return;
 		this.isStartCampaign = true;
-		MyLog.log("MainActivity.startCampaign()");
+		MyLog.l("MainActivity.startCampaign()");
 		ProgressDialog progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage(getString(R.string.loading));
 		progressDialog.show();
