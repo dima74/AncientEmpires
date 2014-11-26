@@ -106,9 +106,6 @@ public class GameViewCursor extends GameViewPart
 	protected void onDraw(Canvas canvas)
 	{
 		// рисуем курсор (если есть)
-		// canvas.translate(
-		// this.gameView.offsetX + GameView.baseH / 2,
-		// this.gameView.offsetY + GameView.baseW / 2);
 		canvas.translate(GameView.baseH / 2, GameView.baseW / 2);
 		if (this.isCursorWayVisible)
 		{

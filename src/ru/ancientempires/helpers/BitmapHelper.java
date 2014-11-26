@@ -57,6 +57,8 @@ public class BitmapHelper
 			GameView.isBaseCellSizeDetermine = true;
 			GameView.baseH = bitmapHeight;
 			GameView.baseW = bitmapWidth;
+			GameView.A = bitmapHeight;
+			GameView.a = bitmapHeight / 24;
 		}
 		else if (GameView.baseH != bitmapHeight || GameView.baseW != bitmapWidth)
 			// какая-нибудь норм обработка ошибки тут.

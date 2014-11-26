@@ -74,6 +74,14 @@ public class GameViewUnit extends GameViewPart
 		return this;
 	}
 	
+	private AnimateAttackView	animateAttackView;
+	
+	public GameViewUnit setAnimateAttackView(AnimateAttackView view)
+	{
+		this.animateAttackView = view;
+		return this;
+	}
+	
 	private Unit[][]	field;
 	private int			fieldH;
 	private int			fieldW;
@@ -180,8 +188,8 @@ public class GameViewUnit extends GameViewPart
 					action.setProperty("attackingJ", this.lastUnitJ);
 					action.setProperty("attackedI", i);
 					action.setProperty("attackedJ", j);
-					Client.action(action);
-					
+					ActionResult result = Client.action(action);
+					this.animateAttackView.showAnimate(action, result);
 					invalidate();
 				}
 				hideAttack();
@@ -472,7 +480,7 @@ public class GameViewUnit extends GameViewPart
 		final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit);
 		canvas.drawBitmap(bitmapUnit, x, y, null);
 		
-		final int health = Math.round(unit.health * 100);
+		final int health = Math.round(unit.health);
 		if (health < 100)
 		{
 			final int textX = x;
