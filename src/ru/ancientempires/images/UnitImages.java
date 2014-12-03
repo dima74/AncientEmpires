@@ -31,14 +31,7 @@ public class UnitImages
 				UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal]).getBitmap();
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
-	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String unitsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "unit_images_folder_path");
-		UnitImages.preloadUnitsResources(imagesZipFile, unitsImagesFolderPath);
-	}
-	
-	private static void preloadUnitsResources(ZipFile imagesZipFile, String zipPath) throws IOException
+	public static void preloadResources(ZipFile imagesZipFile, String zipPath) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		NodeList colorTypes = infoDocument.getElementsByTagName("image");

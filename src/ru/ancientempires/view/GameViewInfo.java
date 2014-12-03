@@ -209,13 +209,14 @@ public class GameViewInfo extends GameViewPart
 			amn++;
 		}
 		int i = 0;
-		while (n > 0)
+		do
 		{
 			i++;
 			canvas.drawBitmap(BigNumberImages.getBitmap(n % 10),
 					x + (amn - i) * BigNumberImages.w, y, null);
 			n /= 10;
 		}
+		while (n > 0);
 	}
 	
 }

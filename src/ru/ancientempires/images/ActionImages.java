@@ -1,32 +1,25 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.ZipFile;
-
-import org.w3c.dom.Document;
 
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.XMLHelper;
 import android.graphics.Bitmap;
 
 public class ActionImages
 {
 	
-	private static Map<ActionType, Bitmap>	actionBitmaps	= new HashMap<ActionType, Bitmap>();
+	private static Bitmap[]	actionBitmaps;
 	
 	public static Bitmap getActionBitmap(ActionType type)
 	{
-		return ActionImages.actionBitmaps.get(type);
+		return ActionImages.actionBitmaps[type.ordinal];
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	public static void preloadResources(ZipFile imagesZipFile, String path) throws IOException
 	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String imagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "actions_images_folder_path");
-		
+		ActionImages.actionBitmaps = new Bitmap[ActionType.amount];
 		String[] actionImageNames = new String[]
 		{
 				"action_cell_buy.png",
@@ -50,53 +43,8 @@ public class ActionImages
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-			// /Bitmap bitmap = BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 4, 4);
-			ActionImages.actionBitmaps.put(actionTypes[i],
-					BitmapHelper.getMultiBitmap(imagesZipFile, imagesFolderPath + actionImageNames[i], 3, 3));
+			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.
+					getMultiBitmap(imagesZipFile, path + actionImageNames[i], 3, 3);
 	}
-	
-	// Это слишком сложный способ
-	/*
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
-	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String imagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "actions_images_folder_path");
-		
-		ActionImages.actionsBitmaps = new Bitmap[ActionType.userAmount];
-		int k = 0;
-		ActionType[] types = ActionType.types;
-		for (ActionType type : types)
-			if (type.user)
-			{
-				Bitmap bitmap = BitmapHelper.getBitmap(imagesZipFile, imagesFolderPath+type.????);
-				ActionImages.actionsBitmaps[k] = bitmap;
-				k++;
-			}
-	}
-	*/
-	
-	// А это ещё сложней
-	/*
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
-	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String imagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "actions_images_folder_path");
-		ActionImages.preloadActionsResources(imagesZipFile, imagesFolderPath);
-	}
-	
-	private static void preloadActionsResources(ZipFile imagesZipFile, String zipPath) throws IOException
-	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		Node imagesNode = XMLHelper.getOneNode(infoDocument, "action_images");
-		Map<String, String> imagesMap = XMLHelper.getMapFromNode(imagesNode, "type", "image", "action_image");
-		
-		ActionImages.actionsBitmaps = new Bitmap[ActionType.userAmount];
-		MyAssert.a(imagesMap.entrySet().size() == ActionType.userAmount);
-		for (Entry<String, String> entry : imagesMap.entrySet())
-		{
-			String type=entry.getKey();
-		}
-	}
-	*/
 	
 }

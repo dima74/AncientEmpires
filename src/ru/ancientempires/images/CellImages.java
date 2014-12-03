@@ -37,16 +37,9 @@ public class CellImages
 				cellBitmap.getBitmap(cell);
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	public static void preloadResources(ZipFile imagesZipFile, String path) throws IOException
 	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String cellsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "cell_images_folder_path");
-		CellImages.preloadCellsResources(imagesZipFile, cellsImagesFolderPath);
-	}
-	
-	private static void preloadCellsResources(ZipFile imagesZipFile, String zipPath) throws IOException
-	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
+		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, path + "info.xml");
 		NodeList images = infoDocument.getElementsByTagName("image");
 		
 		String defaultImagesFolder = XMLHelper.getOneNode(infoDocument, "default_images_folder").getTextContent();
@@ -65,19 +58,19 @@ public class CellImages
 			
 			CellBitmap cellBitmap = new CellBitmap();
 			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageName);
+			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + defaultImagesFolder + imageName);
 			
 			if ("true".equals(XMLHelper.getNodeAttributesMap(node).get("isDual")))
 			{
 				cellBitmap.isDual = true;
 				CellBitmap cellBitmapDual = new CellBitmap();
 				String imageNameDual = XMLHelper.getNodeAttributeValue(node, "imageDual");
-				cellBitmapDual.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + defaultImagesFolder + imageNameDual);
+				cellBitmapDual.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + defaultImagesFolder + imageNameDual);
 				CellImages.cellBitmapsDual[i] = cellBitmapDual;
 			}
 			
 			if (type.isDestroying)
-				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + destroyingImagesFolder + imageName);
+				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + destroyingImagesFolder + imageName);
 			
 			CellImages.cellBitmaps[i] = cellBitmap;
 		}

@@ -6,11 +6,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.JsonReader;
-import android.util.JsonToken;
+import ru.ancientempires.framework.MyAssert;
+
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 public class JsonHelper
 {
+	
+	public static String readString(JsonReader reader, String name) throws IOException
+	{
+		MyAssert.a(reader.nextName().equals(name));
+		return reader.nextString();
+	}
+	
 	/*
 	[
 	   {
@@ -142,4 +151,5 @@ public class JsonHelper
 		reader.endObject();
 		return new User(username, followersCount);
 	}
+	
 }

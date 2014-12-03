@@ -22,13 +22,13 @@ public class BigNumberImages
 		return BigNumberImages.numberBitmaps[number];
 	}
 	
-	public static void preloadResources(ZipFile images) throws IOException
+	public static void preloadResources(ZipFile images, String path) throws IOException
 	{
 		for (int i = 0; i < BigNumberImages.amountNumbers; i++)
-			BigNumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, "big_numbers/" + i + ".png");
-		BigNumberImages.minusBitmap = BitmapHelper.getResizeBitmap(images, "big_numbers/-.png");
-		BigNumberImages.plusBitmap = BitmapHelper.getResizeBitmap(images, "big_numbers/+.png");
-		BigNumberImages.slashBitmap = BitmapHelper.getResizeBitmap(images, "big_numbers/slash.png");
+			BigNumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
+		BigNumberImages.minusBitmap = BitmapHelper.getResizeBitmap(images, path + "-.png");
+		BigNumberImages.plusBitmap = BitmapHelper.getResizeBitmap(images, path + "+.png");
+		BigNumberImages.slashBitmap = BitmapHelper.getResizeBitmap(images, path + "slash.png");
 		BigNumberImages.h = BigNumberImages.numberBitmaps[0].getHeight();
 		BigNumberImages.w = BigNumberImages.numberBitmaps[0].getWidth();
 	}
