@@ -26,6 +26,7 @@ public class AnimateAttackView extends FrameLayout
 	public AnimateAttackView(Context context)
 	{
 		super(context);
+		setClipChildren(false);
 		addView(this.directView = new AnimateDecreaseHealthView(getContext()));
 		addView(this.inverseView = new AnimateDecreaseHealthView(getContext()));
 	}

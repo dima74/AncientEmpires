@@ -41,6 +41,7 @@ public class AnimateDecreaseHealthView extends View
 	public AnimateDecreaseHealthView(Context context)
 	{
 		super(context);
+		setLayoutParams(GameView.fullLayoutParams);
 		setVisibility(View.GONE);
 	}
 	

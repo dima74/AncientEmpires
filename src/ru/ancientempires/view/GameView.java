@@ -52,7 +52,6 @@ public class GameView extends FrameLayout
 	private final Game			game			= this.client.getGame();
 	
 	// Отображение игры
-	// private ArrayList<GameViewPart> gameViewParts = new ArrayList<GameViewPart>();
 	private GameViewPart		gameViewCell;
 	private ZoneView			zoneViewWay;
 	private ZoneView			zoneViewAttack;
@@ -62,6 +61,8 @@ public class GameView extends FrameLayout
 	private GameViewInfo		gameViewInfo;
 	public GameViewCursor		gameViewCursor;
 	private AnimateAttackView	animateAttackView;
+	
+	public static LayoutParams	fullLayoutParams;
 	
 	private GestureDetector		gestureDetector;
 	private Timer				timer;
@@ -82,6 +83,8 @@ public class GameView extends FrameLayout
 		
 		setWillNotDraw(false);
 		setClipChildren(false);
+		GameView.fullLayoutParams = new LayoutParams(
+				this.game.map.getW() * GameView.A, this.game.map.getH() * GameView.A);
 		
 		this.gameViewCell = new GameViewCell(getContext(), this)
 				.setDual(false).setField(this.game.map.getField());
@@ -114,11 +117,9 @@ public class GameView extends FrameLayout
 		addView(this.gameViewAction);
 		addView(this.gameViewInfo);
 		
-		LayoutParams layoutParams = new LayoutParams(
-				this.game.map.getW() * GameView.baseW, this.game.map.getH() * GameView.baseH);
-		this.gameViewCell.setLayoutParams(layoutParams);
-		this.gameViewUnit.setLayoutParams(layoutParams);
-		this.gameViewCellDual.setLayoutParams(layoutParams);
+		this.gameViewCell.setLayoutParams(GameView.fullLayoutParams);
+		this.gameViewUnit.setLayoutParams(GameView.fullLayoutParams);
+		this.gameViewCellDual.setLayoutParams(GameView.fullLayoutParams);
 		
 		this.gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
 		{
