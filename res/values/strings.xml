@@ -26,5 +26,6 @@
 	<string name="textview_title_attack">Attack</string>
 	<string name="textview_title_defence">Defence</string>
 	<string name="textview_title_way">Way</string>
+	<string name="action_reset">Reset</string>
 
 </resources>

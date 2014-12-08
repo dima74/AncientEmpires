@@ -25,7 +25,7 @@ public class CellImages
 	private static CellBitmap[]	cellBitmaps;
 	private static CellBitmap[]	cellBitmapsDual;
 	
-	public static Bitmap getCellBitmap(Cell cell, boolean dual)
+	public static Bitmap getCellBitmap(final Cell cell, final boolean dual)
 	{
 		CellBitmap cellBitmap = CellImages.cellBitmaps[cell.type.ordinal];
 		return dual ?
@@ -136,7 +136,7 @@ public class CellImages
 		
 		for (int j = 0; j < Player.amount; j++)
 		{
-			Bitmap bitmap = rs.getAssociationBitmap(game.players[j].color);
+			Bitmap bitmap = rs.getBitmap(game.players[j].color);
 			bitmap = BitmapHelper.getResizeBitmap(bitmap);
 			bitmaps[j] = bitmap;
 		}

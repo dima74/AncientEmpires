@@ -458,7 +458,7 @@ public class GameViewUnit extends GameViewPart
 				final int y = GameView.baseH * i;
 				final int x = GameView.baseW * j;
 				if (this.field[i][j] != this.wayUnit)
-					drawUnit(canvas, this.field[i][j], y, x);
+					drawUnit(canvas, this.field[i][j], y, x, false);
 			}
 		
 		if (this.wayChanged)
@@ -467,17 +467,17 @@ public class GameViewUnit extends GameViewPart
 		final int y = GameView.baseH * this.lastUnitI;
 		final int x = GameView.baseW * this.lastUnitJ;
 		if (this.wayUnit != null)
-			drawUnit(canvas, this.wayUnit, (int) this.wayUnitY, (int) this.wayUnitX);
+			drawUnit(canvas, this.wayUnit, (int) this.wayUnitY, (int) this.wayUnitX, true);
 		else
-			drawUnit(canvas, this.field[this.lastUnitI][this.lastUnitJ], y, x);
+			drawUnit(canvas, this.field[this.lastUnitI][this.lastUnitJ], y, x, false);
 	}
 	
-	private void drawUnit(Canvas canvas, Unit unit, int y, int x)
+	private void drawUnit(Canvas canvas, Unit unit, int y, int x, boolean isWay)
 	{
 		if (unit == null)
 			return;
 		
-		final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit);
+		final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit, isWay);
 		canvas.drawBitmap(bitmapUnit, x, y, null);
 		
 		final int health = Math.round(unit.health);

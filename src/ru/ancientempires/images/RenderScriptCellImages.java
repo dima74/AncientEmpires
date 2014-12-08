@@ -43,7 +43,7 @@ public class RenderScriptCellImages
 		this.allocationType = mInAllocationR.getType();
 	}
 	
-	public Bitmap getAssociationBitmap(int color)
+	public Bitmap getBitmap(int color)
 	{
 		Bitmap mBitmapOut = Bitmap.createBitmap(this.width, this.height, this.bitmapConfig);
 		

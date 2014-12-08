@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.BitmapHelper;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class SomeWithBitmaps
 {
@@ -24,14 +22,6 @@ public class SomeWithBitmaps
 	public SomeWithBitmaps setBitmaps(int i, Bitmap bitmap)
 	{
 		this.bitmaps[i] = bitmap;
-		return this;
-	}
-	
-	public SomeWithBitmaps setBitmaps(Resources res, int[] ids)
-	{
-		this.bitmaps = new Bitmap[ids.length];
-		for (int i = 0; i < ids.length; i++)
-			this.bitmaps[i] = BitmapHelper.getResizeBitmap(BitmapFactory.decodeResource(res, ids[i]));
 		return this;
 	}
 	

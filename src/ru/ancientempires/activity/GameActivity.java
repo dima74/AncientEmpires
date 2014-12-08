@@ -1,6 +1,7 @@
 package ru.ancientempires.activity;
 
 import ru.ancientempires.R;
+import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +19,12 @@ public class GameActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		// if (GameActivity.gameView == null)
+		startGameView();
+	}
+	
+	private void startGameView()
+	
+	{
 		GameActivity.gameView = new GameView(this);
 		GameActivity.gameView.gameActivity = this;
 		setContentView(GameActivity.gameView);
@@ -46,6 +53,11 @@ public class GameActivity extends Activity
 		int id = item.getItemId();
 		if (id == R.id.action_settings)
 			return true;
+		else if (id == R.id.action_reset)
+		{
+			ClientServer.server.startGame("");
+			startGameView();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	
