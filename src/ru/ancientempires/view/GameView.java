@@ -80,6 +80,7 @@ public class GameView extends FrameLayout
 	public GameView(Context context)
 	{
 		super(context);
+		// Debug.stopMethodTracing();
 		
 		setWillNotDraw(false);
 		setClipChildren(false);
