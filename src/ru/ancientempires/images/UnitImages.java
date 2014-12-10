@@ -12,7 +12,6 @@ import org.w3c.dom.NodeList;
 import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.XMLHelper;
@@ -200,9 +199,6 @@ public class UnitImages
 				final int otherPixel = otherBitmap.getPixel(otherX, otherY);
 				if ((otherPixel & 0xFF000000) != 0)
 					result.setPixel(x, y, otherPixel);
-				
-				if (bitmap.getPixel(x, y) != result.getPixel(x, y))
-					MyLog.l(bitmap.getPixel(x, y), result.getPixel(x, y));
 			}
 		return result;
 	}

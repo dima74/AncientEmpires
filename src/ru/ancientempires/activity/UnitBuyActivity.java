@@ -26,12 +26,14 @@ public class UnitBuyActivity extends Activity
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the sections. We use a {@link FragmentPagerAdapter} derivative, which will keep every loaded fragment in memory. If
 	 * this becomes too memory intensive, it may be best to switch to a {@link android.support.v13.app.FragmentStatePagerAdapter}.
 	 */
-	SectionsPagerAdapter	mSectionsPagerAdapter;
+	SectionsPagerAdapter		mSectionsPagerAdapter;
 	
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager				mViewPager;
+	ViewPager					mViewPager;
+	
+	public static UnitType[]	types;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -124,13 +126,13 @@ public class UnitBuyActivity extends Activity
 				position = getCount() - 2;
 			else if (position == getCount() - 1)
 				position = 1;
-			return PlaceholderFragment.newInstance(position - 1);
+			return new PlaceholderFragment(UnitBuyActivity.types[position - 1]);
 		}
 		
 		@Override
 		public int getCount()
 		{
-			return UnitType.amount + 2;
+			return UnitBuyActivity.types.length + 2;
 		}
 		
 		@Override
@@ -145,42 +147,29 @@ public class UnitBuyActivity extends Activity
 	 */
 	public static class PlaceholderFragment extends Fragment
 	{
-		/**
-		 * The fragment argument representing the section number for this fragment.
-		 */
-		private static final String	ARG_SECTION_NUMBER	= "section_number";
 		
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
-		public static PlaceholderFragment newInstance(int sectionNumber)
+		
+		private UnitType	type;
+		
+		public PlaceholderFragment(UnitType type)
 		{
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			Bundle args = new Bundle();
-			args.putInt(PlaceholderFragment.ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
+			this.type = type;
 		}
-		
-		public PlaceholderFragment()
-		{}
-		
-		private UnitType	unitType;
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState)
 		{
-			int sectionNumber = getArguments().getInt(PlaceholderFragment.ARG_SECTION_NUMBER);
-			this.unitType = UnitType.getType(sectionNumber);
-			
 			View rootView = inflater.inflate(R.layout.fragment_unit_buy, container, false);
-			PlaceholderFragment.setText(rootView, R.id.textViewName, this.unitType.name);
-			PlaceholderFragment.setText(rootView, R.id.textViewCost, this.unitType.cost);
+			PlaceholderFragment.setText(rootView, R.id.textViewName, this.type.name);
+			PlaceholderFragment.setText(rootView, R.id.textViewCost, this.type.cost);
 			PlaceholderFragment.setText(rootView, R.id.textViewAttack,
-					this.unitType.baseAttackMin + "-" + this.unitType.baseAttackMax);
-			PlaceholderFragment.setText(rootView, R.id.textViewDefence, this.unitType.baseDefence);
-			PlaceholderFragment.setText(rootView, R.id.textViewWay, this.unitType.baseMaxWay);
+					this.type.attackMin + "-" + this.type.attackMax);
+			PlaceholderFragment.setText(rootView, R.id.textViewDefence, this.type.defence);
+			PlaceholderFragment.setText(rootView, R.id.textViewWay, this.type.moveRange);
 			
 			Button buttonCampaign = (Button) rootView.findViewById(R.id.button_buy);
 			RippleDrawable.createRipple(buttonCampaign, 0xff00ffff);
@@ -203,7 +192,7 @@ public class UnitBuyActivity extends Activity
 		
 		protected void performAction()
 		{
-			GameActivity.gameView.performActionBuy(this.unitType);
+			GameActivity.gameView.performActionBuy(this.type);
 			getActivity().finish();
 		}
 	}

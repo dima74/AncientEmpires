@@ -33,7 +33,6 @@ public class MainActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		// Debug.startMethodTracing();
 		MainActivity.context = getBaseContext();
 		MainActivity.assets = getAssets();
 		MainActivity.resources = getResources();

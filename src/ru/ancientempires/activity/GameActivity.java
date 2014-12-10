@@ -1,6 +1,7 @@
 package ru.ancientempires.activity;
 
 import ru.ancientempires.R;
+import ru.ancientempires.model.UnitType;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
 import android.app.Activity;
@@ -61,9 +62,11 @@ public class GameActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void startUnitBuyActivity()
+	public void startUnitBuyActivity(UnitType[] units)
 	{
 		Intent intent = new Intent();
+		// intent.putExtra("units", units);
+		UnitBuyActivity.types = units;
 		intent.setClass(this, UnitBuyActivity.class);
 		startActivity(intent);
 	}

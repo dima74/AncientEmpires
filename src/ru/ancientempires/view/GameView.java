@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
+import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
@@ -80,7 +81,6 @@ public class GameView extends FrameLayout
 	public GameView(Context context)
 	{
 		super(context);
-		// Debug.stopMethodTracing();
 		
 		setWillNotDraw(false);
 		setClipChildren(false);
@@ -245,7 +245,12 @@ public class GameView extends FrameLayout
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{
-			this.gameActivity.startUnitBuyActivity();
+			Action action = new Action(ActionType.GET_CELL_BUY_UNITS);
+			action.setProperty("i", this.lastTapI);
+			action.setProperty("j", this.lastTapJ);
+			ActionResult result = Client.action(action);
+			UnitType[] units = (UnitType[]) result.getProperty("units");
+			this.gameActivity.startUnitBuyActivity(units);
 			isAction = false;
 		}
 		else if (actionType == ActionType.ACTION_END_TURN)
