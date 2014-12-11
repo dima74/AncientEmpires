@@ -115,9 +115,19 @@ public class AnimateDecreaseHealthView extends View
 	
 	private void drawDecreaseHealth(Canvas canvas, int decrease, int y)
 	{
-		canvas.drawBitmap(BigNumberImages.minusBitmap, 0, y, null);
-		canvas.drawBitmap(BigNumberImages.getBitmap(decrease / 10), BigNumberImages.w * 1, y, null);
-		canvas.drawBitmap(BigNumberImages.getBitmap(decrease % 10), BigNumberImages.w * 2, y, null);
+		if (decrease < 10)
+		{
+			final int offset = GameView.a * 3;
+			canvas.drawBitmap(BigNumberImages.minusBitmap, offset, y, null);
+			canvas.drawBitmap(BigNumberImages.getBitmap(decrease),
+					BigNumberImages.w * 1 + offset, y, null);
+		}
+		else
+		{
+			canvas.drawBitmap(BigNumberImages.minusBitmap, 0, y, null);
+			canvas.drawBitmap(BigNumberImages.getBitmap(decrease / 10), BigNumberImages.w * 1, y, null);
+			canvas.drawBitmap(BigNumberImages.getBitmap(decrease % 10), BigNumberImages.w * 2, y, null);
+		}
 	}
 	
 	private int getNumberSpark(long millis)

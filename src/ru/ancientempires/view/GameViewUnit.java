@@ -184,10 +184,10 @@ public class GameViewUnit extends GameViewPart
 				if (this.attackChanged)
 				{
 					final Action action = new Action(ActionType.ACTION_UNIT_ATTACK);
-					action.setProperty("attackingI", this.lastUnitI);
-					action.setProperty("attackingJ", this.lastUnitJ);
-					action.setProperty("attackedI", i);
-					action.setProperty("attackedJ", j);
+					action.setProperty("i", this.lastUnitI);
+					action.setProperty("j", this.lastUnitJ);
+					action.setProperty("targetI", i);
+					action.setProperty("targetJ", j);
 					ActionResult result = Client.action(action);
 					this.animateAttackView.showAnimate(action, result);
 					invalidate();
@@ -450,7 +450,6 @@ public class GameViewUnit extends GameViewPart
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		// canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
 		// юниты
 		for (int i = 0; i < this.fieldH; i++)
 			for (int j = 0; j < this.fieldW; j++)
@@ -481,7 +480,7 @@ public class GameViewUnit extends GameViewPart
 		canvas.drawBitmap(bitmapUnit, x, y, null);
 		
 		final int health = Math.round(unit.health);
-		if (health < 100)
+		if (health < 100 && unit.isLive)
 		{
 			final int textX = x;
 			final int textY = y + GameView.baseH - NumberImages.h;

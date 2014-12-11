@@ -43,13 +43,16 @@ public class UnitImages
 	
 	public static Bitmap getUnitBitmap(final Unit unit, final boolean isWay)
 	{
-		if (unit.isTurn && !isWay)
-		{
-			SomeWithBitmaps[] typeBitmaps = UnitImages.greyUnitsBitmaps[unit.type.ordinal];
-			return typeBitmaps[typeBitmaps.length == 1 ? 0 : unit.player.colorI].bitmaps[0];
-		}
+		if (unit.isLive)
+			if (unit.isTurn && !isWay)
+			{
+				SomeWithBitmaps[] typeBitmaps = UnitImages.greyUnitsBitmaps[unit.type.ordinal];
+				return typeBitmaps[typeBitmaps.length == 1 ? 0 : unit.player.colorI].bitmaps[0];
+			}
+			else
+				return UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
 		else
-			return UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
+			return Images.tombstone;
 	}
 	
 	public static void preloadResources(ZipFile images, String path) throws IOException
@@ -118,7 +121,7 @@ public class UnitImages
 			};
 			
 			// Загрузка красных, зеленых, синих и черных изображений войнов
-			for (int colorI = 1; colorI <= 4; colorI++)
+			for (int colorI = 1; colorI <= 3; colorI++)
 			{
 				SomeWithBitmaps someWithBitmaps = new SomeWithBitmaps();
 				someWithBitmaps.setAmount(typeBitmaps.size());
@@ -216,31 +219,6 @@ public class UnitImages
 		}
 		return bitmaps;
 	}
-	
-	/*
-	public static void preloadResources2(ZipFile imagesZipFile, String zipPath) throws IOException
-	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		NodeList colorTypes = infoDocument.getElementsByTagName("image");
-		
-		int typesLength = UnitType.amount;
-		UnitImages.greyUnitsBitmaps = new SomeWithBitmaps[typesLength];
-		for (int i = 0; i < typesLength; i++)
-		{
-			Node colorTypeNode = colorTypes.item(i);
-			Map<String, String> attributes = XMLHelper.getNodeAttributesMap(colorTypeNode);
-			
-			int colorTypeAmountImages = Integer.valueOf(attributes.get("amountImages"));
-			Bitmap[] greyUnitBitmaps = new Bitmap[colorTypeAmountImages];
-			for (int k = 0; k < colorTypeAmountImages; k++)
-			{
-				String imageName = attributes.get("image" + k);
-				greyUnitBitmaps[k] = BitmapHelper.getResizeBitmap(imagesZipFile, zipPath + "grey/" + imageName);
-			}
-			UnitImages.greyUnitsBitmaps[i] = new SomeWithBitmaps().setBitmaps(greyUnitBitmaps);
-		}
-	}
-	*/
 	
 	public static void loadResources(ZipFile images, Game game) throws IOException
 	{
@@ -340,6 +318,6 @@ public class UnitImages
 				}
 			}
 		}
-		
 	}
+	
 }

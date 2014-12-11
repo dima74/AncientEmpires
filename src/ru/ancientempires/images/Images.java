@@ -23,15 +23,16 @@ public class Images
 	public static Bitmap	defence;
 	public static Bitmap	levelIncrease;
 	public static Bitmap	levelUp;
+	public static Bitmap	tombstone;
 	
 	public static int		amountGoldH;
 	public static int		amountGoldW;
 	public static int		amountUnitsH;
 	public static int		amountUnitsW;
 	
-	public static void preloadResources(ZipFile imagesZipFile) throws IOException
+	public static void preloadResources(ZipFile images) throws IOException
 	{
-		JsonReader reader = new JsonReader(ZIPHelper.getISR(imagesZipFile, "info.json"));
+		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, "info.json"));
 		reader.beginObject();
 		String cellsPath = JsonHelper.readString(reader, "cells_folder");
 		String unitsPath = JsonHelper.readString(reader, "units_folder");
@@ -42,23 +43,24 @@ public class Images
 		reader.endObject();
 		reader.close();
 		
-		CellImages.preloadResources(imagesZipFile, cellsPath);
-		UnitImages.preloadResources(imagesZipFile, unitsPath);
-		ActionImages.preloadResources(imagesZipFile, actionsPath);
-		NumberImages.preloadResources(imagesZipFile, numbersPath);
-		BigNumberImages.preloadResources(imagesZipFile, bigNumbersPath);
-		SparksImages.preloadResources(imagesZipFile, sparksPath);
+		CellImages.preloadResources(images, cellsPath);
+		UnitImages.preloadResources(images, unitsPath);
+		ActionImages.preloadResources(images, actionsPath);
+		NumberImages.preloadResources(images, numbersPath);
+		BigNumberImages.preloadResources(images, bigNumbersPath);
+		SparksImages.preloadResources(images, sparksPath);
 		
 		// self
-		Images.amountGold = BitmapHelper.getResizeBitmap(imagesZipFile, "amountGold.png");
-		Images.amountUnits = BitmapHelper.getResizeBitmap(imagesZipFile, "amountUnits.png");
-		Images.arrowStrange = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowStrange.png");
-		Images.arrowIncrease = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowIncrease.png");
-		Images.arrowDecrease = BitmapHelper.getResizeBitmap(imagesZipFile, "arrowDecrease.png");
-		Images.attack = BitmapHelper.getResizeBitmap(imagesZipFile, "attack.png");
-		Images.defence = BitmapHelper.getResizeBitmap(imagesZipFile, "defence.png");
-		Images.levelIncrease = BitmapHelper.getResizeBitmap(imagesZipFile, "levelIncrease.png");
-		Images.levelUp = BitmapHelper.getResizeBitmap(imagesZipFile, "levelUp.png");
+		Images.amountGold = BitmapHelper.getResizeBitmap(images, "amountGold.png");
+		Images.amountUnits = BitmapHelper.getResizeBitmap(images, "amountUnits.png");
+		Images.arrowStrange = BitmapHelper.getResizeBitmap(images, "arrowStrange.png");
+		Images.arrowIncrease = BitmapHelper.getResizeBitmap(images, "arrowIncrease.png");
+		Images.arrowDecrease = BitmapHelper.getResizeBitmap(images, "arrowDecrease.png");
+		Images.attack = BitmapHelper.getResizeBitmap(images, "attack.png");
+		Images.defence = BitmapHelper.getResizeBitmap(images, "defence.png");
+		Images.levelIncrease = BitmapHelper.getResizeBitmap(images, "levelIncrease.png");
+		Images.levelUp = BitmapHelper.getResizeBitmap(images, "levelUp.png");
+		Images.tombstone = BitmapHelper.getResizeBitmap(images, "tombstone.png");
 		
 		Images.amountGoldH = Images.amountGold.getHeight();
 		Images.amountGoldW = Images.amountGold.getWidth();
@@ -66,10 +68,15 @@ public class Images
 		Images.amountUnitsW = Images.amountUnits.getWidth();
 	}
 	
-	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
+	public static void loadResources(ZipFile images, Game game) throws IOException
 	{
-		CellImages.loadResources(imagesZipFile, game);
-		UnitImages.loadResources(imagesZipFile, game);
+		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, "info.json"));
+		reader.beginObject();
+		String cellsPath = JsonHelper.readString(reader, "cells_folder");
+		reader.close();
+		
+		CellImages.loadResources(images, cellsPath, game);
+		UnitImages.loadResources(images, game);
 	}
 	
 }

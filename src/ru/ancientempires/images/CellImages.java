@@ -76,14 +76,7 @@ public class CellImages
 		}
 	}
 	
-	public static void loadResources(ZipFile imagesZipFile, Game game) throws IOException
-	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String cellsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "cell_images_folder_path");
-		CellImages.loadCellsResources(imagesZipFile, cellsImagesFolderPath, game);
-	}
-	
-	private static void loadCellsResources(ZipFile imagesZipFile, String zipPath, Game game) throws IOException
+	public static void loadResources(ZipFile imagesZipFile, String zipPath, Game game) throws IOException
 	{
 		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
 		
@@ -121,7 +114,7 @@ public class CellImages
 		}
 	}
 	
-	private static Bitmap[] loadOneColorBitmap(ZipFile imagesZipFile, Game game, String imagesPathR, String imagesPathG, String imagesPathB, String imageName)
+	private static Bitmap[] loadOneColorBitmap(ZipFile images, Game game, String imagesPathR, String imagesPathG, String imagesPathB, String imageName)
 			throws IOException
 	{
 		Bitmap[] bitmaps = new Bitmap[Player.amount];
@@ -129,9 +122,9 @@ public class CellImages
 		RenderScriptCellImages rs = new RenderScriptCellImages();
 		rs.createScript(MainActivity.context);
 		
-		Bitmap bitmapR = BitmapHelper.getBitmap(imagesZipFile, imagesPathR + imageName);
-		Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagesPathG + imageName);
-		Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagesPathB + imageName);
+		Bitmap bitmapR = BitmapHelper.getBitmap(images, imagesPathR + imageName);
+		Bitmap bitmapG = BitmapHelper.getBitmap(images, imagesPathG + imageName);
+		Bitmap bitmapB = BitmapHelper.getBitmap(images, imagesPathB + imageName);
 		rs.setBitmaps(bitmapR, bitmapG, bitmapB);
 		
 		for (int j = 0; j < Player.amount; j++)

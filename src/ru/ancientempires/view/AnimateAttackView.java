@@ -33,13 +33,13 @@ public class AnimateAttackView extends FrameLayout
 	
 	public void showAnimate(Action action, ActionResult result)
 	{
-		this.attackingY = (int) action.getProperty("attackingI") * GameView.A;
-		this.attackingX = (int) action.getProperty("attackingJ") * GameView.A;
-		this.attackedY = (int) action.getProperty("attackedI") * GameView.A;
-		this.attackedX = (int) action.getProperty("attackedJ") * GameView.A;
+		this.attackingY = (int) action.getProperty("i") * GameView.A;
+		this.attackingX = (int) action.getProperty("j") * GameView.A;
+		this.attackedY = (int) action.getProperty("targetI") * GameView.A;
+		this.attackedX = (int) action.getProperty("targetJ") * GameView.A;
 		
-		this.attackingDecrease = (int) (float) result.getProperty("attackingDecrease");
-		this.attackedDecrease = (int) (float) result.getProperty("attackedDecrease");
+		this.attackingDecrease = (int) result.getProperty("attackingDecrease");
+		this.attackedDecrease = (int) result.getProperty("attackedDecrease");
 		this.attackingIsLive = (boolean) result.getProperty("attackingLive");
 		this.attackedIsLive = (boolean) result.getProperty("attackedLive");
 		
