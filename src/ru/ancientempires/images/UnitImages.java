@@ -18,7 +18,6 @@ import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.load.UnitImageProperties;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import android.graphics.Bitmap;
@@ -222,7 +221,7 @@ public class UnitImages
 	
 	public static void loadResources(ZipFile images, Game game) throws IOException
 	{
-		UnitImages.unitsBitmaps = new SomeWithBitmaps[UnitType.amount][Player.amount];
+		UnitImages.unitsBitmaps = new SomeWithBitmaps[UnitType.amount][game.players.length];
 		
 		RenderScriptCellImages rs = new RenderScriptCellImages();
 		rs.createScript(MainActivity.context);
@@ -233,16 +232,16 @@ public class UnitImages
 			SomeWithBitmaps b = UnitImages.baseUnitsBitmaps[typeI][3];
 			int bitmapAmount = r.bitmaps.length;
 			
-			Bitmap[][] bitmaps = new Bitmap[Player.amount][bitmapAmount];
+			Bitmap[][] bitmaps = new Bitmap[game.players.length][bitmapAmount];
 			for (int bitmapI = 0; bitmapI < bitmapAmount; bitmapI++)
 			{
 				rs.setBitmaps(r.bitmaps[bitmapI], g.bitmaps[bitmapI], b.bitmaps[bitmapI]);
-				for (int playerI = 0; playerI < Player.amount; playerI++)
+				for (int playerI = 0; playerI < game.players.length; playerI++)
 				{
-					Bitmap bitmap = rs.getBitmap(Player.getPlayer(playerI).color);
+					Bitmap bitmap = rs.getBitmap(game.players[playerI].color);
 					if (UnitImages.notColoredI[typeI] != null)
 					{
-						int colorI = Player.getPlayer(playerI).colorI;
+						int colorI = game.players[playerI].colorI;
 						bitmap = UnitImages.associateBitmaps(bitmap,
 								UnitImages.notColoredI[typeI][bitmapI],
 								UnitImages.notColoredJ[typeI][bitmapI],
@@ -252,7 +251,7 @@ public class UnitImages
 				}
 			}
 			
-			for (int playerI = 0; playerI < Player.amount; playerI++)
+			for (int playerI = 0; playerI < game.players.length; playerI++)
 				UnitImages.unitsBitmaps[typeI][playerI] = new SomeWithBitmaps()
 						.setBitmaps(bitmaps[playerI]);
 		}
@@ -280,7 +279,7 @@ public class UnitImages
 		
 		MyAssert.a(images.getLength() == UnitType.amount);
 		int typeAmount = UnitType.amount;
-		int playerAmount = Player.amount;
+		int playerAmount = game.players.length;
 		
 		UnitImages.unitsBitmaps = new SomeWithBitmaps[typeAmount][playerAmount];
 		

@@ -16,7 +16,6 @@ import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Player;
 import android.graphics.Bitmap;
 
 public class CellImages
@@ -117,7 +116,7 @@ public class CellImages
 	private static Bitmap[] loadOneColorBitmap(ZipFile images, Game game, String imagesPathR, String imagesPathG, String imagesPathB, String imageName)
 			throws IOException
 	{
-		Bitmap[] bitmaps = new Bitmap[Player.amount];
+		Bitmap[] bitmaps = new Bitmap[game.players.length];
 		
 		RenderScriptCellImages rs = new RenderScriptCellImages();
 		rs.createScript(MainActivity.context);
@@ -127,7 +126,7 @@ public class CellImages
 		Bitmap bitmapB = BitmapHelper.getBitmap(images, imagesPathB + imageName);
 		rs.setBitmaps(bitmapR, bitmapG, bitmapB);
 		
-		for (int j = 0; j < Player.amount; j++)
+		for (int j = 0; j < game.players.length; j++)
 		{
 			Bitmap bitmap = rs.getBitmap(game.players[j].color);
 			bitmap = BitmapHelper.getResizeBitmap(bitmap);
