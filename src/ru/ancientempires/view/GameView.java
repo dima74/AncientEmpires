@@ -85,7 +85,7 @@ public class GameView extends FrameLayout
 		setWillNotDraw(false);
 		setClipChildren(false);
 		GameView.fullLayoutParams = new LayoutParams(
-				this.game.map.getW() * GameView.A, this.game.map.getH() * GameView.A);
+				this.game.map.w * GameView.A, this.game.map.h * GameView.A);
 		
 		this.gameViewCell = new GameViewCell(getContext(), this)
 				.setDual(false).setField(this.game.map.getField());
