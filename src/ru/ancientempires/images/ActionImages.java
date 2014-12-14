@@ -5,6 +5,7 @@ import java.util.zip.ZipFile;
 
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 
 public class ActionImages
@@ -17,7 +18,7 @@ public class ActionImages
 		return ActionImages.actionBitmaps[type.ordinal];
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile, String path) throws IOException
+	public static void preloadResources(ZipFile images, String path) throws IOException
 	{
 		ActionImages.actionBitmaps = new Bitmap[ActionType.amount];
 		String[] actionImageNames = new String[]
@@ -44,7 +45,7 @@ public class ActionImages
 		
 		for (int i = 0; i < actionImageNames.length; i++)
 			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.
-					getMultiBitmap(imagesZipFile, path + actionImageNames[i], 3, 3);
+					getMultiBitmap(images, path + actionImageNames[i], GameView.baseMulti * 1.5f);
 	}
 	
 }

@@ -33,12 +33,12 @@ public class MainActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
 		MainActivity.context = getBaseContext();
 		MainActivity.assets = getAssets();
 		MainActivity.resources = getResources();
-		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		
 		Button buttonCampaign = (Button) findViewById(R.id.button_campaign);
 		RippleDrawable.createRipple(buttonCampaign, 0xff00ffff);
@@ -79,7 +79,6 @@ public class MainActivity extends Activity
 		long s = System.nanoTime();
 		GameInit.init();
 		long e = System.nanoTime();
-		// Toast.makeText(MainActivity.context, "" + (e - s) / 1e9, Toast.LENGTH_LONG).show();
 		startCampaign();
 	}
 	

@@ -31,10 +31,9 @@ public class GameView extends FrameLayout
 	public static int		baseH;
 	public static int		baseW;
 	public static int		A;
-	public static int		a;												// 1/12 A
-																			
-	public static float		baseHMulti				= 6 / 3.0f;
-	public static float		baseWMulti				= GameView.baseHMulti;
+	public static int		a;									// 1/12 A
+																
+	public static float		baseMulti				= 3 / 3.0f;
 	
 	// не знаю, как выводится эта константа
 	public static final int	DELAY_BETWEEN_UPDATES	= 265;
