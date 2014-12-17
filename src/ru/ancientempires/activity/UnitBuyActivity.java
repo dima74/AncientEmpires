@@ -4,10 +4,8 @@ import ru.ancientempires.R;
 import ru.ancientempires.graphics.RippleDrawable;
 import ru.ancientempires.model.UnitType;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -43,7 +41,7 @@ public class UnitBuyActivity extends Activity
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		this.mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+		this.mSectionsPagerAdapter = null;// new SectionsPagerAdapter(getFragmentManager());
 		
 		// Set up the ViewPager with the sections adapter.
 		this.mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -112,13 +110,13 @@ public class UnitBuyActivity extends Activity
 			});
 		}
 		
-		public SectionsPagerAdapter(FragmentManager fm)
+		public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm)
 		{
 			super(fm);
 		}
 		
 		@Override
-		public Fragment getItem(int position)
+		public android.support.v4.app.Fragment getItem(int position)
 		{
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class below).
@@ -145,7 +143,7 @@ public class UnitBuyActivity extends Activity
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment
+	public static class PlaceholderFragment extends android.support.v4.app.Fragment
 	{
 		
 		/**

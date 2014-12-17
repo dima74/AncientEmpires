@@ -29,18 +29,22 @@
 		<activity
 			android:name=".activity.GameActivity"
 			android:label="@string/title_activity_game"
-			android:parentActivityName=".activity.MainActivity" >
+			android:parentActivityName=".activity.LevelMenuActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="ru.ancientempires.MainActivity" />
+				android:value="ru.ancientempires.LevelMenuActivity" />
 		</activity>
 		<activity
-			android:name="ru.ancientempires.activity.UnitBuyActivity"
+			android:name=".activity.UnitBuyActivity"
 			android:label="@string/title_activity_unit_buy"
 			android:parentActivityName=".activity.GameActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="ru.ancientempires.activity.GameActivity" />
+		</activity>
+		<activity
+			android:name="ru.ancientempires.activity.LevelMenuActivity"
+			android:label="@string/title_activity_level_menu" >
 		</activity>
 	</application>
 

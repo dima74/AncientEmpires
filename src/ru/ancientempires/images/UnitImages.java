@@ -9,7 +9,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;

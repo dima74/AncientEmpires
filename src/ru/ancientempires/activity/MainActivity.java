@@ -8,7 +8,6 @@ import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.graphics.RippleDrawable;
 import ru.ancientempires.images.Images;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -18,9 +17,7 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.os.Handler;
 import android.widget.Toast;
 
 public class MainActivity extends Activity
@@ -34,12 +31,13 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		// setContentView(R.layout.activity_main);
 		
 		MainActivity.context = getBaseContext();
 		MainActivity.assets = getAssets();
 		MainActivity.resources = getResources();
 		
+		/*
 		Button buttonCampaign = (Button) findViewById(R.id.button_campaign);
 		RippleDrawable.createRipple(buttonCampaign, 0xff00ffff);
 		buttonCampaign.setOnClickListener(new OnClickListener()
@@ -72,6 +70,7 @@ public class MainActivity extends Activity
 				startMultiplayer();
 			}
 		});
+		*/
 		
 		// мой код
 		MyLog.currLog = new ALog();
@@ -79,12 +78,23 @@ public class MainActivity extends Activity
 		long s = System.nanoTime();
 		GameInit.init();
 		long e = System.nanoTime();
-		startCampaign();
+		// startCampaign();
+		
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, LevelMenuActivity.class);
+				startActivity(intent);
+			}
+		}, 1000);
 	}
 	
 	public static int	amn	= 0;
 	
-	protected void checkInit()
+	private void checkInit()
 	{
 		try
 		{
@@ -113,7 +123,7 @@ public class MainActivity extends Activity
 			protected Void doInBackground(Void... params)
 			{
 				checkInit();
-				Client.getClient().startGame("first");
+				// Client.getClient().startGame("first");
 				try
 				{
 					long s = System.nanoTime();

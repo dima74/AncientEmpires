@@ -3,12 +3,12 @@ package ru.ancientempires.view;
 import java.io.IOException;
 
 import ru.ancientempires.AbstractActionAsyncTask;
-import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.NumberImages;
+import ru.ancientempires.images.SomeWithBitmaps;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Unit;
 import android.animation.Animator;

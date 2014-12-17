@@ -2,7 +2,7 @@ package ru.ancientempires.view;
 
 import java.io.IOException;
 
-import ru.ancientempires.SomeWithBitmaps;
+import ru.ancientempires.images.SomeWithBitmaps;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

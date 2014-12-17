@@ -1,4 +1,4 @@
-package ru.ancientempires;
+package ru.ancientempires.images;
 
 import java.io.IOException;
 

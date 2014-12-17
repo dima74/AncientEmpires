@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ru.ancientempires.SomeWithBitmaps;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.images.SomeWithBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.UnitType;
 import android.content.Context;
@@ -31,9 +31,9 @@ public class GameView extends FrameLayout
 	public static int		baseH;
 	public static int		baseW;
 	public static int		A;
-	public static int		a;									// 1/12 A
-																
-	public static float		baseMulti				= 3 / 3.0f;
+	public static int		a;										// 1/12 A
+																	
+	public static float		baseMulti				= 4.5f / 3.0f;
 	
 	// не знаю, как выводится эта константа
 	public static final int	DELAY_BETWEEN_UPDATES	= 265;

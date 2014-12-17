@@ -14,6 +14,7 @@ public class GameInit
 {
 	
 	public static AsyncTask<Void, Void, Void>	initAsyncTask;
+	public static AsyncTask<Void, Void, Void>	gameInitAsyncTask;
 	
 	public static void init()
 	{
@@ -44,7 +45,9 @@ public class GameInit
 					e.printStackTrace();
 				}
 				return null;
-			};
+			}
+			
 		}.execute();
 	}
+	
 }
