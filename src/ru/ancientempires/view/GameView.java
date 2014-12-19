@@ -57,6 +57,7 @@ public class GameView extends FrameLayout
 	private ZoneView			zoneViewAttack;
 	private GameViewPart		gameViewCellDual;
 	private GameViewUnit		gameViewUnit;
+	private GameViewPart		gameViewRaise;
 	private GameViewPart		gameViewAction;
 	private GameViewInfo		gameViewInfo;
 	public GameViewCursor		gameViewCursor;
@@ -65,7 +66,7 @@ public class GameView extends FrameLayout
 	public static LayoutParams	fullLayoutParams;
 	
 	private GestureDetector		gestureDetector;
-	private Timer				timer;
+	public Timer				timer;
 	private Handler				updateHandler;
 	
 	public int					offsetY			= 0;
@@ -240,6 +241,11 @@ public class GameView extends FrameLayout
 		{
 			this.isAttackVisible = true;
 			isAction = this.gameViewUnit.performAction(actionType);
+			this.gameViewInfo.updatePlayer(this.game.currentPlayer);
+		}
+		else if (actionType == ActionType.ACTION_UNIT_RAISE)
+		{
+			isAction = this.gameViewRaise.performAction(actionType);
 			this.gameViewInfo.updatePlayer(this.game.currentPlayer);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)

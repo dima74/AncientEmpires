@@ -8,7 +8,6 @@ import ru.ancientempires.helpers.AZipHelper;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.GameView;
 import android.os.AsyncTask;
-import android.os.Debug;
 
 public class GameInit
 {
@@ -27,18 +26,18 @@ public class GameInit
 				{
 					Client.setGamesZipFile(AZipHelper.getZipFileFromAssets("games.zip"));
 					Client.setRulesZipFile(AZipHelper.getZipFileFromAssets("rules.zip"));
-					Debug.startMethodTracing("traces/client");
+					// Debug.startMethodTracing("traces/client");
 					Client.init();
-					Debug.stopMethodTracing();
+					// Debug.stopMethodTracing();
 					
 					Client.setImagesZipFile(AZipHelper.getZipFileFromAssets("images.zip"));
-					Debug.startMethodTracing("traces/images");
+					// Debug.startMethodTracing("traces/images");
 					Images.preloadResources(Client.imagesZipFile);
-					Debug.stopMethodTracing();
+					// Debug.stopMethodTracing();
 					
-					Debug.startMethodTracing("traces/init");
+					// Debug.startMethodTracing("traces/init");
 					GameView.initResources(MainActivity.resources);
-					Debug.stopMethodTracing();
+					// Debug.stopMethodTracing();
 				}
 				catch (IOException e)
 				{

@@ -1,6 +1,8 @@
 package ru.ancientempires.activity;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import ru.ancientempires.GameInit;
@@ -9,6 +11,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.Images;
+import ru.ancientempires.load.GameLoader;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +21,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 public class MainActivity extends Activity
@@ -80,16 +84,31 @@ public class MainActivity extends Activity
 		long e = System.nanoTime();
 		// startCampaign();
 		
-		new Handler().postDelayed(new Runnable()
+		// TODO заменить, чтобы клиент инит сендил мессадж
+		final Handler handler = new Handler(new Handler.Callback()
 		{
 			@Override
-			public void run()
+			public boolean handleMessage(Message msg)
 			{
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, LevelMenuActivity.class);
 				startActivity(intent);
+				return true;
 			}
-		}, 1000);
+		});
+		final Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				if (GameLoader.gamesFolder != null)
+				{
+					timer.cancel();
+					handler.sendMessage(new Message());
+				}
+			}
+		}, 0, 100);
 	}
 	
 	public static int	amn	= 0;

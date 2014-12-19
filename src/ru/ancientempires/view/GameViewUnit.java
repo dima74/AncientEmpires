@@ -479,7 +479,7 @@ public class GameViewUnit extends GameViewPart
 		final Bitmap bitmapUnit = UnitImages.getUnitBitmap(unit, isWay);
 		canvas.drawBitmap(bitmapUnit, x, y, null);
 		
-		final int health = Math.round(unit.health);
+		final int health = unit.health;
 		if (health < 100 && unit.isLive)
 		{
 			final int textX = x;

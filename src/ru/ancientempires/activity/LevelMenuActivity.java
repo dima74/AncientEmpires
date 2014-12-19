@@ -95,6 +95,10 @@ public class LevelMenuActivity extends Activity
 		};
 		
 		this.listView.setAdapter(adapter);
+		
+		// debug
+		GamePath gamePath = this.gamesFolder.gamesFolders[2].gamePaths[0];
+		startGame(gamePath);
 	}
 	
 	private void setContent(GamesFolder gamesFolder)

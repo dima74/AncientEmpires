@@ -3,8 +3,8 @@ package ru.ancientempires.activity;
 import ru.ancientempires.R;
 import ru.ancientempires.graphics.RippleDrawable;
 import ru.ancientempires.model.UnitType;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class UnitBuyActivity extends Activity
+public class UnitBuyActivity extends FragmentActivity
 {
 	
 	/**
@@ -41,7 +41,7 @@ public class UnitBuyActivity extends Activity
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		this.mSectionsPagerAdapter = null;// new SectionsPagerAdapter(getFragmentManager());
+		this.mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		
 		// Set up the ViewPager with the sections adapter.
 		this.mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -193,6 +193,7 @@ public class UnitBuyActivity extends Activity
 			GameActivity.gameView.performActionBuy(this.type);
 			getActivity().finish();
 		}
+		
 	}
 	
 }
