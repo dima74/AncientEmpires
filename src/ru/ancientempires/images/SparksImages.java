@@ -13,7 +13,7 @@ import com.google.gson.stream.JsonReader;
 public class SparksImages
 {
 	
-	private static Bitmap[]	attackBitmaps;
+	public static Bitmap[]	attackBitmaps;
 	public static int		amountAttack;
 	
 	public static int		h;

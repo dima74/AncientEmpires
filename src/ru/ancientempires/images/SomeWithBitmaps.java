@@ -31,11 +31,11 @@ public class SomeWithBitmaps
 		return this;
 	}
 	
-	public SomeWithBitmaps setBitmaps(String[] names) throws IOException
+	public SomeWithBitmaps setBitmaps(String path, String... names) throws IOException
 	{
 		this.bitmaps = new Bitmap[names.length];
 		for (int i = 0; i < names.length; i++)
-			this.bitmaps[i] = BitmapHelper.getResizeBitmap(Client.imagesZipFile, names[i]);
+			this.bitmaps[i] = BitmapHelper.getResizeBitmap(Client.imagesZipFile, path + names[i]);
 		return this;
 	}
 	

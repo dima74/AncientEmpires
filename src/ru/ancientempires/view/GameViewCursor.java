@@ -10,7 +10,7 @@ import android.graphics.Canvas;
 public class GameViewCursor extends GameViewPart
 {
 	
-	public GameViewCursor(Context context, GameView gameView)
+	public GameViewCursor(Context context, OldGameView gameView)
 	{
 		super(context, gameView);
 	}
@@ -28,7 +28,8 @@ public class GameViewCursor extends GameViewPart
 	
 	public static void init() throws IOException
 	{
-		GameViewCursor.cursor.setBitmaps(new String[]
+		/*
+		GameViewCursor.cursor.setBitmaps("", new String[]
 		{
 				"cursor_down.png",
 				"cursor_up.png"
@@ -49,6 +50,7 @@ public class GameViewCursor extends GameViewPart
 		GameViewCursor.cursorWayW = GameViewCursor.cursorPointerWay.getBitmap().getWidth();
 		GameViewCursor.cursorAttackH = GameViewCursor.cursorPointerAttack.getBitmap().getHeight();
 		GameViewCursor.cursorAttackW = GameViewCursor.cursorPointerAttack.getBitmap().getWidth();
+		*/
 	}
 	
 	private boolean	isCursorVisible			= false;
@@ -64,8 +66,8 @@ public class GameViewCursor extends GameViewPart
 	@Override
 	public boolean update()
 	{
-		final float y = GameView.baseH * this.gameView.lastTapI;
-		final float x = GameView.baseW * this.gameView.lastTapJ;
+		final float y = OldGameView.baseH * this.gameView.lastTapI;
+		final float x = OldGameView.baseW * this.gameView.lastTapJ;
 		this.cursorY = y - GameViewCursor.cursorH / 2;
 		this.cursorX = x - GameViewCursor.cursorW / 2;
 		this.cursorWayY = y - GameViewCursor.cursorWayH / 2;
@@ -106,7 +108,7 @@ public class GameViewCursor extends GameViewPart
 	protected void onDraw(Canvas canvas)
 	{
 		// рисуем курсор (если есть)
-		canvas.translate(GameView.baseH / 2, GameView.baseW / 2);
+		canvas.translate(OldGameView.baseH / 2, OldGameView.baseW / 2);
 		if (this.isCursorWayVisible)
 		{
 			final Bitmap bitmap = GameViewCursor.cursorPointerWay.getBitmap();

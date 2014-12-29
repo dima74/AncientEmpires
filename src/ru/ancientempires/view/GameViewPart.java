@@ -7,9 +7,9 @@ import android.view.View;
 public abstract class GameViewPart extends View
 {
 	
-	protected GameView	gameView;
+	protected OldGameView	gameView;
 	
-	public GameViewPart(Context context, GameView gameView)
+	public GameViewPart(Context context, OldGameView gameView)
 	{
 		super(context);
 		this.gameView = gameView;

@@ -20,13 +20,10 @@ public class GameActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (GameActivity.gameView != null)
-			GameActivity.gameView.timer.cancel();
 		startGameView();
 	}
 	
 	private void startGameView()
-	
 	{
 		GameActivity.gameView = new GameView(this);
 		GameActivity.gameView.gameActivity = this;

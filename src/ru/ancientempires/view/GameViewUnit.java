@@ -7,16 +7,13 @@ import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.images.SomeWithBitmaps;
-import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Unit;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.animation.LinearInterpolator;
@@ -26,10 +23,10 @@ public class GameViewUnit extends GameViewPart
 	
 	private static final Paint	LINE_PAINT	= new Paint();
 	
-	public GameViewUnit(Context context, GameView gameView)
+	public GameViewUnit(Context context, OldGameView gameView)
 	{
 		super(context, gameView);
-		GameViewUnit.LINE_PAINT.setStrokeWidth(GameView.baseH / 3);
+		GameViewUnit.LINE_PAINT.setStrokeWidth(OldGameView.baseH / 3);
 		GameViewUnit.LINE_PAINT.setColor(0xFFE10052);
 	}
 	
@@ -38,6 +35,7 @@ public class GameViewUnit extends GameViewPart
 	
 	public static void init() throws IOException
 	{
+		/*
 		GameViewUnit.cursorWay.setBitmaps(new String[]
 		{
 				"cursor_way.png"
@@ -46,6 +44,7 @@ public class GameViewUnit extends GameViewPart
 		{
 				"cursor_attack.png"
 		});
+		*/
 	}
 	
 	private GameViewCursor	gameViewCursor;
@@ -324,8 +323,8 @@ public class GameViewUnit extends GameViewPart
 		{
 			float relToAbsI = -this.radius + this.lastUnitI;
 			float relToAbsJ = -this.radius + this.lastUnitJ;
-			this.wayYs[k] = (int) ((i + relToAbsI) * GameView.baseH);
-			this.wayXs[k] = (int) ((j + relToAbsJ) * GameView.baseW);
+			this.wayYs[k] = (int) ((i + relToAbsI) * OldGameView.baseH);
+			this.wayXs[k] = (int) ((j + relToAbsJ) * OldGameView.baseW);
 			final int newI = this.fieldPrevI[i][j];
 			final int newJ = this.fieldPrevJ[i][j];
 			i = newI;
@@ -345,37 +344,37 @@ public class GameViewUnit extends GameViewPart
 			if (this.wayYs[k] == this.wayYs[k + 1])
 				if (this.wayXs[k] < this.wayXs[k + 1])
 				{
-					x1 -= GameView.baseW / 12;
-					x2 += GameView.baseW / 12;
+					x1 -= OldGameView.baseW / 12;
+					x2 += OldGameView.baseW / 12;
 				}
 				else
 				{
-					x2 -= GameView.baseW / 12;
-					x1 += GameView.baseW / 12;
+					x2 -= OldGameView.baseW / 12;
+					x1 += OldGameView.baseW / 12;
 				}
 			else if (this.wayXs[k] == this.wayXs[k + 1])
 				if (this.wayYs[k] < this.wayYs[k + 1])
 				{
-					y1 -= GameView.baseH / 12;
-					y2 += GameView.baseH / 12;
+					y1 -= OldGameView.baseH / 12;
+					y2 += OldGameView.baseH / 12;
 				}
 				else
 				{
-					y2 -= GameView.baseH / 12;
-					y1 += GameView.baseH / 12;
+					y2 -= OldGameView.baseH / 12;
+					y1 += OldGameView.baseH / 12;
 				}
-			this.wayPoints[4 * k + 0] = x1 + 0.5f * GameView.baseH;
-			this.wayPoints[4 * k + 1] = y1 + 0.5f * GameView.baseH;
-			this.wayPoints[4 * k + 2] = x2 + 0.5f * GameView.baseH;
-			this.wayPoints[4 * k + 3] = y2 + 0.5f * GameView.baseH;
+			this.wayPoints[4 * k + 0] = x1 + 0.5f * OldGameView.baseH;
+			this.wayPoints[4 * k + 1] = y1 + 0.5f * OldGameView.baseH;
+			this.wayPoints[4 * k + 2] = x2 + 0.5f * OldGameView.baseH;
+			this.wayPoints[4 * k + 3] = y2 + 0.5f * OldGameView.baseH;
 		}
 		invalidate();
 	}
 	
 	public void setZoneViewOffset()
 	{
-		final int y = this.gameView.offsetY + (this.lastUnitI - this.radius) * GameView.baseH;
-		final int x = this.gameView.offsetX + (this.lastUnitJ - this.radius) * GameView.baseW;
+		final int y = this.gameView.offsetY + (this.lastUnitI - this.radius) * OldGameView.baseH;
+		final int x = this.gameView.offsetX + (this.lastUnitJ - this.radius) * OldGameView.baseW;
 		if (this.isWayVisible)
 		{
 			this.wayView.setY(y);
@@ -454,8 +453,8 @@ public class GameViewUnit extends GameViewPart
 		for (int i = 0; i < this.fieldH; i++)
 			for (int j = 0; j < this.fieldW; j++)
 			{
-				final int y = GameView.baseH * i;
-				final int x = GameView.baseW * j;
+				final int y = OldGameView.baseH * i;
+				final int x = OldGameView.baseW * j;
 				if (this.field[i][j] != this.wayUnit)
 					drawUnit(canvas, this.field[i][j], y, x, false);
 			}
@@ -463,8 +462,8 @@ public class GameViewUnit extends GameViewPart
 		if (this.wayChanged)
 			canvas.drawLines(this.wayPoints, GameViewUnit.LINE_PAINT);
 		
-		final int y = GameView.baseH * this.lastUnitI;
-		final int x = GameView.baseW * this.lastUnitJ;
+		final int y = OldGameView.baseH * this.lastUnitI;
+		final int x = OldGameView.baseW * this.lastUnitJ;
 		if (this.wayUnit != null)
 			drawUnit(canvas, this.wayUnit, (int) this.wayUnitY, (int) this.wayUnitX, true);
 		else
@@ -473,6 +472,7 @@ public class GameViewUnit extends GameViewPart
 	
 	private void drawUnit(Canvas canvas, Unit unit, int y, int x, boolean isWay)
 	{
+		/*
 		if (unit == null)
 			return;
 		
@@ -483,7 +483,7 @@ public class GameViewUnit extends GameViewPart
 		if (health < 100 && unit.isLive)
 		{
 			final int textX = x;
-			final int textY = y + GameView.baseH - NumberImages.h;
+			final int textY = y + OldGameView.baseH - NumberImages.h;
 			
 			final Bitmap bitmapOne = NumberImages.getNumberBitmap(health / 10);
 			final Bitmap bitmapTwo = NumberImages.getNumberBitmap(health % 10);
@@ -495,6 +495,7 @@ public class GameViewUnit extends GameViewPart
 				canvas.drawBitmap(bitmapTwo, textX + NumberImages.w, textY, null);
 			}
 		}
+		*/
 	}
 	
 }

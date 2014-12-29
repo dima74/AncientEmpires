@@ -39,16 +39,16 @@ public class UnitImages
 	private static int[][]				notColoredJ;
 	private static SomeWithBitmaps[][]	baseUnitsBitmaps;
 	
-	public static Bitmap getUnitBitmap(final Unit unit, final boolean isWay)
+	public static SomeWithBitmaps getUnitBitmap(final Unit unit, final boolean isWay)
 	{
 		if (unit.isLive)
 			if (unit.isTurn && !isWay)
 			{
 				SomeWithBitmaps[] typeBitmaps = UnitImages.greyUnitsBitmaps[unit.type.ordinal];
-				return typeBitmaps[typeBitmaps.length == 1 ? 0 : unit.player.colorI].bitmaps[0];
+				return typeBitmaps[typeBitmaps.length == 1 ? 0 : unit.player.colorI];
 			}
 			else
-				return UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal].getBitmap();
+				return UnitImages.unitsBitmaps[unit.type.ordinal][unit.player.ordinal];
 		else
 			return Images.tombstone;
 	}

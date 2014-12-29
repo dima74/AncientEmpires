@@ -41,7 +41,7 @@ public class AnimateDecreaseHealthView extends View
 	public AnimateDecreaseHealthView(Context context)
 	{
 		super(context);
-		setLayoutParams(GameView.fullLayoutParams);
+		setLayoutParams(OldGameView.fullLayoutParams);
 		setVisibility(View.GONE);
 	}
 	
@@ -60,7 +60,7 @@ public class AnimateDecreaseHealthView extends View
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation)
 			{
-				AnimateDecreaseHealthView.this.y = (float) animation.getAnimatedValue() * GameView.a;
+				AnimateDecreaseHealthView.this.y = (float) animation.getAnimatedValue() * OldGameView.a;
 				invalidate();
 			}
 		});
@@ -106,8 +106,8 @@ public class AnimateDecreaseHealthView extends View
 		drawDecreaseHealth(canvas, this.health, (int) this.y);
 		if (this.isSparkAnimate)
 		{
-			final int sparkY = (GameView.A - SparksImages.h) / 2;
-			final int sparkX = (GameView.A - SparksImages.w) / 2;
+			final int sparkY = (OldGameView.A - SparksImages.h) / 2;
+			final int sparkX = (OldGameView.A - SparksImages.w) / 2;
 			final Bitmap sparkBitamp = SparksImages.getAttackBitmap(getNumberSpark(millis));
 			canvas.drawBitmap(sparkBitamp, sparkX, sparkY, null);
 		}
@@ -117,7 +117,7 @@ public class AnimateDecreaseHealthView extends View
 	{
 		if (decrease < 10)
 		{
-			final int offset = GameView.a * 3;
+			final int offset = OldGameView.a * 3; // Это бред, надо по центру
 			canvas.drawBitmap(BigNumberImages.minusBitmap, offset, y, null);
 			canvas.drawBitmap(BigNumberImages.getBitmap(decrease),
 					BigNumberImages.w * 1 + offset, y, null);

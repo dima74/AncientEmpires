@@ -19,7 +19,7 @@ import android.view.View;
 public class GameViewAction extends GameViewPart
 {
 	
-	public GameViewAction(Context context, GameView gameView)
+	public GameViewAction(Context context, OldGameView gameView)
 	{
 		super(context, gameView);
 	}

@@ -15,9 +15,10 @@ import android.widget.FrameLayout.LayoutParams;
 
 public class ZoneView extends View
 {
-	protected GameView	gameView;
 	
-	public ZoneView(Context context, GameView gameView)
+	protected OldGameView	gameView;
+	
+	public ZoneView(Context context, OldGameView gameView)
 	{
 		super(context);
 		this.gameView = gameView;
@@ -53,8 +54,8 @@ public class ZoneView extends View
 	{
 		this.amount = amount;
 		
-		this.radiusStart = GameView.baseH / 2;
-		this.radiusEnd = (int) ((ZoneView.this.amount + 0.5f) * GameView.baseH);
+		this.radiusStart = OldGameView.baseH / 2;
+		this.radiusEnd = (int) ((ZoneView.this.amount + 0.5f) * OldGameView.baseH);
 		
 		LayoutParams layoutParams = new LayoutParams(this.radiusEnd * 2, this.radiusEnd * 2);
 		setLayoutParams(layoutParams);
@@ -97,7 +98,7 @@ public class ZoneView extends View
 		for (int i = 0; i < this.zone.length; i++)
 			for (int j = 0; j < this.zone[i].length; j++)
 				if (this.zone[i][j])
-					canvas.drawBitmap(this.bitmap, j * GameView.baseW, i * GameView.baseH, null);
+					canvas.drawBitmap(this.bitmap, j * OldGameView.baseW, i * OldGameView.baseH, null);
 		
 		canvas.translate(this.radiusEnd, this.radiusEnd);
 		canvas.drawCircle(0, 0, this.radiusEnd, this.circlePaint);

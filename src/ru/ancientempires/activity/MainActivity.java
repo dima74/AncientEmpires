@@ -82,7 +82,20 @@ public class MainActivity extends Activity
 		long s = System.nanoTime();
 		GameInit.init();
 		long e = System.nanoTime();
-		// startCampaign();
+		
+		if (false)
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e1)
+			{
+				e1.printStackTrace();
+			}
+		
+		// setContentView(new TestViewGroup(this));
+		if (false)
+			return;
 		
 		// TODO заменить, чтобы клиент инит сендил мессадж
 		final Handler handler = new Handler(new Handler.Callback()
@@ -132,7 +145,7 @@ public class MainActivity extends Activity
 		if (this.isStartCampaign)
 			return;
 		this.isStartCampaign = true;
-		MyLog.l("MainActivity.startCampaign()");
+		// MyLog.l("MainActivity.startCampaign()");
 		ProgressDialog progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage(getString(R.string.loading));
 		progressDialog.show();

@@ -14,21 +14,24 @@ import com.google.gson.stream.JsonReader;
 public class Images
 {
 	
-	public static Bitmap	amountGold;
-	public static Bitmap	amountUnits;
-	public static Bitmap	arrowStrange;
-	public static Bitmap	arrowIncrease;
-	public static Bitmap	arrowDecrease;
-	public static Bitmap	attack;
-	public static Bitmap	defence;
-	public static Bitmap	levelIncrease;
-	public static Bitmap	levelUp;
-	public static Bitmap	tombstone;
+	public static float				baseMulti	= 4.5f / 3.0f;
+	public static int				bitmapSize;
 	
-	public static int		amountGoldH;
-	public static int		amountGoldW;
-	public static int		amountUnitsH;
-	public static int		amountUnitsW;
+	public static Bitmap			amountGold;
+	public static Bitmap			amountUnits;
+	public static Bitmap			arrowStrange;
+	public static Bitmap			arrowIncrease;
+	public static Bitmap			arrowDecrease;
+	public static Bitmap			attack;
+	public static Bitmap			defence;
+	public static Bitmap			levelIncrease;
+	public static Bitmap			levelUp;
+	public static SomeWithBitmaps	tombstone;
+	
+	public static int				amountGoldH;
+	public static int				amountGoldW;
+	public static int				amountUnitsH;
+	public static int				amountUnitsW;
 	
 	public static void preloadResources(ZipFile images) throws IOException
 	{
@@ -40,6 +43,7 @@ public class Images
 		String numbersPath = JsonHelper.readString(reader, "numbers_folder");
 		String bigNumbersPath = JsonHelper.readString(reader, "big_numbers_folder");
 		String sparksPath = JsonHelper.readString(reader, "sparks_folder");
+		String cursorsPath = JsonHelper.readString(reader, "cursors_folder");
 		reader.endObject();
 		reader.close();
 		
@@ -49,6 +53,7 @@ public class Images
 		NumberImages.preloadResources(images, numbersPath);
 		BigNumberImages.preloadResources(images, bigNumbersPath);
 		SparksImages.preloadResources(images, sparksPath);
+		CursorImages.preloadResources(images, cursorsPath);
 		
 		// self
 		Images.amountGold = BitmapHelper.getResizeBitmap(images, "amountGold.png");
@@ -60,12 +65,15 @@ public class Images
 		Images.defence = BitmapHelper.getResizeBitmap(images, "defence.png");
 		Images.levelIncrease = BitmapHelper.getResizeBitmap(images, "levelIncrease.png");
 		Images.levelUp = BitmapHelper.getResizeBitmap(images, "levelUp.png");
-		Images.tombstone = BitmapHelper.getResizeBitmap(images, "tombstone.png");
+		
+		Images.tombstone = new SomeWithBitmaps().setBitmaps("", "tombstone.png");
 		
 		Images.amountGoldH = Images.amountGold.getHeight();
 		Images.amountGoldW = Images.amountGold.getWidth();
 		Images.amountUnitsH = Images.amountUnits.getHeight();
 		Images.amountUnitsW = Images.amountUnits.getWidth();
+		
+		Images.bitmapSize = Images.tombstone.bitmaps[0].getHeight();
 	}
 	
 	public static void loadResources(ZipFile images, Game game) throws IOException

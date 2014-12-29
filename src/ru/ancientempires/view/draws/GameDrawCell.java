@@ -1,70 +1,59 @@
-package ru.ancientempires.view;
+package ru.ancientempires.view.draws;
 
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
-import android.content.Context;
+import ru.ancientempires.model.Game;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public class GameViewCell extends GameViewPart
+public class GameDrawCell extends GameDraw
 {
 	
-	public GameViewCell(Context context, OldGameView gameView)
-	{
-		super(context, gameView);
-	}
+	private final int	h;
+	private final int	w;
 	
-	private Cell[][]	field;
-	private int			h;
-	private int			w;
-	
-	public GameViewCell setField(Cell[][] field)
+	public GameDrawCell(GameDrawMain gameDraw)
 	{
-		this.field = field;
+		super(gameDraw);
+		Cell[][] field = gameDraw.game.map.getField();
 		this.h = field.length;
 		this.w = field[0].length;
-		
 		this.bitmaps = new Bitmap[this.h][this.w];
-		update();
-		
-		return this;
 	}
 	
-	private Bitmap[][]	bitmaps;
+	public Bitmap[][]	bitmaps;
 	private boolean		isDual;
 	
-	public GameViewCell setDual(boolean isDual)
+	public GameDrawCell setDual()
 	{
-		this.isDual = isDual;
+		this.isDual = true;
 		return this;
 	}
 	
 	@Override
-	public boolean update()
+	public boolean update(Game game)
 	{
+		final Cell[][] field = game.map.getField();
 		for (int i = this.h - 1 - (this.isDual ? 1 : 0); i >= 0; i--)
 			for (int j = this.w - 1; j >= 0; j--)
 			{
-				Cell cell = this.field[i + (this.isDual ? 1 : 0)][j];
+				Cell cell = field[i + (this.isDual ? 1 : 0)][j];
 				this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
 			}
-		invalidate();
 		return false;
 	}
 	
 	@Override
-	protected void onDraw(Canvas canvas)
+	public void draw(Canvas canvas)
 	{
-		// canvas.translate(this.gameView.offsetX, this.gameView.offsetY);
-		// карта
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
 			{
 				final Bitmap bitmapCell = this.bitmaps[i][j];
 				if (bitmapCell == null)
 					continue;
-				final int y = OldGameView.baseH * i;
-				final int x = OldGameView.baseW * j;
+				final int y = GameDraw.A * i;
+				final int x = GameDraw.A * j;
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 	}

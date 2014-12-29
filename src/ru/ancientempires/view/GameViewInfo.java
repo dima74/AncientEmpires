@@ -1,6 +1,5 @@
 package ru.ancientempires.view;
 
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.BigNumberImages;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
@@ -17,7 +16,7 @@ import android.view.MotionEvent;
 public class GameViewInfo extends GameViewPart
 {
 	
-	public GameViewInfo(Context context, GameView gameView)
+	public GameViewInfo(Context context, OldGameView gameView)
 	{
 		super(context, gameView);
 	}
@@ -52,10 +51,10 @@ public class GameViewInfo extends GameViewPart
 		GameViewInfo.color4.setColor(0xFF242A45);
 		GameViewInfo.color5.setColor(0xFF12142F);
 		
-		this.a = GameView.baseH / 24;
+		this.a = OldGameView.baseH / 24;
 		this.h = h;
 		this.w = w;
-		this.mW = w - this.a * 7 - GameView.baseW;
+		this.mW = w - this.a * 7 - OldGameView.baseW;
 		
 		GameViewInfo.paint.setStrokeWidth(1);
 		GameViewInfo.color1.setStrokeWidth(this.a);
@@ -141,7 +140,7 @@ public class GameViewInfo extends GameViewPart
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
-		MyLog.l("GameViewInfo.onTouchEvent()");
+		// MyLog.l("GameViewInfo.onTouchEvent()");
 		return performClick();
 	}
 	

@@ -3,7 +3,7 @@ package ru.ancientempires.helpers;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.view.GameView;
+import ru.ancientempires.images.Images;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -39,23 +39,18 @@ public class BitmapHelper
 	
 	public static Bitmap getResizeBitmap(Bitmap bitmap)
 	{
-		bitmap = BitmapHelper.getMultiBitmap(bitmap, GameView.baseMulti);
-		
-		int bitmapHeight = bitmap.getHeight();
-		int bitmapWidth = bitmap.getWidth();
-		if (!GameView.isBaseCellSizeDetermine)
+		bitmap = BitmapHelper.getMultiBitmap(bitmap, Images.baseMulti);
+		/*
+		if (!OldGameView.isBaseCellSizeDetermine)
 		{
-			GameView.isBaseCellSizeDetermine = true;
-			GameView.baseH = bitmapHeight;
-			GameView.baseW = bitmapWidth;
-			GameView.A = bitmapHeight;
-			GameView.a = bitmapHeight / 24;
+			OldGameView.isBaseCellSizeDetermine = true;
+			OldGameView.baseH = bitmapHeight;
+			OldGameView.baseW = bitmapWidth;
+			OldGameView.A = bitmapHeight;
+			OldGameView.a = bitmapHeight / 24;
 		}
-		else if (GameView.baseH != bitmapHeight || GameView.baseW != bitmapWidth)
-			// какая-нибудь норм обработка ошибки тут.
-			assert true;
+		*/
 		
 		return bitmap;
 	}
-	
 }
