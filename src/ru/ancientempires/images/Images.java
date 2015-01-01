@@ -31,6 +31,9 @@ public class Images
 	public static int			amountUnitsH;
 	public static int			amountUnitsW;
 	
+	public static int			levelUpH;
+	public static int			levelUpW;
+	
 	public static void preloadResources(ZipFile images) throws IOException
 	{
 		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, "info.json"));
@@ -71,6 +74,9 @@ public class Images
 		Images.amountGoldW = Images.amountGold.getWidth();
 		Images.amountUnitsH = Images.amountUnits.getHeight();
 		Images.amountUnitsW = Images.amountUnits.getWidth();
+		
+		Images.levelUpH = Images.levelUp.getHeight();
+		Images.levelUpW = Images.levelUp.getWidth();
 		
 		Images.bitmapSize = Images.tombstone.bitmaps[0].getHeight();
 	}

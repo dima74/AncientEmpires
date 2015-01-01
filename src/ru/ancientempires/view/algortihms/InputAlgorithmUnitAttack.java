@@ -46,10 +46,13 @@ public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 		this.main.gameDraw.gameDrawInfo.update(InputAlgorithm.game);
 		
 		if (this.isChanged)
+		{
+			this.main.tapWithoutAction(this.endI, this.endJ);
 			if ((boolean) this.result.getProperty("isAttackUnit"))
 				this.main.gameDraw.gameDrawUnitAttack.start(this.result);
 			else
 				this.main.gameDraw.gameDrawCellAttack.start(this.result);
+		}
 	}
 	
 }

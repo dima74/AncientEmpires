@@ -55,7 +55,14 @@ public class GameViewThread extends Thread
 				{
 					synchronized (this.surfaceHolder)
 					{
-						this.gameDraw.draw(canvas);
+						try
+						{
+							this.gameDraw.draw(canvas);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
 						this.gameDraw.iFrame++;
 					}
 					this.surfaceHolder.unlockCanvasAndPost(canvas);
@@ -83,7 +90,14 @@ public class GameViewThread extends Thread
 		{
 			final int i = (int) ((this.touchY - this.gameDraw.offsetY) / GameDraw.A);
 			final int j = (int) ((this.touchX - this.gameDraw.offsetX) / GameDraw.A);
-			this.inputAlgoritmMain.tap(i, j);
+			try
+			{
+				this.inputAlgoritmMain.tap(i, j);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	

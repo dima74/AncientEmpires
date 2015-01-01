@@ -11,8 +11,8 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 																									
 	private Bitmap[]		bitmaps;
 	
-	private int				y;
-	private int				x;
+	public int				y;
+	public int				x;
 	
 	public GameDrawBitmaps(GameDrawMain gameDraw)
 	{
@@ -25,11 +25,12 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 		return this;
 	}
 	
-	public void animate(int frameToStart, int y, int x, int frameLength)
+	public GameDrawBitmaps animate(int frameToStart, int y, int x, int frameLength)
 	{
 		this.y = y;
 		this.x = x;
 		animate(frameToStart, frameLength);
+		return this;
 	}
 	
 	@Override

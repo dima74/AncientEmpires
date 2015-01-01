@@ -12,23 +12,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	private GameDrawUnitAttack	drawDirect;
 	private GameDrawUnitAttack	drawReverse;
 	
-	// private GameDrawDecreaseHealth drawDecreaseHealthDirect;
-	// private GameDrawDecreaseHealth drawDecreaseHealthReverse;
-	
-	// private GameDrawBitmaps drawSparkBitmapsDirect;
-	// private GameDrawBitmaps drawSparkBitmapsReverse;
-	
-	// private ArrayList<GameDrawOnFrames> draws;
-	
-	// private boolean attackingIsLive;
-	// private boolean attackedIsLive;
-	
 	private boolean				isReverseAttack;
-	
-	// private int attackingI;
-	// private int attackingJ;
-	// private int attackedI;
-	// private int attackedJ;
 	
 	public int					frameToStartPartTwo;
 	
@@ -37,24 +21,10 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 		super(gameDraw);
 		this.drawDirect = new GameDrawUnitAttack(gameDraw);
 		this.drawReverse = new GameDrawUnitAttack(gameDraw);
-		// this.drawDecreaseHealthDirect = new GameDrawDecreaseHealth(gameDraw);
-		// this.drawDecreaseHealthReverse = new GameDrawDecreaseHealth(gameDraw);
-		
-		// this.drawSparkBitmapsDirect = new GameDrawBitmaps(gameDraw).setBitmaps(SparksImages.bitmapsAttack);
-		// this.drawSparkBitmapsReverse = new GameDrawBitmaps(gameDraw).setBitmaps(SparksImages.bitmapsAttack);
 	}
 	
 	public void start(ActionResult result)
 	{
-		// this.attackingI = (int) result.action.getProperty("i");
-		// this.attackingJ = (int) result.action.getProperty("j");
-		// this.attackedI = (int) result.action.getProperty("targetI");
-		// this.attackedJ = (int) result.action.getProperty("targetJ");
-		// int attackingY = this.attackingI * GameDraw.A;
-		// int attackingX = this.attackingJ * GameDraw.A;
-		// int attackedY = this.attackedI * GameDraw.A;
-		// int attackedX = this.attackedJ * GameDraw.A;
-		
 		AttackResult resultDirect = (AttackResult) result.getProperty("attackResultDirect");
 		this.drawDirect.start(resultDirect, 0);
 		int frameToStartPartTwo = this.drawDirect.frameEnd - this.gameDraw.iFrame - 16;
@@ -73,25 +43,6 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 		{
 			this.drawReverse.setFrameToStartPartTwo(frameToStartPartTwo);
 			frameEnd = Math.max(frameEnd, this.drawReverse.frameEnd);
-		}
-		
-		// this.draws = new ArrayList<GameDrawOnFrames>();
-		
-		// this.drawDecreaseHealthDirect.animate(0, attackedY, attackedX, resultDirect.decreaseHealth);
-		// this.drawSparkBitmapsDirect.animate(0, attackedY, attackedX);
-		// this.draws.add(this.drawDecreaseHealthDirect);
-		// this.draws.add(this.drawSparkBitmapsDirect);
-		
-		// this.gameDraw.gameDrawUnit.updateOneUnitBase(this.attackedI, this.attackedJ, true);
-		// this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.attackedI, this.attackedJ);
-		
-		if (this.isReverseAttack)
-		{
-			// this.drawDecreaseHealthReverse.animate(GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES, attackingY, attackingX, resultReverse.decreaseHealth);
-			// this.drawSparkBitmapsReverse.animate(GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES, attackingY, attackingX);
-			// this.draws.add(this.drawDecreaseHealthReverse);
-			// this.draws.add(this.drawSparkBitmapsReverse);
-			// this.frameToStartPartTwo = this.drawDecreaseHealthReverse.frameEnd - 16 - this.gameDraw.iFrame;
 		}
 		
 		// part 2

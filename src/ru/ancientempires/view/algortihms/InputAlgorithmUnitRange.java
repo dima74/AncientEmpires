@@ -24,8 +24,8 @@ public class InputAlgorithmUnitRange extends InputAlgorithm
 	
 	public boolean			isChanged;
 	
-	private int				endI;
-	private int				endJ;
+	public int				endI;
+	public int				endJ;
 	public GameDrawRange	gameDrawZone;
 	
 	public ActionType		actionTypeGet;

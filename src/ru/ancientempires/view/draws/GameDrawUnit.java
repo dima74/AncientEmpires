@@ -46,16 +46,16 @@ public class GameDrawUnit extends GameDraw
 		FewBitmaps baseBitmap = UnitImages.getUnitBitmap(unit, false);
 		Bitmap textBitmap = Bitmap.createBitmap(GameDraw.A, GameDraw.A, Config.ARGB_8888);
 		UnitBitmap unitBitmap = new UnitBitmap(baseBitmap, textBitmap);
-		updateTextBitmap(textBitmap, unit);
+		if (unit.isLive)
+			updateTextBitmap(textBitmap, unit.health);
 		return unitBitmap;
 	}
 	
-	private void updateTextBitmap(Bitmap textBitmap, Unit unit)
+	private void updateTextBitmap(Bitmap textBitmap, int health)
 	{
 		textBitmap.eraseColor(Color.TRANSPARENT);
 		Canvas canvas = new Canvas(textBitmap);
-		int health = unit.health;
-		if (health < 100 && unit.isLive)
+		if (health < 100)
 		{
 			int textX = 0;
 			int textY = GameDraw.A - NumberImages.h;
@@ -79,10 +79,10 @@ public class GameDrawUnit extends GameDraw
 		this.field[i][j] = new UnitBitmap(unitBitmap, this.field[i][j].textBitmap);
 	}
 	
-	public void updateOneUnitHealth(int i, int j)
+	public void updateOneUnitHealth(int i, int j, boolean isLive)
 	{
 		Unit[][] field = this.gameDraw.game.fieldUnits;
-		updateTextBitmap(this.field[i][j].textBitmap, field[i][j]);
+		updateTextBitmap(this.field[i][j].textBitmap, isLive ? field[i][j].health : 0);
 	}
 	
 	public void updateOneUnit(int i, int j)

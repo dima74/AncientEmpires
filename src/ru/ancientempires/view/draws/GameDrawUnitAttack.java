@@ -7,17 +7,15 @@ import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import android.graphics.Canvas;
 
-public class GameDrawUnitAttack extends GameDrawOnFrames
+public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 {
 	
-	private AttackResult				result;
+	private AttackResult	result;
 	
-	private int							i, j;
-	private int							y, x;
+	private int				i, j;
+	private int				y, x;
 	
-	private ArrayList<GameDrawOnFrames>	draws;
-	
-	private int							frameStartPartTwo;
+	private int				frameStartPartTwo;
 	
 	public GameDrawUnitAttack(GameDrawMain gameDraw)
 	{
@@ -50,20 +48,30 @@ public class GameDrawUnitAttack extends GameDrawOnFrames
 		
 		if (this.result.effectSign == -1)
 		{
-			GameDrawBitmaps gameDrawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault);
+			GameDrawBitmaps drawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault);
 			
 			int offsetY = (int) (this.y - 22 * GameDraw.a);
 			int offsetX = this.x + (GameDraw.A - StatusesImages.w) / 2;
-			GameDrawOnFrames gameDrawPoison = new GameDrawBitmapSinus(this.gameDraw).setBitmap(StatusesImages.poison).setCoord(offsetY, offsetX);
+			GameDrawOnFrames drawPoison = new GameDrawBitmapSinus(this.gameDraw).setBitmap(StatusesImages.poison).setCoord(offsetY, offsetX);
 			
-			gameDrawSparks.animate(frameToStartPartTwo, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
-			gameDrawPoison.animate(frameToStartPartTwo, 48);
+			drawSparks.animate(frameToStartPartTwo, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
+			drawPoison.animate(frameToStartPartTwo, 48);
 			
-			this.draws.add(gameDrawSparks);
-			this.draws.add(gameDrawPoison);
+			this.draws.add(drawSparks);
+			this.draws.add(drawPoison);
 			
-			this.frameEnd = Math.max(this.frameEnd, gameDrawSparks.frameEnd);
-			this.frameEnd = Math.max(this.frameEnd, gameDrawPoison.frameEnd);
+			this.frameEnd = Math.max(this.frameEnd, drawSparks.frameEnd);
+			this.frameEnd = Math.max(this.frameEnd, drawPoison.frameEnd);
+		}
+		
+		if (this.result.isLevelUp)
+		{
+			int frameToStartLevelUp = frameToStartPartTwo + 4;
+			GameDrawLevelUp drawLevelUp = new GameDrawLevelUp(this.gameDraw);
+			drawLevelUp.animate(frameToStartLevelUp, this.result.i * GameDraw.A, this.result.j * GameDraw.A);
+			this.draws.add(drawLevelUp);
+			
+			this.frameEnd = Math.max(this.frameEnd, drawLevelUp.frameEnd);
 		}
 	}
 	
@@ -76,14 +84,11 @@ public class GameDrawUnitAttack extends GameDrawOnFrames
 		
 		if (this.gameDraw.iFrame == this.frameStart)
 		{
-			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.i, this.j);
+			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.i, this.j, this.result.isTargetLive);
 			this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo)
-			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.i, this.j, true);
-		
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
-			gameDrawOnFrames.draw(canvas);
+			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.result.i, this.result.j, true);
 	}
 	
 }

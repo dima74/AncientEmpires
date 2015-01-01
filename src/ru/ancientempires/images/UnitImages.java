@@ -2,18 +2,12 @@ package ru.ancientempires.images;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.zip.ZipFile;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.load.UnitImageProperties;
@@ -70,7 +64,7 @@ public class UnitImages
 		reader.endObject();
 		
 		UnitImages.baseUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
-		UnitImages.greyUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
+		UnitImages.greyUnitsBitmaps = new FewBitmaps[UnitType.amount][];
 		UnitImages.additionalUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
 		UnitImages.notColoredI = new int[UnitType.amount][];
 		UnitImages.notColoredJ = new int[UnitType.amount][];
@@ -110,13 +104,15 @@ public class UnitImages
 				typeBitmaps.add(reader.nextString());
 			
 			// Загрузка серых изображений войнов
-			Bitmap[] greyUnitBitmaps = new Bitmap[typeBitmaps.size()];
-			for (int bitmapI = 0; bitmapI < typeBitmaps.size(); bitmapI++)
-				greyUnitBitmaps[bitmapI] = BitmapHelper.getResizeBitmap(images,
-						path + UnitImages.colorPaths[0] + typeBitmaps.get(bitmapI));
+			// Bitmap[] greyUnitBitmaps = new Bitmap[typeBitmaps.size()];
+			// for (int bitmapI = 0; bitmapI < typeBitmaps.size(); bitmapI++)
+			// greyUnitBitmaps[bitmapI] = BitmapHelper.getResizeBitmap(images, path + UnitImages.colorPaths[0] + typeBitmaps.get(bitmapI));
 			UnitImages.greyUnitsBitmaps[typeI] = new FewBitmaps[]
 			{
-					new FewBitmaps().setBitmaps(greyUnitBitmaps)
+					new FewBitmaps().setBitmaps(new Bitmap[]
+					{
+							BitmapHelper.getResizeBitmap(images, path + UnitImages.colorPaths[0] + typeBitmaps.get(0))
+					})
 			};
 			
 			// Загрузка красных, зеленых, синих и черных изображений войнов
@@ -125,16 +121,14 @@ public class UnitImages
 				FewBitmaps someWithBitmaps = new FewBitmaps();
 				someWithBitmaps.setAmount(typeBitmaps.size());
 				for (int bitmapI = 0; bitmapI < typeBitmaps.size(); bitmapI++)
-					someWithBitmaps.setBitmaps(bitmapI, BitmapHelper.getBitmap(images,
-							path + UnitImages.colorPaths[colorI] + typeBitmaps.get(bitmapI)));
+					someWithBitmaps.setBitmaps(bitmapI, BitmapHelper.getBitmap(images, path + UnitImages.colorPaths[colorI] + typeBitmaps.get(bitmapI)));
 				UnitImages.baseUnitsBitmaps[typeI][colorI] = someWithBitmaps;
 			}
 			reader.endArray();
 		}
 		else
 		{
-			UnitImageProperties[] properties = new Gson()
-					.fromJson(reader, UnitImageProperties[].class);
+			UnitImageProperties[] properties = new Gson().fromJson(reader, UnitImageProperties[].class);
 			
 			UnitImages.notColoredI[typeI] = new int[properties.length];
 			UnitImages.notColoredJ[typeI] = new int[properties.length];
@@ -146,48 +140,39 @@ public class UnitImages
 				UnitImages.notColoredJ[typeI][bitmapI] = property.notColoredJ;
 				Bitmap baseGreyBitmap = BitmapHelper.getBitmap(images,
 						path + UnitImages.colorPaths[0] + property.colored);
-				greyBitmaps[0][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
-						property, path + property.notColoredGrey.other);
-				greyBitmaps[1][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
-						property, path + property.notColoredGrey.red);
-				greyBitmaps[2][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
-						property, path + property.notColoredGrey.green);
-				greyBitmaps[3][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
-						property, path + property.notColoredGrey.blue);
+				greyBitmaps[0][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.other);
+				greyBitmaps[1][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.red);
+				greyBitmaps[2][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.green);
+				greyBitmaps[3][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.blue);
 				greyBitmaps[4][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
 						property, path + property.notColoredGrey.black);
 			}
+			UnitImages.greyUnitsBitmaps[typeI] = new FewBitmaps[5];
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.greyUnitsBitmaps[typeI][colorI] = new FewBitmaps()
-						.setBitmaps(greyBitmaps[colorI]);
+				UnitImages.greyUnitsBitmaps[typeI][colorI] = new FewBitmaps().setBitmaps(greyBitmaps[colorI]);
 			
 			Bitmap[][] baseBitmaps = new Bitmap[5][properties.length];
 			for (int bitmapI = 0; bitmapI < properties.length; bitmapI++)
 			{
 				UnitImageProperties property = properties[bitmapI];
 				for (int colorI = 0; colorI <= 4; colorI++)
-					baseBitmaps[colorI][bitmapI] = BitmapHelper.getBitmap(images,
-							path + UnitImages.colorPaths[colorI] + property.colored);
+					baseBitmaps[colorI][bitmapI] = BitmapHelper.getBitmap(images, path + UnitImages.colorPaths[colorI] + property.colored);
 			}
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.baseUnitsBitmaps[typeI][colorI] = new FewBitmaps()
-						.setBitmaps(baseBitmaps[colorI]);
+				UnitImages.baseUnitsBitmaps[typeI][colorI] = new FewBitmaps().setBitmaps(baseBitmaps[colorI]);
 			
 			Bitmap[][] additionalBitmaps = UnitImages.getNotColoredBitmaps(images, path, properties);
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.additionalUnitsBitmaps[typeI][colorI] = new FewBitmaps()
-						.setBitmaps(additionalBitmaps[colorI]);
+				UnitImages.additionalUnitsBitmaps[typeI][colorI] = new FewBitmaps().setBitmaps(additionalBitmaps[colorI]);
 		}
 		
 		reader.endObject();
 	}
 	
-	private static Bitmap associateBitmaps(ZipFile images, Bitmap bitmap,
-			UnitImageProperties property, String other) throws IOException
+	private static Bitmap associateBitmaps(ZipFile images, Bitmap bitmap, UnitImageProperties property, String other) throws IOException
 	{
 		Bitmap otherBitmap = BitmapHelper.getBitmap(images, other);
-		return BitmapHelper.getResizeBitmap(UnitImages.associateBitmaps(
-				bitmap, property.notColoredI, property.notColoredJ, otherBitmap));
+		return BitmapHelper.getResizeBitmap(UnitImages.associateBitmaps(bitmap, property.notColoredI, property.notColoredJ, otherBitmap));
 	}
 	
 	private static Bitmap associateBitmaps(Bitmap bitmap, int startY, int startX, Bitmap otherBitmap)
@@ -252,71 +237,9 @@ public class UnitImages
 			}
 			
 			for (int playerI = 0; playerI < game.players.length; playerI++)
-				UnitImages.unitsBitmaps[typeI][playerI] = new FewBitmaps()
-						.setBitmaps(bitmaps[playerI]);
+				UnitImages.unitsBitmaps[typeI][playerI] = new FewBitmaps().setBitmaps(bitmaps[playerI]);
 		}
 		
-	}
-	
-	public static void loadResources2(ZipFile imagesZipFile, Game game) throws IOException
-	{
-		Document imageInfoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, "info.xml");
-		String unitsImagesFolderPath = XMLHelper.getOneTagText(imageInfoDocument, "unit_images_folder_path");
-		UnitImages.loadUnitsResources(imagesZipFile, unitsImagesFolderPath, game);
-	}
-	
-	private static void loadUnitsResources(ZipFile imagesZipFile, String zipPath, Game game) throws IOException
-	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		
-		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
-		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
-		String imagesPathR = zipPath + mapColorsFolders.get("0xFFFF0000");
-		String imagesPathG = zipPath + mapColorsFolders.get("0xFF00FF00");
-		String imagesPathB = zipPath + mapColorsFolders.get("0xFF0000FF");
-		
-		NodeList images = infoDocument.getElementsByTagName("image");
-		
-		MyAssert.a(images.getLength() == UnitType.amount);
-		int typeAmount = UnitType.amount;
-		int playerAmount = game.players.length;
-		
-		UnitImages.unitsBitmaps = new FewBitmaps[typeAmount][playerAmount];
-		
-		for (int i = 0; i < typeAmount; i++)
-		{
-			Node node = images.item(i);
-			Map<String, String> attributes = XMLHelper.getNodeAttributesMap(node);
-			String nameType = attributes.get("type");
-			int iType = UnitType.getType(nameType).ordinal;
-			
-			int amountImages = Integer.valueOf(attributes.get("amountImages"));
-			for (int k = 0; k < amountImages; k++)
-			{
-				String imageName = attributes.get("image" + k);
-				
-				String imagePathR = imagesPathR + imageName;
-				String imagePathG = imagesPathG + imageName;
-				String imagePathB = imagesPathB + imageName;
-				
-				RenderScriptCellImages rs = new RenderScriptCellImages();
-				rs.createScript(MainActivity.context);
-				
-				Bitmap bitmapR = BitmapHelper.getBitmap(imagesZipFile, imagePathR);
-				Bitmap bitmapG = BitmapHelper.getBitmap(imagesZipFile, imagePathG);
-				Bitmap bitmapB = BitmapHelper.getBitmap(imagesZipFile, imagePathB);
-				rs.setBitmaps(bitmapR, bitmapG, bitmapB);
-				
-				for (int j = 0; j < playerAmount; j++)
-				{
-					Bitmap bitmap = rs.getBitmap(game.players[j].color);
-					bitmap = BitmapHelper.getResizeBitmap(bitmap);
-					if (k == 0)
-						UnitImages.unitsBitmaps[iType][j] = new FewBitmaps().setAmount(amountImages);
-					UnitImages.unitsBitmaps[i][j].setBitmaps(k, bitmap);
-				}
-			}
-		}
 	}
 	
 }
