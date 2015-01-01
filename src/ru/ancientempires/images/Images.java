@@ -6,6 +6,7 @@ import java.util.zip.ZipFile;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.ZIPHelper;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import android.graphics.Bitmap;
 
@@ -14,24 +15,21 @@ import com.google.gson.stream.JsonReader;
 public class Images
 {
 	
-	public static float				baseMulti	= 4.5f / 3.0f;
-	public static int				bitmapSize;
+	public static float			baseMulti	= 4.5f / 3.0f;
+	public static int			bitmapSize;
 	
-	public static Bitmap			amountGold;
-	public static Bitmap			amountUnits;
-	public static Bitmap			arrowStrange;
-	public static Bitmap			arrowIncrease;
-	public static Bitmap			arrowDecrease;
-	public static Bitmap			attack;
-	public static Bitmap			defence;
-	public static Bitmap			levelIncrease;
-	public static Bitmap			levelUp;
-	public static SomeWithBitmaps	tombstone;
+	public static Bitmap		amountGold;
+	public static Bitmap		amountUnits;
+	public static Bitmap		attack;
+	public static Bitmap		defence;
+	public static Bitmap		levelIncrease;
+	public static Bitmap		levelUp;
+	public static FewBitmaps	tombstone;
 	
-	public static int				amountGoldH;
-	public static int				amountGoldW;
-	public static int				amountUnitsH;
-	public static int				amountUnitsW;
+	public static int			amountGoldH;
+	public static int			amountGoldW;
+	public static int			amountUnitsH;
+	public static int			amountUnitsW;
 	
 	public static void preloadResources(ZipFile images) throws IOException
 	{
@@ -44,6 +42,8 @@ public class Images
 		String bigNumbersPath = JsonHelper.readString(reader, "big_numbers_folder");
 		String sparksPath = JsonHelper.readString(reader, "sparks_folder");
 		String cursorsPath = JsonHelper.readString(reader, "cursors_folder");
+		String arrowsPath = JsonHelper.readString(reader, "arrows_folder");
+		String statusesPath = JsonHelper.readString(reader, "statuses_folder");
 		reader.endObject();
 		reader.close();
 		
@@ -54,19 +54,18 @@ public class Images
 		BigNumberImages.preloadResources(images, bigNumbersPath);
 		SparksImages.preloadResources(images, sparksPath);
 		CursorImages.preloadResources(images, cursorsPath);
+		ArrowsImages.preloadResources(images, arrowsPath);
+		StatusesImages.preloadResources(images, statusesPath);
 		
 		// self
 		Images.amountGold = BitmapHelper.getResizeBitmap(images, "amountGold.png");
 		Images.amountUnits = BitmapHelper.getResizeBitmap(images, "amountUnits.png");
-		Images.arrowStrange = BitmapHelper.getResizeBitmap(images, "arrowStrange.png");
-		Images.arrowIncrease = BitmapHelper.getResizeBitmap(images, "arrowIncrease.png");
-		Images.arrowDecrease = BitmapHelper.getResizeBitmap(images, "arrowDecrease.png");
 		Images.attack = BitmapHelper.getResizeBitmap(images, "attack.png");
 		Images.defence = BitmapHelper.getResizeBitmap(images, "defence.png");
 		Images.levelIncrease = BitmapHelper.getResizeBitmap(images, "levelIncrease.png");
 		Images.levelUp = BitmapHelper.getResizeBitmap(images, "levelUp.png");
 		
-		Images.tombstone = new SomeWithBitmaps().setBitmaps("", "tombstone.png");
+		Images.tombstone = new FewBitmaps().setBitmaps("", "tombstone.png");
 		
 		Images.amountGoldH = Images.amountGold.getHeight();
 		Images.amountGoldW = Images.amountGold.getWidth();

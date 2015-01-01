@@ -1,4 +1,4 @@
-package ru.ancientempires.images;
+package ru.ancientempires.images.bitmaps;
 
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;

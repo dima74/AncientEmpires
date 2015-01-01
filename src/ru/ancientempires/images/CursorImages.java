@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.zip.ZipFile;
 
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import android.graphics.Bitmap;
 
 public class CursorImages
@@ -12,9 +13,9 @@ public class CursorImages
 	public static Bitmap				cursorWay;
 	public static Bitmap				cursorAttack;
 	
-	public static final SomeWithBitmaps	cursor				= new SomeWithBitmaps();
-	public static final SomeWithBitmaps	cursorPointerAttack	= new SomeWithBitmaps();
-	public static final SomeWithBitmaps	cursorPointerWay	= new SomeWithBitmaps();
+	public static final FewBitmaps	cursor				= new FewBitmaps();
+	public static final FewBitmaps	cursorPointerAttack	= new FewBitmaps();
+	public static final FewBitmaps	cursorPointerWay	= new FewBitmaps();
 	
 	public static int					cursorH;
 	public static int					cursorW;

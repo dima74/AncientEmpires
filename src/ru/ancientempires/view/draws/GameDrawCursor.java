@@ -1,6 +1,6 @@
 package ru.ancientempires.view.draws;
 
-import ru.ancientempires.images.SomeWithBitmaps;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import android.graphics.Canvas;
 
@@ -12,7 +12,7 @@ public class GameDrawCursor extends GameDraw
 		super(gameDraw);
 	}
 	
-	private SomeWithBitmaps	cursor;
+	private FewBitmaps	cursor;
 	private int				cursorH;
 	private int				cursorW;
 	
@@ -20,7 +20,7 @@ public class GameDrawCursor extends GameDraw
 	private int				cursorY;
 	private int				cursorX;
 	
-	public GameDrawCursor setCursor(SomeWithBitmaps cursor)
+	public GameDrawCursor setCursor(FewBitmaps cursor)
 	{
 		this.cursor = cursor;
 		this.cursorH = cursor.getBitmap().getHeight();

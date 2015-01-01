@@ -1,99 +1,89 @@
 package ru.ancientempires.view.draws;
 
-import ru.ancientempires.action.ActionResult;
+import java.util.ArrayList;
+
+import ru.ancientempires.action.AttackResult;
 import ru.ancientempires.images.SparksImages;
+import ru.ancientempires.images.StatusesImages;
 import android.graphics.Canvas;
 
-public class GameDrawUnitAttack extends GameDraw
+public class GameDrawUnitAttack extends GameDrawOnFrames
 {
 	
-	private static final int		FRAMES_BETWEEN_ANIMATES	= GameDrawDecreaseHealth.FRAMES_ANIMATE * 2 / 3;
+	private AttackResult				result;
 	
-	private GameDrawDecreaseHealth	drawDecreaseHealthDirect;
-	private GameDrawDecreaseHealth	drawDecreaseHealthReverse;
+	private int							i, j;
+	private int							y, x;
 	
-	private GameDrawBitmaps			drawSparkBitmapsDirect;
-	private GameDrawBitmaps			drawSparkBitmapsReverse;
+	private ArrayList<GameDrawOnFrames>	draws;
 	
-	private boolean					attackingIsLive;
-	private boolean					attackedIsLive;
-	
-	private boolean					isReverseDrawing;
-	private boolean					isDrawing				= false;
-	private int						frameStart;
-	
-	private int						attackingI;
-	private int						attackingJ;
-	private int						attackedI;
-	private int						attackedJ;
+	private int							frameStartPartTwo;
 	
 	public GameDrawUnitAttack(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
-		this.drawDecreaseHealthDirect = new GameDrawDecreaseHealth(gameDraw);
-		this.drawDecreaseHealthReverse = new GameDrawDecreaseHealth(gameDraw);
-		
-		this.drawSparkBitmapsDirect = new GameDrawBitmaps(gameDraw).setBitmaps(SparksImages.attackBitmaps);
-		this.drawSparkBitmapsReverse = new GameDrawBitmaps(gameDraw).setBitmaps(SparksImages.attackBitmaps);
 	}
 	
-	public void start(ActionResult result)
+	public void start(AttackResult result, int frameToStart)
 	{
-		this.attackingI = (int) result.action.getProperty("i");
-		this.attackingJ = (int) result.action.getProperty("j");
-		this.attackedI = (int) result.action.getProperty("targetI");
-		this.attackedJ = (int) result.action.getProperty("targetJ");
-		int attackingY = this.attackingI * GameDraw.A;
-		int attackingX = this.attackingJ * GameDraw.A;
-		int attackedY = this.attackedI * GameDraw.A;
-		int attackedX = this.attackedJ * GameDraw.A;
+		this.result = result;
+		this.y = (this.i = result.targetI) * GameDraw.A;
+		this.x = (this.j = result.targetJ) * GameDraw.A;
 		
-		int attackingDecrease = (int) result.getProperty("attackingDecrease");
-		int attackedDecrease = (int) result.getProperty("attackedDecrease");
-		boolean attackingIsLive = (boolean) result.getProperty("attackingLive");
-		boolean attackedIsLive = (boolean) result.getProperty("attackedLive");
+		this.draws = new ArrayList<GameDrawOnFrames>();
+		GameDrawDecreaseHealth drawDecreaseHealth = new GameDrawDecreaseHealth(this.gameDraw);
+		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsAttack);
 		
-		this.drawDecreaseHealthDirect.initAnimate(attackedY, attackedX, attackedDecrease);
-		this.drawSparkBitmapsDirect.initAnimate(attackedY, attackedX);
-		this.drawDecreaseHealthDirect.startAnimate();
-		this.drawSparkBitmapsDirect.startAnimate();
-		this.gameDraw.gameDrawUnit.updateOneUnit(this.attackedI, this.attackedJ);
+		drawDecreaseHealth.animate(frameToStart, this.y, this.x, result.decreaseHealth);
+		drawSparkBitmaps.animate(frameToStart, this.y, this.x);
 		
-		this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.attackedI, this.attackedJ);
-		if (this.isReverseDrawing = attackingDecrease >= 0)
+		this.draws.add(drawDecreaseHealth);
+		this.draws.add(drawSparkBitmaps);
+		
+		animate(frameToStart, GameDrawDecreaseHealth.FRAMES_ANIMATE);
+	}
+	
+	public void setFrameToStartPartTwo(int frameToStartPartTwo)
+	{
+		this.frameStartPartTwo = this.gameDraw.iFrame + frameToStartPartTwo;
+		this.frameEnd = Math.max(this.frameEnd, this.frameStartPartTwo);
+		
+		if (this.result.effectSign == -1)
 		{
-			this.drawDecreaseHealthReverse.initAnimate(attackingY, attackingX, attackingDecrease);
-			this.drawSparkBitmapsReverse.initAnimate(attackingY, attackingX);
+			GameDrawOnFrames gameDrawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault).setCoord(this.y, this.x);
+			
+			int offsetY = (int) (this.y - 22 * GameDraw.a);
+			int offsetX = this.x + (GameDraw.A - StatusesImages.w) / 2;
+			GameDrawOnFrames gameDrawPoison = new GameDrawBitmapSinus(this.gameDraw).setBitmap(StatusesImages.poison).setCoord(offsetY, offsetX);
+			
+			gameDrawSparks.animate(frameToStartPartTwo, 12);
+			gameDrawPoison.animate(frameToStartPartTwo, 48);
+			
+			this.draws.add(gameDrawSparks);
+			this.draws.add(gameDrawPoison);
+			
+			this.frameEnd = Math.max(this.frameEnd, gameDrawSparks.frameEnd);
+			this.frameEnd = Math.max(this.frameEnd, gameDrawPoison.frameEnd);
 		}
-		
-		this.isDrawing = true;
-		this.frameStart = this.gameDraw.iFrame;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
+		super.draw(canvas);
 		if (!this.isDrawing)
 			return;
 		
-		int timePass = this.gameDraw.iFrame - this.frameStart;
-		if (timePass == GameDrawUnitAttack.FRAMES_BETWEEN_ANIMATES && this.isReverseDrawing)
+		if (this.gameDraw.iFrame == this.frameStart)
 		{
-			this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.attackingI, this.attackingJ);
-			this.drawDecreaseHealthReverse.startAnimate();
-			this.drawSparkBitmapsReverse.startAnimate();
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.attackingI, this.attackingJ);
+			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.i, this.j);
+			this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
 		}
+		if (this.gameDraw.iFrame == this.frameStartPartTwo)
+			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.i, this.j, true);
 		
-		this.drawDecreaseHealthDirect.draw(canvas);
-		this.drawDecreaseHealthReverse.draw(canvas);
-		
-		this.drawSparkBitmapsDirect.draw(canvas);
-		this.drawSparkBitmapsReverse.draw(canvas);
-		
-		this.isDrawing = this.drawDecreaseHealthDirect.isDrawing || this.drawDecreaseHealthReverse.isDrawing;
-		if (!this.isDrawing)
-			this.gameDraw.gameDrawUnit.update(this.gameDraw.game);
+		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
+			gameDrawOnFrames.draw(canvas);
 	}
 	
 }

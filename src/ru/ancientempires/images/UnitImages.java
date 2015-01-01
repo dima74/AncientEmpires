@@ -15,6 +15,7 @@ import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.XMLHelper;
 import ru.ancientempires.helpers.ZIPHelper;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.load.UnitImageProperties;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
@@ -29,22 +30,22 @@ import com.google.gson.stream.JsonToken;
 public class UnitImages
 {
 	
-	public static SomeWithBitmaps[][]	unitsBitmaps;
-	public static SomeWithBitmaps[][]	greyUnitsBitmaps;
+	public static FewBitmaps[][]	unitsBitmaps;
+	public static FewBitmaps[][]	greyUnitsBitmaps;
 	
 	// Используется только во время загрузки игры
-	private static String[]				colorPaths;
-	private static SomeWithBitmaps[][]	additionalUnitsBitmaps;
-	private static int[][]				notColoredI;
-	private static int[][]				notColoredJ;
-	private static SomeWithBitmaps[][]	baseUnitsBitmaps;
+	private static String[]			colorPaths;
+	private static FewBitmaps[][]	additionalUnitsBitmaps;
+	private static int[][]			notColoredI;
+	private static int[][]			notColoredJ;
+	private static FewBitmaps[][]	baseUnitsBitmaps;
 	
-	public static SomeWithBitmaps getUnitBitmap(final Unit unit, final boolean isWay)
+	public static FewBitmaps getUnitBitmap(final Unit unit, boolean isLive)
 	{
-		if (unit.isLive)
-			if (unit.isTurn && !isWay)
+		if (unit.isLive || isLive)
+			if (unit.isTurn)
 			{
-				SomeWithBitmaps[] typeBitmaps = UnitImages.greyUnitsBitmaps[unit.type.ordinal];
+				FewBitmaps[] typeBitmaps = UnitImages.greyUnitsBitmaps[unit.type.ordinal];
 				return typeBitmaps[typeBitmaps.length == 1 ? 0 : unit.player.colorI];
 			}
 			else
@@ -68,9 +69,9 @@ public class UnitImages
 		UnitImages.colorPaths[0] = JsonHelper.readString(reader, "grey");
 		reader.endObject();
 		
-		UnitImages.baseUnitsBitmaps = new SomeWithBitmaps[UnitType.amount][5];
-		UnitImages.greyUnitsBitmaps = new SomeWithBitmaps[UnitType.amount][5];
-		UnitImages.additionalUnitsBitmaps = new SomeWithBitmaps[UnitType.amount][5];
+		UnitImages.baseUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
+		UnitImages.greyUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
+		UnitImages.additionalUnitsBitmaps = new FewBitmaps[UnitType.amount][5];
 		UnitImages.notColoredI = new int[UnitType.amount][];
 		UnitImages.notColoredJ = new int[UnitType.amount][];
 		
@@ -113,15 +114,15 @@ public class UnitImages
 			for (int bitmapI = 0; bitmapI < typeBitmaps.size(); bitmapI++)
 				greyUnitBitmaps[bitmapI] = BitmapHelper.getResizeBitmap(images,
 						path + UnitImages.colorPaths[0] + typeBitmaps.get(bitmapI));
-			UnitImages.greyUnitsBitmaps[typeI] = new SomeWithBitmaps[]
+			UnitImages.greyUnitsBitmaps[typeI] = new FewBitmaps[]
 			{
-					new SomeWithBitmaps().setBitmaps(greyUnitBitmaps)
+					new FewBitmaps().setBitmaps(greyUnitBitmaps)
 			};
 			
 			// Загрузка красных, зеленых, синих и черных изображений войнов
 			for (int colorI = 1; colorI <= 3; colorI++)
 			{
-				SomeWithBitmaps someWithBitmaps = new SomeWithBitmaps();
+				FewBitmaps someWithBitmaps = new FewBitmaps();
 				someWithBitmaps.setAmount(typeBitmaps.size());
 				for (int bitmapI = 0; bitmapI < typeBitmaps.size(); bitmapI++)
 					someWithBitmaps.setBitmaps(bitmapI, BitmapHelper.getBitmap(images,
@@ -157,7 +158,7 @@ public class UnitImages
 						property, path + property.notColoredGrey.black);
 			}
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.greyUnitsBitmaps[typeI][colorI] = new SomeWithBitmaps()
+				UnitImages.greyUnitsBitmaps[typeI][colorI] = new FewBitmaps()
 						.setBitmaps(greyBitmaps[colorI]);
 			
 			Bitmap[][] baseBitmaps = new Bitmap[5][properties.length];
@@ -169,12 +170,12 @@ public class UnitImages
 							path + UnitImages.colorPaths[colorI] + property.colored);
 			}
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.baseUnitsBitmaps[typeI][colorI] = new SomeWithBitmaps()
+				UnitImages.baseUnitsBitmaps[typeI][colorI] = new FewBitmaps()
 						.setBitmaps(baseBitmaps[colorI]);
 			
 			Bitmap[][] additionalBitmaps = UnitImages.getNotColoredBitmaps(images, path, properties);
 			for (int colorI = 0; colorI <= 4; colorI++)
-				UnitImages.additionalUnitsBitmaps[typeI][colorI] = new SomeWithBitmaps()
+				UnitImages.additionalUnitsBitmaps[typeI][colorI] = new FewBitmaps()
 						.setBitmaps(additionalBitmaps[colorI]);
 		}
 		
@@ -220,15 +221,15 @@ public class UnitImages
 	
 	public static void loadResources(ZipFile images, Game game) throws IOException
 	{
-		UnitImages.unitsBitmaps = new SomeWithBitmaps[UnitType.amount][game.players.length];
+		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.amount][game.players.length];
 		
 		RenderScriptCellImages rs = new RenderScriptCellImages();
 		rs.createScript(MainActivity.context);
 		for (int typeI = 0; typeI < UnitType.amount; typeI++)
 		{
-			SomeWithBitmaps r = UnitImages.baseUnitsBitmaps[typeI][1];
-			SomeWithBitmaps g = UnitImages.baseUnitsBitmaps[typeI][2];
-			SomeWithBitmaps b = UnitImages.baseUnitsBitmaps[typeI][3];
+			FewBitmaps r = UnitImages.baseUnitsBitmaps[typeI][1];
+			FewBitmaps g = UnitImages.baseUnitsBitmaps[typeI][2];
+			FewBitmaps b = UnitImages.baseUnitsBitmaps[typeI][3];
 			int bitmapAmount = r.bitmaps.length;
 			
 			Bitmap[][] bitmaps = new Bitmap[game.players.length][bitmapAmount];
@@ -251,7 +252,7 @@ public class UnitImages
 			}
 			
 			for (int playerI = 0; playerI < game.players.length; playerI++)
-				UnitImages.unitsBitmaps[typeI][playerI] = new SomeWithBitmaps()
+				UnitImages.unitsBitmaps[typeI][playerI] = new FewBitmaps()
 						.setBitmaps(bitmaps[playerI]);
 		}
 		
@@ -280,7 +281,7 @@ public class UnitImages
 		int typeAmount = UnitType.amount;
 		int playerAmount = game.players.length;
 		
-		UnitImages.unitsBitmaps = new SomeWithBitmaps[typeAmount][playerAmount];
+		UnitImages.unitsBitmaps = new FewBitmaps[typeAmount][playerAmount];
 		
 		for (int i = 0; i < typeAmount; i++)
 		{
@@ -311,7 +312,7 @@ public class UnitImages
 					Bitmap bitmap = rs.getBitmap(game.players[j].color);
 					bitmap = BitmapHelper.getResizeBitmap(bitmap);
 					if (k == 0)
-						UnitImages.unitsBitmaps[iType][j] = new SomeWithBitmaps().setAmount(amountImages);
+						UnitImages.unitsBitmaps[iType][j] = new FewBitmaps().setAmount(amountImages);
 					UnitImages.unitsBitmaps[i][j].setBitmaps(k, bitmap);
 				}
 			}

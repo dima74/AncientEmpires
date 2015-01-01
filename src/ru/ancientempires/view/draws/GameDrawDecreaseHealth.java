@@ -5,48 +5,40 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 
-public class GameDrawDecreaseHealth extends GameDraw
+public class GameDrawDecreaseHealth extends GameDrawSinus
 {
 	
-	// length = 94
-	private static final float[]	ys				= new float[]
-													{
-			9, 9, 9, 9, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3,
-			3, 4, 4, 4, 4, 6, 6, 6, 9, 9, 9, 9, 13, 13, 13, 13, 11,
-			11, 11, 11, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11,
-			11, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12, 12, 12, 13,
-			13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-			13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
-													};
+	// length = 96
+	private static final int[]	ys				= new int[]
+												{
+			9, 9, 9, 9, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+			4, 6, 6, 6, 6, 9, 9, 9, 9, 13, 13, 13, 13, 11, 11, 11, 11, 10, 10, 10,
+			10, 10, 10, 10, 10, 11, 11, 11, 11, 13, 13, 13, 13, 12, 12, 12, 12, 12,
+			12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+			13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+												};
 	
-	public static final int			FRAMES_ANIMATE	= GameDrawDecreaseHealth.ys.length / 2;
+	public static final int		FRAMES_ANIMATE	= GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES * 3 / 2;	// 48 // GameDrawDecreaseHealth.ys.length / 2;
+																											
+	public int					y;
+	public int					x;
 	
-	public int						y;
-	public int						x;
-	
-	public int						decreaseHealth;
-	private Bitmap					bitmap;
-	
-	public int						frameStart;
-	public boolean					isDrawing		= false;
+	public int					decreaseHealth;
+	private Bitmap				bitmap;
 	
 	public GameDrawDecreaseHealth(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
 	}
 	
-	public void initAnimate(int y, int x, int decreaseHealth)
+	public void animate(int frameToStart, int y, int x, int decreaseHealth)
 	{
+		super.animate(frameToStart, GameDrawDecreaseHealth.FRAMES_ANIMATE);
+		
 		this.y = y;
 		this.x = x;
 		this.decreaseHealth = decreaseHealth;
 		this.bitmap = createBitmap(decreaseHealth);
-	}
-	
-	public void startAnimate()
-	{
-		this.frameStart = this.gameDraw.iFrame;
-		this.isDrawing = true;
 	}
 	
 	private Bitmap createBitmap(int number)
@@ -72,19 +64,9 @@ public class GameDrawDecreaseHealth extends GameDraw
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void drawChild(Canvas canvas, int i)
 	{
-		if (!this.isDrawing)
-			return;
-		int framePass = this.gameDraw.iFrame - this.frameStart;
-		if (framePass < 0 || framePass >= GameDrawDecreaseHealth.FRAMES_ANIMATE)
-		{
-			this.isDrawing = false;
-			return;
-		}
-		
-		int i = framePass * GameDrawDecreaseHealth.ys.length / GameDrawDecreaseHealth.FRAMES_ANIMATE;
-		canvas.drawBitmap(this.bitmap, this.x, this.y + GameDrawDecreaseHealth.ys[i] * GameDraw.a, null);
+		canvas.drawBitmap(this.bitmap, this.x, this.y, null);
 	}
 	
 }

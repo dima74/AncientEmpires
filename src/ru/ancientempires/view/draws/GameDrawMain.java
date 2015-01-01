@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.CursorImages;
-import ru.ancientempires.images.SomeWithBitmaps;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgoritmMain;
@@ -40,7 +40,7 @@ public class GameDrawMain
 	public GameDrawWayLine				gameDrawWayLine			= new GameDrawWayLine(this);
 	
 	public GameDrawUnitMove				gameDrawUnitMove		= new GameDrawUnitMove(this);
-	public GameDrawUnitAttack			gameDrawUnitAttack		= new GameDrawUnitAttack(this);
+	public GameDrawUnitAttackMain			gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
 	public GameDrawCellAttack			gameDrawCellAttack		= new GameDrawCellAttack(this);
 	
 	public GameDrawAction				gameDrawAction;
@@ -109,7 +109,7 @@ public class GameDrawMain
 		this.gameDrawAction.draw(canvas);
 		canvas.translate(0, -this.startActionY);
 		
-		SomeWithBitmaps.ordinal = this.iFrame / 8;
+		FewBitmaps.ordinal = this.iFrame / 8;
 	}
 	
 	public boolean touch(float touchY, float touchX)

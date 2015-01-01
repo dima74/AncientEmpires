@@ -1,14 +1,15 @@
 package ru.ancientempires.view.draws;
 
 import ru.ancientempires.images.NumberImages;
-import ru.ancientempires.images.SomeWithBitmaps;
-import ru.ancientempires.images.UnitBitmap;
 import ru.ancientempires.images.UnitImages;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
+import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 public class GameDrawUnit extends GameDraw
 {
@@ -33,18 +34,24 @@ public class GameDrawUnit extends GameDraw
 		Unit[][] field = game.fieldUnits;
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
-				this.field[i][j] = getUnitBitmap(field[i][j]);
+				if (field[i][j] != null)
+					this.field[i][j] = getUnitBitmap(field[i][j]);
 		
 		return false;
 	}
 	
 	private UnitBitmap getUnitBitmap(Unit unit)
 	{
-		if (unit == null)
-			return null;
-		SomeWithBitmaps baseBitmap = UnitImages.getUnitBitmap(unit, false);
-		
-		Bitmap textBitmap = Bitmap.createBitmap(GameDraw.A, GameDraw.A, Config.ARGB_4444);
+		FewBitmaps baseBitmap = UnitImages.getUnitBitmap(unit, false);
+		Bitmap textBitmap = Bitmap.createBitmap(GameDraw.A, GameDraw.A, Config.ARGB_8888);
+		UnitBitmap unitBitmap = new UnitBitmap(baseBitmap, textBitmap);
+		updateTextBitmap(textBitmap, unit);
+		return unitBitmap;
+	}
+	
+	private void updateTextBitmap(Bitmap textBitmap, Unit unit)
+	{
+		textBitmap.eraseColor(Color.TRANSPARENT);
 		Canvas canvas = new Canvas(textBitmap);
 		int health = unit.health;
 		if (health < 100 && unit.isLive)
@@ -62,13 +69,19 @@ public class GameDrawUnit extends GameDraw
 				canvas.drawBitmap(bitmapTwo, textX + NumberImages.w, textY, null);
 			}
 		}
-		return new UnitBitmap(baseBitmap, textBitmap);
 	}
 	
-	public void updateOneUnit(int i, int j)
+	public void updateOneUnitBase(int i, int j, boolean isLive)
 	{
 		Unit[][] field = this.gameDraw.game.fieldUnits;
-		this.field[i][j] = getUnitBitmap(field[i][j]);
+		FewBitmaps unitBitmap = UnitImages.getUnitBitmap(field[i][j], isLive);
+		this.field[i][j] = new UnitBitmap(unitBitmap, this.field[i][j].textBitmap);
+	}
+	
+	public void updateOneUnitHealth(int i, int j)
+	{
+		Unit[][] field = this.gameDraw.game.fieldUnits;
+		updateTextBitmap(this.field[i][j].textBitmap, field[i][j]);
 	}
 	
 	public UnitBitmap extractUnit(int i, int j)

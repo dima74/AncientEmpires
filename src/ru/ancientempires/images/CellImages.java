@@ -12,6 +12,7 @@ import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.XMLHelper;
+import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;

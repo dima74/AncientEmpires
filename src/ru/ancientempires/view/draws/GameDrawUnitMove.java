@@ -1,7 +1,7 @@
 package ru.ancientempires.view.draws;
 
 import ru.ancientempires.helpers.Point;
-import ru.ancientempires.images.UnitBitmap;
+import ru.ancientempires.images.bitmaps.UnitBitmap;
 import android.graphics.Canvas;
 
 public class GameDrawUnitMove extends GameDraw

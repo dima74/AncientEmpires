@@ -165,7 +165,7 @@ public class UnitBuyActivity extends FragmentActivity
 			PlaceholderFragment.setText(rootView, R.id.textViewName, this.type.name);
 			PlaceholderFragment.setText(rootView, R.id.textViewCost, this.type.cost);
 			PlaceholderFragment.setText(rootView, R.id.textViewAttack,
-					this.type.attackMin + "-" + this.type.attackMax);
+					this.type.attack - this.type.attackDelta + "-" + (this.type.attack + this.type.attackDelta));
 			PlaceholderFragment.setText(rootView, R.id.textViewDefence, this.type.defence);
 			PlaceholderFragment.setText(rootView, R.id.textViewWay, this.type.moveRange);
 			
