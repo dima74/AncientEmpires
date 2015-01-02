@@ -1,23 +1,17 @@
 package ru.ancientempires.view.draws;
 
+import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import android.graphics.Canvas;
 
-public class GameDrawUnitMove extends GameDraw
+public class GameDrawUnitMove extends GameDrawOnFrames
 {
 	
 	private static final int	FRAMES_FOR_CELL	= 7;
 	
 	private UnitBitmap			unitBitmap;
-	
-	private int					i;
-	private int					j;
-	
 	private Point[]				ways;
-	private int					frameStart;
-	private int					frameLength;
-	
 	private boolean				isMoving		= false;
 	
 	public GameDrawUnitMove(GameDrawMain gameDraw)
@@ -28,51 +22,52 @@ public class GameDrawUnitMove extends GameDraw
 	public void init(int i, int j)
 	{
 		this.unitBitmap = this.gameDraw.gameDrawUnit.extractUnit(i, j);
+		this.isMoving = false;
 		this.ways = new Point[]
 		{
 				new Point(i, j)
 		};
 	}
 	
-	public void start(Point[] ways)
+	public void start(Point[] ways, ActionResult result)
 	{
 		this.isMoving = true;
 		this.ways = ways;
-		this.frameLength = (ways.length - 1) * GameDrawUnitMove.FRAMES_FOR_CELL;
-		this.frameStart = this.gameDraw.iFrame;
+		animate(0, (ways.length - 1) * GameDrawUnitMove.FRAMES_FOR_CELL);
+		this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
 	}
 	
 	public void end()
 	{
-		this.gameDraw.gameDrawUnit.update(this.gameDraw.game);
+		this.gameDraw.gameDrawUnit.updateOneUnit(this.ways[this.ways.length - 1]);
 		this.unitBitmap = null;
-		this.isMoving = false;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		if (this.unitBitmap != null)
+		if (this.unitBitmap == null)
+			return;
+		if (!this.isMoving)
 		{
-			if (!this.isMoving)
-			{
-				drawUnit(canvas, 0);
-				return;
-			}
-			int framePass = this.gameDraw.iFrame - this.frameStart;
-			if (framePass >= this.frameLength)
-			{
-				drawUnit(canvas, this.ways.length - 1);
-				end();
-				return;
-			}
-			int i = framePass / GameDrawUnitMove.FRAMES_FOR_CELL;
-			int framePassPart = framePass - i * GameDrawUnitMove.FRAMES_FOR_CELL;
-			int frameLeftPart = GameDrawUnitMove.FRAMES_FOR_CELL - framePassPart;
-			int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / GameDrawUnitMove.FRAMES_FOR_CELL;
-			int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / GameDrawUnitMove.FRAMES_FOR_CELL;
-			drawUnit(canvas, y, x);
+			drawUnit(canvas, 0);
+			return;
 		}
+		super.draw(canvas);
+		
+		if (!this.isDrawing)
+		{
+			drawUnit(canvas, this.ways.length - 1);
+			end();
+			return;
+		}
+		int framePass = this.gameDraw.iFrame - this.frameStart;
+		int i = framePass / GameDrawUnitMove.FRAMES_FOR_CELL;
+		int framePassPart = framePass - i * GameDrawUnitMove.FRAMES_FOR_CELL;
+		int frameLeftPart = GameDrawUnitMove.FRAMES_FOR_CELL - framePassPart;
+		int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / GameDrawUnitMove.FRAMES_FOR_CELL;
+		int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / GameDrawUnitMove.FRAMES_FOR_CELL;
+		drawUnit(canvas, y, x);
 	}
 	
 	private void drawUnit(Canvas canvas, int y, int x)

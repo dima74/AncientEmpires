@@ -1,5 +1,6 @@
 package ru.ancientempires.view.draws;
 
+import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
@@ -82,6 +83,16 @@ public class GameDrawUnit extends GameDraw
 	{
 		Unit[][] field = this.gameDraw.game.fieldUnits;
 		updateTextBitmap(this.field[i][j].textBitmap, field[i][j]);
+	}
+	
+	public void updateOneUnit(int i, int j)
+	{
+		this.field[i][j] = getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
+	}
+	
+	public void updateOneUnit(Point point)
+	{
+		updateOneUnit(point.i, point.j);
 	}
 	
 	public UnitBitmap extractUnit(int i, int j)

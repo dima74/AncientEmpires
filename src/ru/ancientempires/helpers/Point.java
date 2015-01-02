@@ -3,7 +3,9 @@ package ru.ancientempires.helpers;
 public class Point
 {
 	
-	public int	i, j;
+	public static final Object	NULL_POINT	= new Point(-1, -1);
+	
+	public int					i, j;
 	
 	public Point(int i, int j)
 	{

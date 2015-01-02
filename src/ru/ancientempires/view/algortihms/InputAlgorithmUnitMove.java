@@ -28,7 +28,6 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		this.fieldPrevI = (int[][]) this.resultGet.getProperty("prevI");
 		this.fieldPrevJ = (int[][]) this.resultGet.getProperty("prevJ");
 		this.main.gameDraw.gameDrawCursors.add(this.main.gameDraw.gameDrawCursorMove);
-		// this.main.gameDraw.gameDrawCursorDefault.isDrawing = false;
 		this.main.gameDraw.gameDrawCursorMove.isDrawing = false;
 	}
 	
@@ -41,7 +40,6 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		{
 			if (!isChanged)
 			{
-				// this.main.gameDraw.gameDrawCursorDefault.isDrawing = true;
 				this.main.gameDraw.gameDrawCursorMove.isDrawing = true;
 				this.main.gameDraw.gameDrawUnitMove.init(this.startI, this.startJ);
 			}
@@ -57,9 +55,8 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		int relToAbsJ = -this.radius + this.startJ;
 		
 		ArrayList<Point> ways = new ArrayList<Point>();
-		Point nullPoint = new Point(-1, -1);
 		Point p = new Point(absI - relToAbsI, absJ - relToAbsJ);
-		while (!p.equals(nullPoint))
+		while (!p.equals(Point.NULL_POINT))
 		{
 			ways.add(new Point(p.i + relToAbsI, p.j + relToAbsJ));
 			p = new Point(this.fieldPrevI[p.i][p.j], this.fieldPrevJ[p.i][p.j]);
@@ -83,7 +80,7 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		super.end();
 		
 		if (this.isChanged)
-			this.main.gameDraw.gameDrawUnitMove.start(this.ways);
+			this.main.gameDraw.gameDrawUnitMove.start(this.ways, this.result);
 	}
 	
 }

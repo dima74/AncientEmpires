@@ -35,7 +35,7 @@ public class GameDrawUnitAttack extends GameDrawOnFrames
 		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsAttack);
 		
 		drawDecreaseHealth.animate(frameToStart, this.y, this.x, result.decreaseHealth);
-		drawSparkBitmaps.animate(frameToStart, this.y, this.x);
+		drawSparkBitmaps.animate(frameToStart, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_LONG);
 		
 		this.draws.add(drawDecreaseHealth);
 		this.draws.add(drawSparkBitmaps);
@@ -50,13 +50,13 @@ public class GameDrawUnitAttack extends GameDrawOnFrames
 		
 		if (this.result.effectSign == -1)
 		{
-			GameDrawOnFrames gameDrawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault).setCoord(this.y, this.x);
+			GameDrawBitmaps gameDrawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault);
 			
 			int offsetY = (int) (this.y - 22 * GameDraw.a);
 			int offsetX = this.x + (GameDraw.A - StatusesImages.w) / 2;
 			GameDrawOnFrames gameDrawPoison = new GameDrawBitmapSinus(this.gameDraw).setBitmap(StatusesImages.poison).setCoord(offsetY, offsetX);
 			
-			gameDrawSparks.animate(frameToStartPartTwo, 12);
+			gameDrawSparks.animate(frameToStartPartTwo, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
 			gameDrawPoison.animate(frameToStartPartTwo, 48);
 			
 			this.draws.add(gameDrawSparks);

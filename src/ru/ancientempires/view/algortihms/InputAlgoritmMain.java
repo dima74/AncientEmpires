@@ -3,6 +3,7 @@ package ru.ancientempires.view.algortihms;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
+import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
@@ -46,7 +47,7 @@ public class InputAlgoritmMain
 		if (i == this.lastTapI && j == this.lastTapJ)
 			return false;
 		
-		if (!this.game.map.validateCoord(i, j))
+		if (!GameHandler.checkCoord(i, j))
 			return false;
 		
 		boolean isAction = this.currentInputAlgorithmUnitRange != null && this.currentInputAlgorithmUnitRange.tap(i, j);

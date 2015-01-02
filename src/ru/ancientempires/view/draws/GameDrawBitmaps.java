@@ -6,12 +6,13 @@ import android.graphics.Canvas;
 public class GameDrawBitmaps extends GameDrawOnFrames
 {
 	
-	private static final int	FRAMES_ANIMATE	= GameDrawDecreaseHealth.FRAMES_ANIMATE / 2;	// 24
-																								
-	private Bitmap[]			bitmaps;
+	public static final int	FRAMES_ANIMATE_LONG		= GameDrawDecreaseHealth.FRAMES_ANIMATE / 2;	// 24
+	public static final int	FRAMES_ANIMATE_SHORT	= GameDrawBitmaps.FRAMES_ANIMATE_LONG / 2;		// 12
+																									
+	private Bitmap[]		bitmaps;
 	
-	private int					y;
-	private int					x;
+	private int				y;
+	private int				x;
 	
 	public GameDrawBitmaps(GameDrawMain gameDraw)
 	{
@@ -24,18 +25,11 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 		return this;
 	}
 	
-	public void animate(int frameToStart, int y, int x)
+	public void animate(int frameToStart, int y, int x, int frameLength)
 	{
 		this.y = y;
 		this.x = x;
-		animate(frameToStart, GameDrawBitmaps.FRAMES_ANIMATE);
-	}
-	
-	public GameDrawBitmaps setCoord(int y, int x)
-	{
-		this.y = y;
-		this.x = x;
-		return this;
+		animate(frameToStart, frameLength);
 	}
 	
 	@Override
@@ -46,7 +40,7 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 			return;
 		
 		int framePass = this.gameDraw.iFrame - this.frameStart;
-		int i = framePass * 2 * this.bitmaps.length / GameDrawBitmaps.FRAMES_ANIMATE % this.bitmaps.length;
+		int i = framePass * 2 * this.bitmaps.length / GameDrawBitmaps.FRAMES_ANIMATE_LONG % this.bitmaps.length;
 		canvas.drawBitmap(this.bitmaps[i], this.x, this.y, null);
 	}
 	

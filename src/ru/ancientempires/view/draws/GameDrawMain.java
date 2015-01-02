@@ -40,7 +40,8 @@ public class GameDrawMain
 	public GameDrawWayLine				gameDrawWayLine			= new GameDrawWayLine(this);
 	
 	public GameDrawUnitMove				gameDrawUnitMove		= new GameDrawUnitMove(this);
-	public GameDrawUnitAttackMain			gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
+	public GameDrawUnitMoveEnd			gameDrawUnitMoveEnd		= new GameDrawUnitMoveEnd(this);
+	public GameDrawUnitAttackMain		gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
 	public GameDrawCellAttack			gameDrawCellAttack		= new GameDrawCellAttack(this);
 	
 	public GameDrawAction				gameDrawAction;
@@ -73,6 +74,7 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
 		
+		this.gameDrawsEffects.add(this.gameDrawUnitMoveEnd);
 		this.gameDrawsEffects.add(this.gameDrawUnitAttack);
 		this.gameDrawsEffects.add(this.gameDrawCellAttack);
 		
