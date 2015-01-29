@@ -38,7 +38,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				GameView.this.thread.touchY = event.getY();
 				GameView.this.thread.touchX = event.getX();
 				GameView.this.thread.interrupt();
-				
 				return true;
 			}
 			
@@ -61,20 +60,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated(SurfaceHolder holder)
 	{
-		if (GameActivity.isNewGame)
-		{
-			this.thread = new GameViewThread(getHolder());
-			this.thread.setRunning(true);
-			this.thread.start();
-			this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
-			this.thread.gameDraw.gameActivity = this.gameActivity;
-			GameActivity.isNewGame = false;
-		}
-		else
-		{
-			this.thread.setRunning(true);
-			this.thread.start();
-		}
+		this.thread = new GameViewThread(getHolder());
+		this.thread.setRunning(true);
+		this.thread.start();
+		this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
+		this.thread.gameDraw.gameActivity = this.gameActivity;
+		
 	}
 	
 	@Override

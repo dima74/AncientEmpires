@@ -72,12 +72,16 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		this.main.gameDraw.gameDrawCursors.remove(this.main.gameDraw.gameDrawCursorMove);
 		this.main.gameDraw.gameDrawCursorDefault.isDrawing = true;
 		this.main.gameDraw.gameDrawWayLine.destroy();
+		if (!this.isChanged)
+			this.main.gameDraw.gameDrawUnitMove.destroy();
 	}
 	
 	@Override
 	public void end()
 	{
 		super.end();
+		if (this.main.game.fieldUnits[this.startI][this.startJ] != null)
+			this.main.gameDraw.gameDrawUnit.updateOneUnit(this.startI, this.startJ);
 		
 		if (this.isChanged)
 			this.main.gameDraw.gameDrawUnitMove.start(this.ways, this.result);

@@ -1,13 +1,10 @@
 package ru.ancientempires.view.algortihms;
 
-import ru.ancientempires.client.Client;
-import ru.ancientempires.model.Game;
 
 public abstract class InputAlgorithm
 {
 	
 	public InputAlgoritmMain	main;
-	public static final Game	game	= Client.getClient().getGame();
 	
 	public InputAlgorithm(InputAlgoritmMain main)
 	{

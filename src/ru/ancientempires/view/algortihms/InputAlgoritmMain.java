@@ -19,7 +19,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 	private GameViewThread			thread;
 	public GameDrawMain				gameDraw;
 	
-	private final Game				game	= Client.getClient().getGame();
+	public final Game				game	= Client.getClient().getGame();
 	
 	public int						lastTapI;
 	public int						lastTapJ;
@@ -109,6 +109,9 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{
+			// if (this.currentInputAlgorithmUnitRange != null)
+			// this.currentInputAlgorithmUnitRange.revertState();
+			
 			Action action = new Action(ActionType.GET_CELL_BUY_UNITS);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
@@ -149,9 +152,10 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 		this.gameDraw.gameDrawUnit.update(this.game);
 		this.gameDraw.gameDrawInfo.update(this.game);
 		this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
-		this.gameDraw.focusOnCell(this.lastTapI, this.lastTapJ);
+		// this.gameDraw.focusOnCell(this.lastTapI, this.lastTapJ);
+		
 		this.thread.isPause = false;
-		this.thread.interrupt();
+		// this.thread.interrupt();
 	}
 	
 }

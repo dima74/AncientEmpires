@@ -165,7 +165,6 @@ public class LevelMenuActivity extends Activity
 			@Override
 			protected void onPostExecute(Void result)
 			{
-				GameActivity.isNewGame = true;
 				Intent intent = new Intent();
 				intent.setClass(LevelMenuActivity.this, GameActivity.class);
 				startActivity(intent);

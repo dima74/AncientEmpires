@@ -48,13 +48,17 @@ public class GameViewThread extends Thread
 		while (this.isRunning)
 		{
 			long timeToDraw = this.nextTime - System.currentTimeMillis();
+			
+			/*
 			while (this.isPause)
 				try
 				{
 					Thread.sleep(1000);
 				}
-				catch (InterruptedException e1)
+				catch (InterruptedException e)
 				{}
+			*/
+			
 			if (timeToDraw <= 0)
 			{
 				this.nextTime += GameViewThread.MILLISEC_BETWEEN_FRAMES;
@@ -76,6 +80,7 @@ public class GameViewThread extends Thread
 					this.surfaceHolder.unlockCanvasAndPost(canvas);
 				}
 			}
+			
 			if (Thread.interrupted())
 				touch();
 			timeToDraw = this.nextTime - System.currentTimeMillis() - 3;

@@ -17,8 +17,8 @@ public class InputAlgorithmUnitRaise extends InputAlgorithmUnitRange
 	public void end()
 	{
 		super.end();
-		this.main.gameDraw.gameDrawInfo.update(InputAlgorithm.game);
-		this.main.gameDraw.gameDrawUnit.update(InputAlgorithm.game);
+		this.main.gameDraw.gameDrawInfo.update(this.main.game);
+		this.main.gameDraw.gameDrawUnit.update(this.main.game);
 	}
 	
 }

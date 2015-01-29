@@ -56,8 +56,6 @@ public class InputAlgorithmUnitRange extends InputAlgorithm
 	@Override
 	public boolean tap(int i, int j)
 	{
-		if (i == this.startI && j == this.startJ)
-			return false;
 		this.endI = i;
 		this.endJ = j;
 		
@@ -71,7 +69,9 @@ public class InputAlgorithmUnitRange extends InputAlgorithm
 		}
 		else
 		{
+			this.isChanged = false;
 			destroy();
+			this.main.gameDraw.gameDrawUnit.updateOneUnit(this.startI, this.startJ);
 			return false;
 		}
 	}
@@ -87,9 +87,9 @@ public class InputAlgorithmUnitRange extends InputAlgorithm
 	public void revertState()
 	{
 		destroy();
-		InputAlgorithm.game.currentPlayer.cursorI = this.startI;
-		InputAlgorithm.game.currentPlayer.cursorJ = this.startJ;
-		this.main.gameDraw.updateCursors(InputAlgorithm.game);
+		this.main.game.currentPlayer.cursorI = this.startI;
+		this.main.game.currentPlayer.cursorJ = this.startJ;
+		this.main.gameDraw.updateCursors(this.main.game);
 		this.main.lastTapI = this.startI;
 		this.main.lastTapJ = this.startJ;
 	}

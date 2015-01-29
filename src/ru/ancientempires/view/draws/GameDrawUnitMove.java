@@ -40,6 +40,11 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	public void end()
 	{
 		this.gameDraw.gameDrawUnit.updateOneUnit(this.ways[this.ways.length - 1]);
+		destroy();
+	}
+	
+	public void destroy()
+	{
 		this.unitBitmap = null;
 	}
 	

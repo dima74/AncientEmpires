@@ -177,11 +177,13 @@ public class GameDrawInfo extends GameDraw
 	{
 		int amn = 0;
 		int copyN = n;
-		while (copyN > 0)
+		do
 		{
 			copyN /= 10;
 			amn++;
 		}
+		while (copyN > 0);
+		
 		int i = 0;
 		do
 		{

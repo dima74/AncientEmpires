@@ -17,7 +17,6 @@ public class GameActivity extends Activity
 {
 	
 	public static GameView	gameView;
-	public static boolean	isNewGame;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
