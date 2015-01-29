@@ -55,13 +55,21 @@ public class GameDrawMain
 	public ArrayList<GameDraw>			gameDraws				= new ArrayList<GameDraw>();
 	public ArrayList<GameDraw>			gameDrawsEffects		= new ArrayList<GameDraw>();
 	
+	private int							minOffsetY;
+	private int							minOffsetX;
+	private int							maxOffsetY;
+	private int							maxOffsetX;
+	
 	public GameDrawMain()
 	{
 		this.gameDrawInfoH = GameDraw.A + 8 * 2;// this.gameDrawInfo.a;
 		this.gameDrawActionH = GameDraw.A * 4 / 3;
 		this.startActionY = GameView.h - this.gameDrawActionH;
-		this.offsetY = this.gameDrawInfoH;
-		this.offsetX = 0;
+		
+		this.minOffsetY = this.offsetY = this.gameDrawInfoH;
+		this.minOffsetX = this.offsetX = 0;
+		this.maxOffsetY = -(this.game.map.h * GameDraw.A - GameView.h);
+		this.maxOffsetX = -(this.game.map.w * GameDraw.A - GameView.w);
 		
 		this.gameDrawAction = new GameDrawAction(this);
 		this.gameDrawInfo = new GameDrawInfo(this);
@@ -90,6 +98,7 @@ public class GameDrawMain
 	
 	public void draw(Canvas canvas)
 	{
+		updateOffset();
 		this.currentOffsetY = this.offsetY;
 		this.currentOffsetX = this.offsetX;
 		canvas.drawColor(Color.WHITE);
@@ -114,9 +123,21 @@ public class GameDrawMain
 		FewBitmaps.ordinal = this.iFrame / 8;
 	}
 	
+	public void updateOffset()
+	{
+		if (this.offsetY > this.minOffsetY)
+			this.offsetY = this.minOffsetY;
+		else if (this.offsetY < this.maxOffsetY)
+			this.offsetY = this.maxOffsetY;
+		if (this.offsetX > this.minOffsetX)
+			this.offsetX = this.minOffsetX;
+		else if (this.offsetX < this.maxOffsetX)
+			this.offsetX = this.maxOffsetX;
+	}
+	
 	public boolean touch(float touchY, float touchX)
 	{
-		if (touchY > 0 && touchY < this.startActionY)
+		if (touchY < this.startActionY)
 			return true;
 		else
 		{
@@ -129,6 +150,19 @@ public class GameDrawMain
 	{
 		for (GameDrawCursor gameDrawCursor : this.gameDrawCursors)
 			gameDrawCursor.update(game);
+	}
+	
+	public void focusOnCell(int i, int j)
+	{
+		int availableY = this.startActionY - this.gameDrawInfoH;
+		int availableX = GameView.w;
+		
+		int newOffsetY = -i * GameDraw.A - GameDraw.A / 2 + availableY / 2;
+		int newOffsetX = -j * GameDraw.A - GameDraw.A / 2 + availableX / 2;
+		
+		this.offsetY = newOffsetY + this.gameDrawInfoH;
+		this.offsetX = newOffsetX;
+		updateOffset();
 	}
 	
 }

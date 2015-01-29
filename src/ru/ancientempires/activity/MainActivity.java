@@ -83,20 +83,6 @@ public class MainActivity extends Activity
 		GameInit.init();
 		long e = System.nanoTime();
 		
-		if (false)
-			try
-			{
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e1)
-			{
-				e1.printStackTrace();
-			}
-		
-		// setContentView(new TestViewGroup(this));
-		if (false)
-			return;
-		
 		// TODO заменить, чтобы клиент инит сендил мессадж
 		final Handler handler = new Handler(new Handler.Callback()
 		{

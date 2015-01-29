@@ -23,13 +23,14 @@ public class GameViewThread extends Thread
 	volatile public float		touchX;
 	
 	volatile public boolean		isTap					= false;
+	public boolean				isPause;
 	
 	public GameViewThread(SurfaceHolder surfaceHolder)
 	{
 		this.surfaceHolder = surfaceHolder;
 		
 		this.gameDraw = new GameDrawMain();
-		this.inputAlgoritmMain = new InputAlgoritmMain(this.gameDraw);
+		this.inputAlgoritmMain = new InputAlgoritmMain(this, this.gameDraw);
 		this.gameDraw.inputAlgoritmMain = this.inputAlgoritmMain;
 	}
 	
@@ -47,6 +48,13 @@ public class GameViewThread extends Thread
 		while (this.isRunning)
 		{
 			long timeToDraw = this.nextTime - System.currentTimeMillis();
+			while (this.isPause)
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e1)
+				{}
 			if (timeToDraw <= 0)
 			{
 				this.nextTime += GameViewThread.MILLISEC_BETWEEN_FRAMES;
@@ -80,6 +88,8 @@ public class GameViewThread extends Thread
 				{
 					touch();
 				}
+			else
+				this.nextTime = System.currentTimeMillis();
 		}
 		// MyLog.l("GameViewThread.run() e");
 	}

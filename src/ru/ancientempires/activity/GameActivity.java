@@ -1,12 +1,14 @@
 package ru.ancientempires.activity;
 
 import ru.ancientempires.R;
+import ru.ancientempires.UnitBuyDialog;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
+import ru.ancientempires.view.algortihms.InputAlgoritmMain;
 import android.app.Activity;
-import android.content.Intent;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ public class GameActivity extends Activity
 {
 	
 	public static GameView	gameView;
+	public static boolean	isNewGame;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +55,12 @@ public class GameActivity extends Activity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings)
+		{
+			GameActivity.gameView.thread.gameDraw.focusOnCell(
+					GameActivity.gameView.thread.inputAlgoritmMain.lastTapI,
+					GameActivity.gameView.thread.inputAlgoritmMain.lastTapJ);
 			return true;
+		}
 		else if (id == R.id.action_reset)
 		{
 			ClientServer.server.startGame(Client.getClient().gamePath);
@@ -61,12 +69,10 @@ public class GameActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void startUnitBuyActivity(UnitType[] units)
+	public void buyUnit(InputAlgoritmMain main, UnitType[] units)
 	{
-		Intent intent = new Intent();
-		UnitBuyActivity.types = units;
-		intent.setClass(this, UnitBuyActivity.class);
-		startActivity(intent);
+		DialogFragment dialogFragment = new UnitBuyDialog(units).setNoticeListener(main);
+		dialogFragment.show(getFragmentManager(), "UnitBuyDialog");
 	}
 	
 }

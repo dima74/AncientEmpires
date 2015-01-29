@@ -43,8 +43,12 @@
 				android:value="ru.ancientempires.activity.GameActivity" />
 		</activity>
 		<activity
-			android:name="ru.ancientempires.activity.LevelMenuActivity"
+			android:name=".activity.LevelMenuActivity"
 			android:label="@string/title_activity_level_menu" >
+		</activity>
+		<activity
+			android:name=".TestActivity"
+			android:label="@string/title_activity_test" >
 		</activity>
 	</application>
 

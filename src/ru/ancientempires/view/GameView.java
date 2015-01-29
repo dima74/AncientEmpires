@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	private GameViewThread	thread;
+	public GameViewThread	thread;
 	
 	private GestureDetector	detector;
 	
@@ -61,11 +61,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated(SurfaceHolder holder)
 	{
-		this.thread = new GameViewThread(getHolder());
-		this.thread.setRunning(true);
-		this.thread.start();
-		this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
-		this.thread.gameDraw.gameActivity = this.gameActivity;
+		if (GameActivity.isNewGame)
+		{
+			this.thread = new GameViewThread(getHolder());
+			this.thread.setRunning(true);
+			this.thread.start();
+			this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
+			this.thread.gameDraw.gameActivity = this.gameActivity;
+			GameActivity.isNewGame = false;
+		}
+		else
+		{
+			this.thread.setRunning(true);
+			this.thread.start();
+		}
 	}
 	
 	@Override
@@ -101,7 +110,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void performActionBuy(UnitType type)
 	{
-		this.thread.inputAlgoritmMain.performActionBuy(type);
+		this.thread.inputAlgoritmMain.onUnitBuy(type);
 	}
 	
 }

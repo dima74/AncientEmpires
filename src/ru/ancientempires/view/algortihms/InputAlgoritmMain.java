@@ -1,5 +1,6 @@
 package ru.ancientempires.view.algortihms;
 
+import ru.ancientempires.NoticeUnitBuy;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
@@ -8,15 +9,16 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.view.GameViewThread;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 
-public class InputAlgoritmMain
+public class InputAlgoritmMain implements NoticeUnitBuy
 {
 	
+	private GameViewThread			thread;
 	public GameDrawMain				gameDraw;
 	
-	// Модель игры
 	private final Game				game	= Client.getClient().getGame();
 	
 	public int						lastTapI;
@@ -25,12 +27,11 @@ public class InputAlgoritmMain
 	private InputAlgorithmUnitRange	inputAlgorithmUnitMove;
 	private InputAlgorithmUnitRange	inputAlgorithmUnitAttack;
 	private InputAlgorithmUnitRange	inputAlgorithmUnitRaise;
-	
-	// public Set<InputAlgorithm> inputAlgorithms = new LinkedHashSet<InputAlgorithm>();
 	public InputAlgorithmUnitRange	currentInputAlgorithmUnitRange;
 	
-	public InputAlgoritmMain(GameDrawMain gameDraw)
+	public InputAlgoritmMain(GameViewThread thread, GameDrawMain gameDraw)
 	{
+		this.thread = thread;
 		this.gameDraw = gameDraw;
 		for (GameDraw gameDrawPart : gameDraw.gameDraws)
 			gameDrawPart.update(this.game);
@@ -40,6 +41,7 @@ public class InputAlgoritmMain
 		this.inputAlgorithmUnitRaise = new InputAlgorithmUnitRaise(this);
 		
 		tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+		this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
 	}
 	
 	public boolean tap(int i, int j)
@@ -51,12 +53,6 @@ public class InputAlgoritmMain
 			return false;
 		
 		boolean isAction = this.currentInputAlgorithmUnitRange != null && this.currentInputAlgorithmUnitRange.tap(i, j);
-		// for (InputAlgorithm inputAlgorithm : this.inputAlgorithms)
-		// if (inputAlgorithm.tap(i, j))
-		// {
-		// isAction = true;
-		// break;
-		// }
 		
 		tapWithoutAction(i, j);
 		this.gameDraw.gameDrawInfo.update(this.game);
@@ -88,19 +84,14 @@ public class InputAlgoritmMain
 		
 		if (currentInputAlgorithm != null)
 		{
-			// if (this.inputAlgorithms.contains(currentInputAlgorithm))
 			if (this.currentInputAlgorithmUnitRange == currentInputAlgorithm)
 				currentInputAlgorithm.end();
-			// this.currentInputAlgorithmUnitRange = null;
 			else
 			{
-				// for (InputAlgorithm inputAlgorithm : this.inputAlgorithms)
-				// inputAlgorithm.destroy();
 				if (this.currentInputAlgorithmUnitRange != null)
 					this.currentInputAlgorithmUnitRange.revertState();
 				
 				isAction = true;
-				// this.inputAlgorithms.add(currentInputAlgorithm);
 				this.currentInputAlgorithmUnitRange = currentInputAlgorithm;
 				currentInputAlgorithm.start(this.lastTapI, this.lastTapJ);
 			}
@@ -124,15 +115,13 @@ public class InputAlgoritmMain
 			ActionResult result = Client.action(action);
 			
 			UnitType[] units = (UnitType[]) result.getProperty("units");
-			this.gameDraw.gameActivity.startUnitBuyActivity(units);
+			this.thread.isPause = true;
+			this.gameDraw.gameActivity.buyUnit(this, units);
 		}
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{
-			// for (InputAlgorithm inputAlgorithm : this.inputAlgorithms)
-			// inputAlgorithm.destroy();
 			if (this.currentInputAlgorithmUnitRange != null)
 				this.currentInputAlgorithmUnitRange.revertState();
-			// this.currentInputAlgorithmUnitRange = null;
 			
 			Action action = new Action(actionType);
 			Client.action(action);
@@ -148,7 +137,8 @@ public class InputAlgoritmMain
 			this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
 	}
 	
-	public void performActionBuy(UnitType type)
+	@Override
+	public void onUnitBuy(UnitType type)
 	{
 		Action action = new Action(ActionType.ACTION_CELL_BUY);
 		action.setProperty("i", this.lastTapI);
@@ -159,6 +149,9 @@ public class InputAlgoritmMain
 		this.gameDraw.gameDrawUnit.update(this.game);
 		this.gameDraw.gameDrawInfo.update(this.game);
 		this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
+		this.gameDraw.focusOnCell(this.lastTapI, this.lastTapJ);
+		this.thread.isPause = false;
+		this.thread.interrupt();
 	}
 	
 }

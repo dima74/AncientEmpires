@@ -45,7 +45,7 @@ public class GameDrawAction extends GameDraw
 	private Bitmap[]		actionBitmaps	= new Bitmap[0];
 	private ActionType[]	actionTypes		= new ActionType[0];
 	private Point[]			actionsPoints	= new Point[0];
-	private int				amount			= 0;
+	public int				amount			= 0;
 	
 	private int				h;
 	private int				w;

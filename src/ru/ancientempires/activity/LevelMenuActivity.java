@@ -95,7 +95,7 @@ public class LevelMenuActivity extends Activity
 		this.listView.setAdapter(adapter);
 		
 		// debug
-		GamePath gamePath = this.gamesFolder.gamesFolders[2].gamePaths[0];
+		GamePath gamePath = this.gamesFolder.gamesFolders[1].gamePaths[5];
 		startGame(gamePath);
 	}
 	
@@ -165,6 +165,7 @@ public class LevelMenuActivity extends Activity
 			@Override
 			protected void onPostExecute(Void result)
 			{
+				GameActivity.isNewGame = true;
 				Intent intent = new Intent();
 				intent.setClass(LevelMenuActivity.this, GameActivity.class);
 				startActivity(intent);
