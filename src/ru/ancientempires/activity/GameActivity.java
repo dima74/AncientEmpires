@@ -54,12 +54,7 @@ public class GameActivity extends Activity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings)
-		{
-			GameActivity.gameView.thread.gameDraw.focusOnCell(
-					GameActivity.gameView.thread.inputAlgoritmMain.lastTapI,
-					GameActivity.gameView.thread.inputAlgoritmMain.lastTapJ);
 			return true;
-		}
 		else if (id == R.id.action_reset)
 		{
 			ClientServer.server.startGame(Client.getClient().gamePath);

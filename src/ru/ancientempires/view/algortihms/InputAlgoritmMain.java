@@ -106,11 +106,12 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			
 			this.gameDraw.gameDrawCell.update(this.game);
 			this.gameDraw.gameDrawCellDual.update(this.game);
+			this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{
-			// if (this.currentInputAlgorithmUnitRange != null)
-			// this.currentInputAlgorithmUnitRange.revertState();
+			if (this.currentInputAlgorithmUnitRange != null)
+				this.currentInputAlgorithmUnitRange.revertState();
 			
 			Action action = new Action(ActionType.GET_CELL_BUY_UNITS);
 			action.setProperty("i", this.lastTapI);
@@ -132,6 +133,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			this.gameDraw.gameDrawUnit.update(this.game);
 			this.gameDraw.gameDrawInfo.update(this.game);
 			tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+			this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
 			// Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
 		}
 		else
@@ -149,13 +151,11 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 		action.setProperty("type", type.ordinal);
 		Client.action(action);
 		
-		this.gameDraw.gameDrawUnit.update(this.game);
+		this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
 		this.gameDraw.gameDrawInfo.update(this.game);
 		this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
-		// this.gameDraw.focusOnCell(this.lastTapI, this.lastTapJ);
 		
 		this.thread.isPause = false;
-		// this.thread.interrupt();
 	}
 	
 }

@@ -35,8 +35,7 @@ public class GameDrawUnit extends GameDraw
 		Unit[][] field = game.fieldUnits;
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
-				if (field[i][j] != null)
-					this.field[i][j] = getUnitBitmap(field[i][j]);
+				this.field[i][j] = field[i][j] == null ? null : getUnitBitmap(field[i][j]);
 		
 		return false;
 	}

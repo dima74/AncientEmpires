@@ -130,27 +130,34 @@ public class UnitImages
 		{
 			UnitImageProperties[] properties = new Gson().fromJson(reader, UnitImageProperties[].class);
 			
-			UnitImages.notColoredI[typeI] = new int[properties.length];
-			UnitImages.notColoredJ[typeI] = new int[properties.length];
-			Bitmap[][] greyBitmaps = new Bitmap[5][properties.length];
-			for (int bitmapI = 0; bitmapI < properties.length; bitmapI++)
+			// grey
+			int length = 1;// properties.length;
+			Bitmap[][] greyBitmaps = new Bitmap[5][length];
+			for (int bitmapI = 0; bitmapI < length; bitmapI++)
 			{
 				UnitImageProperties property = properties[bitmapI];
-				UnitImages.notColoredI[typeI][bitmapI] = property.notColoredI;
-				UnitImages.notColoredJ[typeI][bitmapI] = property.notColoredJ;
-				Bitmap baseGreyBitmap = BitmapHelper.getBitmap(images,
-						path + UnitImages.colorPaths[0] + property.colored);
+				Bitmap baseGreyBitmap = BitmapHelper.getBitmap(images, path + UnitImages.colorPaths[0] + property.colored);
 				greyBitmaps[0][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.other);
 				greyBitmaps[1][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.red);
 				greyBitmaps[2][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.green);
 				greyBitmaps[3][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.blue);
-				greyBitmaps[4][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap,
-						property, path + property.notColoredGrey.black);
+				greyBitmaps[4][bitmapI] = UnitImages.associateBitmaps(images, baseGreyBitmap, property, path + property.notColoredGrey.black);
 			}
 			UnitImages.greyUnitsBitmaps[typeI] = new FewBitmaps[5];
 			for (int colorI = 0; colorI <= 4; colorI++)
 				UnitImages.greyUnitsBitmaps[typeI][colorI] = new FewBitmaps().setBitmaps(greyBitmaps[colorI]);
 			
+			// not colored i, j
+			UnitImages.notColoredI[typeI] = new int[properties.length];
+			UnitImages.notColoredJ[typeI] = new int[properties.length];
+			for (int bitmapI = 0; bitmapI < properties.length; bitmapI++)
+			{
+				UnitImageProperties property = properties[bitmapI];
+				UnitImages.notColoredI[typeI][bitmapI] = property.notColoredI;
+				UnitImages.notColoredJ[typeI][bitmapI] = property.notColoredJ;
+			}
+			
+			// base
 			Bitmap[][] baseBitmaps = new Bitmap[5][properties.length];
 			for (int bitmapI = 0; bitmapI < properties.length; bitmapI++)
 			{

@@ -68,7 +68,7 @@ public class GameDrawMain
 		
 		this.minOffsetY = this.offsetY = this.gameDrawInfoH;
 		this.minOffsetX = this.offsetX = 0;
-		this.maxOffsetY = -(this.game.map.h * GameDraw.A - GameView.h);
+		this.maxOffsetY = -(this.game.map.h * GameDraw.A - GameView.h + this.gameDrawActionH);
 		this.maxOffsetX = -(this.game.map.w * GameDraw.A - GameView.w);
 		
 		this.gameDrawAction = new GameDrawAction(this);
