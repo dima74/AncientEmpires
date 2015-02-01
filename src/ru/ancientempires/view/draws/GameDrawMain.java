@@ -77,6 +77,7 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawCell);
 		this.gameDraws.add(this.gameDrawZoneMove);
 		this.gameDraws.add(this.gameDrawZoneAttack);
+		this.gameDraws.add(this.gameDrawZoneRaise);
 		this.gameDraws.add(this.gameDrawCellDual);
 		this.gameDraws.add(this.gameDrawUnit);
 		this.gameDraws.add(this.gameDrawWayLine);

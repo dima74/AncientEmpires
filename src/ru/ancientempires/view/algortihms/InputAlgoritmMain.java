@@ -106,7 +106,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			
 			this.gameDraw.gameDrawCell.update(this.game);
 			this.gameDraw.gameDrawCellDual.update(this.game);
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawUnit.updateOneUnitIfExist(this.lastTapI, this.lastTapJ);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{

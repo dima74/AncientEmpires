@@ -89,6 +89,12 @@ public class GameDrawUnit extends GameDraw
 		this.field[i][j] = getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
 	}
 	
+	public void updateOneUnitIfExist(int i, int j)
+	{
+		if (this.field[i][j] != null)
+			this.field[i][j] = getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
+	}
+	
 	public void updateOneUnit(Point point)
 	{
 		updateOneUnit(point.i, point.j);

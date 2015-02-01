@@ -82,7 +82,14 @@ public class GameViewThread extends Thread
 			}
 			
 			if (Thread.interrupted())
-				touch();
+				try
+				{
+					touch();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			timeToDraw = this.nextTime - System.currentTimeMillis() - 3;
 			if (timeToDraw > 0)
 				try

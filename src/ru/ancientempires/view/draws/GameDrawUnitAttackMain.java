@@ -2,6 +2,7 @@ package ru.ancientempires.view.draws;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.AttackResult;
+import ru.ancientempires.model.Unit;
 import android.graphics.Canvas;
 
 public class GameDrawUnitAttackMain extends GameDrawOnFrames
@@ -54,6 +55,10 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 			GameDrawOnFrames gameDrawOnFrames2 = new GameDrawDecreaseHealth(this.gameDraw);
 			gameDrawOnFrames2.animate(this.frameToStartPartTwo, 48);
 		}
+		
+		Unit[] unitsToUpdate = (Unit[]) result.getProperty("unitsToUpdate");
+		for (Unit unit : unitsToUpdate)
+			this.gameDraw.gameDrawUnit.updateOneUnit(unit.i, unit.j);
 		
 		animate(0, frameEnd - this.gameDraw.iFrame);
 	}

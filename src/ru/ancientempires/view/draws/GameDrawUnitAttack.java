@@ -85,7 +85,8 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		if (this.gameDraw.iFrame == this.frameStart)
 		{
 			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.i, this.j, this.result.isTargetLive);
-			this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
+			if (this.result.i == this.gameDraw.inputAlgoritmMain.lastTapI && this.result.j == this.gameDraw.inputAlgoritmMain.lastTapJ)
+				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo)
 			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.result.i, this.result.j, true);
