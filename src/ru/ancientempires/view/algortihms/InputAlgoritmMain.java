@@ -119,8 +119,9 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			ActionResult result = Client.action(action);
 			
 			UnitType[] units = (UnitType[]) result.getProperty("units");
+			boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
 			this.thread.isPause = true;
-			this.gameDraw.gameActivity.buyUnit(this, units);
+			this.gameDraw.gameActivity.buyUnit(this, units, isAvailable);
 		}
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{

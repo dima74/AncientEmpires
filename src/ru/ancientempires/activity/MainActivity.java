@@ -83,6 +83,11 @@ public class MainActivity extends Activity
 		GameInit.init();
 		long e = System.nanoTime();
 		
+		/*Intent intent = new Intent(this, TestActivity.class);
+		startActivity(intent);
+		if (true)
+			return;//*/
+		
 		// TODO заменить, чтобы клиент инит сендил мессадж
 		final Handler handler = new Handler(new Handler.Callback()
 		{

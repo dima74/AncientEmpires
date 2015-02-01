@@ -63,9 +63,9 @@ public class GameActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void buyUnit(InputAlgoritmMain main, UnitType[] units)
+	public void buyUnit(InputAlgoritmMain main, UnitType[] units, boolean[] isAvailable)
 	{
-		DialogFragment dialogFragment = new UnitBuyDialog(units).setNoticeListener(main);
+		DialogFragment dialogFragment = new UnitBuyDialog(units, isAvailable).setNoticeListener(main);
 		dialogFragment.show(getFragmentManager(), "UnitBuyDialog");
 	}
 	

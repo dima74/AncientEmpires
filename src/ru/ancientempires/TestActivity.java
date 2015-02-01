@@ -34,7 +34,12 @@ public class TestActivity extends Activity implements NoticeUnitBuy
 	
 	protected void dialog()
 	{
-		DialogFragment dialog = new UnitBuyDialog(CellType.getType("CASTLE").buyUnits);
+		UnitType[] buyUnits = CellType.getType("CASTLE").buyUnits;
+		boolean[] isAvailable = new boolean[buyUnits.length];
+		for (int i = 0; i < 3; i++)
+			isAvailable[i] = true;
+		
+		DialogFragment dialog = new UnitBuyDialog(buyUnits, isAvailable).setNoticeListener(this);
 		dialog.show(getFragmentManager(), "dialog");
 	}
 	
