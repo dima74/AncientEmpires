@@ -3,6 +3,7 @@ package ru.ancientempires.view.draws;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
@@ -11,6 +12,11 @@ public class GameDrawCell extends GameDraw
 	
 	private final int	h;
 	private final int	w;
+	private final int	availableY;
+	private final int	availableX;
+	
+	public Bitmap[][]	bitmaps;
+	private boolean		isDual	= false;
 	
 	public GameDrawCell(GameDrawMain gameDraw)
 	{
@@ -19,10 +25,10 @@ public class GameDrawCell extends GameDraw
 		this.h = field.length;
 		this.w = field[0].length;
 		this.bitmaps = new Bitmap[this.h][this.w];
+		
+		this.availableY = GameView.h - gameDraw.gameDrawInfoH;
+		this.availableX = GameView.w;
 	}
-	
-	public Bitmap[][]	bitmaps;
-	private boolean		isDual;
 	
 	public GameDrawCell setDual()
 	{
@@ -43,11 +49,24 @@ public class GameDrawCell extends GameDraw
 		return false;
 	}
 	
+	public void updateOneCell(Game game, int i, int j)
+	{
+		if (this.isDual && i == 0)
+			return;
+		final Cell[][] field = game.map.getField();
+		Cell cell = field[i + (this.isDual ? 1 : 0)][j];
+		this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
+	}
+	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		for (int i = 0; i < this.h; i++)
-			for (int j = 0; j < this.w; j++)
+		int minI = -(this.gameDraw.currentOffsetY - this.gameDraw.minOffsetY) / GameDraw.A;
+		int minJ = -(this.gameDraw.currentOffsetX - this.gameDraw.minOffsetX) / GameDraw.A;
+		int maxI = Math.min((-(this.gameDraw.currentOffsetY - this.gameDraw.minOffsetY) + this.availableY + GameDraw.A - 1) / GameDraw.A, this.h);
+		int maxJ = Math.min((-(this.gameDraw.currentOffsetX - this.gameDraw.minOffsetX) + this.availableX + GameDraw.A - 1) / GameDraw.A, this.w);
+		for (int i = minI; i < maxI; i++)
+			for (int j = minJ; j < maxJ; j++)
 			{
 				final Bitmap bitmapCell = this.bitmaps[i][j];
 				if (bitmapCell == null)
@@ -57,5 +76,4 @@ public class GameDrawCell extends GameDraw
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 	}
-	
 }

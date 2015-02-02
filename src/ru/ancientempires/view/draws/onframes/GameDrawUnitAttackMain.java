@@ -1,8 +1,9 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.AttackResult;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawUnitAttackMain extends GameDrawOnFrames

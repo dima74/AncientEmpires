@@ -9,6 +9,9 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgoritmMain;
+import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
+import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
+import ru.ancientempires.view.draws.onframes.GameDrawUnitMoveEnd;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
@@ -31,11 +34,11 @@ public class GameDrawMain
 	
 	public int							iFrame					= 0;
 	
-	public GameDraw						gameDrawCell			= new GameDrawCell(this);
+	public GameDrawCell					gameDrawCell;
 	public GameDrawRange				gameDrawZoneMove		= new GameDrawRange(this).setCursor(CursorImages.cursorWay);
 	public GameDrawRange				gameDrawZoneAttack		= new GameDrawRange(this).setCursor(CursorImages.cursorAttack);
 	public GameDrawRange				gameDrawZoneRaise		= new GameDrawRange(this).setCursor(CursorImages.cursorAttack);
-	public GameDraw						gameDrawCellDual		= new GameDrawCell(this).setDual();
+	public GameDrawCell					gameDrawCellDual;
 	public GameDrawUnit					gameDrawUnit			= new GameDrawUnit(this);
 	public GameDrawWayLine				gameDrawWayLine			= new GameDrawWayLine(this);
 	
@@ -43,6 +46,7 @@ public class GameDrawMain
 	public GameDrawUnitMoveEnd			gameDrawUnitMoveEnd		= new GameDrawUnitMoveEnd(this);
 	public GameDrawUnitAttackMain		gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
 	public GameDrawCellAttack			gameDrawCellAttack		= new GameDrawCellAttack(this);
+	public GameDrawUnitRaise			gameDrawUnitRaise		= new GameDrawUnitRaise(this);
 	
 	public GameDrawAction				gameDrawAction;
 	public GameDrawInfo					gameDrawInfo;
@@ -55,10 +59,10 @@ public class GameDrawMain
 	public ArrayList<GameDraw>			gameDraws				= new ArrayList<GameDraw>();
 	public ArrayList<GameDraw>			gameDrawsEffects		= new ArrayList<GameDraw>();
 	
-	private int							minOffsetY;
-	private int							minOffsetX;
-	private int							maxOffsetY;
-	private int							maxOffsetX;
+	public int							minOffsetY;
+	public int							minOffsetX;
+	public int							maxOffsetY;
+	public int							maxOffsetX;
 	
 	public GameDrawMain()
 	{
@@ -74,6 +78,9 @@ public class GameDrawMain
 		this.gameDrawAction = new GameDrawAction(this);
 		this.gameDrawInfo = new GameDrawInfo(this);
 		
+		this.gameDrawCell = new GameDrawCell(this);
+		this.gameDrawCellDual = new GameDrawCell(this).setDual();
+		
 		this.gameDraws.add(this.gameDrawCell);
 		this.gameDraws.add(this.gameDrawZoneMove);
 		this.gameDraws.add(this.gameDrawZoneAttack);
@@ -86,6 +93,7 @@ public class GameDrawMain
 		this.gameDrawsEffects.add(this.gameDrawUnitMoveEnd);
 		this.gameDrawsEffects.add(this.gameDrawUnitAttack);
 		this.gameDrawsEffects.add(this.gameDrawCellAttack);
+		this.gameDrawsEffects.add(this.gameDrawUnitRaise);
 		
 		this.gameDrawCursors = new ArrayList<GameDrawCursor>();
 		this.gameDrawCursors.add(this.gameDrawCursorDefault);

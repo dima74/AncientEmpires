@@ -1,5 +1,6 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 

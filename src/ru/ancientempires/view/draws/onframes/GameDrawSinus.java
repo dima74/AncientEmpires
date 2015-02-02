@@ -1,10 +1,13 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
+import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawSinus extends GameDrawOnFrames
 {
 	
+	// length = 96
 	public static final int[]	YS	= new int[]
 									{
 			9, 9, 9, 9, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,

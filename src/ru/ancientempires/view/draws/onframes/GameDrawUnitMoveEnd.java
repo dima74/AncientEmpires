@@ -1,10 +1,12 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
 import java.util.ArrayList;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawUnitMoveEnd extends GameDrawOnFrames

@@ -11,10 +11,10 @@ public class GameDrawCellAttack extends GameDraw
 		super(gameDraw);
 	}
 	
-	public void start(ActionResult result)
+	public void start(ActionResult result, int endI, int endJ)
 	{
-		this.gameDraw.gameDrawCell.update(this.gameDraw.game);
-		this.gameDraw.gameDrawCellDual.update(this.gameDraw.game);
+		this.gameDraw.gameDrawCell.updateOneCell(this.gameDraw.game, endI, endJ);
+		this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, endI, endJ);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package ru.ancientempires.view.draws;
 
+import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import android.graphics.Canvas;
 
 public class GameDrawBitmapsMoving extends GameDrawBitmaps

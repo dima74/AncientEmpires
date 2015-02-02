@@ -1,8 +1,10 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
+import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawUnitMove extends GameDrawOnFrames

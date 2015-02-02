@@ -161,6 +161,11 @@ public class GameDrawRange extends GameDraw
 		return radius;
 	}
 	
+	public void endAnimate()
+	{
+		this.isDrawing = false;
+	}
+	
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -168,6 +173,8 @@ public class GameDrawRange extends GameDraw
 			return;
 		
 		this.radius = getCurrentRadius();
+		if (this.radius == this.radiusEnd && this.radiusEnd == this.radiusMin)
+			this.isDrawing = false;
 		
 		int canvasTranslateY = this.gameDraw.currentOffsetY; // canvas.getTranslateY();
 		int canvasTranslateX = this.gameDraw.currentOffsetX; // canvas.getTranslateX();

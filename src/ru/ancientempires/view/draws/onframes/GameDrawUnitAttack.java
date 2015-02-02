@@ -1,10 +1,12 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
 import java.util.ArrayList;
 
 import ru.ancientempires.action.AttackResult;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
+import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawUnitAttack extends GameDrawOnFramesGroup
@@ -89,7 +91,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo)
-			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.result.i, this.result.j, true);
+			this.gameDraw.gameDrawUnit.updateOneUnitBaseIfExist(this.result.i, this.result.j, true);
 	}
 	
 }

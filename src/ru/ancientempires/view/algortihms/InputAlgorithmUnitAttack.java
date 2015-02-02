@@ -51,7 +51,7 @@ public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 			if ((boolean) this.result.getProperty("isAttackUnit"))
 				this.main.gameDraw.gameDrawUnitAttack.start(this.result);
 			else
-				this.main.gameDraw.gameDrawCellAttack.start(this.result);
+				this.main.gameDraw.gameDrawCellAttack.start(this.result, this.endI, this.endJ);
 		}
 	}
 	

@@ -104,8 +104,8 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			action.setProperty("j", this.lastTapJ);
 			Client.action(action);
 			
-			this.gameDraw.gameDrawCell.update(this.game);
-			this.gameDraw.gameDrawCellDual.update(this.game);
+			this.gameDraw.gameDrawCell.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawCellDual.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawUnit.updateOneUnitIfExist(this.lastTapI, this.lastTapJ);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)

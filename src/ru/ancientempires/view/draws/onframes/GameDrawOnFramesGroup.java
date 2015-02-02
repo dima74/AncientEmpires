@@ -1,7 +1,8 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
 import java.util.ArrayList;
 
+import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
 
 public class GameDrawOnFramesGroup extends GameDrawOnFrames

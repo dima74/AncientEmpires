@@ -51,12 +51,7 @@ public class UnitBuyDialog extends DialogFragment
 							Toast.makeText(getActivity(), "Not enough money", Toast.LENGTH_SHORT).show();
 					}
 				})
-				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int id)
-					{}
-				});
+				.setNegativeButton(android.R.string.cancel, null);
 		return builder.create();
 	}
 	
