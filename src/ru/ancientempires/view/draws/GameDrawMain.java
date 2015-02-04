@@ -12,6 +12,7 @@ import ru.ancientempires.view.algortihms.InputAlgoritmMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMoveEnd;
+import ru.ancientempires.view.draws.onframes.GameDrawUnitRaise;
 import android.graphics.Canvas;
 import android.graphics.Color;
 

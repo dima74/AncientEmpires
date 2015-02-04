@@ -21,8 +21,8 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	public GameDrawUnitAttackMain(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
-		this.drawDirect = new GameDrawUnitAttack(gameDraw);
-		this.drawReverse = new GameDrawUnitAttack(gameDraw);
+		this.drawDirect = new GameDrawUnitAttack(gameDraw, true);
+		this.drawReverse = new GameDrawUnitAttack(gameDraw, false);
 	}
 	
 	public void start(ActionResult result)
@@ -45,16 +45,6 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 		{
 			this.drawReverse.setFrameToStartPartTwo(frameToStartPartTwo);
 			frameEnd = Math.max(frameEnd, this.drawReverse.frameEnd);
-		}
-		
-		// part 2
-		
-		if (resultDirect.effectSign == -1)
-		{
-			GameDrawOnFrames gameDrawOnFrames = new GameDrawOnFrames(this.gameDraw);
-			gameDrawOnFrames.animate(this.frameToStartPartTwo, 12);
-			GameDrawOnFrames gameDrawOnFrames2 = new GameDrawDecreaseHealth(this.gameDraw);
-			gameDrawOnFrames2.animate(this.frameToStartPartTwo, 48);
 		}
 		
 		Unit[] unitsToUpdate = (Unit[]) result.getProperty("unitsToUpdate");

@@ -51,8 +51,6 @@ public class GameDrawCell extends GameDraw
 	
 	public void updateOneCell(Game game, int i, int j)
 	{
-		if (this.isDual && i == 0)
-			return;
 		final Cell[][] field = game.map.getField();
 		Cell cell = field[i + (this.isDual ? 1 : 0)][j];
 		this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);

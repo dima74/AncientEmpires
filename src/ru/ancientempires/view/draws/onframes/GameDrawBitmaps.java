@@ -42,7 +42,7 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 			return;
 		
 		int framePass = this.gameDraw.iFrame - this.frameStart;
-		int i = framePass * 2 * this.bitmaps.length / GameDrawBitmaps.FRAMES_ANIMATE_LONG % this.bitmaps.length;
+		int i = framePass * this.bitmaps.length / this.frameLength;
 		canvas.drawBitmap(this.bitmaps[i], this.x, this.y, null);
 	}
 	

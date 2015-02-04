@@ -7,21 +7,30 @@ import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 {
 	
+	private Bitmap[]		bitmaps;
 	private AttackResult	result;
 	
 	private int				i, j;
 	private int				y, x;
 	
 	private int				frameStartPartTwo;
+	private boolean			isDirect;
 	
-	public GameDrawUnitAttack(GameDrawMain gameDraw)
+	public GameDrawUnitAttack(GameDrawMain gameDraw, boolean isDirect)
 	{
 		super(gameDraw);
+		this.isDirect = isDirect;
+		
+		int amount = SparksImages.amountAttack;
+		this.bitmaps = new Bitmap[amount * 2];
+		for (int i = 0; i < amount; i++)
+			this.bitmaps[i] = this.bitmaps[i + amount] = SparksImages.bitmapsAttack[i];
 	}
 	
 	public void start(AttackResult result, int frameToStart)
@@ -32,7 +41,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		this.draws = new ArrayList<GameDrawOnFrames>();
 		GameDrawDecreaseHealth drawDecreaseHealth = new GameDrawDecreaseHealth(this.gameDraw);
-		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsAttack);
+		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(this.bitmaps);
 		
 		drawDecreaseHealth.animate(frameToStart, this.y, this.x, result.decreaseHealth);
 		drawSparkBitmaps.animate(frameToStart, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_LONG);
@@ -90,8 +99,11 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 			if (this.result.i == this.gameDraw.inputAlgoritmMain.lastTapI && this.result.j == this.gameDraw.inputAlgoritmMain.lastTapJ)
 				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
 		}
-		if (this.gameDraw.iFrame == this.frameStartPartTwo)
+		if (this.gameDraw.iFrame == this.frameStartPartTwo - 1 && this.isDirect)
+		{
 			this.gameDraw.gameDrawUnit.updateOneUnitBaseIfExist(this.result.i, this.result.j, true);
+			this.gameDraw.gameDrawAction.update(this.result.i, this.result.j);
+		}
 	}
 	
 }

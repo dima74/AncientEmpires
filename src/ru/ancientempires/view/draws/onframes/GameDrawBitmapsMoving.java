@@ -1,6 +1,7 @@
-package ru.ancientempires.view.draws;
+package ru.ancientempires.view.draws.onframes;
 
-import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
+import ru.ancientempires.view.draws.GameDrawMain;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class GameDrawBitmapsMoving extends GameDrawBitmaps
@@ -16,7 +17,13 @@ public class GameDrawBitmapsMoving extends GameDrawBitmaps
 		super(gameDraw);
 	}
 	
-	public GameDrawBitmaps animate(int frameToStart, int startY, int startX, int endY, int endX, int frameLength)
+	@Override
+	public GameDrawBitmaps setBitmaps(Bitmap[] bitmaps)
+	{
+		return super.setBitmaps(bitmaps);
+	}
+	
+	public GameDrawBitmapsMoving animate(int frameToStart, int startY, int startX, int endY, int endX, int frameLength)
 	{
 		this.startY = startY;
 		this.startX = startX;
@@ -35,4 +42,5 @@ public class GameDrawBitmapsMoving extends GameDrawBitmaps
 		this.x = (frameLeft * this.startX + framePass * this.endX) / this.frameLength;
 		super.draw(canvas);
 	}
+	
 }

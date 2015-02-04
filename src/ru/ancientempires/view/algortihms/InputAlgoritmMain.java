@@ -96,8 +96,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 				currentInputAlgorithm.start(this.lastTapI, this.lastTapJ);
 			}
 		}
-		else if (actionType == ActionType.ACTION_UNIT_REPAIR
-			|| actionType == ActionType.ACTION_UNIT_CAPTURE)
+		else if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
 		{
 			Action action = new Action(actionType);
 			action.setProperty("i", this.lastTapI);
@@ -105,7 +104,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			Client.action(action);
 			
 			this.gameDraw.gameDrawCell.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
-			this.gameDraw.gameDrawCellDual.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
+			// this.gameDraw.gameDrawCellDual.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawUnit.updateOneUnitIfExist(this.lastTapI, this.lastTapJ);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)

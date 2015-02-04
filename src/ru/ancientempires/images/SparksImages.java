@@ -24,6 +24,9 @@ public class SparksImages
 	public static int		hSmall;
 	public static int		wSmall;
 	
+	public static int		hDefault;
+	public static int		wDefault;
+	
 	public static void preloadResources(ZipFile images, String path) throws IOException
 	{
 		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, path + "info.json"));
@@ -60,8 +63,11 @@ public class SparksImages
 		SparksImages.bitmapsSmall = new Bitmap[SparksImages.amountSmall];
 		for (int i = 0; i < SparksImages.amountSmall; i++)
 			SparksImages.bitmapsSmall[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
+		
 		SparksImages.hSmall = SparksImages.bitmapsSmall[0].getHeight();
 		SparksImages.wSmall = SparksImages.bitmapsSmall[0].getWidth();
+		SparksImages.hDefault = SparksImages.bitmapsDefault[0].getHeight();
+		SparksImages.wDefault = SparksImages.bitmapsDefault[0].getWidth();
 	}
 	
 }

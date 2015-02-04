@@ -2,7 +2,6 @@ package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.draws.GameDraw;
-import ru.ancientempires.view.draws.GameDrawBitmapsMoving;
 import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -38,7 +37,6 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 					{
 							Images.levelUp
 					}));
-		
 		this.draws.add(new GameDrawBitmaps(this.gameDraw).setBitmaps(new Bitmap[]
 		{
 				Images.levelUp
