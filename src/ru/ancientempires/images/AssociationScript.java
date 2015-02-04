@@ -8,17 +8,20 @@ import android.renderscript.RenderScript;
 import android.renderscript.Short4;
 import android.renderscript.Type;
 
-public class RenderScriptCellImages
+public class AssociationScript
 {
-	private int					height;
-	private int					width;
-	private Config				bitmapConfig;
-	private Type				allocationType;
 	
-	private RenderScript		mRS;
-	private ScriptC_association	mScript;
+	private int								height;
+	private int								width;
+	private Config							bitmapConfig;
+	private Type							allocationType;
 	
-	public void createScript(Context context)
+	private RenderScript					mRS;
+	private ScriptC_association				mScript;
+	
+	public static AssociationScript	rs;
+	
+	public AssociationScript(Context context)
 	{
 		// Initialize RS
 		this.mRS = RenderScript.create(context);
@@ -66,4 +69,5 @@ public class RenderScriptCellImages
 		
 		return mBitmapOut;
 	}
+	
 }

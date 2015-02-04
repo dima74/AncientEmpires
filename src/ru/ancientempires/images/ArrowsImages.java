@@ -13,7 +13,7 @@ public class ArrowsImages
 	public static Bitmap	more;
 	public static Bitmap	less;
 	
-	public static void preloadResources(ZipFile images, String path) throws IOException
+	public static void preload(ZipFile images, String path) throws IOException
 	{
 		ArrowsImages.equals = BitmapHelper.getResizeBitmap(images, path + "equals.png");
 		ArrowsImages.more = BitmapHelper.getResizeBitmap(images, path + "more.png");

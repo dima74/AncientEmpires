@@ -22,7 +22,7 @@ public class BigNumberImages
 		return BigNumberImages.numberBitmaps[number];
 	}
 	
-	public static void preloadResources(ZipFile images, String path) throws IOException
+	public static void preload(ZipFile images, String path) throws IOException
 	{
 		for (int i = 0; i < BigNumberImages.amountNumbers; i++)
 			BigNumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");

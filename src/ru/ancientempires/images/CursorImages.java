@@ -24,7 +24,7 @@ public class CursorImages
 	public static int					cursorAttackH;
 	public static int					cursorAttackW;
 	
-	public static void preloadResources(ZipFile images, String path) throws IOException
+	public static void preload(ZipFile images, String path) throws IOException
 	{
 		CursorImages.cursorWay = BitmapHelper.getResizeBitmap(images, path + "cursor_way.png");
 		CursorImages.cursorAttack = BitmapHelper.getResizeBitmap(images, path + "cursor_attack.png");

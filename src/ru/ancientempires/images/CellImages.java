@@ -1,28 +1,34 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.zip.ZipFile;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.XMLHelper;
+import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import android.graphics.Bitmap;
 
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+
 public class CellImages
 {
 	
 	private static CellBitmap[]	cellBitmaps;
 	private static CellBitmap[]	cellBitmapsDual;
+	
+	// Используется только во время загрузки игры
+	private static String[]		colorPaths;
+	private static String[]		namesImage;
+	private static String[]		namesImageDestroying;
+	private static String[]		namesImageDual;
+	private static String		defaultImagesFolder;
+	private static String		destroyingImagesFolder;
 	
 	public static Bitmap getCellBitmap(final Cell cell, final boolean dual)
 	{
@@ -36,99 +42,100 @@ public class CellImages
 				cellBitmap.getBitmap(cell);
 	}
 	
-	public static void preloadResources(ZipFile imagesZipFile, String path) throws IOException
+	public static void preload(ZipFile images, String path) throws IOException
 	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, path + "info.xml");
-		NodeList images = infoDocument.getElementsByTagName("image");
+		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
+		reader.beginObject();
 		
-		String defaultImagesFolder = XMLHelper.getOneNode(infoDocument, "default_images_folder").getTextContent();
-		String destroyingImagesFolder = XMLHelper.getOneNode(infoDocument, "destroying_images_folder").getTextContent();
+		MyAssert.a("color_folders", reader.nextName());
+		CellImages.colorPaths = new String[3]; // красный, зеленый, синий
+		reader.beginObject();
+		CellImages.colorPaths[0] = JsonHelper.readString(reader, "red");
+		CellImages.colorPaths[1] = JsonHelper.readString(reader, "green");
+		CellImages.colorPaths[2] = JsonHelper.readString(reader, "blue");
+		reader.endObject();
 		
-		MyAssert.a(images.getLength() == CellType.amount);
-		int typeAmount = CellType.amount;
+		CellImages.defaultImagesFolder = JsonHelper.readString(reader, "default_images_folder");
+		CellImages.destroyingImagesFolder = JsonHelper.readString(reader, "destroying_images_folder");
 		
-		CellImages.cellBitmaps = new CellBitmap[typeAmount];
-		CellImages.cellBitmapsDual = new CellBitmap[typeAmount];
-		for (int i = 0; i < typeAmount; i++)
+		CellImages.cellBitmaps = new CellBitmap[CellType.amount];
+		CellImages.cellBitmapsDual = new CellBitmap[CellType.amount];
+		
+		CellImages.namesImage = new String[CellType.amount];
+		CellImages.namesImageDestroying = new String[CellType.amount];
+		CellImages.namesImageDual = new String[CellType.amount];
+		
+		MyAssert.a("images", reader.nextName());
+		reader.beginArray();
+		int i = 0;
+		while (reader.peek() == JsonToken.BEGIN_OBJECT)
 		{
-			Node node = images.item(i);
-			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
-			CellType type = CellType.getType(typeName);
-			
-			CellBitmap cellBitmap = new CellBitmap();
-			String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-			cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + defaultImagesFolder + imageName);
-			
-			if ("true".equals(XMLHelper.getNodeAttributesMap(node).get("isDual")))
+			CellImages.nextCellImage(reader, images, path);
+			i++;
+		}
+		MyAssert.a(CellType.amount, i);
+		reader.endArray();
+		
+		reader.endObject();
+		reader.close();
+	}
+	
+	private static void nextCellImage(JsonReader reader, ZipFile images, String path) throws IOException
+	{
+		reader.beginObject();
+		CellType type = CellType.getType(JsonHelper.readString(reader, "type"));
+		CellImages.namesImage[type.ordinal] = JsonHelper.readString(reader, "image");
+		
+		CellBitmap cellBitmap = new CellBitmap();
+		cellBitmap.defaultBitmap = BitmapHelper.getResizeBitmap(images, path + CellImages.defaultImagesFolder + CellImages.namesImage[type.ordinal]);
+		
+		while (reader.peek() == JsonToken.NAME)
+		{
+			String string = reader.nextName();
+			if ("imageDual".equals(string))
 			{
+				CellImages.namesImageDual[type.ordinal] = reader.nextString();
 				cellBitmap.isDual = true;
 				CellBitmap cellBitmapDual = new CellBitmap();
-				String imageNameDual = XMLHelper.getNodeAttributeValue(node, "imageDual");
-				cellBitmapDual.defaultBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + defaultImagesFolder + imageNameDual);
-				CellImages.cellBitmapsDual[i] = cellBitmapDual;
+				cellBitmapDual.defaultBitmap = BitmapHelper.getResizeBitmap(images, path + CellImages.defaultImagesFolder + CellImages.namesImageDual[type.ordinal]);
+				CellImages.cellBitmapsDual[type.ordinal] = cellBitmapDual;
 			}
-			
-			if (type.isDestroying)
-				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(imagesZipFile, path + destroyingImagesFolder + imageName);
-			
-			CellImages.cellBitmaps[i] = cellBitmap;
-		}
-	}
-	
-	public static void loadResources(ZipFile imagesZipFile, String zipPath, Game game) throws IOException
-	{
-		Document infoDocument = XMLHelper.getDocumentFromZipPath(imagesZipFile, zipPath + "info.xml");
-		
-		Node colorFoldersNode = XMLHelper.getOneNode(infoDocument, "color_folders");
-		Map<String, String> mapColorsFolders = XMLHelper.getMapFromNode(colorFoldersNode, "name", "value", "color_folder");
-		String imagesPathR = zipPath + mapColorsFolders.get("0xFFFF0000");
-		String imagesPathG = zipPath + mapColorsFolders.get("0xFF00FF00");
-		String imagesPathB = zipPath + mapColorsFolders.get("0xFF0000FF");
-		
-		NodeList images = infoDocument.getElementsByTagName("image");
-		
-		MyAssert.a(images.getLength() == CellType.amount);
-		int typeAmount = CellType.amount;
-		
-		for (int i = 0; i < typeAmount; i++)
-		{
-			Node node = images.item(i);
-			String typeName = XMLHelper.getNodeAttributeValue(node, "type");
-			CellType type = CellType.getType(typeName);
-			if (type.isCapture)
+			else if ("imageDestroying".equals(string))
 			{
-				CellBitmap cellBitmap = CellImages.cellBitmaps[i];
-				String imageName = XMLHelper.getNodeAttributeValue(node, "image");
-				cellBitmap.colorsBitmaps = CellImages.loadOneColorBitmap(imagesZipFile, game,
-						imagesPathR, imagesPathG, imagesPathB, imageName);
-				
-				if (cellBitmap.isDual)
-				{
-					CellBitmap cellBitmapDual = CellImages.cellBitmapsDual[i];
-					String imageNameDual = XMLHelper.getNodeAttributeValue(node, "imageDual");
-					cellBitmapDual.colorsBitmaps = CellImages.loadOneColorBitmap(imagesZipFile,
-							game, imagesPathR, imagesPathG, imagesPathB, imageNameDual);
-				}
+				CellImages.namesImageDestroying[type.ordinal] = reader.nextString();
+				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(images, path + CellImages.destroyingImagesFolder + CellImages.namesImageDestroying[type.ordinal]);
 			}
 		}
+		MyAssert.a(!type.isDestroying || cellBitmap.destroyingBitmap != null);
+		CellImages.cellBitmaps[type.ordinal] = cellBitmap;
+		
+		reader.endObject();
 	}
 	
-	private static Bitmap[] loadOneColorBitmap(ZipFile images, Game game, String imagesPathR, String imagesPathG, String imagesPathB, String imageName)
-			throws IOException
+	public static void loadResources(ZipFile images, String path, Game game) throws IOException
+	{
+		for (int i = 0; i < CellType.amount; i++)
+			if (CellType.getType(i).isCapture)
+			{
+				CellImages.cellBitmaps[i].colorsBitmaps = CellImages.loadOneColorBitmap(images, game, path, CellImages.namesImage[i]);
+				
+				if (CellImages.cellBitmaps[i].isDual)
+					CellImages.cellBitmapsDual[i].colorsBitmaps = CellImages.loadOneColorBitmap(images, game, path, CellImages.namesImageDual[i]);
+			}
+	}
+	
+	private static Bitmap[] loadOneColorBitmap(ZipFile images, Game game, String path, String imageName) throws IOException
 	{
 		Bitmap[] bitmaps = new Bitmap[game.players.length];
 		
-		RenderScriptCellImages rs = new RenderScriptCellImages();
-		rs.createScript(MainActivity.context);
-		
-		Bitmap bitmapR = BitmapHelper.getBitmap(images, imagesPathR + imageName);
-		Bitmap bitmapG = BitmapHelper.getBitmap(images, imagesPathG + imageName);
-		Bitmap bitmapB = BitmapHelper.getBitmap(images, imagesPathB + imageName);
-		rs.setBitmaps(bitmapR, bitmapG, bitmapB);
+		Bitmap bitmapR = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[0] + imageName);
+		Bitmap bitmapG = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[1] + imageName);
+		Bitmap bitmapB = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[2] + imageName);
+		AssociationScript.rs.setBitmaps(bitmapR, bitmapG, bitmapB);
 		
 		for (int j = 0; j < game.players.length; j++)
 		{
-			Bitmap bitmap = rs.getBitmap(game.players[j].color);
+			Bitmap bitmap = AssociationScript.rs.getBitmap(game.players[j].color);
 			bitmap = BitmapHelper.getResizeBitmap(bitmap);
 			bitmaps[j] = bitmap;
 		}

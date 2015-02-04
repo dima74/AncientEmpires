@@ -3,6 +3,7 @@ package ru.ancientempires.images;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.ZIPHelper;
@@ -47,18 +48,20 @@ public class Images
 		String cursorsPath = JsonHelper.readString(reader, "cursors_folder");
 		String arrowsPath = JsonHelper.readString(reader, "arrows_folder");
 		String statusesPath = JsonHelper.readString(reader, "statuses_folder");
+		String smokePath = JsonHelper.readString(reader, "smoke_folder");
 		reader.endObject();
 		reader.close();
 		
-		CellImages.preloadResources(images, cellsPath);
-		UnitImages.preloadResources(images, unitsPath);
-		ActionImages.preloadResources(images, actionsPath);
-		NumberImages.preloadResources(images, numbersPath);
-		BigNumberImages.preloadResources(images, bigNumbersPath);
-		SparksImages.preloadResources(images, sparksPath);
-		CursorImages.preloadResources(images, cursorsPath);
-		ArrowsImages.preloadResources(images, arrowsPath);
-		StatusesImages.preloadResources(images, statusesPath);
+		CellImages.preload(images, cellsPath);
+		UnitImages.preload(images, unitsPath);
+		ActionImages.preload(images, actionsPath);
+		NumberImages.preload(images, numbersPath);
+		BigNumberImages.preload(images, bigNumbersPath);
+		SparksImages.preload(images, sparksPath);
+		CursorImages.preload(images, cursorsPath);
+		ArrowsImages.preload(images, arrowsPath);
+		StatusesImages.preload(images, statusesPath);
+		SmokeImages.preload(images, smokePath);
 		
 		// self
 		Images.amountGold = BitmapHelper.getResizeBitmap(images, "amountGold.png");
@@ -88,6 +91,7 @@ public class Images
 		String cellsPath = JsonHelper.readString(reader, "cells_folder");
 		reader.close();
 		
+		AssociationScript.rs = new AssociationScript(MainActivity.context);
 		CellImages.loadResources(images, cellsPath, game);
 		UnitImages.loadResources(images, game);
 	}

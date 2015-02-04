@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
@@ -48,7 +47,7 @@ public class UnitImages
 			return Images.tombstone;
 	}
 	
-	public static void preloadResources(ZipFile images, String path) throws IOException
+	public static void preload(ZipFile images, String path) throws IOException
 	{
 		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
 		reader.beginObject();
@@ -81,6 +80,7 @@ public class UnitImages
 		reader.endArray();
 		
 		reader.endObject();
+		reader.close();
 	}
 	
 	private static void nextUnitImage(JsonReader reader, ZipFile images, String path) throws IOException
@@ -215,8 +215,6 @@ public class UnitImages
 	{
 		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.amount][game.players.length];
 		
-		RenderScriptCellImages rs = new RenderScriptCellImages();
-		rs.createScript(MainActivity.context);
 		for (int typeI = 0; typeI < UnitType.amount; typeI++)
 		{
 			FewBitmaps r = UnitImages.baseUnitsBitmaps[typeI][1];
@@ -227,10 +225,10 @@ public class UnitImages
 			Bitmap[][] bitmaps = new Bitmap[game.players.length][bitmapAmount];
 			for (int bitmapI = 0; bitmapI < bitmapAmount; bitmapI++)
 			{
-				rs.setBitmaps(r.bitmaps[bitmapI], g.bitmaps[bitmapI], b.bitmaps[bitmapI]);
+				AssociationScript.rs.setBitmaps(r.bitmaps[bitmapI], g.bitmaps[bitmapI], b.bitmaps[bitmapI]);
 				for (int playerI = 0; playerI < game.players.length; playerI++)
 				{
-					Bitmap bitmap = rs.getBitmap(game.players[playerI].color);
+					Bitmap bitmap = AssociationScript.rs.getBitmap(game.players[playerI].color);
 					if (UnitImages.notColoredI[typeI] != null)
 					{
 						int colorI = game.players[playerI].colorI;
@@ -246,7 +244,6 @@ public class UnitImages
 			for (int playerI = 0; playerI < game.players.length; playerI++)
 				UnitImages.unitsBitmaps[typeI][playerI] = new FewBitmaps().setBitmaps(bitmaps[playerI]);
 		}
-		
 	}
 	
 }
