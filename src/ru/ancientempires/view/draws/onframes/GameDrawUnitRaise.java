@@ -9,7 +9,7 @@ import android.graphics.Canvas;
 public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 {
 	
-	private static final int	FRAME_LENGTH			= 18 * 2;
+	private static final int	FRAME_LENGTH			= SparksImages.amountDefault * 3 * 2;
 	
 	private Bitmap[]			bitmaps;
 	private int					targetI;
