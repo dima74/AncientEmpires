@@ -16,7 +16,6 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	private Bitmap[]		bitmaps;
 	private AttackResult	result;
 	
-	private int				i, j;
 	private int				y, x;
 	
 	private int				frameStartPartTwo;
@@ -36,8 +35,8 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	public void start(AttackResult result, int frameToStart)
 	{
 		this.result = result;
-		this.y = (this.i = result.targetI) * GameDraw.A;
-		this.x = (this.j = result.targetJ) * GameDraw.A;
+		this.y = result.targetI * GameDraw.A;
+		this.x = result.targetJ * GameDraw.A;
 		
 		this.draws = new ArrayList<GameDrawOnFrames>();
 		GameDrawDecreaseHealth drawDecreaseHealth = new GameDrawDecreaseHealth(this.gameDraw);
@@ -84,6 +83,14 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 			
 			this.frameEnd = Math.max(this.frameEnd, drawLevelUp.frameEnd);
 		}
+		
+		if (!this.result.isTargetLive)
+		{
+			GameDrawOnFrames gameDraw = new GameDrawBitmaps(this.gameDraw)
+					.setBitmaps(SparksImages.bitmapsDefault)
+					.animate(frameToStartPartTwo, this.y, this.x, SparksImages.amountDefault * 2);
+			this.draws.add(gameDraw);
+		}
 	}
 	
 	@Override
@@ -95,14 +102,17 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		if (this.gameDraw.iFrame == this.frameStart)
 		{
-			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.i, this.j, this.result.isTargetLive);
+			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.result.targetI, this.result.targetJ, this.result.isTargetLive);
 			if (this.result.i == this.gameDraw.inputAlgoritmMain.lastTapI && this.result.j == this.gameDraw.inputAlgoritmMain.lastTapJ)
-				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.i, this.j);
+				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.result.targetI, this.result.targetJ);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo - 1 && this.isDirect)
 		{
 			this.gameDraw.gameDrawUnit.updateOneUnitBaseIfExist(this.result.i, this.result.j, true);
-			this.gameDraw.inputAlgoritmMain.tap(this.result.i, this.result.j);
+			if (this.result.isTargetLive)
+				this.gameDraw.inputAlgoritmMain.tap(this.result.i, this.result.j);
+			else
+				this.gameDraw.gameDrawUnit.updateOneUnit(this.result.targetI, this.result.targetJ);
 		}
 	}
 	
