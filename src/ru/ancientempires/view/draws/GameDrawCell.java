@@ -74,4 +74,5 @@ public class GameDrawCell extends GameDraw
 				canvas.drawBitmap(bitmapCell, x, y, null);
 			}
 	}
+	
 }

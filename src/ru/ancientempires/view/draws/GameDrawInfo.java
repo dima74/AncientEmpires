@@ -120,7 +120,7 @@ public class GameDrawInfo extends GameDraw
 	
 	public void updatePlayer(Player player)
 	{
-		this.color = player.color;
+		this.color = player.color.showColor;
 		this.gold = player.gold;
 		this.amountUnits = player.units.size();
 	}

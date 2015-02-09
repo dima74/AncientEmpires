@@ -8,20 +8,20 @@ import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.Type;
 
-public class AssociationScript
+public class CopyOfAssociationScript
 {
 	
-	private int						height;
-	private int						width;
-	private Config					bitmapConfig;
-	private Type					allocationType;
+	private int								height;
+	private int								width;
+	private Config							bitmapConfig;
+	private Type							allocationType;
 	
-	private RenderScript			mRS;
-	private ScriptC_association		mScript;
+	private RenderScript					mRS;
+	private ScriptC_association				mScript;
 	
-	public static AssociationScript	rs;
+	public static CopyOfAssociationScript	rs;
 	
-	public AssociationScript(Context context)
+	public CopyOfAssociationScript(Context context)
 	{
 		// Initialize RS
 		this.mRS = RenderScript.create(context);
@@ -55,26 +55,20 @@ public class AssociationScript
 		mOutAllocation = Allocation.createTyped(this.mRS, this.allocationType);
 		
 		// Set global variable in RS
+		/*
+		Short4 colorShort4 = new Short4();
+		colorShort4.w = (short) (color >> 8 * 3 & 0xFF);
+		colorShort4.x = (short) (color >> 8 * 2 & 0xFF);
+		colorShort4.y = (short) (color >> 8 * 1 & 0xFF);
+		colorShort4.z = (short) (color >> 8 * 0 & 0xFF);
+		this.mScript.set_color(colorShort4);
+		
 		this.mScript.set_ca(color.a);
 		this.mScript.set_cr(color.r);
 		this.mScript.set_cg(color.g);
 		this.mScript.set_cb(color.b);
-		
-		this.mScript.set_cr1(color.r1);
-		this.mScript.set_cg1(color.g1);
-		this.mScript.set_cb1(color.b1);
-		
-		this.mScript.set_cr2(color.r2);
-		this.mScript.set_cg2(color.g2);
-		this.mScript.set_cb2(color.b2);
-		
-		this.mScript.set_cr3(color.r3);
-		this.mScript.set_cg3(color.g3);
-		this.mScript.set_cb3(color.b3);
-		
-		this.mScript.set_cr4(color.r4);
-		this.mScript.set_cg4(color.g4);
-		this.mScript.set_cb4(color.b4);
+		this.mScript.set_sum(color.r + color.g + color.b);
+		// */
 		
 		this.mScript.forEach_association(mOutAllocation);
 		
@@ -83,5 +77,4 @@ public class AssociationScript
 		
 		return mBitmapOut;
 	}
-	
 }

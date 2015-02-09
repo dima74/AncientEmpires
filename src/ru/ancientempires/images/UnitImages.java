@@ -228,15 +228,21 @@ public class UnitImages
 				AssociationScript.rs.setBitmaps(r.bitmaps[bitmapI], g.bitmaps[bitmapI], b.bitmaps[bitmapI]);
 				for (int playerI = 0; playerI < game.players.length; playerI++)
 				{
-					Bitmap bitmap = AssociationScript.rs.getBitmap(game.players[playerI].color);
+					Bitmap bitmap;
+					int colorI = game.players[playerI].colorI;
+					if (colorI == 1)
+						bitmap = r.bitmaps[bitmapI];
+					else if (colorI == 2)
+						bitmap = g.bitmaps[bitmapI];
+					else if (colorI == 3)
+						bitmap = b.bitmaps[bitmapI];
+					else
+						bitmap = AssociationScript.rs.getBitmap(game.players[playerI].color);
 					if (UnitImages.notColoredI[typeI] != null)
-					{
-						int colorI = game.players[playerI].colorI;
 						bitmap = UnitImages.associateBitmaps(bitmap,
 								UnitImages.notColoredI[typeI][bitmapI],
 								UnitImages.notColoredJ[typeI][bitmapI],
 								UnitImages.additionalUnitsBitmaps[typeI][colorI].bitmaps[bitmapI]);
-					}
 					bitmaps[playerI][bitmapI] = BitmapHelper.getResizeBitmap(bitmap);
 				}
 			}

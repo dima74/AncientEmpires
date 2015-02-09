@@ -7,7 +7,8 @@ import android.graphics.Bitmap;
 public class CellBitmap
 {
 	
-	public boolean	isDual	= false;
+	public boolean	isDual		= false;
+	public boolean	isSmokes	= false;
 	
 	public Bitmap	defaultBitmap;
 	public Bitmap	destroyingBitmap;

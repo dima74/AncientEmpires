@@ -33,4 +33,10 @@ public class GameDrawOnFrames extends GameDraw
 		this.isEndDrawing = this.gameDraw.iFrame > this.frameEnd;
 	}
 	
+	public void reAnimate()
+	{
+		this.frameStart = this.gameDraw.iFrame;
+		this.frameEnd = this.frameStart + this.frameLength;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package ru.ancientempires.view.draws;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
@@ -9,6 +10,7 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgoritmMain;
+import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMoveEnd;
@@ -23,6 +25,8 @@ public class GameDrawMain
 	public Game							game					= Client.getClient().getGame();
 	
 	public InputAlgoritmMain			inputAlgoritmMain;
+	
+	public Random						rnd						= new Random();
 	
 	public final int					gameDrawInfoH;
 	public final int					gameDrawActionH;
@@ -43,6 +47,7 @@ public class GameDrawMain
 	public GameDrawUnit					gameDrawUnit			= new GameDrawUnit(this);
 	public GameDrawWayLine				gameDrawWayLine			= new GameDrawWayLine(this);
 	
+	public GameDrawBuildingSmokes		gameDrawBuildingSmokes;
 	public GameDrawUnitMove				gameDrawUnitMove		= new GameDrawUnitMove(this);
 	public GameDrawUnitMoveEnd			gameDrawUnitMoveEnd		= new GameDrawUnitMoveEnd(this);
 	public GameDrawUnitAttackMain		gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
@@ -91,6 +96,9 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
 		
+		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
+		
+		this.gameDrawsEffects.add(this.gameDrawBuildingSmokes);
 		this.gameDrawsEffects.add(this.gameDrawUnitMoveEnd);
 		this.gameDrawsEffects.add(this.gameDrawUnitAttack);
 		this.gameDrawsEffects.add(this.gameDrawCellAttack);

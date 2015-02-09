@@ -42,6 +42,11 @@ public class CellImages
 				cellBitmap.getBitmap(cell);
 	}
 	
+	public static boolean isCellSmokes(Cell cell)
+	{
+		return cell.isCapture && CellImages.cellBitmaps[cell.type.ordinal].isSmokes;
+	}
+	
 	public static void preload(ZipFile images, String path) throws IOException
 	{
 		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
@@ -105,6 +110,8 @@ public class CellImages
 				CellImages.namesImageDestroying[type.ordinal] = reader.nextString();
 				cellBitmap.destroyingBitmap = BitmapHelper.getResizeBitmap(images, path + CellImages.destroyingImagesFolder + CellImages.namesImageDestroying[type.ordinal]);
 			}
+			else if ("isSmokes".equals(string))
+				cellBitmap.isSmokes = reader.nextBoolean();
 		}
 		MyAssert.a(!type.isDestroying || cellBitmap.destroyingBitmap != null);
 		CellImages.cellBitmaps[type.ordinal] = cellBitmap;
@@ -135,7 +142,17 @@ public class CellImages
 		
 		for (int j = 0; j < game.players.length; j++)
 		{
-			Bitmap bitmap = AssociationScript.rs.getBitmap(game.players[j].color);
+			Bitmap bitmap;
+			
+			int colorI = game.players[j].colorI;
+			if (colorI == 1)
+				bitmap = bitmapR;
+			else if (colorI == 2)
+				bitmap = bitmapG;
+			else if (colorI == 3)
+				bitmap = bitmapB;
+			else
+				bitmap = AssociationScript.rs.getBitmap(game.players[j].color);
 			bitmap = BitmapHelper.getResizeBitmap(bitmap);
 			bitmaps[j] = bitmap;
 		}

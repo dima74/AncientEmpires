@@ -13,12 +13,12 @@ public class GameDrawCursor extends GameDraw
 	}
 	
 	private FewBitmaps	cursor;
-	private int				cursorH;
-	private int				cursorW;
+	private int			cursorH;
+	private int			cursorW;
 	
-	public boolean			isDrawing	= true;
-	private int				cursorY;
-	private int				cursorX;
+	public boolean		isDrawing	= true;
+	private int			cursorY;
+	private int			cursorX;
 	
 	public GameDrawCursor setCursor(FewBitmaps cursor)
 	{

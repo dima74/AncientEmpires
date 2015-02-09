@@ -19,6 +19,12 @@ public class SmokeImages
 	public static int		amountDefault;
 	public static int		amountSmall;
 	
+	public static int		hDefault;
+	public static int		wDefault;
+	
+	public static int		hSmall;
+	public static int		wSmall;
+	
 	public static void preload(ZipFile images, String path) throws IOException
 	{
 		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, path + "info.json"));
@@ -37,6 +43,8 @@ public class SmokeImages
 		SmokeImages.bitmapsDefault = new Bitmap[SmokeImages.amountDefault];
 		for (int i = 0; i < SmokeImages.amountDefault; i++)
 			SmokeImages.bitmapsDefault[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
+		SmokeImages.hDefault = SmokeImages.bitmapsDefault[0].getHeight();
+		SmokeImages.wDefault = SmokeImages.bitmapsDefault[0].getWidth();
 	}
 	
 	private static void preloadSmall(ZipFile images, String path) throws IOException
@@ -45,6 +53,8 @@ public class SmokeImages
 		SmokeImages.bitmapsSmall = new Bitmap[SmokeImages.amountSmall];
 		for (int i = 0; i < SmokeImages.amountSmall; i++)
 			SmokeImages.bitmapsSmall[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
+		SmokeImages.hSmall = SmokeImages.bitmapsSmall[0].getHeight();
+		SmokeImages.wSmall = SmokeImages.bitmapsSmall[0].getWidth();
 	}
 	
 }
