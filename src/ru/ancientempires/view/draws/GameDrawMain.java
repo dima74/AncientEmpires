@@ -9,7 +9,7 @@ import ru.ancientempires.images.CursorImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
-import ru.ancientempires.view.algortihms.InputAlgoritmMain;
+import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -24,7 +24,7 @@ public class GameDrawMain
 	public GameActivity					gameActivity;
 	public Game							game					= Client.getClient().getGame();
 	
-	public InputAlgoritmMain			inputAlgoritmMain;
+	public InputAlgorithmMain			inputAlgorithmMain;
 	
 	public Random						rnd						= new Random();
 	

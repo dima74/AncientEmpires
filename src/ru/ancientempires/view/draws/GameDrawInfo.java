@@ -111,11 +111,16 @@ public class GameDrawInfo extends GameDraw
 	public boolean update(Game game)
 	{
 		Player currentPlayer = game.currentPlayer;
-		final Cell cell = game.map.getField()[game.currentPlayer.cursorI][currentPlayer.cursorJ];
-		this.bitmap = CellImages.getCellBitmap(cell, false);
-		this.defense = cell.type.defense;
+		updateCell(game);
 		updatePlayer(currentPlayer);
 		return false;
+	}
+	
+	public void updateCell(Game game)
+	{
+		final Cell cell = game.map.getField()[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
+		this.bitmap = CellImages.getCellBitmap(cell, false);
+		this.defense = cell.type.defense;
 	}
 	
 	public void updatePlayer(Player player)

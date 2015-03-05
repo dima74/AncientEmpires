@@ -13,7 +13,7 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 	public int[][]	fieldPrevI;
 	public int[][]	fieldPrevJ;
 	
-	public InputAlgorithmUnitMove(InputAlgoritmMain main)
+	public InputAlgorithmUnitMove(InputAlgorithmMain main)
 	{
 		super(main);
 		this.gameDrawZone = main.gameDraw.gameDrawZoneMove;

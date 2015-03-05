@@ -13,7 +13,7 @@ import ru.ancientempires.view.GameViewThread;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 
-public class InputAlgoritmMain implements NoticeUnitBuy
+public class InputAlgorithmMain implements NoticeUnitBuy
 {
 	
 	private GameViewThread			thread;
@@ -29,7 +29,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 	private InputAlgorithmUnitRange	inputAlgorithmUnitRaise;
 	public InputAlgorithmUnitRange	currentInputAlgorithmUnitRange;
 	
-	public InputAlgoritmMain(GameViewThread thread, GameDrawMain gameDraw)
+	public InputAlgorithmMain(GameViewThread thread, GameDrawMain gameDraw)
 	{
 		this.thread = thread;
 		this.gameDraw = gameDraw;
@@ -68,6 +68,7 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 		this.game.currentPlayer.cursorI = i;
 		this.game.currentPlayer.cursorJ = j;
 		this.gameDraw.updateCursors(this.game);
+		this.gameDraw.gameDrawInfo.updateCell(this.game);
 	}
 	
 	public void performAction(ActionType actionType)
@@ -104,8 +105,9 @@ public class InputAlgoritmMain implements NoticeUnitBuy
 			Client.action(action);
 			
 			this.gameDraw.gameDrawCell.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
-			// this.gameDraw.gameDrawCellDual.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
-			this.gameDraw.gameDrawUnit.updateOneUnitIfExist(this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawBuildingSmokes.update(this.game);
+			this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawInfo.updateCell(this.game);
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{

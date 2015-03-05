@@ -58,31 +58,13 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	public void draw(Canvas canvas)
 	{
 		super.draw(canvas);
+		if (this.gameDraw.iFrame == this.frameEnd)
+			this.gameDraw.gameDrawInfo.update(this.gameDraw.game);
 		if (!this.isDrawing)
 			return;
 		
 		this.drawDirect.draw(canvas);
 		this.drawReverse.draw(canvas);
-		
-		/*
-		int timePass = this.gameDraw.iFrame - this.frameStart;
-		if (this.isReverseAttack && timePass == GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES)
-		{
-			this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.attackingI, this.attackingJ);
-			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.attackingI, this.attackingJ);
-		}
-		
-		if (this.gameDraw.iFrame == this.frameToStartPartTwo)
-		{
-			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.attackingI, this.attackingJ, true);
-			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.attackedI, this.attackedJ, true);
-			this.draws.remove(this.drawDecreaseHealthDirect);
-			this.draws.remove(this.drawSparkBitmapsDirect);
-		}
-		
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
-			gameDrawOnFrames.draw(canvas);
-			*/
 	}
 	
 }

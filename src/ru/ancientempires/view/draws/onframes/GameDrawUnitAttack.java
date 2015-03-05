@@ -19,6 +19,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	private int				y, x;
 	
 	private int				frameStartPartTwo;
+	private int				frameStartSmoke;
 	private boolean			isDirect;
 	
 	public GameDrawUnitAttack(GameDrawMain gameDraw, boolean isDirect)
@@ -90,6 +91,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 					.setBitmaps(SparksImages.bitmapsDefault)
 					.animate(frameToStartPartTwo, this.y, this.x, SparksImages.amountDefault * 2);
 			this.draws.add(gameDraw);
+			this.frameStartSmoke = gameDraw.frameEnd;
 		}
 	}
 	
@@ -103,17 +105,12 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		if (this.gameDraw.iFrame == this.frameStart)
 		{
 			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.result.targetI, this.result.targetJ, this.result.isTargetLive);
-			if (this.result.i == this.gameDraw.inputAlgoritmMain.lastTapI && this.result.j == this.gameDraw.inputAlgoritmMain.lastTapJ)
-				this.gameDraw.inputAlgoritmMain.tapWithoutAction(this.result.targetI, this.result.targetJ);
+			if (this.result.i == this.gameDraw.inputAlgorithmMain.lastTapI && this.result.j == this.gameDraw.inputAlgorithmMain.lastTapJ)
+				this.gameDraw.inputAlgorithmMain.tapWithoutAction(this.result.targetI, this.result.targetJ);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo - 1 && this.isDirect)
-		{
-			this.gameDraw.gameDrawUnit.updateOneUnitBaseIfExist(this.result.i, this.result.j, true);
-			if (this.result.isTargetLive && this.result.i == this.gameDraw.inputAlgoritmMain.lastTapI && this.result.j == this.gameDraw.inputAlgoritmMain.lastTapJ)
-				this.gameDraw.inputAlgoritmMain.tap(this.result.i, this.result.j);
-			else
-				this.gameDraw.gameDrawUnit.updateOneUnit(this.result.targetI, this.result.targetJ);
-		}
+			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.result.i, this.result.j, true);
+		if (this.gameDraw.iFrame == this.frameStartSmoke - 1)
+			this.gameDraw.gameDrawUnit.updateOneUnit(this.result.targetI, this.result.targetJ);
 	}
-	
 }

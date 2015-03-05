@@ -5,7 +5,7 @@ import ru.ancientempires.action.ActionType;
 public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 {
 	
-	public InputAlgorithmUnitAttack(InputAlgoritmMain main)
+	public InputAlgorithmUnitAttack(InputAlgorithmMain main)
 	{
 		super(main);
 		this.gameDrawZone = this.main.gameDraw.gameDrawZoneAttack;
@@ -43,7 +43,7 @@ public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 	public void end()
 	{
 		super.end();
-		this.main.gameDraw.gameDrawInfo.update(this.main.game);
+		// this.main.gameDraw.gameDrawInfo.update(this.main.game);
 		
 		if (this.isChanged)
 		{
@@ -51,7 +51,10 @@ public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 			if ((boolean) this.result.getProperty("isAttackUnit"))
 				this.main.gameDraw.gameDrawUnitAttack.start(this.result);
 			else
+			{
+				this.main.gameDraw.gameDrawBuildingSmokes.update(this.main.game);
 				this.main.gameDraw.gameDrawCellAttack.start(this.result, this.endI, this.endJ);
+			}
 		}
 	}
 	

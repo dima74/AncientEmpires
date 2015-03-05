@@ -6,7 +6,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
-import ru.ancientempires.view.algortihms.InputAlgoritmMain;
+import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -63,7 +63,7 @@ public class GameActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void buyUnit(InputAlgoritmMain main, UnitType[] units, boolean[] isAvailable)
+	public void buyUnit(InputAlgorithmMain main, UnitType[] units, boolean[] isAvailable)
 	{
 		DialogFragment dialogFragment = new UnitBuyDialog(units, isAvailable).setNoticeListener(main);
 		dialogFragment.show(getFragmentManager(), "UnitBuyDialog");

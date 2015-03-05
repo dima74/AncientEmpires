@@ -1,6 +1,6 @@
 package ru.ancientempires.view;
 
-import ru.ancientempires.view.algortihms.InputAlgoritmMain;
+import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
@@ -13,7 +13,7 @@ public class GameViewThread extends Thread
 	
 	private SurfaceHolder		surfaceHolder;
 	public GameDrawMain			gameDraw;
-	public InputAlgoritmMain	inputAlgoritmMain;
+	public InputAlgorithmMain	inputAlgorithmMain;
 	
 	volatile private boolean	isRunning;
 	private long				startTime;
@@ -30,8 +30,8 @@ public class GameViewThread extends Thread
 		this.surfaceHolder = surfaceHolder;
 		
 		this.gameDraw = new GameDrawMain();
-		this.inputAlgoritmMain = new InputAlgoritmMain(this, this.gameDraw);
-		this.gameDraw.inputAlgoritmMain = this.inputAlgoritmMain;
+		this.inputAlgorithmMain = new InputAlgorithmMain(this, this.gameDraw);
+		this.gameDraw.inputAlgorithmMain = this.inputAlgorithmMain;
 	}
 	
 	public void setRunning(boolean isRunning)
@@ -114,7 +114,7 @@ public class GameViewThread extends Thread
 			final int j = (int) ((this.touchX - this.gameDraw.offsetX) / GameDraw.A);
 			try
 			{
-				this.inputAlgoritmMain.tap(i, j);
+				this.inputAlgorithmMain.tap(i, j);
 			}
 			catch (Exception e)
 			{

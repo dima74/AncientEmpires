@@ -4,9 +4,9 @@ package ru.ancientempires.view.algortihms;
 public abstract class InputAlgorithm
 {
 	
-	public InputAlgoritmMain	main;
+	public InputAlgorithmMain	main;
 	
-	public InputAlgorithm(InputAlgoritmMain main)
+	public InputAlgorithm(InputAlgorithmMain main)
 	{
 		this.main = main;
 	}

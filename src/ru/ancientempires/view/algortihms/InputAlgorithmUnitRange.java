@@ -9,7 +9,7 @@ import ru.ancientempires.view.draws.GameDrawRange;
 public class InputAlgorithmUnitRange extends InputAlgorithm
 {
 	
-	public InputAlgorithmUnitRange(InputAlgoritmMain main)
+	public InputAlgorithmUnitRange(InputAlgorithmMain main)
 	{
 		super(main);
 	}

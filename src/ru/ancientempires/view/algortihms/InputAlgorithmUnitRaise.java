@@ -5,7 +5,7 @@ import ru.ancientempires.action.ActionType;
 public class InputAlgorithmUnitRaise extends InputAlgorithmUnitRange
 {
 	
-	public InputAlgorithmUnitRaise(InputAlgoritmMain main)
+	public InputAlgorithmUnitRaise(InputAlgorithmMain main)
 	{
 		super(main);
 		this.gameDrawZone = this.main.gameDraw.gameDrawZoneRaise;

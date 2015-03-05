@@ -101,7 +101,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void performActionBuy(UnitType type)
 	{
-		this.thread.inputAlgoritmMain.onUnitBuy(type);
+		this.thread.inputAlgorithmMain.onUnitBuy(type);
 	}
 	
 }

@@ -107,7 +107,7 @@ public class GameDrawAction extends GameDraw
 		int i = Math.round(tapX / this.bitmapDeltaWidth);
 		i--;
 		if (i >= 0 && i < this.actionBitmaps.length)
-			this.gameDraw.inputAlgoritmMain.performAction(this.actionTypes[i]);
+			this.gameDraw.inputAlgorithmMain.performAction(this.actionTypes[i]);
 	}
 	
 	@Override

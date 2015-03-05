@@ -79,14 +79,25 @@ public class MainActivity extends Activity
 		// мой код
 		MyLog.currLog = new ALog();
 		
+		/*
+		ResourceBundle bundle1 = ResourceBundle.getBundle("test2", Locale.getDefault());
+		MyLog.l(bundle1.getString("a2") + " " + bundle1.getString("a1"));
+		ResourceBundle bundle2 = ResourceBundle.getBundle("test2", Locale.ENGLISH);
+		MyLog.l(bundle2.getString("a2") + " " + bundle2.getString("a1"));
+		if (true)
+			return;
+		//*/
+		
 		long s = System.nanoTime();
 		GameInit.init();
 		long e = System.nanoTime();
 		
-		/*Intent intent = new Intent(this, TestActivity.class);
+		/*
+		Intent intent = new Intent(this, TestActivity.class);
 		startActivity(intent);
 		if (true)
-			return;//*/
+			return;
+		// */
 		
 		// TODO заменить, чтобы клиент инит сендил мессадж
 		final Handler handler = new Handler(new Handler.Callback()

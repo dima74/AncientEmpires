@@ -35,16 +35,18 @@ public class GameDrawUnit extends GameDraw
 		Unit[][] field = game.fieldUnits;
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
-				this.field[i][j] = field[i][j] == null ? null : getUnitBitmap(field[i][j]);
+				this.field[i][j] = getUnitBitmap(field[i][j]);
 		
 		return false;
 	}
 	
 	private UnitBitmap getUnitBitmap(Unit unit)
 	{
+		if (unit == null)
+			return null;
 		FewBitmaps baseBitmap = UnitImages.getUnitBitmap(unit, false);
 		Bitmap textBitmap = Bitmap.createBitmap(GameDraw.A, GameDraw.A, Config.ARGB_8888);
-		UnitBitmap unitBitmap = new UnitBitmap(baseBitmap, textBitmap);
+		UnitBitmap unitBitmap = new UnitBitmap(baseBitmap, textBitmap, unit);
 		if (unit.isLive)
 			updateTextBitmap(textBitmap, unit.health);
 		return unitBitmap;
@@ -73,35 +75,20 @@ public class GameDrawUnit extends GameDraw
 	
 	public void updateOneUnitBase(int i, int j, boolean isLive)
 	{
-		Unit[][] field = this.gameDraw.game.fieldUnits;
-		FewBitmaps unitBitmap = UnitImages.getUnitBitmap(field[i][j], isLive);
-		this.field[i][j] = new UnitBitmap(unitBitmap, this.field[i][j].textBitmap);
-	}
-	
-	public void updateOneUnitBaseIfExist(int i, int j, boolean isLive)
-	{
-		Unit[][] field = this.gameDraw.game.fieldUnits;
-		if (field[i][j] == null)
-			return;
-		FewBitmaps unitBitmap = UnitImages.getUnitBitmap(field[i][j], isLive);
-		this.field[i][j] = new UnitBitmap(unitBitmap, this.field[i][j].textBitmap);
+		UnitBitmap unitBitmap = this.field[i][j];
+		FewBitmaps fewBitmap = UnitImages.getUnitBitmap(unitBitmap.unit, isLive);
+		this.field[i][j] = new UnitBitmap(fewBitmap, unitBitmap.textBitmap, unitBitmap.unit);
 	}
 	
 	public void updateOneUnitHealth(int i, int j, boolean isLive)
 	{
-		Unit[][] field = this.gameDraw.game.fieldUnits;
-		updateTextBitmap(this.field[i][j].textBitmap, isLive ? field[i][j].health : 0);
+		UnitBitmap unitBitmap = this.field[i][j];
+		updateTextBitmap(unitBitmap.textBitmap, unitBitmap.unit.health);
 	}
 	
 	public void updateOneUnit(int i, int j)
 	{
 		this.field[i][j] = getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
-	}
-	
-	public void updateOneUnitIfExist(int i, int j)
-	{
-		if (this.field[i][j] != null)
-			this.field[i][j] = getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
 	}
 	
 	public void updateOneUnit(Point point)
