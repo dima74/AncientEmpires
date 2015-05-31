@@ -2,6 +2,7 @@ package ru.ancientempires.view.draws;
 
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.NumberImages;
+import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
@@ -58,17 +59,18 @@ public class GameDrawUnit extends GameDraw
 		Canvas canvas = new Canvas(textBitmap);
 		if (health < 100)
 		{
+			NumberImages images = SmallNumberImages.images;
 			int textX = 0;
-			int textY = GameDraw.A - NumberImages.h;
+			int textY = GameDraw.A - images.h;
 			
-			final Bitmap bitmapOne = NumberImages.getNumberBitmap(health / 10);
-			final Bitmap bitmapTwo = NumberImages.getNumberBitmap(health % 10);
+			final Bitmap bitmapOne = images.getBitmap(health / 10);
+			final Bitmap bitmapTwo = images.getBitmap(health % 10);
 			if (health / 10 == 0)
 				canvas.drawBitmap(bitmapTwo, textX, textY, null);
 			else
 			{
 				canvas.drawBitmap(bitmapOne, textX, textY, null);
-				canvas.drawBitmap(bitmapTwo, textX + NumberImages.w, textY, null);
+				canvas.drawBitmap(bitmapTwo, textX + images.w, textY, null);
 			}
 		}
 	}

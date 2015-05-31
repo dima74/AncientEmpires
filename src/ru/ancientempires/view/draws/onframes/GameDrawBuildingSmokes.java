@@ -26,7 +26,7 @@ public class GameDrawBuildingSmokes extends GameDrawOnFrames
 	public boolean update(Game game)
 	{
 		for (int i = 0; i < this.field.length; i++)
-			for (int j = 0; j < this.field.length; j++)
+			for (int j = 0; j < this.field[i].length; j++)
 				if (CellImages.isCellSmokes(game.map.getField()[i][j]))
 				{
 					int startY = (int) (i * GameDraw.A - GameDraw.a * 2);

@@ -6,30 +6,28 @@ import java.util.zip.ZipFile;
 import ru.ancientempires.helpers.BitmapHelper;
 import android.graphics.Bitmap;
 
-public class NumberImages
+public abstract class NumberImages
 {
 	
-	public static final int			amountNumbers	= 10;
-	private static final Bitmap[]	numberBitmaps	= new Bitmap[NumberImages.amountNumbers];
-	public static Bitmap			minusBitmap;
-	public static Bitmap			defenceBitmap;
+	public Bitmap[]	numberBitmaps	= new Bitmap[10];
+	public Bitmap	minusBitmap;
+	public Bitmap	plusBitmap;
 	
-	public static int				h;
-	public static int				w;
+	public int		h;
+	public int		w;
 	
-	public static Bitmap getNumberBitmap(int number)
+	public Bitmap getBitmap(int number)
 	{
-		return NumberImages.numberBitmaps[number];
+		return this.numberBitmaps[number];
 	}
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public void preloadBase(ZipFile images, String path) throws IOException
 	{
-		for (int i = 0; i < NumberImages.amountNumbers; i++)
-			NumberImages.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
-		NumberImages.minusBitmap = BitmapHelper.getResizeBitmap(images, path + "-.png");
-		NumberImages.defenceBitmap = BitmapHelper.getResizeBitmap(images, path + "defence.png");
-		NumberImages.h = NumberImages.numberBitmaps[0].getHeight();
-		NumberImages.w = NumberImages.numberBitmaps[0].getWidth();
+		for (int i = 0; i < 10; i++)
+			this.numberBitmaps[i] = BitmapHelper.getResizeBitmap(images, path + i + ".png");
+		this.minusBitmap = BitmapHelper.getResizeBitmap(images, path + "-.png");
+		this.h = this.numberBitmaps[0].getHeight();
+		this.w = this.numberBitmaps[0].getWidth();
 	}
 	
 }

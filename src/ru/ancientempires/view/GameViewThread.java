@@ -108,7 +108,7 @@ public class GameViewThread extends Thread
 	
 	private void touch()
 	{
-		if (this.gameDraw.touch(this.touchY, this.touchX))
+		if (!this.gameDraw.touch(this.touchY, this.touchX))
 		{
 			final int i = (int) ((this.touchY - this.gameDraw.offsetY) / GameDraw.A);
 			final int j = (int) ((this.touchX - this.gameDraw.offsetX) / GameDraw.A);

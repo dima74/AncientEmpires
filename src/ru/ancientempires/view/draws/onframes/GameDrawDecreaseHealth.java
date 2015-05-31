@@ -1,6 +1,7 @@
 package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.images.BigNumberImages;
+import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Bitmap;
@@ -17,31 +18,36 @@ public class GameDrawDecreaseHealth extends GameDrawBitmapSinus
 		super(gameDraw);
 	}
 	
-	public void animate(int frameToStart, int y, int x, int decreaseHealth)
+	public void animate(int frameToStart, int y, int x, int sign, int decreaseHealth)
 	{
 		super.animate(frameToStart, GameDrawDecreaseHealth.FRAMES_ANIMATE);
-		setBitmap(createBitmap(decreaseHealth, y, x));
+		Bitmap bitmap = GameDrawDecreaseHealth.createBitmap(BigNumberImages.images, sign, decreaseHealth);
+		setCoord(y, x + (GameDraw.A - bitmap.getWidth()) / 2);
+		setBitmap(bitmap);
 	}
 	
-	private Bitmap createBitmap(int number, int y, int x)
+	public static Bitmap createBitmap(NumberImages images, int sign, int number)
 	{
 		int copyNumber = number;
 		int kDigit = 1;
 		while ((copyNumber /= 10) > 0)
 			kDigit++;
 		
-		int numberW = BigNumberImages.w * (kDigit + 1);
-		Bitmap bitmap = Bitmap.createBitmap(numberW, BigNumberImages.h, Config.ARGB_8888);
+		int numberW = images.w * (Math.abs(sign) + kDigit);
+		Bitmap bitmap = Bitmap.createBitmap(numberW, images.h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		
-		canvas.drawBitmap(BigNumberImages.minusBitmap, 0, 0, null);
-		for (int i = kDigit; i > 0; i--)
+		if (sign == -1)
+			canvas.drawBitmap(images.minusBitmap, 0, 0, null);
+		if (sign == +1)
+			canvas.drawBitmap(images.plusBitmap, 0, 0, null);
+		int add = Math.abs(sign);
+		for (int i = kDigit + add - 1; i >= add; i--)
 		{
-			canvas.drawBitmap(BigNumberImages.getBitmap(number % 10), i * BigNumberImages.w, 0, null);
+			canvas.drawBitmap(images.getBitmap(number % 10), i * images.w, 0, null);
 			number /= 10;
 		}
 		
-		setCoord(y, x + (GameDraw.A - numberW) / 2);
 		return bitmap;
 	}
 	

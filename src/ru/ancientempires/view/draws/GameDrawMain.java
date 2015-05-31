@@ -53,6 +53,7 @@ public class GameDrawMain
 	public GameDrawUnitAttackMain		gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
 	public GameDrawCellAttack			gameDrawCellAttack		= new GameDrawCellAttack(this);
 	public GameDrawUnitRaise			gameDrawUnitRaise		= new GameDrawUnitRaise(this);
+	public GameDrawUnitsHeal			gameDrawUnitsHeal		= new GameDrawUnitsHeal(this);
 	
 	public GameDrawAction				gameDrawAction;
 	public GameDrawInfo					gameDrawInfo;
@@ -103,6 +104,7 @@ public class GameDrawMain
 		this.gameDrawsEffects.add(this.gameDrawUnitAttack);
 		this.gameDrawsEffects.add(this.gameDrawCellAttack);
 		this.gameDrawsEffects.add(this.gameDrawUnitRaise);
+		this.gameDrawsEffects.add(this.gameDrawUnitsHeal);
 		
 		this.gameDrawCursors = new ArrayList<GameDrawCursor>();
 		this.gameDrawCursors.add(this.gameDrawCursorDefault);
@@ -155,12 +157,14 @@ public class GameDrawMain
 	
 	public boolean touch(float touchY, float touchX)
 	{
-		if (touchY < this.startActionY)
+		if (touchY < this.gameDrawInfoH)
 			return true;
+		else if (touchY < this.startActionY)
+			return false;
 		else
 		{
 			this.gameDrawAction.touch(touchY, touchX);
-			return false;
+			return true;
 		}
 	}
 	

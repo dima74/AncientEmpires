@@ -43,7 +43,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		GameDrawDecreaseHealth drawDecreaseHealth = new GameDrawDecreaseHealth(this.gameDraw);
 		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(this.bitmaps);
 		
-		drawDecreaseHealth.animate(frameToStart, this.y, this.x, result.decreaseHealth);
+		drawDecreaseHealth.animate(frameToStart, this.y, this.x, -1, result.decreaseHealth);
 		drawSparkBitmaps.animate(frameToStart, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_LONG);
 		
 		this.draws.add(drawDecreaseHealth);

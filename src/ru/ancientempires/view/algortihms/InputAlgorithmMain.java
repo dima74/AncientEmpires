@@ -7,6 +7,7 @@ import ru.ancientempires.action.ActionType;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.ii.II;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.view.GameViewThread;
@@ -99,6 +100,8 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		}
 		else if (actionType == ActionType.ACTION_UNIT_REPAIR || actionType == ActionType.ACTION_UNIT_CAPTURE)
 		{
+			if (this.currentInputAlgorithmUnitRange != null)
+				this.currentInputAlgorithmUnitRange.revertState();
 			Action action = new Action(actionType);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
@@ -130,13 +133,26 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 				this.currentInputAlgorithmUnitRange.revertState();
 			
 			Action action = new Action(actionType);
-			Client.action(action);
+			ActionResult result = Client.action(action);
+			this.gameDraw.gameDrawUnitsHeal.start(result);
 			
-			this.gameDraw.gameDrawUnit.update(this.game);
-			this.gameDraw.gameDrawInfo.update(this.game);
-			tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
-			this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
-			// Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
+			if (this.game.currentPlayer.isCPU)
+			{
+				II.ii.turn();
+				this.gameDraw.gameDrawUnit.update(this.game);
+				this.gameDraw.gameDrawCell.update(this.game);
+				this.gameDraw.gameDrawCellDual.update(this.game);
+				this.gameDraw.gameDrawInfo.update(this.game);
+				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+			}
+			else
+			{
+				this.gameDraw.gameDrawUnit.update(this.game);
+				this.gameDraw.gameDrawInfo.update(this.game);
+				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+				this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+				// Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
+			}
 		}
 		else
 			MyAssert.a(false);

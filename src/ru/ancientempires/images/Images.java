@@ -55,7 +55,7 @@ public class Images
 		CellImages.preload(images, cellsPath);
 		UnitImages.preload(images, unitsPath);
 		ActionImages.preload(images, actionsPath);
-		NumberImages.preload(images, numbersPath);
+		SmallNumberImages.preload(images, numbersPath);
 		BigNumberImages.preload(images, bigNumbersPath);
 		SparksImages.preload(images, sparksPath);
 		CursorImages.preload(images, cursorsPath);
