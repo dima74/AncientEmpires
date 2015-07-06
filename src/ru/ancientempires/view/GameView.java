@@ -1,7 +1,6 @@
 package ru.ancientempires.view;
 
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.model.UnitType;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -61,10 +60,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		this.thread = new GameViewThread(getHolder());
-		this.thread.setRunning(true);
-		this.thread.start();
 		this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
 		this.thread.gameDraw.gameActivity = this.gameActivity;
+		this.thread.setRunning(true);
+		this.thread.start();
 		
 	}
 	
@@ -97,11 +96,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		GameView.w = w;
 		if (this.thread != null)
 			this.thread.gameDraw.onSizeChanged(w, h, oldw, oldh);
-	}
-	
-	public void performActionBuy(UnitType type)
-	{
-		this.thread.inputAlgorithmMain.onUnitBuy(type);
 	}
 	
 }

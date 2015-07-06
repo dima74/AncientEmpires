@@ -43,6 +43,7 @@ public class GameViewThread extends Thread
 	public void run()
 	{
 		this.startTime = this.nextTime = System.currentTimeMillis();
+		this.gameDraw.startGame();
 		
 		Canvas canvas;
 		while (this.isRunning)

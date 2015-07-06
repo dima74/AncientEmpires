@@ -60,6 +60,8 @@ public class GameActivity extends Activity
 			ClientServer.server.startGame(Client.getClient().gamePath);
 			startGameView();
 		}
+		else if (id == R.id.action_exit)
+			android.os.Process.killProcess(android.os.Process.myPid());
 		return super.onOptionsItemSelected(item);
 	}
 	

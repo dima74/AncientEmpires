@@ -151,7 +151,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 				this.gameDraw.gameDrawInfo.update(this.game);
 				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
 				this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
-				// Toast.makeText(getContext(), "Новый Ход!", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(MainActivity.context, "Новый Ход!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.CursorImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
@@ -58,6 +59,8 @@ public class GameDrawMain
 	public GameDrawAction				gameDrawAction;
 	public GameDrawInfo					gameDrawInfo;
 	
+	public GameDraw						gameDrawCampaign		= new GameDrawCampaign(this);
+	
 	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor(this).setCursor(CursorImages.cursor);
 	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerWay);
 	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerAttack);
@@ -96,6 +99,7 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawUnit);
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
+		this.gameDraws.add(this.gameDrawCampaign);
 		
 		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
 		
@@ -115,6 +119,8 @@ public class GameDrawMain
 		for (GameDraw gameDraw : this.gameDraws)
 			gameDraw.onSizeChanged(w, h, oldw, oldh);
 	}
+	
+	private boolean	f	= true;
 	
 	public void draw(Canvas canvas)
 	{
@@ -157,6 +163,7 @@ public class GameDrawMain
 	
 	public boolean touch(float touchY, float touchX)
 	{
+		this.f = true;
 		if (touchY < this.gameDrawInfoH)
 			return true;
 		else if (touchY < this.startActionY)
@@ -185,6 +192,11 @@ public class GameDrawMain
 		this.offsetY = newOffsetY + this.gameDrawInfoH;
 		this.offsetX = newOffsetX;
 		updateOffset();
+	}
+	
+	public void startGame()
+	{
+		Campaign.start();
 	}
 	
 }
