@@ -3,7 +3,7 @@ package ru.ancientempires;
 import java.io.IOException;
 
 import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.scripts.ScriptDialog;
+import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.BitmapHelper;
 import android.app.AlertDialog.Builder;
@@ -15,14 +15,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MyDialogFragment extends DialogFragment
+public class DialogShowIntro extends DialogFragment
 {
 	
-	private String			imagePath	= "campaigns/images/portraits/0.png";
-	private String			text		= "Это длинный текст";
-	private ScriptDialog	script;
+	private String		imagePath	= "campaigns/images/portraits/0.png";
+	private String		text		= "Это длинный текст";
+	private ScriptIntro	script;
 	
-	public MyDialogFragment(String imagePath, String text, ScriptDialog script)
+	public DialogShowIntro(String imagePath, String text, ScriptIntro script)
 	{
 		this.imagePath = imagePath;
 		this.text = text;
@@ -36,7 +36,7 @@ public class MyDialogFragment extends DialogFragment
 		
 		try
 		{
-			View view = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog, null);
+			View view = getActivity().getLayoutInflater().inflate(R.layout.layout_intro, null);
 			ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
 			TextView textView = (TextView) view.findViewById(R.id.textview);
 			Bitmap bitmap = BitmapHelper.getBitmap(Client.gameZipFile, this.imagePath);

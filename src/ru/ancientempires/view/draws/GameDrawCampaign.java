@@ -1,11 +1,13 @@
 package ru.ancientempires.view.draws;
 
+import ru.ancientempires.DialogShowIntro;
 import ru.ancientempires.DialogShowTarget;
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.MyDialogFragment;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
+import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.campaign.scripts.ScriptTitle;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import android.app.DialogFragment;
@@ -22,9 +24,9 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void showTextAndBitmap(String bitmapPath, String text, ScriptDialog script)
+	public void showDialog(String imagePath, String text, ScriptDialog script)
 	{
-		DialogFragment dialogFragment = new MyDialogFragment(bitmapPath, text, script);
+		DialogFragment dialogFragment = new MyDialogFragment(imagePath, text, script);
 		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialogFragment");
 	}
 	
@@ -54,6 +56,13 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	{
 		DialogFragment dialogFragment = new DialogShowTarget(textTitle, textTarget, script);
 		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowTarget");
+	}
+	
+	@Override
+	public void showIntro(String imagePath, String text, ScriptIntro script)
+	{
+		DialogFragment dialogFragment = new DialogShowIntro(imagePath, text, script);
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowIntro");
 	}
 	
 }
