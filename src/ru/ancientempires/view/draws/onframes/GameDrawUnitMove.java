@@ -35,7 +35,8 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 		this.isStay = false;
 		this.ways = ways;
 		animate(0, (ways.length - 1) * GameDrawUnitMove.FRAMES_FOR_CELL);
-		this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
+		if (result != null)
+			this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
 	}
 	
 	public void destroy()

@@ -15,6 +15,13 @@ public class GameDrawOnFramesGroup extends GameDrawOnFrames
 		super(gameDraw);
 	}
 	
+	public void add(GameDrawOnFrames gameDraw)
+	{
+		this.draws.add(gameDraw);
+		this.frameStart = Math.min(this.frameStart, gameDraw.frameStart);
+		this.frameEnd = Math.max(this.frameEnd, gameDraw.frameEnd);
+	}
+	
 	@Override
 	public void draw(Canvas canvas)
 	{

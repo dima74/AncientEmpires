@@ -176,8 +176,8 @@ public class GameDrawRange extends GameDraw
 		if (this.radius == this.radiusEnd && this.radiusEnd == this.radiusMin)
 			this.isDrawing = false;
 		
-		int canvasTranslateY = this.gameDraw.currentOffsetY; // canvas.getTranslateY();
-		int canvasTranslateX = this.gameDraw.currentOffsetX; // canvas.getTranslateX();
+		int canvasTranslateY = this.gameDraw.offsetY; // canvas.getTranslateY();
+		int canvasTranslateX = this.gameDraw.offsetX; // canvas.getTranslateX();
 		
 		this.cacheBitmap.eraseColor(Color.TRANSPARENT);
 		

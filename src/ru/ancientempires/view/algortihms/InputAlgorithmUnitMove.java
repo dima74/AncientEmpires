@@ -51,18 +51,24 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 	
 	private void updateWayLine(int absI, int absJ)
 	{
-		int relToAbsI = -this.radius + this.startI;
-		int relToAbsJ = -this.radius + this.startJ;
+		this.ways = InputAlgorithmUnitMove.getWayLine(this.startI, this.startJ, absI, absJ, this.fieldPrevI, this.fieldPrevJ);
+	}
+	
+	public static Point[] getWayLine(int startI, int startJ, int absI, int absJ, int[][] fieldPrevI, int[][] fieldPrevJ)
+	{
+		int radius = fieldPrevI.length / 2;
+		int relToAbsI = -radius + startI;
+		int relToAbsJ = -radius + startJ;
 		
 		ArrayList<Point> ways = new ArrayList<Point>();
 		Point p = new Point(absI - relToAbsI, absJ - relToAbsJ);
 		while (!p.equals(Point.NULL_POINT))
 		{
 			ways.add(new Point(p.i + relToAbsI, p.j + relToAbsJ));
-			p = new Point(this.fieldPrevI[p.i][p.j], this.fieldPrevJ[p.i][p.j]);
+			p = new Point(fieldPrevI[p.i][p.j], fieldPrevJ[p.i][p.j]);
 		}
 		Collections.reverse(ways);
-		this.ways = ways.toArray(new Point[0]);
+		return ways.toArray(new Point[0]);
 	}
 	
 	@Override

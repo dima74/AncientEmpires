@@ -31,12 +31,12 @@ public class GameDrawMain
 	
 	public final int					gameDrawInfoH;
 	public final int					gameDrawActionH;
-	private final int					startActionY;
+	public final int					startActionY;
 	
-	volatile public int					offsetY;
-	volatile public int					offsetX;
-	public int							currentOffsetY;
-	public int							currentOffsetX;
+	volatile public int					nextOffsetY;
+	volatile public int					nextOffsetX;
+	public int							offsetY;
+	public int							offsetX;
 	
 	public int							iFrame					= 0;
 	
@@ -61,6 +61,7 @@ public class GameDrawMain
 	
 	public GameDraw						gameDrawCampaign		= new GameDrawCampaign(this);
 	
+	public boolean						isDrawCursor			= true;
 	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor(this).setCursor(CursorImages.cursor);
 	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerWay);
 	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerAttack);
@@ -80,8 +81,8 @@ public class GameDrawMain
 		this.gameDrawActionH = GameDraw.A * 4 / 3;
 		this.startActionY = GameView.h - this.gameDrawActionH;
 		
-		this.minOffsetY = this.offsetY = this.gameDrawInfoH;
-		this.minOffsetX = this.offsetX = 0;
+		this.minOffsetY = this.nextOffsetY = this.gameDrawInfoH;
+		this.minOffsetX = this.nextOffsetX = 0;
 		this.maxOffsetY = -(this.game.map.h * GameDraw.A - GameView.h + this.gameDrawActionH);
 		this.maxOffsetX = -(this.game.map.w * GameDraw.A - GameView.w);
 		
@@ -120,25 +121,24 @@ public class GameDrawMain
 			gameDraw.onSizeChanged(w, h, oldw, oldh);
 	}
 	
-	private boolean	f	= true;
-	
 	public void draw(Canvas canvas)
 	{
 		updateOffset();
-		this.currentOffsetY = this.offsetY;
-		this.currentOffsetX = this.offsetX;
+		this.offsetY = this.nextOffsetY;
+		this.offsetX = this.nextOffsetX;
 		canvas.drawColor(Color.WHITE);
 		
-		canvas.translate(this.currentOffsetX, this.currentOffsetY);
+		canvas.translate(this.offsetX, this.offsetY);
 		for (GameDraw gameDraw : this.gameDraws)
 			gameDraw.draw(canvas);
 		
-		for (GameDrawCursor gameDrawCursor : this.gameDrawCursors)
-			gameDrawCursor.draw(canvas);
+		if (this.isDrawCursor)
+			for (GameDrawCursor gameDrawCursor : this.gameDrawCursors)
+				gameDrawCursor.draw(canvas);
 		
 		for (GameDraw gameDraw : this.gameDrawsEffects)
 			gameDraw.draw(canvas);
-		canvas.translate(-this.currentOffsetX, -this.currentOffsetY);
+		canvas.translate(-this.offsetX, -this.offsetY);
 		
 		this.gameDrawInfo.draw(canvas);
 		
@@ -151,19 +151,18 @@ public class GameDrawMain
 	
 	public void updateOffset()
 	{
-		if (this.offsetY > this.minOffsetY)
-			this.offsetY = this.minOffsetY;
-		else if (this.offsetY < this.maxOffsetY)
-			this.offsetY = this.maxOffsetY;
-		if (this.offsetX > this.minOffsetX)
-			this.offsetX = this.minOffsetX;
-		else if (this.offsetX < this.maxOffsetX)
-			this.offsetX = this.maxOffsetX;
+		if (this.nextOffsetY > this.minOffsetY)
+			this.nextOffsetY = this.minOffsetY;
+		else if (this.nextOffsetY < this.maxOffsetY)
+			this.nextOffsetY = this.maxOffsetY;
+		if (this.nextOffsetX > this.minOffsetX)
+			this.nextOffsetX = this.minOffsetX;
+		else if (this.nextOffsetX < this.maxOffsetX)
+			this.nextOffsetX = this.maxOffsetX;
 	}
 	
 	public boolean touch(float touchY, float touchX)
 	{
-		this.f = true;
 		if (touchY < this.gameDrawInfoH)
 			return true;
 		else if (touchY < this.startActionY)
@@ -189,8 +188,8 @@ public class GameDrawMain
 		int newOffsetY = -i * GameDraw.A - GameDraw.A / 2 + availableY / 2;
 		int newOffsetX = -j * GameDraw.A - GameDraw.A / 2 + availableX / 2;
 		
-		this.offsetY = newOffsetY + this.gameDrawInfoH;
-		this.offsetX = newOffsetX;
+		this.nextOffsetY = newOffsetY + this.gameDrawInfoH;
+		this.nextOffsetX = newOffsetX;
 		updateOffset();
 	}
 	

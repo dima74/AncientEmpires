@@ -43,8 +43,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
 			{
-				GameView.this.thread.gameDraw.offsetY -= distanceY;
-				GameView.this.thread.gameDraw.offsetX -= distanceX;
+				GameView.this.thread.gameDraw.nextOffsetY -= distanceY;
+				GameView.this.thread.gameDraw.nextOffsetX -= distanceX;
 				return true;
 			}
 		});
