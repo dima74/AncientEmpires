@@ -1,7 +1,6 @@
 package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class GameDrawBitmapsMoving extends GameDrawBitmaps
@@ -17,19 +16,12 @@ public class GameDrawBitmapsMoving extends GameDrawBitmaps
 		super(gameDraw);
 	}
 	
-	@Override
-	public GameDrawBitmaps setBitmaps(Bitmap[] bitmaps)
-	{
-		return super.setBitmaps(bitmaps);
-	}
-	
-	public GameDrawBitmapsMoving animate(int frameToStart, int startY, int startX, int endY, int endX, int frameLength)
+	public GameDrawBitmapsMoving setLineYX(int startY, int startX, int endY, int endX)
 	{
 		this.startY = startY;
 		this.startX = startX;
 		this.endY = endY;
 		this.endX = endX;
-		super.animate(frameToStart, frameLength);
 		return this;
 	}
 	

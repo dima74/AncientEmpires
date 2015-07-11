@@ -25,8 +25,15 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 		this.targetJ = targetJ;
 		int y = targetI * GameDraw.A;
 		int x = targetJ * GameDraw.A;
-		GameDrawOnFrames gameDraw1 = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsAttack).animate(0, y, x, 6 * 2);
-		GameDrawOnFrames gameDraw2 = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault).animate(6 * 2, y, x, 6 * 2 * 2);
+		GameDrawOnFrames gameDraw1 = new GameDrawBitmaps(this.gameDraw)
+				.setYX(y, x)
+				.setBitmaps(SparksImages.bitmapsAttack)
+				.animateRepeat(0, 1);
+		GameDrawOnFrames gameDraw2 = new GameDrawBitmaps(this.gameDraw)
+				.setYX(y, x)
+				.setBitmaps(SparksImages.bitmapsDefault)
+				.setFramesForBitmap(4)
+				.animateRepeat(gameDraw1.frameLength, 1);
 		this.draws.add(gameDraw1);
 		this.draws.add(gameDraw2);
 		animate(0, gameDraw1.frameLength + gameDraw2.frameLength);

@@ -33,7 +33,11 @@ public class GameDrawBuildingSmokes extends GameDrawOnFrames
 					int startX = (j + 1) * GameDraw.A - SmokeImages.wSmall;
 					int endY = (int) (i * GameDraw.A - GameDraw.a * 21);
 					int endX = (j + 1) * GameDraw.A - SmokeImages.wSmall;
-					this.field[i][j] = new GameDrawBitmapsMoving(this.gameDraw).animate(0, startY, startX, endY, endX, 40).setBitmaps(SmokeImages.bitmapsSmall);
+					this.field[i][j] = new GameDrawBitmapsMoving(this.gameDraw)
+							.setLineYX(startY, startX, endY, endX)
+							.setBitmaps(SmokeImages.bitmapsSmall)
+							.setFramesForBitmap(10)
+							.animateRepeat(0, 1);
 				}
 				else
 					this.field[i][j] = null;

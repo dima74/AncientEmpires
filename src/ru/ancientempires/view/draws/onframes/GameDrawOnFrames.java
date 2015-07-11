@@ -19,11 +19,12 @@ public class GameDrawOnFrames extends GameDraw
 		super(gameDraw);
 	}
 	
-	public void animate(int frameToStart, int frameLength)
+	public GameDrawOnFrames animate(int frameToStart, int frameLength)
 	{
 		this.frameLength = frameLength;
 		this.frameStart = this.gameDraw.iFrame + frameToStart;
 		this.frameEnd = this.frameStart + frameLength;
+		return this;
 	}
 	
 	@Override

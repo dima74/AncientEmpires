@@ -59,10 +59,10 @@ public class GameDrawCell extends GameDraw
 	@Override
 	public void draw(Canvas canvas)
 	{
-		int minI = -(this.gameDraw.offsetY - this.gameDraw.minOffsetY) / GameDraw.A;
-		int minJ = -(this.gameDraw.offsetX - this.gameDraw.minOffsetX) / GameDraw.A;
-		int maxI = Math.min((-(this.gameDraw.offsetY - this.gameDraw.minOffsetY) + this.availableY + GameDraw.A - 1) / GameDraw.A, this.h);
-		int maxJ = Math.min((-(this.gameDraw.offsetX - this.gameDraw.minOffsetX) + this.availableX + GameDraw.A - 1) / GameDraw.A, this.w);
+		int minI = -(this.gameDraw.offsetY - this.gameDraw.maxOffsetY) / GameDraw.A;
+		int minJ = -(this.gameDraw.offsetX - this.gameDraw.maxOffsetX) / GameDraw.A;
+		int maxI = Math.min((-(this.gameDraw.offsetY - this.gameDraw.maxOffsetY) + this.availableY + GameDraw.A - 1) / GameDraw.A, this.h);
+		int maxJ = Math.min((-(this.gameDraw.offsetX - this.gameDraw.maxOffsetX) + this.availableX + GameDraw.A - 1) / GameDraw.A, this.w);
 		for (int i = minI; i < maxI; i++)
 			for (int j = minJ; j < maxJ; j++)
 			{

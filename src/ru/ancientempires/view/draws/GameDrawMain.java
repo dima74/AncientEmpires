@@ -70,10 +70,10 @@ public class GameDrawMain
 	public ArrayList<GameDraw>			gameDraws				= new ArrayList<GameDraw>();
 	public ArrayList<GameDraw>			gameDrawsEffects		= new ArrayList<GameDraw>();
 	
-	public int							minOffsetY;
-	public int							minOffsetX;
 	public int							maxOffsetY;
 	public int							maxOffsetX;
+	public int							minOffsetY;
+	public int							minOffsetX;
 	
 	public GameDrawMain()
 	{
@@ -81,10 +81,10 @@ public class GameDrawMain
 		this.gameDrawActionH = GameDraw.A * 4 / 3;
 		this.startActionY = GameView.h - this.gameDrawActionH;
 		
-		this.minOffsetY = this.nextOffsetY = this.gameDrawInfoH;
-		this.minOffsetX = this.nextOffsetX = 0;
-		this.maxOffsetY = -(this.game.map.h * GameDraw.A - GameView.h + this.gameDrawActionH);
-		this.maxOffsetX = -(this.game.map.w * GameDraw.A - GameView.w);
+		this.maxOffsetY = this.nextOffsetY = this.gameDrawInfoH;
+		this.maxOffsetX = this.nextOffsetX = 0;
+		this.minOffsetY = -(this.game.map.h * GameDraw.A - GameView.h + this.gameDrawActionH);
+		this.minOffsetX = -(this.game.map.w * GameDraw.A - GameView.w);
 		
 		this.gameDrawAction = new GameDrawAction(this);
 		this.gameDrawInfo = new GameDrawInfo(this);
@@ -100,7 +100,6 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawUnit);
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
-		this.gameDraws.add(this.gameDrawCampaign);
 		
 		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
 		
@@ -110,6 +109,7 @@ public class GameDrawMain
 		this.gameDrawsEffects.add(this.gameDrawCellAttack);
 		this.gameDrawsEffects.add(this.gameDrawUnitRaise);
 		this.gameDrawsEffects.add(this.gameDrawUnitsHeal);
+		this.gameDrawsEffects.add(this.gameDrawCampaign);
 		
 		this.gameDrawCursors = new ArrayList<GameDrawCursor>();
 		this.gameDrawCursors.add(this.gameDrawCursorDefault);
@@ -151,14 +151,8 @@ public class GameDrawMain
 	
 	public void updateOffset()
 	{
-		if (this.nextOffsetY > this.minOffsetY)
-			this.nextOffsetY = this.minOffsetY;
-		else if (this.nextOffsetY < this.maxOffsetY)
-			this.nextOffsetY = this.maxOffsetY;
-		if (this.nextOffsetX > this.minOffsetX)
-			this.nextOffsetX = this.minOffsetX;
-		else if (this.nextOffsetX < this.maxOffsetX)
-			this.nextOffsetX = this.maxOffsetX;
+		this.nextOffsetY = Math.max(this.minOffsetY, Math.min(this.maxOffsetY, this.nextOffsetY));
+		this.nextOffsetX = Math.max(this.minOffsetX, Math.min(this.maxOffsetX, this.nextOffsetX));
 	}
 	
 	public boolean touch(float touchY, float touchX)

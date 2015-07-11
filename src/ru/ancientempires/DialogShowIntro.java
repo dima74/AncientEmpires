@@ -12,6 +12,8 @@ import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +45,17 @@ public class DialogShowIntro extends DialogFragment
 			imageView.setImageBitmap(bitmap);
 			textView.setText(this.text);
 			builder.setView(view);
+			
+			Button button = (Button) view.findViewById(R.id.button);
+			button.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					dismiss();
+					Campaign.finish(DialogShowIntro.this.script);
+				}
+			});
 		}
 		catch (IOException e)
 		{
@@ -50,13 +63,6 @@ public class DialogShowIntro extends DialogFragment
 		}
 		
 		return builder.create();
-	}
-	
-	@Override
-	public void onStop()
-	{
-		super.onStop();
-		Campaign.finish(this.script);
 	}
 	
 }

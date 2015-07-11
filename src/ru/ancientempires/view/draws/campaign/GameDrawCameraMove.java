@@ -1,8 +1,9 @@
-package ru.ancientempires.view.draws.onframes;
+package ru.ancientempires.view.draws.campaign;
 
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
+import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import android.graphics.Canvas;
 
 public class GameDrawCameraMove extends GameDrawOnFrames
@@ -31,6 +32,9 @@ public class GameDrawCameraMove extends GameDrawOnFrames
 		this.endOffsetY = newOffsetY + this.gameDraw.gameDrawInfoH;
 		this.endOffsetX = newOffsetX;
 		
+		this.endOffsetY = Math.max(this.gameDraw.minOffsetY, Math.min(this.gameDraw.maxOffsetY, this.endOffsetY));
+		this.endOffsetX = Math.max(this.gameDraw.minOffsetX, Math.min(this.gameDraw.maxOffsetX, this.endOffsetX));
+		
 		this.startOffsetY = this.gameDraw.offsetY;
 		this.startOffsetX = this.gameDraw.offsetX;
 		
@@ -49,6 +53,11 @@ public class GameDrawCameraMove extends GameDrawOnFrames
 			int framePass = this.frameEnd - this.gameDraw.iFrame;// осталось TODO перевод
 			this.gameDraw.nextOffsetY = (this.startOffsetY * framePass + this.endOffsetY * frameLeft) / this.frameLength;
 			this.gameDraw.nextOffsetX = (this.startOffsetX * framePass + this.endOffsetX * frameLeft) / this.frameLength;
+		}
+		if (this.gameDraw.iFrame == this.frameEnd - 1)
+		{
+			this.gameDraw.nextOffsetY = this.endOffsetY;
+			this.gameDraw.nextOffsetX = this.endOffsetX;
 		}
 	}
 	

@@ -3,20 +3,20 @@ package ru.ancientempires.view.draws.onframes;
 import java.util.ArrayList;
 
 import ru.ancientempires.action.AttackResult;
+import ru.ancientempires.images.SmokeImages;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 {
 	
-	private Bitmap[]		bitmaps;
 	private AttackResult	result;
 	
-	private int				y, x;
+	private int				y;
+	private int				x;
 	
 	private int				frameStartPartTwo;
 	private int				frameStartSmoke;
@@ -26,11 +26,6 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	{
 		super(gameDraw);
 		this.isDirect = isDirect;
-		
-		int amount = SparksImages.amountAttack;
-		this.bitmaps = new Bitmap[amount * 2];
-		for (int i = 0; i < amount; i++)
-			this.bitmaps[i] = this.bitmaps[i + amount] = SparksImages.bitmapsAttack[i];
 	}
 	
 	public void start(AttackResult result, int frameToStart)
@@ -41,10 +36,12 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		this.draws = new ArrayList<GameDrawOnFrames>();
 		GameDrawDecreaseHealth drawDecreaseHealth = new GameDrawDecreaseHealth(this.gameDraw);
-		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(this.bitmaps);
+		GameDrawBitmaps drawSparkBitmaps = new GameDrawBitmaps(this.gameDraw)
+				.setYX(this.y, this.x)
+				.setBitmaps(SparksImages.bitmapsAttack)
+				.animateRepeat(frameToStart, 2);
 		
 		drawDecreaseHealth.animate(frameToStart, this.y, this.x, -1, result.decreaseHealth);
-		drawSparkBitmaps.animate(frameToStart, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_LONG);
 		
 		this.draws.add(drawDecreaseHealth);
 		this.draws.add(drawSparkBitmaps);
@@ -59,14 +56,17 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		if (this.result.effectSign == -1)
 		{
-			GameDrawBitmaps drawSparks = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault);
+			GameDrawBitmaps drawSparks = new GameDrawBitmaps(this.gameDraw)
+					.setYX(this.y, this.x)
+					.setBitmaps(SparksImages.bitmapsDefault)
+					.animateRepeat(frameToStartPartTwo, 1);
 			
 			int offsetY = (int) (this.y - 22 * GameDraw.a);
 			int offsetX = this.x + (GameDraw.A - StatusesImages.w) / 2;
-			GameDrawOnFrames drawPoison = new GameDrawBitmapSinus(this.gameDraw).setBitmap(StatusesImages.poison).setCoord(offsetY, offsetX);
-			
-			drawSparks.animate(frameToStartPartTwo, this.y, this.x, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
-			drawPoison.animate(frameToStartPartTwo, 48);
+			GameDrawOnFrames drawPoison = new GameDrawBitmapSinus(this.gameDraw)
+					.setBitmap(StatusesImages.poison)
+					.setCoord(offsetY, offsetX)
+					.animate(frameToStartPartTwo, 48);
 			
 			this.draws.add(drawSparks);
 			this.draws.add(drawPoison);
@@ -87,11 +87,25 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		if (!this.result.isTargetLive)
 		{
-			GameDrawOnFrames gameDraw = new GameDrawBitmaps(this.gameDraw)
+			GameDrawOnFrames gameDrawBitmaps = new GameDrawBitmaps(this.gameDraw)
+					.setYX(this.y, this.x)
 					.setBitmaps(SparksImages.bitmapsDefault)
-					.animate(frameToStartPartTwo, this.y, this.x, SparksImages.amountDefault * 2);
-			this.draws.add(gameDraw);
-			this.frameStartSmoke = gameDraw.frameEnd;
+					.animateRepeat(frameToStartPartTwo, 1);
+			this.draws.add(gameDrawBitmaps);
+			this.frameStartSmoke = gameDrawBitmaps.frameEnd;
+			
+			int startY = this.y;
+			int startX = this.x;
+			int endY = startY - 3 * 2 * SmokeImages.amountDefault;
+			int endX = startX;
+			GameDrawOnFrames gameDrawBitmapsMoving = new GameDrawBitmapsMoving(this.gameDraw)
+					.setLineYX(startY, startX, endY, endX)
+					.setBitmaps(SmokeImages.bitmapsDefault)
+					.setFramesForBitmap(4)
+					.animateRepeat(this.frameStartSmoke - this.gameDraw.iFrame, 1);
+			this.draws.add(gameDrawBitmapsMoving);
+			
+			this.frameEnd = Math.max(this.frameEnd, gameDrawBitmapsMoving.frameEnd);
 		}
 	}
 	
@@ -113,4 +127,5 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		if (this.gameDraw.iFrame == this.frameStartSmoke - 1)
 			this.gameDraw.gameDrawUnit.updateOneUnit(this.result.targetI, this.result.targetJ);
 	}
+	
 }

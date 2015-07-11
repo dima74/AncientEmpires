@@ -31,16 +31,18 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 		
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
-			this.draws.add(new GameDrawBitmapsMoving(this.gameDraw).animate(
-					frameToStart + (int) (i * 3 * GameDraw.a), levelUpYStart, levelUpX, levelUpYEnd, levelUpX, GameDrawLevelUp.FRAME_ANIMATE_MOTION)
+			this.draws.add(new GameDrawBitmapsMoving(this.gameDraw)
+					.setLineYX(levelUpYStart, levelUpX, levelUpYEnd, levelUpX)
 					.setBitmaps(new Bitmap[]
 					{
 							Images.levelUp
-					}));
-		this.draws.add(new GameDrawBitmaps(this.gameDraw).setBitmaps(new Bitmap[]
-		{
-				Images.levelUp
-		}).animate(frameToStart + GameDrawLevelUp.FRAME_ANIMATE_MOTION, levelUpYEnd, levelUpX, GameDrawLevelUp.FRAME_ANIMATE_STATIC));
+					})
+					.setFramesForBitmap(GameDrawLevelUp.FRAME_ANIMATE_MOTION)
+					.animateRepeat(frameToStart + (int) (i * 3 * GameDraw.a), 1));
+		this.draws.add(new GameDrawBitmap(this.gameDraw)
+				.setBitmap(Images.levelUp)
+				.setYX(levelUpYEnd, levelUpX)
+				.animate(frameToStart + GameDrawLevelUp.FRAME_ANIMATE_MOTION, GameDrawLevelUp.FRAME_ANIMATE_STATIC));
 		
 		this.frameStart = this.gameDraw.iFrame + frameToStart;
 		this.frameEnd = 0;

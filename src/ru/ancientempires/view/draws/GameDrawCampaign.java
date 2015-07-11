@@ -12,17 +12,22 @@ import ru.ancientempires.action.ActionType;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptCameraMove;
+import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
 import ru.ancientempires.campaign.scripts.ScriptTitle;
+import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
+import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.campaign.scripts.ScriptUnitMove;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.view.algortihms.InputAlgorithmUnitMove;
-import ru.ancientempires.view.draws.onframes.GameDrawCameraMove;
+import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
+import ru.ancientempires.view.draws.campaign.GameDrawUnitAttack;
+import ru.ancientempires.view.draws.campaign.GameDrawUnitDie;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -40,6 +45,32 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	{
 		super(gameDraw);
 		Campaign.iDrawCampaign = this;
+	}
+	
+	@Override
+	public void draw(Canvas canvas)
+	{
+		int j = 0;
+		for (int i = 0; i < this.draws.size(); i++)
+		{
+			GameDrawOnFrames gameDraw = this.draws.get(i);
+			Script script = this.scripts.get(i);
+			gameDraw.draw(canvas);
+			if (gameDraw.isEndDrawing)
+				Campaign.finish(script);
+			else
+			{
+				this.draws.set(j, gameDraw);
+				this.scripts.set(j, script);
+				j++;
+			}
+		}
+		
+		while (this.draws.size() > j)
+		{
+			this.draws.remove(this.draws.size() - 1);
+			this.scripts.remove(this.scripts.size() - 1);
+		}
 	}
 	
 	@Override
@@ -98,6 +129,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		
 		// TODO
 		this.gameDraw.game.fieldUnits[iEnd][jEnd] = this.gameDraw.game.fieldUnits[iStart][jStart];
+		this.gameDraw.game.fieldUnits[iStart][jStart] = null;
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
 		gameDraw.init(iStart, jStart);
@@ -117,32 +149,6 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
-	{
-		int j = 0;
-		for (int i = 0; i < this.draws.size(); i++)
-		{
-			GameDrawOnFrames gameDraw = this.draws.get(i);
-			Script script = this.scripts.get(i);
-			gameDraw.draw(canvas);
-			if (gameDraw.isEndDrawing)
-				Campaign.finish(script);
-			else
-			{
-				this.draws.set(j, gameDraw);
-				this.scripts.set(j, script);
-				j++;
-			}
-		}
-		
-		while (this.draws.size() > j)
-		{
-			this.draws.remove(this.draws.size() - 1);
-			this.scripts.remove(this.scripts.size() - 1);
-		}
-	}
-	
-	@Override
 	public void hideCursor(ScriptHideCursor script)
 	{
 		this.gameDraw.isDrawCursor = false;
@@ -154,6 +160,46 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	{
 		this.gameDraw.isDrawCursor = true;
 		Campaign.finish(script);
+	}
+	
+	@Override
+	public void delay(final int milliseconds, final ScriptDelay script)
+	{
+		
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					Thread.sleep(milliseconds);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				Campaign.finish(script);
+			}
+		}).run();
+	}
+	
+	@Override
+	public void unitAttack(int i, int j, ScriptUnitAttack script)
+	{
+		GameDrawUnitAttack gameDraw = new GameDrawUnitAttack(this.gameDraw);
+		gameDraw.start(i, j);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void unitDie(int i, int j, ScriptUnitDie script)
+	{
+		GameDrawUnitDie gameDraw = new GameDrawUnitDie(this.gameDraw);
+		gameDraw.start(i, j);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
 	}
 	
 }

@@ -3,7 +3,6 @@ package ru.ancientempires.view.draws.onframes;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class GameDrawUnitRaise extends GameDrawOnFramesGroup
@@ -11,7 +10,6 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 	
 	private static final int	FRAME_LENGTH			= SparksImages.amountDefault * 3 * 2;
 	
-	private Bitmap[]			bitmaps;
 	private int					targetI;
 	private int					targetJ;
 	
@@ -20,11 +18,6 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 	public GameDrawUnitRaise(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
-		
-		int amount = SparksImages.amountDefault;
-		this.bitmaps = new Bitmap[amount * 3];
-		for (int i = 0; i < amount; i++)
-			this.bitmaps[i] = this.bitmaps[i + amount] = this.bitmaps[i + amount * 2] = SparksImages.bitmapsDefault[i];
 	}
 	
 	public void start(int targetI, int targetJ)
@@ -42,8 +35,9 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 			for (int j = 0; j < 2; j++)
 			{
 				GameDrawOnFrames gameDraw = new GameDrawBitmapsMoving(this.gameDraw)
-						.animate(0, y + array[i], x + array[j], y + GameDraw.A - array[i], x + GameDraw.A - array[j], GameDrawUnitRaise.FRAME_LENGTH)
-						.setBitmaps(this.bitmaps);
+						.setLineYX(y + array[i], x + array[j], y + GameDraw.A - array[i], x + GameDraw.A - array[j])
+						.setBitmaps(SparksImages.bitmapsDefault)
+						.animateRepeat(0, 3);
 				this.draws.add(gameDraw);
 			}
 		animate(0, GameDrawUnitRaise.FRAME_LENGTH);

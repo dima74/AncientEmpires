@@ -7,12 +7,9 @@ import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Canvas;
 
-public class GameDrawUnitMoveEnd extends GameDrawOnFrames
+public class GameDrawUnitMoveEnd extends GameDrawOnFramesGroup
 {
-	
-	private ArrayList<GameDrawBitmaps>	draws;
 	
 	public GameDrawUnitMoveEnd(GameDrawMain gameDraw)
 	{
@@ -21,29 +18,21 @@ public class GameDrawUnitMoveEnd extends GameDrawOnFrames
 	
 	public void start(ActionResult result, int frameToStart)
 	{
-		this.draws = new ArrayList<GameDrawBitmaps>();
+		this.draws = new ArrayList<GameDrawOnFrames>();
 		if ((int) result.getProperty("sign") == +1)
 		{
 			Unit[] units = (Unit[]) result.getProperty("units");
 			for (Unit unit : units)
 			{
-				GameDrawBitmaps gameDrawBitmaps = new GameDrawBitmaps(this.gameDraw).setBitmaps(SparksImages.bitmapsDefault);
-				gameDrawBitmaps.animate(frameToStart, unit.i * GameDraw.A, unit.j * GameDraw.A, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
+				GameDrawBitmaps gameDrawBitmaps = new GameDrawBitmaps(this.gameDraw)
+						.setYX(unit.i * GameDraw.A, unit.j * GameDraw.A)
+						.setBitmaps(SparksImages.bitmapsDefault)
+						.animateRepeat(frameToStart, 1);
 				this.draws.add(gameDrawBitmaps);
 			}
+			if (units.length > 0)
+				animate(frameToStart, this.draws.get(0).frameLength);
 		}
-		animate(frameToStart, GameDrawBitmaps.FRAMES_ANIMATE_SHORT);
-	}
-	
-	@Override
-	public void draw(Canvas canvas)
-	{
-		super.draw(canvas);
-		if (!this.isDrawing)
-			return;
-		
-		for (GameDrawBitmaps gameDrawBitmaps : this.draws)
-			gameDrawBitmaps.draw(canvas);
 	}
 	
 }

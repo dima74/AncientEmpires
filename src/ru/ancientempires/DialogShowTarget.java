@@ -5,6 +5,8 @@ import ru.ancientempires.campaign.scripts.ScriptShowTarget;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
 public class DialogShowTarget extends DialogFragment
@@ -28,14 +30,15 @@ public class DialogShowTarget extends DialogFragment
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(this.textTitle);
 		builder.setMessage(this.textTarget);
+		builder.setPositiveButton("ОК", new OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				Campaign.finish(DialogShowTarget.this.script);
+			}
+		});
 		return builder.create();
-	}
-	
-	@Override
-	public void onStop()
-	{
-		super.onStop();
-		Campaign.finish(this.script);
 	}
 	
 }
