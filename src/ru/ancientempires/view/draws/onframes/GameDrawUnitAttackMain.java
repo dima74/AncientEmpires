@@ -2,6 +2,7 @@ package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.AttackResult;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	private GameDrawUnitAttack	drawReverse;
 	
 	private boolean				isReverseAttack;
+	private boolean				isUnitDie;
 	
 	public int					frameToStartPartTwo;
 	
@@ -30,6 +32,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 		AttackResult resultDirect = (AttackResult) result.getProperty("attackResultDirect");
 		this.drawDirect.start(resultDirect, 0);
 		int frameToStartPartTwo = this.drawDirect.frameEnd - this.gameDraw.iFrame - 16;
+		this.isUnitDie = !resultDirect.isTargetLive;
 		
 		this.isReverseAttack = (boolean) result.getProperty("isReverseAttack");
 		if (this.isReverseAttack)
@@ -37,6 +40,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 			AttackResult resultReverse = (AttackResult) result.getProperty("attackResultReverse");
 			this.drawReverse.start(resultReverse, GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES);
 			frameToStartPartTwo = this.drawReverse.frameEnd - this.gameDraw.iFrame - 16;
+			this.isUnitDie |= !resultReverse.isTargetLive;
 		}
 		
 		this.drawDirect.setFrameToStartPartTwo(frameToStartPartTwo);
@@ -59,12 +63,15 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	{
 		super.draw(canvas);
 		if (this.gameDraw.iFrame == this.frameEnd)
+		{
 			this.gameDraw.gameDrawInfo.update(this.gameDraw.game);
+			if (this.isUnitDie)
+				GameActivity.gameView.thread.needUpdateCampaign = true;
+		}
 		if (!this.isDrawing)
 			return;
 		
 		this.drawDirect.draw(canvas);
 		this.drawReverse.draw(canvas);
 	}
-	
 }

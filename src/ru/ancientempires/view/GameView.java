@@ -1,6 +1,7 @@
 package ru.ancientempires.view;
 
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.framework.MyAssert;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -28,7 +29,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			@Override
 			public boolean onDown(MotionEvent e)
 			{
-				return true;
+				return GameView.this.thread.gameDraw.isActiveGame;
 			}
 			
 			@Override
@@ -84,6 +85,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			}
 			catch (InterruptedException e)
 			{
+				MyAssert.a(false);
 				e.printStackTrace();
 			}
 		// MyLog.l("GameView.surfaceDestroyed()");

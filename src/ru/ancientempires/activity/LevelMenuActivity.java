@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import ru.ancientempires.GameInit;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.graphics.RippleDrawable;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.load.GameLoader;
@@ -157,6 +158,7 @@ public class LevelMenuActivity extends Activity
 				}
 				catch (IOException e)
 				{
+					MyAssert.a(false);
 					e.printStackTrace();
 				}
 				return null;
@@ -182,6 +184,7 @@ public class LevelMenuActivity extends Activity
 		}
 		catch (InterruptedException | ExecutionException e)
 		{
+			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}

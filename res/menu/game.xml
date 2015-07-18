@@ -17,5 +17,10 @@
 		android:orderInCategory="100"
 		android:showAsAction="never"
 		android:title="Exit"/>
+	<item
+		android:id="@+id/action_kill_unit"
+		android:orderInCategory="100"
+		android:showAsAction="never"
+		android:title="Kill unit"/>
 
 </menu>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.BitmapHelper;
 import android.app.AlertDialog.Builder;
@@ -62,10 +63,17 @@ public class MyDialogFragment extends DialogFragment
 		}
 		catch (IOException e)
 		{
+			MyAssert.a(false);
 			e.printStackTrace();
 		}
 		
 		return builder.create();
+	}
+	
+	@Override
+	public void onStart()
+	{
+		super.onStart();
 	}
 	
 	@Override
@@ -85,6 +93,7 @@ public class MyDialogFragment extends DialogFragment
 					}
 					catch (InterruptedException e)
 					{
+						MyAssert.a(false);
 						e.printStackTrace();
 					}
 					Campaign.finish(MyDialogFragment.this.script);

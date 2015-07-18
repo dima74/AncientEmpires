@@ -3,6 +3,7 @@ package ru.ancientempires;
 import java.io.IOException;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.AZipHelper;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.draws.GameDrawAction;
@@ -42,6 +43,7 @@ public class GameInit
 				}
 				catch (IOException e)
 				{
+					MyAssert.a(false);
 					e.printStackTrace();
 				}
 				return null;

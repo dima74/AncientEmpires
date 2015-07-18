@@ -1,5 +1,7 @@
 package ru.ancientempires.view;
 
+import ru.ancientempires.campaign.Campaign;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
@@ -23,6 +25,7 @@ public class GameViewThread extends Thread
 	volatile public float		touchX;
 	
 	volatile public boolean		isTap					= false;
+	volatile public boolean		needUpdateCampaign		= false;
 	public boolean				isPause;
 	
 	public GameViewThread(SurfaceHolder surfaceHolder)
@@ -68,15 +71,16 @@ public class GameViewThread extends Thread
 				{
 					synchronized (this.surfaceHolder)
 					{
+						this.gameDraw.iFrame++;
 						try
 						{
 							this.gameDraw.draw(canvas);
 						}
 						catch (Exception e)
 						{
+							MyAssert.a(false);
 							e.printStackTrace();
 						}
-						this.gameDraw.iFrame++;
 					}
 					this.surfaceHolder.unlockCanvasAndPost(canvas);
 				}
@@ -89,8 +93,14 @@ public class GameViewThread extends Thread
 				}
 				catch (Exception e)
 				{
+					MyAssert.a(false);
 					e.printStackTrace();
 				}
+			else if (this.needUpdateCampaign)
+			{
+				Campaign.update();
+				this.needUpdateCampaign = false;
+			}
 			timeToDraw = this.nextTime - System.currentTimeMillis() - 3;
 			if (timeToDraw > 0)
 				try
@@ -119,6 +129,7 @@ public class GameViewThread extends Thread
 			}
 			catch (Exception e)
 			{
+				MyAssert.a(false);
 				e.printStackTrace();
 			}
 		}

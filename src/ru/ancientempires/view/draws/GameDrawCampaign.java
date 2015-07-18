@@ -9,22 +9,36 @@ import ru.ancientempires.MyDialogFragment;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
+import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.Script;
-import ru.ancientempires.campaign.scripts.ScriptCameraMove;
+import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
+import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
+import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
+import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
+import ru.ancientempires.campaign.scripts.ScriptHideInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
+import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
+import ru.ancientempires.campaign.scripts.ScriptShowInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
-import ru.ancientempires.campaign.scripts.ScriptTitle;
 import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
+import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.campaign.scripts.ScriptUnitMove;
+import ru.ancientempires.campaign.scripts.ScriptUnitMoveAbout;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.Point;
+import ru.ancientempires.model.Player;
+import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.UnitType;
 import ru.ancientempires.view.algortihms.InputAlgorithmUnitMove;
+import ru.ancientempires.view.draws.campaign.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitAttack;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitDie;
@@ -81,7 +95,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void showTitle(final String text, final ScriptTitle script)
+	public void showTitle(final String text, final Script script)
 	{
 		this.gameDraw.gameActivity.runOnUiThread(new Runnable()
 		{
@@ -116,6 +130,61 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
+	public void showBlackScreen(ScriptShowBlackScreen script)
+	{
+		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
+		gameDraw.start(0, 255);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void hideBlackScreen(ScriptHideBlackScreen script)
+	{
+		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
+		gameDraw.start(255, 0);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void blackScreen(ScriptBlackScreen script)
+	{
+		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
+		gameDraw.blackScreen();
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void showInfoBar(ScriptShowInfoBar script)
+	{
+		this.gameDraw.gameDrawInfo.isActive = true;
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void hideInfoBar(ScriptHideInfoBar script)
+	{
+		this.gameDraw.gameDrawInfo.isActive = false;
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void enableActiveGame(ScriptEnableActiveGame script)
+	{
+		this.gameDraw.isActiveGame = true;
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void disableActiveGame(ScriptDisableActiveGame script)
+	{
+		this.gameDraw.isActiveGame = false;
+		Campaign.finish(script);
+	}
+	
+	@Override
 	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, ScriptUnitMove script)
 	{
 		Action actionGet = new Action(ActionType.GET_UNIT_WAY);
@@ -128,8 +197,11 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Point[] ways = InputAlgorithmUnitMove.getWayLine(iStart, jStart, iEnd, jEnd, fieldPrevI, fieldPrevJ);
 		
 		// TODO
-		this.gameDraw.game.fieldUnits[iEnd][jEnd] = this.gameDraw.game.fieldUnits[iStart][jStart];
+		Unit unit = this.gameDraw.game.fieldUnits[iStart][jStart];
+		this.gameDraw.game.fieldUnits[iEnd][jEnd] = unit;
 		this.gameDraw.game.fieldUnits[iStart][jStart] = null;
+		unit.i = iEnd;
+		unit.j = jEnd;
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
 		gameDraw.init(iStart, jStart);
@@ -139,7 +211,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void cameraMove(int iEnd, int jEnd, ScriptCameraMove script)
+	public void cameraMove(int iEnd, int jEnd, Script script)
 	{
 		this.gameDraw.inputAlgorithmMain.tapWithoutAction(iEnd, jEnd);
 		GameDrawCameraMove gameDraw = new GameDrawCameraMove(this.gameDraw);
@@ -165,7 +237,6 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void delay(final int milliseconds, final ScriptDelay script)
 	{
-		
 		new Thread(new Runnable()
 		{
 			@Override
@@ -177,11 +248,12 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 				}
 				catch (InterruptedException e)
 				{
+					MyAssert.a(false);
 					e.printStackTrace();
 				}
 				Campaign.finish(script);
 			}
-		}).run();
+		}).start();
 	}
 	
 	@Override
@@ -200,6 +272,60 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		gameDraw.start(i, j);
 		this.draws.add(gameDraw);
 		this.scripts.add(script);
+	}
+	
+	@Override
+	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
+	{
+		Unit unit = Unit.getUnit(Unit.defaultUnit, unitType, player);
+		GameHandler.fieldUnits[i][j] = unit;
+		player.units.add(unit);
+		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void unitMoveAbout(int iStart, int jStart, int iEnd, int jEnd, ScriptUnitMoveAbout script)
+	{
+		Point[] ways = new Point[Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart) + 1];
+		for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
+			ways[i - iStart] = new Point(i, jStart);
+		for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
+			ways[iEnd - iStart + j - jStart] = new Point(iEnd, j);
+		ways[ways.length - 1] = new Point(iEnd, jEnd);
+		
+		// TODO
+		Unit unit = this.gameDraw.game.fieldUnits[iStart][jStart];
+		this.gameDraw.game.fieldUnits[iEnd][jEnd] = unit;
+		this.gameDraw.game.fieldUnits[iStart][jStart] = null;
+		unit.i = iEnd;
+		unit.j = jEnd;
+		
+		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
+		gameDraw.init(iStart, jStart);
+		gameDraw.start(ways, null);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void closeMission()
+	{
+		Client.getClient().startGame(Campaign.game.nextMission);
+		GameActivity.gameActivity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				GameActivity.gameActivity.startGameView();
+			}
+		});
+	}
+	
+	@Override
+	public void updateCampaign()
+	{
+		GameActivity.gameView.thread.needUpdateCampaign = true;
 	}
 	
 }

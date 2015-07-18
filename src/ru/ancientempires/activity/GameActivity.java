@@ -2,7 +2,10 @@ package ru.ancientempires.activity;
 
 import ru.ancientempires.R;
 import ru.ancientempires.UnitBuyDialog;
+import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.action.handlers.UnitHelper;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
@@ -16,16 +19,18 @@ import android.view.MenuItem;
 public class GameActivity extends Activity
 {
 	
-	public static GameView	gameView;
+	public static GameView		gameView;
+	public static GameActivity	gameActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		GameActivity.gameActivity = this;
 		startGameView();
 	}
 	
-	private void startGameView()
+	public void startGameView()
 	{
 		GameActivity.gameView = new GameView(this);
 		GameActivity.gameView.gameActivity = this;
@@ -62,6 +67,16 @@ public class GameActivity extends Activity
 		}
 		else if (id == R.id.action_exit)
 			android.os.Process.killProcess(android.os.Process.myPid());
+		else if (id == R.id.action_kill_unit)
+		{
+			Unit unit = GameHandler.game.players[1].units.get(0);
+			unit.health = 0;
+			UnitHelper.checkDied(unit);
+			GameActivity.gameView.thread.gameDraw.gameDrawUnit.update(GameHandler.game);
+			GameActivity.gameView.thread.gameDraw.inputAlgorithmMain.tapWithoutAction(unit.i, unit.j);
+			GameActivity.gameView.thread.gameDraw.focusOnCell(unit.i, unit.j);
+			GameActivity.gameView.thread.needUpdateCampaign = true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	

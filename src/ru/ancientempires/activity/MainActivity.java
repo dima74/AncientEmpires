@@ -9,6 +9,7 @@ import ru.ancientempires.GameInit;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.ALog;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.load.GameLoader;
@@ -123,7 +124,7 @@ public class MainActivity extends Activity
 					handler.sendMessage(new Message());
 				}
 			}
-		}, 0, 100);
+		}, 0, 10);
 	}
 	
 	public static int	amn	= 0;
@@ -136,6 +137,7 @@ public class MainActivity extends Activity
 		}
 		catch (InterruptedException | ExecutionException e)
 		{
+			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
@@ -166,6 +168,7 @@ public class MainActivity extends Activity
 				}
 				catch (IOException e)
 				{
+					MyAssert.a(false);
 					e.printStackTrace();
 				}
 				return null;

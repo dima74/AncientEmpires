@@ -3,6 +3,7 @@ package ru.ancientempires.helpers;
 import java.io.File;
 import java.io.IOException;
 
+import ru.ancientempires.framework.MyAssert;
 import android.content.Context;
 import android.net.Uri;
 
@@ -19,6 +20,7 @@ public class FileHelper
 		}
 		catch (IOException e)
 		{
+			MyAssert.a(false);
 			e.printStackTrace();
 		}
 		return file;

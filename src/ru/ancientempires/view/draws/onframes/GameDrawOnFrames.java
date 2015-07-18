@@ -31,7 +31,7 @@ public class GameDrawOnFrames extends GameDraw
 	public void draw(Canvas canvas)
 	{
 		this.isDrawing = this.frameStart <= this.gameDraw.iFrame && this.gameDraw.iFrame < this.frameEnd;
-		this.isEndDrawing = this.gameDraw.iFrame > this.frameEnd;
+		this.isEndDrawing = this.gameDraw.iFrame >= this.frameEnd;
 	}
 	
 	public void reAnimate()

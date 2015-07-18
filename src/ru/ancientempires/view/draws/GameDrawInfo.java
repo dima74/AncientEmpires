@@ -17,13 +17,14 @@ import android.graphics.Paint;
 public class GameDrawInfo extends GameDraw
 {
 	
-	private static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	paint		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color1		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color2		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color3		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color4		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color5		= new Paint(Paint.ANTI_ALIAS_FLAG);
 	
+	public boolean				isActive	= true;
 	private Bitmap				backgroundBitmap;
 	
 	public int					a;
@@ -134,6 +135,12 @@ public class GameDrawInfo extends GameDraw
 	@Override
 	public void draw(Canvas canvas)
 	{
+		if (!this.isActive)
+		{
+			drawLeftPart(canvas, this.h, this.w);
+			return;
+		}
+		
 		canvas.drawBitmap(this.backgroundBitmap, 0, 0, null);
 		
 		if (this.bitmap != null)

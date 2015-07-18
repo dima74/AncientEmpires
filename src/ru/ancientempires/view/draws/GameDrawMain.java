@@ -11,6 +11,7 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
+import ru.ancientempires.view.draws.campaign.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -58,8 +59,10 @@ public class GameDrawMain
 	
 	public GameDrawAction				gameDrawAction;
 	public GameDrawInfo					gameDrawInfo;
+	public boolean						isActiveGame			= true;
 	
 	public GameDraw						gameDrawCampaign		= new GameDrawCampaign(this);
+	public GameDrawBlackScreen			gameDrawBlackScreen		= new GameDrawBlackScreen(this);
 	
 	public boolean						isDrawCursor			= true;
 	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor(this).setCursor(CursorImages.cursor);
@@ -141,10 +144,13 @@ public class GameDrawMain
 		canvas.translate(-this.offsetX, -this.offsetY);
 		
 		this.gameDrawInfo.draw(canvas);
-		
-		canvas.translate(0, this.startActionY);
-		this.gameDrawAction.draw(canvas);
-		canvas.translate(0, -this.startActionY);
+		if (this.isActiveGame)
+		{
+			canvas.translate(0, this.startActionY);
+			this.gameDrawAction.draw(canvas);
+			canvas.translate(0, -this.startActionY);
+		}
+		this.gameDrawBlackScreen.draw(canvas);
 		
 		FewBitmaps.ordinal = this.iFrame / 8;
 	}
@@ -157,6 +163,8 @@ public class GameDrawMain
 	
 	public boolean touch(float touchY, float touchX)
 	{
+		if (!this.isActiveGame)
+			return false;
 		if (touchY < this.gameDrawInfoH)
 			return true;
 		else if (touchY < this.startActionY)
