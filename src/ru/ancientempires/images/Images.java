@@ -26,6 +26,7 @@ public class Images
 	public static Bitmap		levelIncrease;
 	public static Bitmap		levelUp;
 	public static FewBitmaps	tombstone;
+	public static Bitmap		gameover;
 	
 	public static int			amountGoldH;
 	public static int			amountGoldW;
@@ -72,6 +73,7 @@ public class Images
 		Images.levelUp = BitmapHelper.getResizeBitmap(images, "levelUp.png");
 		
 		Images.tombstone = new FewBitmaps().setBitmaps("", "tombstone.png");
+		Images.attack = BitmapHelper.getBitmap(images, "gameover.png");
 		
 		Images.amountGoldH = Images.amountGold.getHeight();
 		Images.amountGoldW = Images.amountGold.getWidth();

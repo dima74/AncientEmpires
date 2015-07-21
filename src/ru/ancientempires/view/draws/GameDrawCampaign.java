@@ -18,6 +18,7 @@ import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
+import ru.ancientempires.campaign.scripts.ScriptGameOver;
 import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptHideInfoBar;
@@ -85,6 +86,12 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 			this.draws.remove(this.draws.size() - 1);
 			this.scripts.remove(this.scripts.size() - 1);
 		}
+	}
+	
+	@Override
+	public void updateCampaign()
+	{
+		GameActivity.gameView.thread.needUpdateCampaign = true;
 	}
 	
 	@Override
@@ -278,7 +285,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
 	{
 		Unit unit = Unit.getUnit(Unit.defaultUnit, unitType, player);
-		GameHandler.fieldUnits[i][j] = unit;
+		GameHandler.setUnit(i, j, unit);
 		player.units.add(unit);
 		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
 		Campaign.finish(script);
@@ -295,11 +302,9 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		ways[ways.length - 1] = new Point(iEnd, jEnd);
 		
 		// TODO
-		Unit unit = this.gameDraw.game.fieldUnits[iStart][jStart];
-		this.gameDraw.game.fieldUnits[iEnd][jEnd] = unit;
-		this.gameDraw.game.fieldUnits[iStart][jStart] = null;
-		unit.i = iEnd;
-		unit.j = jEnd;
+		Unit unit = GameHandler.getUnit(iStart, jStart);
+		GameHandler.setUnit(iEnd, jEnd, unit);
+		GameHandler.removeUnit(iStart, jStart);
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
 		gameDraw.init(iStart, jStart);
@@ -323,9 +328,9 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void updateCampaign()
+	public void gameOver(ScriptGameOver script)
 	{
-		GameActivity.gameView.thread.needUpdateCampaign = true;
+		// TODO
 	}
 	
 }
