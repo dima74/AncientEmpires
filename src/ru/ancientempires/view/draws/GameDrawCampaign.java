@@ -2,10 +2,7 @@ package ru.ancientempires.view.draws;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.DialogShowIntro;
-import ru.ancientempires.DialogShowTarget;
 import ru.ancientempires.IDrawCampaign;
-import ru.ancientempires.MyDialogFragment;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
@@ -23,6 +20,8 @@ import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptHideInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
+import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
+import ru.ancientempires.campaign.scripts.ScriptSetUnitSpeed;
 import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
 import ru.ancientempires.campaign.scripts.ScriptShowInfoBar;
@@ -39,15 +38,19 @@ import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.view.algortihms.InputAlgorithmUnitMove;
-import ru.ancientempires.view.draws.campaign.GameDrawBlackScreen;
+import ru.ancientempires.view.draws.campaign.DialogGameOver;
+import ru.ancientempires.view.draws.campaign.DialogShowIntro;
+import ru.ancientempires.view.draws.campaign.DialogShowTarget;
 import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitAttack;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitDie;
+import ru.ancientempires.view.draws.campaign.MyDialogFragment;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 import android.app.DialogFragment;
 import android.graphics.Canvas;
+import android.graphics.DrawFilter;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -55,6 +58,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 {
 	
 	public ArrayList<Script>	scripts	= new ArrayList<Script>();
+	private Script				blackScreenScript;
 	
 	public GameDrawCampaign(GameDrawMain gameDraw)
 	{
@@ -65,6 +69,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void draw(Canvas canvas)
 	{
+		canvas.setDrawFilter(new DrawFilter());
 		int j = 0;
 		for (int i = 0; i < this.draws.size(); i++)
 		{
@@ -85,6 +90,12 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		{
 			this.draws.remove(this.draws.size() - 1);
 			this.scripts.remove(this.scripts.size() - 1);
+		}
+		
+		if (this.blackScreenScript != null && this.gameDraw.gameDrawBlackScreen.isEndDrawing)
+		{
+			Campaign.finish(this.blackScreenScript);
+			this.blackScreenScript = null;
 		}
 	}
 	
@@ -139,28 +150,22 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void showBlackScreen(ScriptShowBlackScreen script)
 	{
-		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
-		gameDraw.start(0, 255);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		this.gameDraw.gameDrawBlackScreen.start(0, 255);
+		this.blackScreenScript = script;
 	}
 	
 	@Override
 	public void hideBlackScreen(ScriptHideBlackScreen script)
 	{
-		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
-		gameDraw.start(255, 0);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		this.gameDraw.gameDrawBlackScreen.start(255, 0);
+		this.blackScreenScript = script;
 	}
 	
 	@Override
 	public void blackScreen(ScriptBlackScreen script)
 	{
-		GameDrawBlackScreen gameDraw = this.gameDraw.gameDrawBlackScreen;
-		gameDraw.blackScreen();
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		this.gameDraw.gameDrawBlackScreen.blackScreen();
+		this.blackScreenScript = script;
 	}
 	
 	@Override
@@ -314,6 +319,20 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
+	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script)
+	{
+		GameDrawUnitMove.framesForCell = framesForCell;
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script)
+	{
+		GameDrawCameraMove.delta = delta * GameDraw.a;
+		Campaign.finish(script);
+	}
+	
+	@Override
 	public void closeMission()
 	{
 		Client.getClient().startGame(Campaign.game.nextMission);
@@ -330,7 +349,8 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void gameOver(ScriptGameOver script)
 	{
-		// TODO
+		DialogFragment dialogFragment = new DialogGameOver();
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogGameOver");
 	}
 	
 }

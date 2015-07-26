@@ -1,4 +1,4 @@
-package ru.ancientempires;
+package ru.ancientempires.view.draws.campaign;
 
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;

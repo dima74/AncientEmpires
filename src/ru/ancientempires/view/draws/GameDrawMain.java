@@ -12,6 +12,7 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 import ru.ancientempires.view.draws.campaign.GameDrawBlackScreen;
+import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -103,6 +104,8 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawUnit);
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
+		GameDrawUnitMove.framesForCell = 4;
+		GameDrawCameraMove.delta = GameDraw.a * 12;
 		
 		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
 		

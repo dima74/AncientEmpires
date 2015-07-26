@@ -5,6 +5,7 @@ import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.ii.II;
@@ -144,6 +145,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 				this.gameDraw.gameDrawCellDual.update(this.game);
 				this.gameDraw.gameDrawInfo.update(this.game);
 				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
+				GameActivity.gameView.thread.needUpdateCampaign = true;
 			}
 			else
 			{

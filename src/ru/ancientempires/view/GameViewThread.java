@@ -97,10 +97,11 @@ public class GameViewThread extends Thread
 					e.printStackTrace();
 				}
 			else if (this.needUpdateCampaign)
-			{
-				Campaign.update();
-				this.needUpdateCampaign = false;
-			}
+				while (this.needUpdateCampaign)
+				{
+					this.needUpdateCampaign = false;
+					Campaign.update();
+				}
 			timeToDraw = this.nextTime - System.currentTimeMillis() - 3;
 			if (timeToDraw > 0)
 				try

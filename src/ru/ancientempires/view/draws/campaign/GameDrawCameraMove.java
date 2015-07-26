@@ -9,12 +9,12 @@ import android.graphics.Canvas;
 public class GameDrawCameraMove extends GameDrawOnFrames
 {
 	
-	private static final float	DELTA	= GameDraw.a * 2;
+	public static float	delta;
 	
-	private int					startOffsetY;
-	private int					startOffsetX;
-	private int					endOffsetY;
-	private int					endOffsetX;
+	private int			startOffsetY;
+	private int			startOffsetX;
+	private int			endOffsetY;
+	private int			endOffsetX;
 	
 	public GameDrawCameraMove(GameDrawMain gameDraw)
 	{
@@ -40,7 +40,7 @@ public class GameDrawCameraMove extends GameDrawOnFrames
 		
 		int deltaY = this.endOffsetY - this.startOffsetY;
 		int deltaX = this.endOffsetX - this.startOffsetX;
-		animate(0, (int) (Math.max(Math.abs(deltaY), Math.abs(deltaX)) / GameDrawCameraMove.DELTA));
+		animate(0, (int) (Math.max(Math.abs(deltaY), Math.abs(deltaX)) / GameDrawCameraMove.delta));
 	}
 	
 	@Override
