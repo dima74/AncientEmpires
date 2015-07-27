@@ -3,9 +3,6 @@ package ru.ancientempires.view.draws;
 import java.util.ArrayList;
 
 import ru.ancientempires.IDrawCampaign;
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.ActionType;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.Campaign;
@@ -20,6 +17,7 @@ import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptHideInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
+import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
 import ru.ancientempires.campaign.scripts.ScriptSetUnitSpeed;
 import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
@@ -29,15 +27,12 @@ import ru.ancientempires.campaign.scripts.ScriptShowTarget;
 import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
-import ru.ancientempires.campaign.scripts.ScriptUnitMove;
-import ru.ancientempires.campaign.scripts.ScriptUnitMoveAbout;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
-import ru.ancientempires.view.algortihms.InputAlgorithmUnitMove;
 import ru.ancientempires.view.draws.campaign.DialogGameOver;
 import ru.ancientempires.view.draws.campaign.DialogShowIntro;
 import ru.ancientempires.view.draws.campaign.DialogShowTarget;
@@ -197,32 +192,6 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	}
 	
 	@Override
-	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, ScriptUnitMove script)
-	{
-		Action actionGet = new Action(ActionType.GET_UNIT_WAY);
-		actionGet.setProperty("i", iStart);
-		actionGet.setProperty("j", jStart);
-		ActionResult resultGet = Client.action(actionGet);
-		
-		int[][] fieldPrevI = (int[][]) resultGet.getProperty("prevI");
-		int[][] fieldPrevJ = (int[][]) resultGet.getProperty("prevJ");
-		Point[] ways = InputAlgorithmUnitMove.getWayLine(iStart, jStart, iEnd, jEnd, fieldPrevI, fieldPrevJ);
-		
-		// TODO
-		Unit unit = this.gameDraw.game.fieldUnits[iStart][jStart];
-		this.gameDraw.game.fieldUnits[iEnd][jEnd] = unit;
-		this.gameDraw.game.fieldUnits[iStart][jStart] = null;
-		unit.i = iEnd;
-		unit.j = jEnd;
-		
-		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
-		gameDraw.init(iStart, jStart);
-		gameDraw.start(ways, null);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
-	}
-	
-	@Override
 	public void cameraMove(int iEnd, int jEnd, Script script)
 	{
 		this.gameDraw.inputAlgorithmMain.tapWithoutAction(iEnd, jEnd);
@@ -292,30 +261,42 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Unit unit = Unit.getUnit(Unit.defaultUnit, unitType, player);
 		GameHandler.setUnit(i, j, unit);
 		player.units.add(unit);
-		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+		if (GameHandler.checkCoord(i, j))
+			this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
 		Campaign.finish(script);
 	}
 	
 	@Override
-	public void unitMoveAbout(int iStart, int jStart, int iEnd, int jEnd, ScriptUnitMoveAbout script)
+	public void removeUnit(int i, int j, ScriptRemoveUnit script)
+	{
+		Unit unit = GameHandler.getUnit(i, j);
+		GameHandler.removeUnit(i, j);
+		unit.player.units.remove(unit);
+		if (GameHandler.checkCoord(i, j))
+			this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script)
 	{
 		Point[] ways = new Point[Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart) + 1];
 		for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
-			ways[i - iStart] = new Point(i, jStart);
+			ways[Math.abs(i - iStart)] = new Point(i, jStart);
 		for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
-			ways[iEnd - iStart + j - jStart] = new Point(iEnd, j);
+			ways[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
 		ways[ways.length - 1] = new Point(iEnd, jEnd);
-		
-		// TODO
-		Unit unit = GameHandler.getUnit(iStart, jStart);
-		GameHandler.setUnit(iEnd, jEnd, unit);
-		GameHandler.removeUnit(iStart, jStart);
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
 		gameDraw.init(iStart, jStart);
 		gameDraw.start(ways, null);
 		this.draws.add(gameDraw);
 		this.scripts.add(script);
+		
+		// TODO
+		Unit unit = GameHandler.getUnit(iStart, jStart);
+		GameHandler.removeUnit(iStart, jStart);
+		GameHandler.setUnit(iEnd, jEnd, unit);
 	}
 	
 	@Override

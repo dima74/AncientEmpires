@@ -112,6 +112,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			this.gameDraw.gameDrawBuildingSmokes.update(this.game);
 			this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawInfo.updateCell(this.game);
+			GameActivity.gameView.thread.needUpdateCampaign = true;
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
 		{
@@ -127,6 +128,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
 			this.thread.isPause = true;
 			this.gameDraw.gameActivity.buyUnit(this, units, isAvailable);
+			GameActivity.gameView.thread.needUpdateCampaign = true;
 		}
 		else if (actionType == ActionType.ACTION_END_TURN)
 		{

@@ -7,8 +7,8 @@ import android.graphics.Canvas;
 public class GameDrawBlackScreen extends GameDrawOnFrames
 {
 	
-	private int	alphaStart;
-	private int	alphaEnd;
+	private int	alphaStart	= 0;
+	private int	alphaEnd	= 0;
 	
 	public GameDrawBlackScreen(GameDrawMain gameDraw)
 	{

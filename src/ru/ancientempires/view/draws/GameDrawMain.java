@@ -51,7 +51,7 @@ public class GameDrawMain
 	public GameDrawWayLine				gameDrawWayLine			= new GameDrawWayLine(this);
 	
 	public GameDrawBuildingSmokes		gameDrawBuildingSmokes;
-	public GameDrawUnitMove				gameDrawUnitMove		= new GameDrawUnitMove(this);
+	public GameDrawUnitMove				gameDrawUnitMove;
 	public GameDrawUnitMoveEnd			gameDrawUnitMoveEnd		= new GameDrawUnitMoveEnd(this);
 	public GameDrawUnitAttackMain		gameDrawUnitAttack		= new GameDrawUnitAttackMain(this);
 	public GameDrawCellAttack			gameDrawCellAttack		= new GameDrawCellAttack(this);
@@ -96,6 +96,10 @@ public class GameDrawMain
 		this.gameDrawCell = new GameDrawCell(this);
 		this.gameDrawCellDual = new GameDrawCell(this).setDual();
 		
+		GameDrawUnitMove.framesForCell = 8;
+		GameDrawCameraMove.delta = GameDraw.a * 12;
+		this.gameDrawUnitMove = new GameDrawUnitMove(this);
+		
 		this.gameDraws.add(this.gameDrawCell);
 		this.gameDraws.add(this.gameDrawZoneMove);
 		this.gameDraws.add(this.gameDrawZoneAttack);
@@ -104,8 +108,6 @@ public class GameDrawMain
 		this.gameDraws.add(this.gameDrawUnit);
 		this.gameDraws.add(this.gameDrawWayLine);
 		this.gameDraws.add(this.gameDrawUnitMove);
-		GameDrawUnitMove.framesForCell = 4;
-		GameDrawCameraMove.delta = GameDraw.a * 12;
 		
 		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
 		

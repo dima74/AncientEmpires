@@ -1,17 +1,21 @@
 package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
+import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
+import ru.ancientempires.view.draws.GameDrawUnit;
 import android.graphics.Canvas;
 
 public class GameDrawUnitMove extends GameDrawOnFrames
 {
 	
 	public static int	framesForCell;		// ii-2, player-4
-											
+	private int			framesForCellMy;
+	
 	private UnitBitmap	unitBitmap;
 	private int			i, j;
 	private Point[]		ways;
@@ -20,11 +24,12 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	public GameDrawUnitMove(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
+		this.framesForCellMy = GameDrawUnitMove.framesForCell;
 	}
 	
 	public void init(int i, int j)
 	{
-		this.unitBitmap = this.gameDraw.gameDrawUnit.extractUnit(i, j);
+		this.unitBitmap = GameHandler.checkCoord(i, j) ? this.gameDraw.gameDrawUnit.extractUnit(i, j) : GameDrawUnit.getUnitBitmap(GameHandler.getUnit(i, j));
 		this.i = i;
 		this.j = j;
 		this.isStay = true;
@@ -34,7 +39,7 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	{
 		this.isStay = false;
 		this.ways = ways;
-		animate(0, (ways.length - 1) * GameDrawUnitMove.framesForCell);
+		animate(0, (ways.length - 1) * this.framesForCellMy);
 		if (result != null)
 			this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
 	}
@@ -42,7 +47,11 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	public void destroy()
 	{
 		if (!this.isStay && this.unitBitmap != null)
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.ways[this.ways.length - 1]);
+		{
+			Point endPoint = this.ways[this.ways.length - 1];
+			if (GameHandler.checkCoord(endPoint.i, endPoint.j))
+				this.gameDraw.gameDrawUnit.updateOneUnit(endPoint.i, endPoint.j);
+		}
 		this.unitBitmap = null;
 		this.isStay = false;
 	}
@@ -57,12 +66,13 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 			return;
 		
 		int framePass = this.gameDraw.iFrame - this.frameStart;
-		int i = framePass / GameDrawUnitMove.framesForCell;
-		int framePassPart = framePass - i * GameDrawUnitMove.framesForCell;
-		int frameLeftPart = GameDrawUnitMove.framesForCell - framePassPart;
-		int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / GameDrawUnitMove.framesForCell;
-		int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / GameDrawUnitMove.framesForCell;
+		int i = framePass / this.framesForCellMy;
+		int framePassPart = framePass - i * this.framesForCellMy;
+		int frameLeftPart = this.framesForCellMy - framePassPart;
+		int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / this.framesForCellMy;
+		int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / this.framesForCellMy;
 		drawUnit(canvas, y, x);
+		MyLog.l(System.currentTimeMillis() + " " + y / 3 * 2);
 		
 		if (this.gameDraw.iFrame == this.frameEnd - 1)
 			destroy();
