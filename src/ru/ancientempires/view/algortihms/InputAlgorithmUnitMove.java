@@ -3,13 +3,13 @@ package ru.ancientempires.view.algortihms;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ru.ancientempires.Point;
 import ru.ancientempires.action.ActionType;
-import ru.ancientempires.helpers.Point;
 
 public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 {
 	
-	private Point[]	ways;
+	private Point[]	points;
 	public int[][]	fieldPrevI;
 	public int[][]	fieldPrevJ;
 	
@@ -44,14 +44,14 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 				this.main.gameDraw.gameDrawUnitMove.init(this.startI, this.startJ);
 			}
 			updateWayLine(i, j);
-			this.main.gameDraw.gameDrawWayLine.update(this.ways);
+			this.main.gameDraw.gameDrawWayLine.update(this.points);
 		}
 		return isAction;
 	}
 	
 	private void updateWayLine(int absI, int absJ)
 	{
-		this.ways = InputAlgorithmUnitMove.getWayLine(this.startI, this.startJ, absI, absJ, this.fieldPrevI, this.fieldPrevJ);
+		this.points = InputAlgorithmUnitMove.getWayLine(this.startI, this.startJ, absI, absJ, this.fieldPrevI, this.fieldPrevJ);
 	}
 	
 	public static Point[] getWayLine(int startI, int startJ, int absI, int absJ, int[][] fieldPrevI, int[][] fieldPrevJ)
@@ -60,15 +60,15 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		int relToAbsI = -radius + startI;
 		int relToAbsJ = -radius + startJ;
 		
-		ArrayList<Point> ways = new ArrayList<Point>();
+		ArrayList<Point> points = new ArrayList<Point>();
 		Point p = new Point(absI - relToAbsI, absJ - relToAbsJ);
 		while (!p.equals(Point.NULL_POINT))
 		{
-			ways.add(new Point(p.i + relToAbsI, p.j + relToAbsJ));
+			points.add(new Point(p.i + relToAbsI, p.j + relToAbsJ));
 			p = new Point(fieldPrevI[p.i][p.j], fieldPrevJ[p.i][p.j]);
 		}
-		Collections.reverse(ways);
-		return ways.toArray(new Point[0]);
+		Collections.reverse(points);
+		return points.toArray(new Point[0]);
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 			this.main.gameDraw.gameDrawUnit.updateOneUnit(this.startI, this.startJ);
 		
 		if (this.isChanged)
-			this.main.gameDraw.gameDrawUnitMove.start(this.ways, this.result);
+			this.main.gameDraw.gameDrawUnitMove.start(this.points, this.result);
 	}
 	
 }

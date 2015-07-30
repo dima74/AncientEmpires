@@ -1,9 +1,9 @@
 package ru.ancientempires.view.draws.onframes;
 
+import ru.ancientempires.Point;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
@@ -18,7 +18,7 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	
 	private UnitBitmap	unitBitmap;
 	private int			i, j;
-	private Point[]		ways;
+	private Point[]		points;
 	private boolean		isStay	= false;
 	
 	public GameDrawUnitMove(GameDrawMain gameDraw)
@@ -35,11 +35,11 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 		this.isStay = true;
 	}
 	
-	public void start(Point[] ways, ActionResult result)
+	public void start(Point[] points, ActionResult result)
 	{
 		this.isStay = false;
-		this.ways = ways;
-		animate(0, (ways.length - 1) * this.framesForCellMy);
+		this.points = points;
+		animate(0, (points.length - 1) * this.framesForCellMy);
 		if (result != null)
 			this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
 	}
@@ -48,7 +48,7 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	{
 		if (!this.isStay && this.unitBitmap != null)
 		{
-			Point endPoint = this.ways[this.ways.length - 1];
+			Point endPoint = this.points[this.points.length - 1];
 			if (GameHandler.checkCoord(endPoint.i, endPoint.j))
 				this.gameDraw.gameDrawUnit.updateOneUnit(endPoint.i, endPoint.j);
 		}
@@ -69,8 +69,8 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 		int i = framePass / this.framesForCellMy;
 		int framePassPart = framePass - i * this.framesForCellMy;
 		int frameLeftPart = this.framesForCellMy - framePassPart;
-		int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / this.framesForCellMy;
-		int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / this.framesForCellMy;
+		int y = (frameLeftPart * this.points[i].i + framePassPart * this.points[i + 1].i) * GameDraw.A / this.framesForCellMy;
+		int x = (frameLeftPart * this.points[i].j + framePassPart * this.points[i + 1].j) * GameDraw.A / this.framesForCellMy;
 		drawUnit(canvas, y, x);
 		
 		if (this.gameDraw.iFrame == this.frameEnd - 1)

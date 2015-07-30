@@ -1,6 +1,6 @@
 package ru.ancientempires.view.draws;
 
-import ru.ancientempires.helpers.Point;
+import ru.ancientempires.Point;
 import android.graphics.Canvas;
 
 public class GameDrawWayLine extends GameDraw
@@ -13,18 +13,18 @@ public class GameDrawWayLine extends GameDraw
 		super(gameDraw);
 	}
 	
-	public void update(Point[] ways)
+	public void update(Point[] points)
 	{
-		this.wayPoints = new float[(ways.length - 1) * 4];
+		this.wayPoints = new float[(points.length - 1) * 4];
 		
 		// extra 1/12 pixels
 		float one12 = 1.0f / 12;
-		for (int k = 0; k < ways.length - 1; k++)
+		for (int k = 0; k < points.length - 1; k++)
 		{
-			float y1 = ways[k].i;// wayYs[k];
-			float x1 = ways[k].j;// wayXs[k];
-			float y2 = ways[k + 1].i;// wayYs[k + 1];
-			float x2 = ways[k + 1].j;// wayXs[k + 1];
+			float y1 = points[k].i;// wayYs[k];
+			float x1 = points[k].j;// wayXs[k];
+			float y2 = points[k + 1].i;// wayYs[k + 1];
+			float x2 = points[k + 1].j;// wayXs[k + 1];
 			if (y1 == y2)
 				if (x1 < x2)
 				{

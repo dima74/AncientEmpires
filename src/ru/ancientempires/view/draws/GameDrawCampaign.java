@@ -3,11 +3,13 @@ package ru.ancientempires.view.draws;
 import java.util.ArrayList;
 
 import ru.ancientempires.IDrawCampaign;
+import ru.ancientempires.Point;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
+import ru.ancientempires.campaign.scripts.ScriptCellAttackPartTwo;
 import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
@@ -20,19 +22,23 @@ import ru.ancientempires.campaign.scripts.ScriptHideInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
+import ru.ancientempires.campaign.scripts.ScriptSetMapPosition;
 import ru.ancientempires.campaign.scripts.ScriptSetUnitSpeed;
 import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
 import ru.ancientempires.campaign.scripts.ScriptShowInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
+import ru.ancientempires.campaign.scripts.ScriptSparkAttack;
 import ru.ancientempires.campaign.scripts.ScriptSparkDefault;
 import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
+import ru.ancientempires.campaign.scripts.ScriptUnitChangePosition;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
+import ru.ancientempires.campaign.scripts.ScriptUnitMoveExtended;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.SparksImages;
+import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
@@ -292,16 +298,16 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script)
 	{
-		Point[] ways = new Point[Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart) + 1];
+		Point[] points = new Point[Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart) + 1];
 		for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
-			ways[Math.abs(i - iStart)] = new Point(i, jStart);
+			points[Math.abs(i - iStart)] = new Point(i, jStart);
 		for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
-			ways[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
-		ways[ways.length - 1] = new Point(iEnd, jEnd);
+			points[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
+		points[points.length - 1] = new Point(iEnd, jEnd);
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
 		gameDraw.init(iStart, jStart);
-		gameDraw.start(ways, null);
+		gameDraw.start(points, null);
 		this.draws.add(gameDraw);
 		this.scripts.add(script);
 		
@@ -309,6 +315,44 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Unit unit = GameHandler.getUnit(iStart, jStart);
 		GameHandler.removeUnit(iStart, jStart);
 		GameHandler.setUnit(iEnd, jEnd, unit);
+	}
+	
+	@Override
+	public void unitMove(Point[] keyPoints, ScriptUnitMoveExtended script)
+	{
+		Point start = keyPoints[0];
+		Point end = keyPoints[keyPoints.length - 1];
+		
+		int length = 1;
+		for (int i = 1; i < keyPoints.length; i++)
+			length += Math.abs(keyPoints[i].i - keyPoints[i - 1].i) + Math.abs(keyPoints[i].j - keyPoints[i - 1].j);
+		
+		Point[] points = new Point[length];
+		int nPoint = 0;
+		for (int iKeyPoint = 1; iKeyPoint < keyPoints.length; iKeyPoint++)
+		{
+			int iStart = keyPoints[iKeyPoint - 1].i;
+			int jStart = keyPoints[iKeyPoint - 1].j;
+			int iEnd = keyPoints[iKeyPoint].i;
+			int jEnd = keyPoints[iKeyPoint].j;
+			for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
+				points[nPoint + Math.abs(i - iStart)] = new Point(i, jStart);
+			for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
+				points[nPoint + Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
+			nPoint += Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart);
+		}
+		points[points.length - 1] = new Point(end.i, end.j);
+		
+		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
+		gameDraw.init(start.i, start.j);
+		gameDraw.start(points, null);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+		
+		// TODO
+		Unit unit = GameHandler.getUnit(start.i, start.j);
+		GameHandler.removeUnit(start.i, start.j);
+		GameHandler.setUnit(end.i, end.j, unit);
 	}
 	
 	@Override
@@ -352,6 +396,57 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		GameDrawBitmaps gameDraw = new GameDrawBitmaps(this.gameDraw)
 				.setBitmaps(SparksImages.bitmapsDefault)
 				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.animateRepeat(0, 1);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void sparkAttack(int i, int j, ScriptSparkAttack script)
+	{
+		GameDrawBitmaps gameDraw = new GameDrawBitmaps(this.gameDraw)
+				.setBitmaps(SparksImages.bitmapsAttack)
+				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.animateRepeat(0, 1);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
+	}
+	
+	@Override
+	public void setMapPosition(int i, int j, ScriptSetMapPosition script)
+	{
+		this.gameDraw.focusOnCell(i, j);
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script)
+	{
+		Unit unit = GameHandler.getUnit(i, j);
+		GameHandler.removeUnit(i, j);
+		GameHandler.setUnit(iNew, jNew, unit);
+		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+		this.gameDraw.gameDrawUnit.updateOneUnit(iNew, jNew);
+		Campaign.finish(script);
+	}
+	
+	@Override
+	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script)
+	{
+		// TODO
+		Cell targetCell = GameHandler.fieldCells[i][j];
+		if (targetCell.player != null)
+			GameHandler.game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
+		targetCell.isDestroying = true;
+		targetCell.isCapture = false;
+		targetCell.player = null;
+		
+		this.gameDraw.gameDrawCell.updateOneCell(this.gameDraw.game, i, j);
+		this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, i, j);
+		GameDrawOnFrames gameDraw = new GameDrawBitmaps(this.gameDraw)
+				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.setBitmaps(SparksImages.bitmapsDefault)
+				.setFramesForBitmap(4)
 				.animateRepeat(0, 1);
 		this.draws.add(gameDraw);
 		this.scripts.add(script);
