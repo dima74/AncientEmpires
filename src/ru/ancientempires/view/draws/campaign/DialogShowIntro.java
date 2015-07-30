@@ -3,8 +3,6 @@ package ru.ancientempires.view.draws.campaign;
 import java.io.IOException;
 
 import ru.ancientempires.R;
-import ru.ancientempires.R.id;
-import ru.ancientempires.R.layout;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.client.Client;
@@ -15,10 +13,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -70,18 +66,6 @@ public class DialogShowIntro extends DialogFragment
 		}
 		
 		return builder.create();
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-	
-	@Override
-	public void onStart()
-	{
-		super.onStart();
 	}
 	
 }

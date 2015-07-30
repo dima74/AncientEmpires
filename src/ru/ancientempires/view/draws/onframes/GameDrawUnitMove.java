@@ -2,7 +2,7 @@ package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.helpers.Point;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.view.draws.GameDraw;
@@ -72,10 +72,12 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 		int y = (frameLeftPart * this.ways[i].i + framePassPart * this.ways[i + 1].i) * GameDraw.A / this.framesForCellMy;
 		int x = (frameLeftPart * this.ways[i].j + framePassPart * this.ways[i + 1].j) * GameDraw.A / this.framesForCellMy;
 		drawUnit(canvas, y, x);
-		MyLog.l(System.currentTimeMillis() + " " + y / 3 * 2);
 		
 		if (this.gameDraw.iFrame == this.frameEnd - 1)
+		{
 			destroy();
+			GameActivity.gameView.thread.needUpdateCampaign = true;
+		}
 	}
 	
 	private void drawUnit(Canvas canvas, int y, int x)

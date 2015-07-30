@@ -71,15 +71,16 @@ public class GameActivity extends Activity
 			android.os.Process.killProcess(android.os.Process.myPid());
 		else if (id == R.id.action_kill_unit)
 		{
-			if (GameHandler.game.players[1].units.isEmpty())
-				return true;
-			Unit unit = GameHandler.game.players[1].units.get(0);
-			unit.health = 0;
-			UnitHelper.checkDied(unit);
-			GameActivity.gameView.thread.gameDraw.gameDrawUnit.update(GameHandler.game);
-			GameActivity.gameView.thread.gameDraw.inputAlgorithmMain.tapWithoutAction(unit.i, unit.j);
-			GameActivity.gameView.thread.gameDraw.focusOnCell(unit.i, unit.j);
-			GameActivity.gameView.thread.needUpdateCampaign = true;
+			while (!GameHandler.game.players[1].units.isEmpty())
+			{
+				Unit unit = GameHandler.game.players[1].units.get(0);
+				unit.health = 0;
+				UnitHelper.checkDied(unit);
+				GameActivity.gameView.thread.gameDraw.gameDrawUnit.update(GameHandler.game);
+				GameActivity.gameView.thread.gameDraw.inputAlgorithmMain.tapWithoutAction(unit.i, unit.j);
+				GameActivity.gameView.thread.gameDraw.focusOnCell(unit.i, unit.j);
+				GameActivity.gameView.thread.needUpdateCampaign = true;
+			}
 			return true;
 		}
 		else if (id == R.id.action_capture_castle)
@@ -91,8 +92,8 @@ public class GameActivity extends Activity
 					{
 						cell.player = GameHandler.game.players[0];
 						GameActivity.gameView.thread.needUpdateCampaign = true;
-						return true;
 					}
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

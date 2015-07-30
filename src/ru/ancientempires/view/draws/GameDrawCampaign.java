@@ -10,6 +10,7 @@ import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
+import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
 import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptGameOver;
@@ -24,12 +25,14 @@ import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
 import ru.ancientempires.campaign.scripts.ScriptShowInfoBar;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
+import ru.ancientempires.campaign.scripts.ScriptSparkDefault;
 import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.Point;
+import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
@@ -40,6 +43,8 @@ import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitAttack;
 import ru.ancientempires.view.draws.campaign.GameDrawUnitDie;
 import ru.ancientempires.view.draws.campaign.MyDialogFragment;
+import ru.ancientempires.view.draws.campaign.MyDialogWithoutImage;
+import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -104,7 +109,28 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	public void showDialog(String imagePath, String text, ScriptDialog script)
 	{
 		DialogFragment dialogFragment = new MyDialogFragment(imagePath, text, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialogFragment");
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialog");
+	}
+	
+	@Override
+	public void showDialog(String text, ScriptDialogWithoutImage script)
+	{
+		DialogFragment dialogFragment = new MyDialogWithoutImage(text, script);
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialogWithoutImage");
+	}
+	
+	@Override
+	public void showTarget(String textTitle, String textTarget, ScriptShowTarget script)
+	{
+		DialogFragment dialogFragment = new DialogShowTarget(textTitle, textTarget, script);
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowTarget");
+	}
+	
+	@Override
+	public void showIntro(String imagePath, String text, ScriptIntro script)
+	{
+		DialogFragment dialogFragment = new DialogShowIntro(imagePath, text, script);
+		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowIntro");
 	}
 	
 	@Override
@@ -126,20 +152,6 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 				}, 2000);
 			}
 		});
-	}
-	
-	@Override
-	public void showTarget(String textTitle, String textTarget, ScriptShowTarget script)
-	{
-		DialogFragment dialogFragment = new DialogShowTarget(textTitle, textTarget, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowTarget");
-	}
-	
-	@Override
-	public void showIntro(String imagePath, String text, ScriptIntro script)
-	{
-		DialogFragment dialogFragment = new DialogShowIntro(imagePath, text, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowIntro");
 	}
 	
 	@Override
@@ -332,6 +344,17 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	{
 		DialogFragment dialogFragment = new DialogGameOver();
 		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogGameOver");
+	}
+	
+	@Override
+	public void sparkDefault(int i, int j, ScriptSparkDefault script)
+	{
+		GameDrawBitmaps gameDraw = new GameDrawBitmaps(this.gameDraw)
+				.setBitmaps(SparksImages.bitmapsDefault)
+				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.animateRepeat(0, 1);
+		this.draws.add(gameDraw);
+		this.scripts.add(script);
 	}
 	
 }

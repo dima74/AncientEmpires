@@ -3,8 +3,6 @@ package ru.ancientempires.view.draws.campaign;
 import java.io.IOException;
 
 import ru.ancientempires.R;
-import ru.ancientempires.R.id;
-import ru.ancientempires.R.layout;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.client.Client;
@@ -101,7 +99,7 @@ public class MyDialogFragment extends DialogFragment
 					}
 					Campaign.finish(MyDialogFragment.this.script);
 				}
-			}).run();
+			}).start();
 	}
 	
 }

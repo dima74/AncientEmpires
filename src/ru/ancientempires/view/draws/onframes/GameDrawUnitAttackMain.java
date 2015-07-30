@@ -62,16 +62,17 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 	public void draw(Canvas canvas)
 	{
 		super.draw(canvas);
-		if (this.gameDraw.iFrame == this.frameEnd)
+		if (!this.isDrawing)
+			return;
+		if (this.gameDraw.iFrame == this.frameEnd - 1)
 		{
 			this.gameDraw.gameDrawInfo.update(this.gameDraw.game);
 			if (this.isUnitDie)
 				GameActivity.gameView.thread.needUpdateCampaign = true;
 		}
-		if (!this.isDrawing)
-			return;
 		
 		this.drawDirect.draw(canvas);
 		this.drawReverse.draw(canvas);
 	}
+	
 }
