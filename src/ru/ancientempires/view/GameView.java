@@ -75,6 +75,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
+		stopThread();
+		// MyLog.l("GameView.surfaceDestroyed()");
+	}
+	
+	public void stopThread()
+	{
 		this.thread.setRunning(false);
 		boolean retry = true;
 		while (retry)
@@ -88,7 +94,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
-		// MyLog.l("GameView.surfaceDestroyed()");
 	}
 	
 	@Override

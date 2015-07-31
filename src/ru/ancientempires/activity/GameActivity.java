@@ -88,7 +88,7 @@ public class GameActivity extends Activity
 			CellType type = CellType.getType("CASTLE");
 			for (Cell[] line : GameHandler.fieldCells)
 				for (Cell cell : line)
-					if (cell.type == type && cell.player.ordinal == 1)
+					if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
 					{
 						cell.player = GameHandler.game.players[0];
 						GameActivity.gameView.thread.needUpdateCampaign = true;

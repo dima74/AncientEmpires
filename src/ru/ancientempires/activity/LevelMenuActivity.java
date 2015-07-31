@@ -36,6 +36,7 @@ public class LevelMenuActivity extends Activity
 	public String		names[];
 	
 	public GamesFolder	gamesFolder;
+	private boolean		isCheckInit	= false;
 	private boolean		isStartGame	= false;
 	
 	@Override
@@ -96,7 +97,7 @@ public class LevelMenuActivity extends Activity
 		this.listView.setAdapter(adapter);
 		
 		// debug
-		GamePath gamePath = this.gamesFolder.gamesFolders[0].gamePaths[3];
+		GamePath gamePath = this.gamesFolder.gamesFolders[0].gamePaths[1];
 		startGame(gamePath);
 	}
 	
@@ -138,6 +139,20 @@ public class LevelMenuActivity extends Activity
 	
 	private void startGame(final GamePath gamePath)
 	{
+		if (!this.isCheckInit)
+		{
+			this.isCheckInit = true;
+			new AsyncTask<Void, Void, Void>()
+			{
+				@Override
+				protected Void doInBackground(Void... params)
+				{
+					checkInit();
+					return null;
+				}
+			}.execute();
+		}
+		
 		if (this.isStartGame)
 			return;
 		final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -148,7 +163,6 @@ public class LevelMenuActivity extends Activity
 			@Override
 			protected Void doInBackground(Void... params)
 			{
-				checkInit();
 				Client.getClient().startGame(gamePath);
 				try
 				{

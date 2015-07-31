@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
+import ru.ancientempires.R;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.Campaign;
@@ -55,8 +56,10 @@ import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.graphics.Canvas;
 import android.graphics.DrawFilter;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -372,13 +375,38 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void closeMission()
 	{
-		Client.getClient().startGame(Campaign.game.nextMission);
 		GameActivity.gameActivity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				GameActivity.gameActivity.startGameView();
+				new AsyncTask<Void, Void, Void>()
+				{
+					private ProgressDialog	progressDialog;
+					
+					@Override
+					protected void onPreExecute()
+					{
+						this.progressDialog = new ProgressDialog(GameActivity.gameActivity);
+						this.progressDialog.setMessage(GameActivity.gameActivity.getString(R.string.loading));
+						this.progressDialog.show();
+					}
+					
+					@Override
+					protected Void doInBackground(Void... params)
+					{
+						GameActivity.gameView.stopThread();
+						Client.getClient().startGame(Campaign.game.nextMission);
+						return null;
+					}
+					
+					@Override
+					protected void onPostExecute(Void result)
+					{
+						this.progressDialog.dismiss();
+						GameActivity.gameActivity.startGameView();
+					}
+				}.execute();
 			}
 		});
 	}

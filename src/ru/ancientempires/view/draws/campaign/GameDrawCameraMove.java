@@ -41,6 +41,8 @@ public class GameDrawCameraMove extends GameDrawOnFrames
 		int deltaY = this.endOffsetY - this.startOffsetY;
 		int deltaX = this.endOffsetX - this.startOffsetX;
 		animate(0, (int) (Math.max(Math.abs(deltaY), Math.abs(deltaX)) / GameDrawCameraMove.delta));
+		
+		this.gameDraw.inputAlgorithmMain.tapWithoutAction(iEnd, jEnd);
 	}
 	
 	@Override
