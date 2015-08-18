@@ -318,6 +318,8 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Unit unit = GameHandler.getUnit(iStart, jStart);
 		GameHandler.removeUnit(iStart, jStart);
 		GameHandler.setUnit(iEnd, jEnd, unit);
+		
+		this.gameDraw.gameDrawUnit.updateOneUnit(iStart, jStart);
 	}
 	
 	@Override
@@ -356,6 +358,8 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Unit unit = GameHandler.getUnit(start.i, start.j);
 		GameHandler.removeUnit(start.i, start.j);
 		GameHandler.setUnit(end.i, end.j, unit);
+		
+		this.gameDraw.gameDrawUnit.updateOneUnit(start.i, start.j);
 	}
 	
 	@Override
@@ -468,6 +472,8 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		targetCell.isDestroying = true;
 		targetCell.isCapture = false;
 		targetCell.player = null;
+		
+		this.gameDraw.gameDrawBuildingSmokes.update(this.gameDraw.game);
 		
 		this.gameDraw.gameDrawCell.updateOneCell(this.gameDraw.game, i, j);
 		this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, i, j);

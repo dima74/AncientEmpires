@@ -1,5 +1,6 @@
 package ru.ancientempires.view.draws;
 
+import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.images.UnitImages;
@@ -89,7 +90,8 @@ public class GameDrawUnit extends GameDraw
 	
 	public void updateOneUnit(int i, int j)
 	{
-		this.field[i][j] = GameDrawUnit.getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
+		if (GameHandler.checkCoord(i, j))
+			this.field[i][j] = GameDrawUnit.getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
 	}
 	
 	public UnitBitmap extractUnit(int i, int j)
@@ -102,6 +104,9 @@ public class GameDrawUnit extends GameDraw
 	@Override
 	public void draw(Canvas canvas)
 	{
+		Unit floatingUnit = this.gameDraw.game.floatingUnit;
+		if (floatingUnit != null)
+			drawUnit(canvas, GameDrawUnit.getUnitBitmap(floatingUnit), floatingUnit.i * GameDraw.A, floatingUnit.j * GameDraw.A);
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
 				drawUnit(canvas, this.field[i][j], i * GameDraw.A, j * GameDraw.A);
