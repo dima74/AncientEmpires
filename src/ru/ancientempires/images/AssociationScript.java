@@ -17,7 +17,7 @@ public class AssociationScript
 	private Type					allocationType;
 	
 	private RenderScript			mRS;
-	private ScriptC_association		mScript;
+	//private ScriptC_association		mScript;
 	
 	public static AssociationScript	rs;
 	
@@ -25,7 +25,7 @@ public class AssociationScript
 	{
 		// Initialize RS
 		this.mRS = RenderScript.create(context);
-		this.mScript = new ScriptC_association(this.mRS);
+		//this.mScript = new ScriptC_association(this.mRS);
 	}
 	
 	public void setBitmaps(Bitmap mBitmapInR, Bitmap mBitmapInG, Bitmap mBitmapInB)
@@ -36,9 +36,11 @@ public class AssociationScript
 		Allocation mInAllocationB = Allocation.createFromBitmap(this.mRS, mBitmapInB);
 		
 		// Set global variable in RS
+		/*
 		this.mScript.set_red(mInAllocationR);
 		this.mScript.set_green(mInAllocationG);
 		this.mScript.set_blue(mInAllocationB);
+		*/
 		
 		this.height = mBitmapInR.getHeight();
 		this.width = mBitmapInR.getWidth();
@@ -55,6 +57,7 @@ public class AssociationScript
 		mOutAllocation = Allocation.createTyped(this.mRS, this.allocationType);
 		
 		// Set global variable in RS
+		/*
 		this.mScript.set_ca(color.a);
 		this.mScript.set_cr(color.r);
 		this.mScript.set_cg(color.g);
@@ -77,6 +80,7 @@ public class AssociationScript
 		this.mScript.set_cb4(color.b4);
 		
 		this.mScript.forEach_association(mOutAllocation);
+		*/
 		
 		// Copy to bitmap and invalidate image view
 		mOutAllocation.copyTo(mBitmapOut);
