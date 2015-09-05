@@ -2,6 +2,13 @@ package ru.ancientempires.view.draws;
 
 import java.util.ArrayList;
 
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.graphics.Canvas;
+import android.graphics.DrawFilter;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.widget.Toast;
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
 import ru.ancientempires.R;
@@ -55,13 +62,6 @@ import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
-import android.app.DialogFragment;
-import android.app.ProgressDialog;
-import android.graphics.Canvas;
-import android.graphics.DrawFilter;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.widget.Toast;
 
 public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCampaign
 {
@@ -279,7 +279,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
 	{
-		Unit unit = Unit.getUnit(Unit.defaultUnit, unitType, player);
+		Unit unit = new Unit(unitType);
 		GameHandler.setUnit(i, j, unit);
 		player.units.add(unit);
 		if (GameHandler.checkCoord(i, j))
@@ -331,7 +331,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		int length = 1;
 		for (int i = 1; i < keyPoints.length; i++)
 			length += Math.abs(keyPoints[i].i - keyPoints[i - 1].i) + Math.abs(keyPoints[i].j - keyPoints[i - 1].j);
-		
+			
 		Point[] points = new Point[length];
 		int nPoint = 0;
 		for (int iKeyPoint = 1; iKeyPoint < keyPoints.length; iKeyPoint++)
@@ -386,7 +386,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 			{
 				new AsyncTask<Void, Void, Void>()
 				{
-					private ProgressDialog	progressDialog;
+					private ProgressDialog progressDialog;
 					
 					@Override
 					protected void onPreExecute()

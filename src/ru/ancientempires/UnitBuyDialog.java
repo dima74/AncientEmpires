@@ -1,29 +1,29 @@
 package ru.ancientempires;
 
-import ru.ancientempires.model.UnitType;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
+import ru.ancientempires.model.Unit;
 
 public class UnitBuyDialog extends DialogFragment
 {
 	
-	private NoticeUnitBuy	listener;
+	private NoticeUnitBuy listener;
 	
-	private String[]		buyStrings;
-	private UnitType[]		buyTypes;
-	private boolean[]		isAvailable;
+	private String[]	buyStrings;
+	private Unit[]		buyUnits;
+	private boolean[]	isAvailable;
 	
-	public UnitBuyDialog(UnitType[] types, boolean[] isAvailable)
+	public UnitBuyDialog(Unit[] units, boolean[] isAvailable)
 	{
-		this.buyTypes = types;
+		this.buyUnits = units;
 		this.isAvailable = isAvailable;
-		this.buyStrings = new String[types.length];
-		for (int i = 0; i < types.length; i++)
-			this.buyStrings[i] = types[i].name;
+		this.buyStrings = new String[units.length];
+		for (int i = 0; i < units.length; i++)
+			this.buyStrings[i] = this.buyUnits[i].type.name;
 	}
 	
 	public UnitBuyDialog setNoticeListener(NoticeUnitBuy listener)
@@ -45,7 +45,7 @@ public class UnitBuyDialog extends DialogFragment
 						if (UnitBuyDialog.this.isAvailable[which])
 						{
 							dismiss();
-							UnitBuyDialog.this.listener.onUnitBuy(UnitBuyDialog.this.buyTypes[which]);
+							UnitBuyDialog.this.listener.onUnitBuy(which);
 						}
 						else
 							Toast.makeText(getActivity(), "Not enough money", Toast.LENGTH_SHORT).show();

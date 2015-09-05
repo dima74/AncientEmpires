@@ -10,7 +10,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.UnitType;
+import ru.ancientempires.model.Unit;
 import ru.ancientempires.view.GameViewThread;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
@@ -18,13 +18,13 @@ import ru.ancientempires.view.draws.GameDrawMain;
 public class InputAlgorithmMain implements NoticeUnitBuy
 {
 	
-	private GameViewThread			thread;
-	public GameDrawMain				gameDraw;
+	private GameViewThread	thread;
+	public GameDrawMain		gameDraw;
 	
-	public final Game				game	= Client.getClient().getGame();
+	public final Game game = Client.getClient().getGame();
 	
-	public int						lastTapI;
-	public int						lastTapJ;
+	public int	lastTapI;
+	public int	lastTapJ;
 	
 	private InputAlgorithmUnitRange	inputAlgorithmUnitMove;
 	private InputAlgorithmUnitRange	inputAlgorithmUnitAttack;
@@ -37,7 +37,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		this.gameDraw = gameDraw;
 		for (GameDraw gameDrawPart : gameDraw.gameDraws)
 			gameDrawPart.update(this.game);
-		
+			
 		this.inputAlgorithmUnitMove = new InputAlgorithmUnitMove(this);
 		this.inputAlgorithmUnitAttack = new InputAlgorithmUnitAttack(this);
 		this.inputAlgorithmUnitRaise = new InputAlgorithmUnitRaise(this);
@@ -50,10 +50,10 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 	{
 		if (i == this.lastTapI && j == this.lastTapJ)
 			return false;
-		
+			
 		if (!GameHandler.checkCoord(i, j))
 			return false;
-		
+			
 		boolean isAction = this.currentInputAlgorithmUnitRange != null && this.currentInputAlgorithmUnitRange.tap(i, j);
 		
 		tapWithoutAction(i, j);
@@ -84,7 +84,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			currentInputAlgorithm = this.inputAlgorithmUnitAttack;
 		if (actionType == ActionType.ACTION_UNIT_RAISE)
 			currentInputAlgorithm = this.inputAlgorithmUnitRaise;
-		
+			
 		if (currentInputAlgorithm != null)
 		{
 			if (this.currentInputAlgorithmUnitRange == currentInputAlgorithm)
@@ -93,7 +93,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			{
 				if (this.currentInputAlgorithmUnitRange != null)
 					this.currentInputAlgorithmUnitRange.revertState();
-				
+					
 				isAction = true;
 				this.currentInputAlgorithmUnitRange = currentInputAlgorithm;
 				currentInputAlgorithm.start(this.lastTapI, this.lastTapJ);
@@ -118,13 +118,13 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		{
 			if (this.currentInputAlgorithmUnitRange != null)
 				this.currentInputAlgorithmUnitRange.revertState();
-			
+				
 			Action action = new Action(ActionType.GET_CELL_BUY_UNITS);
 			action.setProperty("i", this.lastTapI);
 			action.setProperty("j", this.lastTapJ);
 			ActionResult result = Client.action(action);
 			
-			UnitType[] units = (UnitType[]) result.getProperty("units");
+			Unit[] units = (Unit[]) result.getProperty("units");
 			boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
 			this.thread.isPause = true;
 			this.gameDraw.gameActivity.buyUnit(this, units, isAvailable);
@@ -134,7 +134,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		{
 			if (this.currentInputAlgorithmUnitRange != null)
 				this.currentInputAlgorithmUnitRange.revertState();
-			
+				
 			Action action = new Action(actionType);
 			ActionResult result = Client.action(action);
 			this.gameDraw.gameDrawUnitsHeal.start(result);
@@ -165,12 +165,12 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 	}
 	
 	@Override
-	public void onUnitBuy(UnitType type)
+	public void onUnitBuy(int iUnit)
 	{
 		Action action = new Action(ActionType.ACTION_CELL_BUY);
 		action.setProperty("i", this.lastTapI);
 		action.setProperty("j", this.lastTapJ);
-		action.setProperty("type", type.ordinal);
+		action.setProperty("unit", iUnit);
 		Client.action(action);
 		
 		this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);

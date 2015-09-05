@@ -1,5 +1,10 @@
 package ru.ancientempires.activity;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import ru.ancientempires.R;
 import ru.ancientempires.UnitBuyDialog;
 import ru.ancientempires.action.handlers.GameHandler;
@@ -8,15 +13,9 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.model.UnitType;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class GameActivity extends Activity
 {
@@ -98,7 +97,7 @@ public class GameActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void buyUnit(InputAlgorithmMain main, UnitType[] units, boolean[] isAvailable)
+	public void buyUnit(InputAlgorithmMain main, Unit[] units, boolean[] isAvailable)
 	{
 		DialogFragment dialogFragment = new UnitBuyDialog(units, isAvailable).setNoticeListener(main);
 		dialogFragment.show(getFragmentManager(), "UnitBuyDialog");
