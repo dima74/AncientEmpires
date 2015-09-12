@@ -3,6 +3,11 @@ package ru.ancientempires.images;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+
+import android.graphics.Bitmap;
+import ru.ancientempires.MyColor;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
@@ -11,10 +16,6 @@ import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
-import android.graphics.Bitmap;
-
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 
 public class CellImages
 {
@@ -23,23 +24,19 @@ public class CellImages
 	private static CellBitmap[]	cellBitmapsDual;
 	
 	// Используется только во время загрузки игры
-	private static String[]		colorPaths;
-	private static String[]		namesImage;
-	private static String[]		namesImageDestroying;
-	private static String[]		namesImageDual;
-	private static String		defaultImagesFolder;
-	private static String		destroyingImagesFolder;
+	private static String[]	colorPaths;
+	private static String[]	namesImage;
+	private static String[]	namesImageDestroying;
+	private static String[]	namesImageDual;
+	private static String	defaultImagesFolder;
+	private static String	destroyingImagesFolder;
 	
 	public static Bitmap getCellBitmap(final Cell cell, final boolean dual)
 	{
 		CellBitmap cellBitmap = CellImages.cellBitmaps[cell.type.ordinal];
-		return dual ?
-				cellBitmap.isDual ?
-						CellImages.cellBitmapsDual[cell.type.ordinal].getBitmap(cell)
-						:
-						null
-				:
-				cellBitmap.getBitmap(cell);
+		return dual ? cellBitmap.isDual ? CellImages.cellBitmapsDual[cell.type.ordinal].getBitmap(cell)
+				: null
+				: cellBitmap.getBitmap(cell);
 	}
 	
 	public static boolean isCellSmokes(Cell cell)
@@ -138,21 +135,22 @@ public class CellImages
 		Bitmap bitmapR = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[0] + imageName);
 		Bitmap bitmapG = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[1] + imageName);
 		Bitmap bitmapB = BitmapHelper.getBitmap(images, path + CellImages.colorPaths[2] + imageName);
-		AssociationScript.rs.setBitmaps(bitmapR, bitmapG, bitmapB);
+		// AssociationScript.rs.setBitmaps(bitmapR, bitmapG, bitmapB);
 		
 		for (int j = 0; j < game.players.length; j++)
 		{
-			Bitmap bitmap;
+			Bitmap bitmap = null;
 			
-			int colorI = game.players[j].colorI;
-			if (colorI == 1)
+			MyColor color = game.players[j].color;
+			if (color == MyColor.RED)
 				bitmap = bitmapR;
-			else if (colorI == 2)
+			else if (color == MyColor.GREEN)
 				bitmap = bitmapG;
-			else if (colorI == 3)
+			else if (color == MyColor.BLUE)
 				bitmap = bitmapB;
 			else
-				bitmap = AssociationScript.rs.getBitmap(game.players[j].color);
+				MyAssert.a(false);
+			// bitmap = AssociationScript.rs.getBitmap(game.players[j].color);
 			bitmap = BitmapHelper.getResizeBitmap(bitmap);
 			bitmaps[j] = bitmap;
 		}

@@ -88,7 +88,7 @@ public class InputAlgorithmUnitMove extends InputAlgorithmUnitRange
 		super.end();
 		// Для floating войнов
 		if (this.main.game.fieldUnits[this.startI][this.startJ] != null)
-			this.main.gameDraw.gameDrawUnit.updateOneUnit(this.startI, this.startJ);
+			this.main.gameDraw.gameDrawUnits.updateOneUnit(this.startI, this.startJ);
 		
 		if (this.isChanged)
 			this.main.gameDraw.gameDrawUnitMove.start(this.points, this.result);

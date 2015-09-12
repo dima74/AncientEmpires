@@ -4,15 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import ru.ancientempires.GameInit;
-import ru.ancientempires.R;
-import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.graphics.RippleDrawable;
-import ru.ancientempires.images.Images;
-import ru.ancientempires.load.GameLoader;
-import ru.ancientempires.load.GamePath;
-import ru.ancientempires.load.GamesFolder;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,6 +19,15 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.Toast;
+import ru.ancientempires.GameInit;
+import ru.ancientempires.R;
+import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.graphics.RippleDrawable;
+import ru.ancientempires.images.Images;
+import ru.ancientempires.load.GameLoader;
+import ru.ancientempires.load.GamePath;
+import ru.ancientempires.load.GamesFolder;
 
 public class LevelMenuActivity extends Activity
 {
@@ -97,7 +97,7 @@ public class LevelMenuActivity extends Activity
 		this.listView.setAdapter(adapter);
 		
 		// debug
-		GamePath gamePath = this.gamesFolder.gamesFolders[2].gamePaths[0];
+		GamePath gamePath = this.gamesFolder.gamesFolders[1].gamePaths[5];
 		startGame(gamePath);
 	}
 	
@@ -120,7 +120,7 @@ public class LevelMenuActivity extends Activity
 			names.add(newGamesFolder.path.replace("/", ""));
 		for (GamePath newGamePath : gamesFolder.gamePaths)
 			names.add(newGamePath.path.replace("/", ""));
-		
+			
 		return names.toArray(new String[0]);
 	}
 	

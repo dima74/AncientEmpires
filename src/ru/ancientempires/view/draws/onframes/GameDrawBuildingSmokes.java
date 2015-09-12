@@ -1,24 +1,22 @@
 package ru.ancientempires.view.draws.onframes;
 
+import android.graphics.Canvas;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.SmokeImages;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Map;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Canvas;
 
 public class GameDrawBuildingSmokes extends GameDrawOnFrames
 {
 	
-	private GameDrawOnFrames[][]	field;
+	private GameDrawOnFrames[][] field;
 	
 	public GameDrawBuildingSmokes(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
 		
-		Map map = gameDraw.game.map;
-		this.field = new GameDrawOnFrames[map.h][map.w];
+		this.field = new GameDrawOnFrames[gameDraw.game.h][gameDraw.game.w];
 		update(gameDraw.game);
 	}
 	
@@ -27,7 +25,7 @@ public class GameDrawBuildingSmokes extends GameDrawOnFrames
 	{
 		for (int i = 0; i < this.field.length; i++)
 			for (int j = 0; j < this.field[i].length; j++)
-				if (CellImages.isCellSmokes(game.map.getField()[i][j]))
+				if (CellImages.isCellSmokes(game.fieldCells[i][j]))
 				{
 					int startY = (int) (i * GameDraw.A - GameDraw.a * 2);
 					int startX = (j + 1) * GameDraw.A - SmokeImages.wSmall;

@@ -20,7 +20,7 @@ public class GameDrawUnitDie extends GameDrawOnFramesGroup
 	public void start(int i, int j)
 	{
 		this.gameDraw.game.fieldUnits[i][j] = null;
-		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+		this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
 		
 		GameDrawOnFrames gameDrawBitmaps = new GameDrawBitmaps(this.gameDraw)
 				.setYX(i * GameDraw.A, j * GameDraw.A)

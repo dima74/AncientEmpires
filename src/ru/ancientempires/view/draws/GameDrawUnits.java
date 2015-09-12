@@ -1,5 +1,9 @@
 package ru.ancientempires.view.draws;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.images.NumberImages;
 import ru.ancientempires.images.SmallNumberImages;
@@ -8,20 +12,16 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Color;
 
-public class GameDrawUnit extends GameDraw
+public class GameDrawUnits extends GameDraw
 {
 	
-	public final int		h;
-	public final int		w;
+	public final int	h;
+	public final int	w;
 	
-	private UnitBitmap[][]	field;
+	private UnitBitmap[][] field;
 	
-	public GameDrawUnit(GameDrawMain gameDraw)
+	public GameDrawUnits(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
 		Unit[][] field = gameDraw.game.fieldUnits;
@@ -36,8 +36,8 @@ public class GameDrawUnit extends GameDraw
 		Unit[][] field = game.fieldUnits;
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
-				this.field[i][j] = GameDrawUnit.getUnitBitmap(field[i][j]);
-		
+				this.field[i][j] = GameDrawUnits.getUnitBitmap(field[i][j]);
+				
 		return false;
 	}
 	
@@ -45,12 +45,10 @@ public class GameDrawUnit extends GameDraw
 	{
 		if (unit == null)
 			return null;
-		FewBitmaps baseBitmap = UnitImages.getUnitBitmap(unit, false);
+		FewBitmaps baseBitmap = UnitImages.getUnitBitmap(unit);
 		Bitmap textBitmap = Bitmap.createBitmap(GameDraw.A, GameDraw.A, Config.ARGB_8888);
-		UnitBitmap unitBitmap = new UnitBitmap(baseBitmap, textBitmap, unit);
-		if (unit.isLive)
-			GameDrawUnit.updateTextBitmap(textBitmap, unit.health);
-		return unitBitmap;
+		GameDrawUnits.updateTextBitmap(textBitmap, unit.health);
+		return new UnitBitmap(baseBitmap, textBitmap, unit);
 	}
 	
 	private static void updateTextBitmap(Bitmap textBitmap, int health)
@@ -78,20 +76,20 @@ public class GameDrawUnit extends GameDraw
 	public void updateOneUnitBase(int i, int j, boolean isLive)
 	{
 		UnitBitmap unitBitmap = this.field[i][j];
-		FewBitmaps fewBitmap = UnitImages.getUnitBitmap(unitBitmap.unit, isLive);
+		FewBitmaps fewBitmap = UnitImages.getUnitBitmap(unitBitmap.unit);
 		this.field[i][j] = new UnitBitmap(fewBitmap, unitBitmap.textBitmap, unitBitmap.unit);
 	}
 	
 	public void updateOneUnitHealth(int i, int j, boolean isLive)
 	{
 		UnitBitmap unitBitmap = this.field[i][j];
-		GameDrawUnit.updateTextBitmap(unitBitmap.textBitmap, unitBitmap.unit.health);
+		GameDrawUnits.updateTextBitmap(unitBitmap.textBitmap, unitBitmap.unit.health);
 	}
 	
 	public void updateOneUnit(int i, int j)
 	{
 		if (GameHandler.checkCoord(i, j))
-			this.field[i][j] = GameDrawUnit.getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
+			this.field[i][j] = GameDrawUnits.getUnitBitmap(this.gameDraw.game.fieldUnits[i][j]);
 	}
 	
 	public UnitBitmap extractUnit(int i, int j)
@@ -106,7 +104,7 @@ public class GameDrawUnit extends GameDraw
 	{
 		Unit floatingUnit = this.gameDraw.game.floatingUnit;
 		if (floatingUnit != null)
-			drawUnit(canvas, GameDrawUnit.getUnitBitmap(floatingUnit), floatingUnit.i * GameDraw.A, floatingUnit.j * GameDraw.A);
+			drawUnit(canvas, GameDrawUnits.getUnitBitmap(floatingUnit), floatingUnit.i * GameDraw.A, floatingUnit.j * GameDraw.A);
 		for (int i = 0; i < this.h; i++)
 			for (int j = 0; j < this.w; j++)
 				drawUnit(canvas, this.field[i][j], i * GameDraw.A, j * GameDraw.A);
@@ -116,7 +114,7 @@ public class GameDrawUnit extends GameDraw
 	{
 		if (unitBitmap == null)
 			return;
-		
+			
 		canvas.drawBitmap(unitBitmap.getBitmap(), x, y, null);
 		canvas.drawBitmap(unitBitmap.textBitmap, x, y, null);
 	}

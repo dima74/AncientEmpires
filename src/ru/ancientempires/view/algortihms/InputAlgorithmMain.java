@@ -108,9 +108,9 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			action.setProperty("j", this.lastTapJ);
 			Client.action(action);
 			
-			this.gameDraw.gameDrawCell.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawCells.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawBuildingSmokes.update(this.game);
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
+			this.gameDraw.gameDrawUnits.updateOneUnit(this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawInfo.updateCell(this.game);
 			GameActivity.gameView.thread.needUpdateCampaign = true;
 		}
@@ -142,8 +142,8 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			if (this.game.currentPlayer.isCPU)
 			{
 				II.ii.turn();
-				this.gameDraw.gameDrawUnit.update(this.game);
-				this.gameDraw.gameDrawCell.update(this.game);
+				this.gameDraw.gameDrawUnits.update(this.game);
+				this.gameDraw.gameDrawCells.update(this.game);
 				this.gameDraw.gameDrawCellDual.update(this.game);
 				this.gameDraw.gameDrawInfo.update(this.game);
 				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
@@ -151,7 +151,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			}
 			else
 			{
-				this.gameDraw.gameDrawUnit.update(this.game);
+				this.gameDraw.gameDrawUnits.update(this.game);
 				this.gameDraw.gameDrawInfo.update(this.game);
 				tap(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
 				this.gameDraw.focusOnCell(this.game.currentPlayer.cursorI, this.game.currentPlayer.cursorJ);
@@ -173,7 +173,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		action.setProperty("unit", iUnit);
 		Client.action(action);
 		
-		this.gameDraw.gameDrawUnit.updateOneUnit(this.lastTapI, this.lastTapJ);
+		this.gameDraw.gameDrawUnits.updateOneUnit(this.lastTapI, this.lastTapJ);
 		this.gameDraw.gameDrawInfo.update(this.game);
 		this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
 		

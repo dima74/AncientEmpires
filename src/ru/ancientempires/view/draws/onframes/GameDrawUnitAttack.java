@@ -118,14 +118,14 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		if (this.gameDraw.iFrame == this.frameStart + 1)
 		{
-			this.gameDraw.gameDrawUnit.updateOneUnitHealth(this.result.targetI, this.result.targetJ, this.result.isTargetLive);
+			this.gameDraw.gameDrawUnits.updateOneUnitHealth(this.result.targetI, this.result.targetJ, this.result.isTargetLive);
 			if (this.result.i == this.gameDraw.inputAlgorithmMain.lastTapI && this.result.j == this.gameDraw.inputAlgorithmMain.lastTapJ)
 				this.gameDraw.inputAlgorithmMain.tapWithoutAction(this.result.targetI, this.result.targetJ);
 		}
 		if (this.gameDraw.iFrame == this.frameStartPartTwo - 1 && this.isDirect)
-			this.gameDraw.gameDrawUnit.updateOneUnitBase(this.result.i, this.result.j, true);
+			this.gameDraw.gameDrawUnits.updateOneUnitBase(this.result.i, this.result.j, true);
 		if (this.gameDraw.iFrame == this.frameStartSmoke - 1)
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.result.targetI, this.result.targetJ);
+			this.gameDraw.gameDrawUnits.updateOneUnit(this.result.targetI, this.result.targetJ);
 	}
 	
 }

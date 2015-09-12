@@ -53,7 +53,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFrames
 		
 		Unit[] unitsToUpdate = (Unit[]) result.getProperty("unitsToUpdate");
 		for (Unit unit : unitsToUpdate)
-			this.gameDraw.gameDrawUnit.updateOneUnit(unit.i, unit.j);
+			this.gameDraw.gameDrawUnits.updateOneUnit(unit.i, unit.j);
 		
 		animate(0, frameEnd - this.gameDraw.iFrame);
 	}

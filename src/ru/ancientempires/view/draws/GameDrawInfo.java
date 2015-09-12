@@ -1,5 +1,9 @@
 package ru.ancientempires.view.draws;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import ru.ancientempires.images.BigNumberImages;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
@@ -9,32 +13,28 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.draws.onframes.GameDrawDecreaseHealth;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
 public class GameDrawInfo extends GameDraw
 {
 	
-	private static final Paint	paint		= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color1		= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color2		= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color3		= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color4		= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color5		= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	private static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	
-	public boolean				isActive	= true;
-	private Bitmap				backgroundBitmap;
+	public boolean	isActive	= true;
+	private Bitmap	backgroundBitmap;
 	
-	public int					a;
-	private int					h;
-	private int					w;
-	private float				mW;
-	private int					color;
+	public int		a;
+	private int		h;
+	private int		w;
+	private float	mW;
+	private int		color;
 	
-	private Bitmap				goldBitmap;
-	private Bitmap				amountBitmap;
+	private Bitmap	goldBitmap;
+	private Bitmap	amountBitmap;
 	
 	public GameDrawInfo(GameDrawMain gameDraw)
 	{
@@ -120,7 +120,7 @@ public class GameDrawInfo extends GameDraw
 	
 	public void updateCell(Game game)
 	{
-		final Cell cell = game.map.getField()[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
+		final Cell cell = game.fieldCells[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
 		this.bitmap = CellImages.getCellBitmap(cell, false);
 		this.defense = cell.type.defense;
 	}

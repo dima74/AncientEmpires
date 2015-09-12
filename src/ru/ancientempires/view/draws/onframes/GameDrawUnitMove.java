@@ -7,7 +7,7 @@ import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import ru.ancientempires.view.draws.GameDrawUnit;
+import ru.ancientempires.view.draws.GameDrawUnits;
 import android.graphics.Canvas;
 
 public class GameDrawUnitMove extends GameDrawOnFrames
@@ -29,7 +29,7 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 	
 	public void init(int i, int j)
 	{
-		this.unitBitmap = GameHandler.checkCoord(i, j) ? this.gameDraw.gameDrawUnit.extractUnit(i, j) : GameDrawUnit.getUnitBitmap(GameHandler.getUnit(i, j));
+		this.unitBitmap = GameHandler.checkCoord(i, j) ? this.gameDraw.gameDrawUnits.extractUnit(i, j) : GameDrawUnits.getUnitBitmap(GameHandler.getUnit(i, j));
 		this.i = i;
 		this.j = j;
 		this.isStay = true;
@@ -50,7 +50,7 @@ public class GameDrawUnitMove extends GameDrawOnFrames
 		{
 			Point endPoint = this.points[this.points.length - 1];
 			if (GameHandler.checkCoord(endPoint.i, endPoint.j))
-				this.gameDraw.gameDrawUnit.updateOneUnit(endPoint.i, endPoint.j);
+				this.gameDraw.gameDrawUnits.updateOneUnit(endPoint.i, endPoint.j);
 		}
 		this.unitBitmap = null;
 		this.isStay = false;

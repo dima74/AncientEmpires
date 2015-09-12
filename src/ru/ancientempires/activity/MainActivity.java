@@ -5,14 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
-import ru.ancientempires.GameInit;
-import ru.ancientempires.R;
-import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.ALog;
-import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.images.Images;
-import ru.ancientempires.load.GameLoader;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,6 +16,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
+import ru.ancientempires.GameInit;
+import ru.ancientempires.R;
+import ru.ancientempires.TestView2;
+import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.ALog;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.images.Images;
+import ru.ancientempires.load.GameLoader;
 
 public class MainActivity extends Activity
 {
@@ -80,6 +81,12 @@ public class MainActivity extends Activity
 		// мой код
 		MyLog.currLog = new ALog();
 		
+		if (false)
+		{
+			setContentView(new TestView2(this));
+			return;
+		}
+		
 		/*
 		ResourceBundle bundle1 = ResourceBundle.getBundle("test2", Locale.getDefault());
 		MyLog.l(bundle1.getString("a2") + " " + bundle1.getString("a1"));
@@ -127,7 +134,7 @@ public class MainActivity extends Activity
 		}, 0, 10);
 	}
 	
-	public static int	amn	= 0;
+	public static int amn = 0;
 	
 	private void checkInit()
 	{
@@ -142,7 +149,7 @@ public class MainActivity extends Activity
 		}
 	}
 	
-	public boolean	isStartCampaign	= false;
+	public boolean isStartCampaign = false;
 	
 	protected void startCampaign()
 	{

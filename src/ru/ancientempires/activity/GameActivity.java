@@ -75,7 +75,7 @@ public class GameActivity extends Activity
 				Unit unit = GameHandler.game.players[1].units.get(0);
 				unit.health = 0;
 				UnitHelper.checkDied(unit);
-				GameActivity.gameView.thread.gameDraw.gameDrawUnit.update(GameHandler.game);
+				GameActivity.gameView.thread.gameDraw.gameDrawUnits.update(GameHandler.game);
 				GameActivity.gameView.thread.gameDraw.inputAlgorithmMain.tapWithoutAction(unit.i, unit.j);
 				GameActivity.gameView.thread.gameDraw.focusOnCell(unit.i, unit.j);
 				GameActivity.gameView.thread.needUpdateCampaign = true;

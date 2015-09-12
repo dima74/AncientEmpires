@@ -1,6 +1,6 @@
 package ru.ancientempires.images;
 
-import ru.ancientempires.MyColor;
+import ru.ancientempires.MyColor2;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -48,7 +48,7 @@ public class AssociationScript
 		this.allocationType = mInAllocationR.getType();
 	}
 	
-	public Bitmap getBitmap(MyColor color)
+	public Bitmap getBitmap(MyColor2 color)
 	{
 		Bitmap mBitmapOut = Bitmap.createBitmap(this.width, this.height, this.bitmapConfig);
 		

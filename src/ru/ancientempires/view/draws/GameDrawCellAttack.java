@@ -48,7 +48,7 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 		
 		if (this.gameDraw.iFrame == this.frameUpdateTargetCell)
 		{
-			this.gameDraw.gameDrawCell.updateOneCell(this.gameDraw.game, this.targetI, this.targetJ);
+			this.gameDraw.gameDrawCells.updateOneCell(this.gameDraw.game, this.targetI, this.targetJ);
 			this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, this.targetI, this.targetJ);
 		}
 	}

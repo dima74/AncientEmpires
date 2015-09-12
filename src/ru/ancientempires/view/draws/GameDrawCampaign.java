@@ -279,11 +279,11 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 	@Override
 	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
 	{
-		Unit unit = new Unit(unitType);
+		Unit unit = new Unit(unitType, player);
 		GameHandler.setUnit(i, j, unit);
 		player.units.add(unit);
 		if (GameHandler.checkCoord(i, j))
-			this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+			this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
 		Campaign.finish(script);
 	}
 	
@@ -294,7 +294,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		GameHandler.removeUnit(i, j);
 		unit.player.units.remove(unit);
 		if (GameHandler.checkCoord(i, j))
-			this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
+			this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
 		Campaign.finish(script);
 	}
 	
@@ -319,7 +319,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		GameHandler.removeUnit(iStart, jStart);
 		GameHandler.setUnit(iEnd, jEnd, unit);
 		
-		this.gameDraw.gameDrawUnit.updateOneUnit(iStart, jStart);
+		this.gameDraw.gameDrawUnits.updateOneUnit(iStart, jStart);
 	}
 	
 	@Override
@@ -359,7 +359,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		GameHandler.removeUnit(start.i, start.j);
 		GameHandler.setUnit(end.i, end.j, unit);
 		
-		this.gameDraw.gameDrawUnit.updateOneUnit(start.i, start.j);
+		this.gameDraw.gameDrawUnits.updateOneUnit(start.i, start.j);
 	}
 	
 	@Override
@@ -457,8 +457,8 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		Unit unit = GameHandler.getUnit(i, j);
 		GameHandler.removeUnit(i, j);
 		GameHandler.setUnit(iNew, jNew, unit);
-		this.gameDraw.gameDrawUnit.updateOneUnit(i, j);
-		this.gameDraw.gameDrawUnit.updateOneUnit(iNew, jNew);
+		this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
+		this.gameDraw.gameDrawUnits.updateOneUnit(iNew, jNew);
 		Campaign.finish(script);
 	}
 	
@@ -475,7 +475,7 @@ public class GameDrawCampaign extends GameDrawOnFramesGroup implements IDrawCamp
 		
 		this.gameDraw.gameDrawBuildingSmokes.update(this.gameDraw.game);
 		
-		this.gameDraw.gameDrawCell.updateOneCell(this.gameDraw.game, i, j);
+		this.gameDraw.gameDrawCells.updateOneCell(this.gameDraw.game, i, j);
 		this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, i, j);
 		GameDrawOnFrames gameDraw = new GameDrawBitmaps(this.gameDraw)
 				.setYX(i * GameDraw.A, j * GameDraw.A)

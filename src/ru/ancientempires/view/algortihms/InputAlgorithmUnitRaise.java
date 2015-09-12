@@ -21,7 +21,7 @@ public class InputAlgorithmUnitRaise extends InputAlgorithmUnitRange
 		if (this.isChanged)
 		{
 			this.main.gameDraw.gameDrawInfo.update(this.main.game);
-			this.main.gameDraw.gameDrawUnit.updateOneUnit(this.startI, this.startJ);
+			this.main.gameDraw.gameDrawUnits.updateOneUnit(this.startI, this.startJ);
 			
 			this.main.gameDraw.gameDrawUnitRaise.start(this.endI, this.endJ);
 		}

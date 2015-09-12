@@ -3,21 +3,21 @@ package ru.ancientempires.images;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import com.google.gson.stream.JsonReader;
+
+import android.graphics.Bitmap;
 import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
-import android.graphics.Bitmap;
-
-import com.google.gson.stream.JsonReader;
 
 public class Images
 {
 	
-	public static float			baseMulti	= 4.5f / 3.0f;
-	public static int			bitmapSize;
+	public static float	baseMulti	= 2.0f;	// 4.5f / 3.0f;
+	public static int	bitmapSize;
 	
 	public static Bitmap		amountGold;
 	public static Bitmap		amountUnits;
@@ -28,13 +28,13 @@ public class Images
 	public static FewBitmaps	tombstone;
 	public static Bitmap		gameover;
 	
-	public static int			amountGoldH;
-	public static int			amountGoldW;
-	public static int			amountUnitsH;
-	public static int			amountUnitsW;
+	public static int	amountGoldH;
+	public static int	amountGoldW;
+	public static int	amountUnitsH;
+	public static int	amountUnitsW;
 	
-	public static int			levelUpH;
-	public static int			levelUpW;
+	public static int	levelUpH;
+	public static int	levelUpW;
 	
 	public static void preloadResources(ZipFile images) throws IOException
 	{

@@ -49,7 +49,7 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 	{
 		super.draw(canvas);
 		if (this.gameDraw.iFrame == this.frameUpdateTargetUnit)
-			this.gameDraw.gameDrawUnit.updateOneUnit(this.targetI, this.targetJ);
+			this.gameDraw.gameDrawUnits.updateOneUnit(this.targetI, this.targetJ);
 	}
 	
 }
