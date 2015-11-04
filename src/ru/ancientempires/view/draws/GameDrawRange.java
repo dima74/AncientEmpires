@@ -106,8 +106,7 @@ public class GameDrawRange extends GameDraw
 		this.rangeEndX = (this.startJ + radius + 1) * GameDraw.A;
 		
 		this.rangePath = new Path();
-		this.rangePath.addRect(this.rangeStartX, this.rangeStartY, this.rangeEndX, this.rangeEndY,
-				Direction.CW);
+		this.rangePath.addRect(this.rangeStartX, this.rangeStartY, this.rangeEndX, this.rangeEndY, Direction.CW);
 	}
 	
 	private void updateFrames(int framesForCell)
@@ -176,8 +175,8 @@ public class GameDrawRange extends GameDraw
 		if (this.radius == this.radiusEnd && this.radiusEnd == this.radiusMin)
 			this.isDrawing = false;
 		
-		int canvasTranslateY = this.gameDraw.offsetY; // canvas.getTranslateY();
-		int canvasTranslateX = this.gameDraw.offsetX; // canvas.getTranslateX();
+		float canvasTranslateY = this.gameDraw.offsetY; // canvas.getTranslateY();
+		float canvasTranslateX = this.gameDraw.offsetX; // canvas.getTranslateX();
 		
 		this.cacheBitmap.eraseColor(Color.TRANSPARENT);
 		

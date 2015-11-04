@@ -3,8 +3,8 @@ package ru.ancientempires.images;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
-import ru.ancientempires.helpers.BitmapHelper;
 import android.graphics.Bitmap;
+import ru.ancientempires.helpers.BitmapHelper;
 
 public class SmallNumberImages extends NumberImages
 {

@@ -16,8 +16,8 @@ import ru.ancientempires.model.Game;
 public class Images
 {
 	
-	public static float	baseMulti	= 2.0f;	// 4.5f / 3.0f;
-	public static int	bitmapSize;
+	//public static float	baseMulti	= 1.0f;	// 4.5f / 3.0f;
+	public static int	bitmapSize = 24;
 	
 	public static Bitmap		amountGold;
 	public static Bitmap		amountUnits;

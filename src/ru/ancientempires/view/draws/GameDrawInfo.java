@@ -4,19 +4,20 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.images.BigNumberImages;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Player;
 import ru.ancientempires.view.GameView;
-import ru.ancientempires.view.draws.onframes.GameDrawDecreaseHealth;
 
 public class GameDrawInfo extends GameDraw
 {
 	
+	public static float			mScale	= 2.0f;
+	public static int			mA		= (int) (Images.bitmapSize * GameDrawInfo.mScale);
 	private static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	private static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	private static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -27,11 +28,11 @@ public class GameDrawInfo extends GameDraw
 	public boolean	isActive	= true;
 	private Bitmap	backgroundBitmap;
 	
-	public int		a;
-	private int		h;
-	private int		w;
-	private float	mW;
-	private int		color;
+	public int	a;
+	private int	h;
+	private int	w;
+	private int	mW;
+	private int	color;
 	
 	private Bitmap	goldBitmap;
 	private Bitmap	amountBitmap;
@@ -53,7 +54,7 @@ public class GameDrawInfo extends GameDraw
 		GameDrawInfo.color5.setColor(0xFF12142F);
 		
 		this.a = 2;// GameDraw.A / 24;
-		this.mW = this.w - this.a * 7 - GameDraw.A;
+		this.mW = this.w - this.a * 7 - GameDrawInfo.mA;
 		
 		GameDrawInfo.paint.setStrokeWidth(1);
 		GameDrawInfo.color1.setStrokeWidth(this.a);
@@ -107,29 +108,13 @@ public class GameDrawInfo extends GameDraw
 		canvas.drawRect(mW + a3, a3, w - a3, h - a3, GameDrawInfo.color3);
 	}
 	
-	private Bitmap	bitmap;
-	private int		defense;
-	
 	@Override
 	public boolean update(Game game)
 	{
-		updateCell(game);
-		updatePlayer(game.currentPlayer);
+		this.color = game.currentPlayer.color.showColor;
+		this.goldBitmap = BigNumberImages.images.createBitmap(game.currentPlayer.gold);
+		this.amountBitmap = BigNumberImages.images.createBitmap(game.currentPlayer.units.size());
 		return false;
-	}
-	
-	public void updateCell(Game game)
-	{
-		final Cell cell = game.fieldCells[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
-		this.bitmap = CellImages.getCellBitmap(cell, false);
-		this.defense = cell.type.defense;
-	}
-	
-	public void updatePlayer(Player player)
-	{
-		this.color = player.color.showColor;
-		this.goldBitmap = GameDrawDecreaseHealth.createBitmap(BigNumberImages.images, 0, player.gold);
-		this.amountBitmap = GameDrawDecreaseHealth.createBitmap(BigNumberImages.images, 0, player.units.size());
 	}
 	
 	@Override
@@ -143,27 +128,29 @@ public class GameDrawInfo extends GameDraw
 		
 		canvas.drawBitmap(this.backgroundBitmap, 0, 0, null);
 		
-		if (this.bitmap != null)
+		if (true)
 		{
+			Cell cell = GameHandler.fieldCells[GameHandler.game.currentPlayer.cursorI][GameHandler.game.currentPlayer.cursorJ];
 			// изображение клеточки
-			canvas.drawBitmap(this.bitmap, this.mW + this.a * 3, this.a * 4, null);
+			canvas.save();
+			int bitmapY = this.a * 4;
+			int bitmapX = this.mW + this.a * 3;
+			canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, bitmapX, bitmapY);
+			canvas.drawBitmap(CellImages.getCellBitmap(cell, false), bitmapX, bitmapY, null);
 			
-			SmallNumberImages images = SmallNumberImages.images;
 			// и ее защиты
-			int x = this.w - this.a * 4 - images.w;
-			final int y = this.h - this.a * 4 - images.h;
-			int defense = this.defense;
-			do
-			{
-				canvas.drawBitmap(images.getBitmap(defense % 10), x, y, null);
-				defense /= 10;
-				x -= images.w;
-			}
-			while (defense > 0);
+			Bitmap defenceNumberBitmap = SmallNumberImages.images.getBitmap(cell.type.defense);
+			int y = bitmapY + GameDraw.A - defenceNumberBitmap.getHeight();
+			int x = bitmapX + GameDraw.A - defenceNumberBitmap.getWidth();
+			canvas.drawBitmap(defenceNumberBitmap, x, y, null);
+			
+			y -= SmallNumberImages.defenceBitmap.getHeight();
+			x -= SmallNumberImages.defenceBitmap.getWidth();
 			canvas.drawBitmap(SmallNumberImages.defenceBitmap, x, y, null);
+			canvas.restore();
 		}
 		
-		// градиент по цвет игрока
+		// градиент по цвету игрока
 		int amn = 8;
 		for (int i = 0; i < amn; i++)
 		{
@@ -179,12 +166,20 @@ public class GameDrawInfo extends GameDraw
 		
 		int xGold = (int) (this.mW * .075f);
 		int xUnits = (int) (this.mW * .5f);
-		int yGold = (this.h - Images.amountGoldH) / 2;
-		int yUnits = (this.h - Images.amountUnitsH) / 2;
+		float yGold = (this.h - Images.amountGoldH * GameDrawInfo.mScale) / 2;
+		float yUnits = (this.h - Images.amountUnitsH * GameDrawInfo.mScale) / 2;
+		
+		canvas.save();
+		canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, xGold, yGold);
 		canvas.drawBitmap(Images.amountGold, xGold, yGold, null);
+		canvas.drawBitmap(this.goldBitmap, xGold + Images.amountGoldW + this.a, yGold, null);
+		canvas.restore();
+		
+		canvas.save();
+		canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, xUnits, yUnits);
 		canvas.drawBitmap(Images.amountUnits, xUnits, yUnits, null);
-		canvas.drawBitmap(this.goldBitmap, xGold + Images.amountGoldW + this.a, yGold + 1, null);
-		canvas.drawBitmap(this.amountBitmap, xUnits + Images.amountUnitsW + this.a + this.a, yUnits, null);
+		canvas.drawBitmap(this.amountBitmap, xUnits + Images.amountUnitsW + this.a, yUnits, null);
+		canvas.restore();
 	}
 	
 }

@@ -71,7 +71,7 @@ public class InputAlgorithmUnitRange extends InputAlgorithm
 		{
 			this.isChanged = false;
 			destroy();
-			this.main.gameDraw.gameDrawUnits.updateOneUnit(this.startI, this.startJ);
+			//this.main.gameDraw.gameDrawUnits.updateOneUnit(this.startI, this.startJ);
 			return false;
 		}
 	}

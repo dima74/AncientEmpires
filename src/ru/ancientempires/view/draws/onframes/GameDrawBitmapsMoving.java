@@ -1,7 +1,7 @@
 package ru.ancientempires.view.draws.onframes;
 
-import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Canvas;
+import ru.ancientempires.view.draws.GameDrawMain;
 
 public class GameDrawBitmapsMoving extends GameDrawBitmaps
 {
@@ -26,13 +26,11 @@ public class GameDrawBitmapsMoving extends GameDrawBitmaps
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, int value)
 	{
-		int framePass = this.gameDraw.iFrame - this.frameStart;
-		int frameLeft = this.frameEnd - this.gameDraw.iFrame;
-		this.y = (frameLeft * this.startY + framePass * this.endY) / this.frameLength;
-		this.x = (frameLeft * this.startX + framePass * this.endX) / this.frameLength;
-		super.draw(canvas);
+		this.y = (this.frameLeft * this.startY + this.framePass * this.endY) / (this.frameCount - 1);
+		this.x = (this.frameLeft * this.startX + this.framePass * this.endX) / (this.frameCount - 1);
+		super.draw(canvas, value);
 	}
 	
 }

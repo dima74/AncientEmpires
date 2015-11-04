@@ -39,18 +39,7 @@ public class BitmapHelper
 	
 	public static Bitmap getResizeBitmap(Bitmap bitmap)
 	{
-		bitmap = BitmapHelper.getMultiBitmap(bitmap, Images.baseMulti);
-		/*
-		if (!OldGameView.isBaseCellSizeDetermine)
-		{
-			OldGameView.isBaseCellSizeDetermine = true;
-			OldGameView.baseH = bitmapHeight;
-			OldGameView.baseW = bitmapWidth;
-			OldGameView.A = bitmapHeight;
-			OldGameView.a = bitmapHeight / 24;
-		}
-		*/
-		
+		//bitmap = BitmapHelper.getMultiBitmap(bitmap, Images.baseMulti);
 		return bitmap;
 	}
 }

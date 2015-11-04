@@ -1,19 +1,19 @@
 package ru.ancientempires.view.draws.onframes;
 
+import android.graphics.Canvas;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Canvas;
 
 public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 {
 	
-	private static final int	FRAME_LENGTH			= SparksImages.amountDefault * 3 * 2;
+	private static final int FRAME_LENGTH = SparksImages.amountDefault * 3 * 2;
 	
-	private int					targetI;
-	private int					targetJ;
+	private int	targetI;
+	private int	targetJ;
 	
-	private int					frameUpdateTargetUnit	= -1;
+	private int frameUpdateTargetUnit = -1;
 	
 	public GameDrawUnitRaise(GameDrawMain gameDraw)
 	{
@@ -31,25 +31,28 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 		{
 				d, GameDraw.A - d
 		};
+		
+		this.draws.clear();
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
-			{
-				GameDrawOnFrames gameDraw = new GameDrawBitmapsMoving(this.gameDraw)
+				add(new GameDrawBitmapsMoving(this.gameDraw)
 						.setLineYX(y + array[i], x + array[j], y + GameDraw.A - array[i], x + GameDraw.A - array[j])
 						.setBitmaps(SparksImages.bitmapsDefault)
-						.animateRepeat(0, 3);
-				this.draws.add(gameDraw);
-			}
-		animate(0, GameDrawUnitRaise.FRAME_LENGTH);
+						.animateRepeat(3));
+		this.gameDraw.gameDrawUnits.keep[targetI][targetJ] = true;
 		this.frameUpdateTargetUnit = this.frameStart + GameDrawUnitRaise.FRAME_LENGTH / 2;
+		this.gameDraw.gameDrawUnitsDead.keep[this.targetI][this.targetJ] = true;
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void drawOnFrames(Canvas canvas)
 	{
-		super.draw(canvas);
+		super.drawOnFrames(canvas);
 		if (this.gameDraw.iFrame == this.frameUpdateTargetUnit)
-			this.gameDraw.gameDrawUnits.updateOneUnit(this.targetI, this.targetJ);
+		{
+			this.gameDraw.gameDrawUnitsDead.keep[this.targetI][this.targetJ] = false;
+			this.gameDraw.gameDrawUnits.keep[this.targetI][this.targetJ] = false;
+		}
 	}
 	
 }

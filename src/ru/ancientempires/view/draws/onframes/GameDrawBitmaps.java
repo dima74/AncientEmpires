@@ -1,19 +1,19 @@
 package ru.ancientempires.view.draws.onframes;
 
-import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import ru.ancientempires.view.draws.GameDrawMain;
 
-public class GameDrawBitmaps extends GameDrawOnFrames
+public class GameDrawBitmaps extends GameDrawOnFramesWithRangeValues
 {
 	
 	public static final int	FRAMES_FOR_BITMAP	= 2;
 	public int				framesForBitmap		= GameDrawBitmaps.FRAMES_FOR_BITMAP;
 	
-	public Bitmap[]			bitmaps;
+	public Bitmap[] bitmaps;
 	
-	public int				y;
-	public int				x;
+	public int	y;
+	public int	x;
 	
 	public GameDrawBitmaps(GameDrawMain gameDraw)
 	{
@@ -39,23 +39,16 @@ public class GameDrawBitmaps extends GameDrawOnFrames
 		return this;
 	}
 	
-	public GameDrawBitmaps animateRepeat(int frameToStart, int repeat)
+	public GameDrawBitmaps animateRepeat(int repeat)
 	{
-		animate(frameToStart, this.bitmaps.length * this.framesForBitmap * repeat);
+		animateRange(0, this.bitmaps.length * this.framesForBitmap * repeat - 1);
 		return this;
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, int value)
 	{
-		super.draw(canvas);
-		if (!this.isDrawing)
-			return;
-		
-		int framePass = this.gameDraw.iFrame - this.frameStart;
-		// int i = framePass * this.bitmaps.length / this.frameLength;
-		int i = framePass / this.framesForBitmap % this.bitmaps.length;
-		canvas.drawBitmap(this.bitmaps[i], this.x, this.y, null);
+		canvas.drawBitmap(this.bitmaps[value / this.framesForBitmap % this.bitmaps.length], this.x, this.y, null);
 	}
 	
 }

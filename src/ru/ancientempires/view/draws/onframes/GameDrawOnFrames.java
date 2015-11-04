@@ -1,43 +1,64 @@
 package ru.ancientempires.view.draws.onframes;
 
+import android.graphics.Canvas;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Canvas;
 
-public class GameDrawOnFrames extends GameDraw
+public abstract class GameDrawOnFrames extends GameDraw
 {
 	
-	public boolean	isDrawing		= false;
-	public boolean	isEndDrawing	= false;
-	
-	public int		frameLength		= -1;
-	public int		frameStart		= -1;
-	public int		frameEnd		= -1;
+	public int		frameCount;
+	public int		framePass;
+	public int		frameLeft	= 0;
+	public int		frameStart;
+	public int		frameEnd;
+	public boolean	isEndDrawing;
 	
 	public GameDrawOnFrames(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
 	}
 	
-	public GameDrawOnFrames animate(int frameToStart, int frameLength)
+	public GameDrawOnFrames animate(int frameCount)
 	{
-		this.frameLength = frameLength;
-		this.frameStart = this.gameDraw.iFrame + frameToStart;
-		this.frameEnd = this.frameStart + frameLength;
+		this.frameStart = this.gameDraw.iFrame + 1;
+		this.frameEnd = this.frameStart + frameCount - 1;
+		this.framePass = 0;
+		this.frameLeft = this.frameCount = frameCount;
+		this.isEndDrawing = false;
+		return this;
+	}
+	
+	public GameDrawOnFrames increaseFrameStart(int framesBeforeStart)
+	{
+		this.frameStart += framesBeforeStart;
+		this.frameEnd += framesBeforeStart;
 		return this;
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public final void draw(Canvas canvas)
 	{
-		this.isDrawing = this.frameStart <= this.gameDraw.iFrame && this.gameDraw.iFrame < this.frameEnd;
-		this.isEndDrawing = this.gameDraw.iFrame >= this.frameEnd;
+		if (this.frameLeft == 0 || this.gameDraw.iFrame < this.frameStart)
+			return;
+		this.frameLeft--;
+		drawOnFrames(canvas);
+		if (this.frameLeft == 0)
+		{
+			onEndDraw();
+			this.isEndDrawing = true;
+		}
+		this.framePass++;
 	}
+	
+	public abstract void drawOnFrames(Canvas canvas);
+	
+	public void onEndDraw()
+	{}
 	
 	public void reAnimate()
 	{
-		this.frameStart = this.gameDraw.iFrame;
-		this.frameEnd = this.frameStart + this.frameLength;
+		animate(this.frameCount);
 	}
 	
 }

@@ -1,11 +1,10 @@
 package ru.ancientempires.view.draws;
 
+import android.graphics.Canvas;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
-import ru.ancientempires.view.draws.onframes.GameDrawOnFrames;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
-import android.graphics.Canvas;
 
 public class GameDrawCellAttack extends GameDrawOnFramesGroup
 {
@@ -25,27 +24,25 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 		this.targetJ = targetJ;
 		int y = targetI * GameDraw.A;
 		int x = targetJ * GameDraw.A;
-		GameDrawOnFrames gameDraw1 = new GameDrawBitmaps(this.gameDraw)
+		
+		this.draws.clear();
+		add(new GameDrawBitmaps(this.gameDraw)
 				.setYX(y, x)
 				.setBitmaps(SparksImages.bitmapsAttack)
-				.animateRepeat(0, 1);
-		GameDrawOnFrames gameDraw2 = new GameDrawBitmaps(this.gameDraw)
+				.animateRepeat(1));
+		this.frameUpdateTargetCell = this.frameCount;
+		add(new GameDrawBitmaps(this.gameDraw)
 				.setYX(y, x)
 				.setBitmaps(SparksImages.bitmapsDefault)
 				.setFramesForBitmap(4)
-				.animateRepeat(gameDraw1.frameLength, 1);
-		this.draws.add(gameDraw1);
-		this.draws.add(gameDraw2);
-		animate(0, gameDraw1.frameLength + gameDraw2.frameLength);
-		
-		this.frameUpdateTargetCell = gameDraw1.frameEnd;
+				.animateRepeat(1)
+				.increaseFrameStart(this.frameCount));
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void drawOnFrames(Canvas canvas)
 	{
-		super.draw(canvas);
-		
+		super.drawOnFrames(canvas);
 		if (this.gameDraw.iFrame == this.frameUpdateTargetCell)
 		{
 			this.gameDraw.gameDrawCells.updateOneCell(this.gameDraw.game, this.targetI, this.targetJ);

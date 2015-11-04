@@ -1,89 +1,76 @@
 package ru.ancientempires.view.draws.onframes;
 
+import android.graphics.Canvas;
 import ru.ancientempires.Point;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 import ru.ancientempires.view.draws.GameDrawUnits;
-import android.graphics.Canvas;
 
-public class GameDrawUnitMove extends GameDrawOnFrames
+public class GameDrawUnitMove extends GameDrawOnFramesWithRangeValues
 {
 	
-	public static int	framesForCell;		// ii-2, player-4
-	private int			framesForCellMy;
+	public static int	framesForCell;										// ii-2, player-4
+	private int			framesForCellMy	= GameDrawUnitMove.framesForCell;
 	
 	private UnitBitmap	unitBitmap;
-	private int			i, j;
 	private Point[]		points;
-	private boolean		isStay	= false;
+	private Point		endPoint;
 	
 	public GameDrawUnitMove(GameDrawMain gameDraw)
 	{
 		super(gameDraw);
-		this.framesForCellMy = GameDrawUnitMove.framesForCell;
 	}
 	
 	public void init(int i, int j)
 	{
-		this.unitBitmap = GameHandler.checkCoord(i, j) ? this.gameDraw.gameDrawUnits.extractUnit(i, j) : GameDrawUnits.getUnitBitmap(GameHandler.getUnit(i, j));
-		this.i = i;
-		this.j = j;
-		this.isStay = true;
+		this.unitBitmap = new UnitBitmap(GameHandler.getUnit(i, j));
+		this.unitBitmap.keepTurn = true;
+		if (GameHandler.checkCoord(i, j))
+			this.gameDraw.gameDrawUnits.field[i][j] = this.unitBitmap;
 	}
 	
 	public void start(Point[] points, ActionResult result)
 	{
-		this.isStay = false;
+		this.endPoint = points[points.length - 1];
+		this.gameDraw.gameDrawUnits.field[this.endPoint.i][this.endPoint.j] = this.unitBitmap;
 		this.points = points;
-		animate(0, (points.length - 1) * this.framesForCellMy);
+		animateRange(0, (points.length - 1) * this.framesForCellMy - 1);
 		if (result != null)
-			this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameLength);
+			this.gameDraw.gameDrawUnitMoveEnd.start(result, this.frameCount);
+		this.gameDraw.gameDrawUnitsDead.keep[this.endPoint.i][this.endPoint.j] = true;
 	}
 	
 	public void destroy()
 	{
-		if (!this.isStay && this.unitBitmap != null)
-		{
-			Point endPoint = this.points[this.points.length - 1];
-			if (GameHandler.checkCoord(endPoint.i, endPoint.j))
-				this.gameDraw.gameDrawUnits.updateOneUnit(endPoint.i, endPoint.j);
-		}
+		if (this.unitBitmap != null)
+			this.unitBitmap.keepTurn = false;
 		this.unitBitmap = null;
-		this.isStay = false;
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, int value)
 	{
-		if (this.isStay)
-			drawUnit(canvas, this.i * GameDraw.A, this.j * GameDraw.A);
-		super.draw(canvas);
-		if (!this.isDrawing)
+		if (this.unitBitmap == null)
 			return;
-		
-		int framePass = this.gameDraw.iFrame - this.frameStart;
-		int i = framePass / this.framesForCellMy;
-		int framePassPart = framePass - i * this.framesForCellMy;
-		int frameLeftPart = this.framesForCellMy - framePassPart;
-		int y = (frameLeftPart * this.points[i].i + framePassPart * this.points[i + 1].i) * GameDraw.A / this.framesForCellMy;
-		int x = (frameLeftPart * this.points[i].j + framePassPart * this.points[i + 1].j) * GameDraw.A / this.framesForCellMy;
-		drawUnit(canvas, y, x);
-		
-		if (this.gameDraw.iFrame == this.frameEnd - 1)
-		{
-			destroy();
-			GameActivity.gameView.thread.needUpdateCampaign = true;
-		}
+		int i = value / this.framesForCellMy;
+		int iPart = value % this.framesForCellMy;
+		this.unitBitmap.y = (this.points[i].i * (this.framesForCellMy - 1 - iPart) + this.points[i + 1].i * iPart) * GameDraw.A / (this.framesForCellMy - 1);
+		this.unitBitmap.x = (this.points[i].j * (this.framesForCellMy - 1 - iPart) + this.points[i + 1].j * iPart) * GameDraw.A / (this.framesForCellMy - 1);
+		MyLog.l(value, this.unitBitmap.y, this.unitBitmap.x);
+		GameDrawUnits.drawUnit(canvas, this.unitBitmap);
 	}
 	
-	private void drawUnit(Canvas canvas, int y, int x)
+	@Override
+	public void onEndDraw()
 	{
-		canvas.drawBitmap(this.unitBitmap.getBitmap(), x, y, null);
-		canvas.drawBitmap(this.unitBitmap.textBitmap, x, y, null);
+		destroy();
+		this.gameDraw.gameDrawUnitsDead.keep[this.endPoint.i][this.endPoint.j] = false;
+		GameActivity.gameView.thread.needUpdateCampaign = true;
 	}
 	
 }

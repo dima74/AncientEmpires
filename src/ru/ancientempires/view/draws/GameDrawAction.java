@@ -1,21 +1,25 @@
 package ru.ancientempires.view.draws;
 
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.ActionType;
-import ru.ancientempires.client.Client;
-import ru.ancientempires.images.ActionImages;
-import ru.ancientempires.view.GameView;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
+import ru.ancientempires.action.Action;
+import ru.ancientempires.action.ActionResult;
+import ru.ancientempires.action.ActionType;
+import ru.ancientempires.client.Client;
+import ru.ancientempires.images.ActionImages;
+import ru.ancientempires.view.GameView;
+import ru.ancientempires.images.*;
 
 public class GameDrawAction extends GameDraw
 {
 	
+
+	public static float mScale = 2.5f;
+	public static int mA = (int) (Images.bitmapSize * mScale);
 	private static float	actionBitmapH;
 	private static float	actionBitmapW;
 	
@@ -47,9 +51,10 @@ public class GameDrawAction extends GameDraw
 	private Point[]			actionsPoints	= new Point[0];
 	public int				amount			= 0;
 	
-	private int				h;
-	private int				w;
-	private float			bitmapDeltaWidth;
+	private int		h;
+	private int		w;
+	private float	bitmapDeltaWidth;
+	public boolean	isActive	= true;
 	
 	public GameDrawAction(GameDrawMain gameDraw)
 	{
@@ -115,7 +120,7 @@ public class GameDrawAction extends GameDraw
 	{
 		if (this.amount == 0)
 			return;
-		
+			
 		canvas.drawRect(0, 0, this.w, this.h, GameDrawAction.whiteAlphaPaint);
 		for (int i = 0; i < this.amount; i++)
 		{

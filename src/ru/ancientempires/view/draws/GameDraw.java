@@ -1,16 +1,18 @@
 package ru.ancientempires.view.draws;
 
+import android.graphics.Canvas;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.model.Game;
-import android.graphics.Canvas;
 
 public abstract class GameDraw
 {
 	
-	public final static int		A	= Images.bitmapSize;
-	public final static float	a	= Images.bitmapSize / 24.0f;	// 1/24 A
-																	
-	protected GameDrawMain		gameDraw;
+	public final static float	mapScale	= 2;
+	public final static int		A			= Images.bitmapSize;
+	public final static float	fA			= Images.bitmapSize * GameDraw.mapScale;
+	public final static float	a			= Images.bitmapSize / 24.0f;			// 1/24 A
+	
+	protected GameDrawMain gameDraw;
 	
 	public GameDraw(GameDrawMain gameDraw)
 	{

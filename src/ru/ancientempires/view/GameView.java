@@ -1,24 +1,25 @@
 package ru.ancientempires.view;
 
-import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.framework.MyAssert;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.view.draws.GameDraw;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public GameViewThread	thread;
+	public GameViewThread thread;
 	
-	private GestureDetector	detector;
+	private GestureDetector detector;
 	
-	public GameActivity		gameActivity;
+	public GameActivity gameActivity;
 	
-	public static int		h;
-	public static int		w;
+	public static int	h;
+	public static int	w;
 	
 	public GameView(Context context)
 	{
@@ -44,8 +45,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
 			{
-				GameView.this.thread.gameDraw.nextOffsetY -= distanceY;
-				GameView.this.thread.gameDraw.nextOffsetX -= distanceX;
+				GameView.this.thread.gameDraw.nextOffsetY -= distanceY / GameDraw.mapScale;
+				GameView.this.thread.gameDraw.nextOffsetX -= distanceX / GameDraw.mapScale;
 				return true;
 			}
 		});

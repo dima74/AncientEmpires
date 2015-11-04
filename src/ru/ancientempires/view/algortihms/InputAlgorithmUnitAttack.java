@@ -43,8 +43,6 @@ public class InputAlgorithmUnitAttack extends InputAlgorithmUnitRange
 	public void end()
 	{
 		super.end();
-		// this.main.gameDraw.gameDrawInfo.update(this.main.game);
-		
 		if (this.isChanged)
 		{
 			this.main.tapWithoutAction(this.endI, this.endJ);

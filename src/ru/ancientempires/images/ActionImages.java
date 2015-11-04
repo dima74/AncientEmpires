@@ -6,6 +6,7 @@ import java.util.zip.ZipFile;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.helpers.BitmapHelper;
 import android.graphics.Bitmap;
+import ru.ancientempires.view.draws.*;
 
 public class ActionImages
 {
@@ -44,7 +45,7 @@ public class ActionImages
 		
 		for (int i = 0; i < actionImageNames.length; i++)
 			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.
-					getMultiBitmap(images, path + actionImageNames[i], Images.baseMulti * 1.5f);
+					getMultiBitmap(images, path + actionImageNames[i], GameDrawAction.mScale);
 	}
 	
 }

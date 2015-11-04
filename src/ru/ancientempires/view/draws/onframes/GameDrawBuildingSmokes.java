@@ -7,7 +7,7 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 
-public class GameDrawBuildingSmokes extends GameDrawOnFrames
+public class GameDrawBuildingSmokes extends GameDraw
 {
 	
 	private GameDrawOnFrames[][] field;
@@ -35,7 +35,7 @@ public class GameDrawBuildingSmokes extends GameDrawOnFrames
 							.setLineYX(startY, startX, endY, endX)
 							.setBitmaps(SmokeImages.bitmapsSmall)
 							.setFramesForBitmap(10)
-							.animateRepeat(0, 1);
+							.animateRepeat(1);
 				}
 				else
 					this.field[i][j] = null;

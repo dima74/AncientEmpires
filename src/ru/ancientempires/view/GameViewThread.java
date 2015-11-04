@@ -1,17 +1,16 @@
 package ru.ancientempires.view;
 
+import android.graphics.Canvas;
+import android.view.SurfaceHolder;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
-import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Canvas;
-import android.view.SurfaceHolder;
 
 public class GameViewThread extends Thread
 {
 	
-	public static final long	MILLISEC_BETWEEN_FRAMES	= 1000 / 30;
+	public static final long MILLISEC_BETWEEN_FRAMES = 1000 / 30;
 	
 	private SurfaceHolder		surfaceHolder;
 	public GameDrawMain			gameDraw;
@@ -21,12 +20,12 @@ public class GameViewThread extends Thread
 	private long				startTime;
 	private long				nextTime;
 	
-	volatile public float		touchY;
-	volatile public float		touchX;
+	volatile public float	touchY;
+	volatile public float	touchX;
 	
-	volatile public boolean		isTap					= false;
-	volatile public boolean		needUpdateCampaign		= false;
-	public boolean				isPause;
+	volatile public boolean	isTap				= false;
+	volatile public boolean	needUpdateCampaign	= false;
+	public boolean			isPause;
 	
 	public GameViewThread(SurfaceHolder surfaceHolder)
 	{
@@ -120,20 +119,7 @@ public class GameViewThread extends Thread
 	
 	private void touch()
 	{
-		if (!this.gameDraw.touch(this.touchY, this.touchX))
-		{
-			final int i = (int) ((this.touchY - this.gameDraw.offsetY) / GameDraw.A);
-			final int j = (int) ((this.touchX - this.gameDraw.offsetX) / GameDraw.A);
-			try
-			{
-				this.inputAlgorithmMain.tap(i, j);
-			}
-			catch (Exception e)
-			{
-				MyAssert.a(false);
-				e.printStackTrace();
-			}
-		}
+		this.gameDraw.touch(this.touchY, this.touchX);
 	}
 	
 }

@@ -70,7 +70,6 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		this.game.currentPlayer.cursorI = i;
 		this.game.currentPlayer.cursorJ = j;
 		this.gameDraw.updateCursors(this.game);
-		this.gameDraw.gameDrawInfo.updateCell(this.game);
 	}
 	
 	public void performAction(ActionType actionType)
@@ -110,8 +109,6 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 			
 			this.gameDraw.gameDrawCells.updateOneCell(this.game, this.lastTapI, this.lastTapJ);
 			this.gameDraw.gameDrawBuildingSmokes.update(this.game);
-			this.gameDraw.gameDrawUnits.updateOneUnit(this.lastTapI, this.lastTapJ);
-			this.gameDraw.gameDrawInfo.updateCell(this.game);
 			GameActivity.gameView.thread.needUpdateCampaign = true;
 		}
 		else if (actionType == ActionType.ACTION_CELL_BUY)
@@ -173,7 +170,7 @@ public class InputAlgorithmMain implements NoticeUnitBuy
 		action.setProperty("unit", iUnit);
 		Client.action(action);
 		
-		this.gameDraw.gameDrawUnits.updateOneUnit(this.lastTapI, this.lastTapJ);
+		// this.gameDraw.gameDrawUnits.updateOneUnit(this.lastTapI, this.lastTapJ);
 		this.gameDraw.gameDrawInfo.update(this.game);
 		this.gameDraw.gameDrawAction.update(this.lastTapI, this.lastTapJ);
 		

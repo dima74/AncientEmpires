@@ -1,10 +1,9 @@
 package ru.ancientempires.view.draws.onframes;
 
+import android.graphics.Bitmap;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 public class GameDrawLevelUp extends GameDrawOnFramesGroup
 {
@@ -21,40 +20,29 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 		super(gameDraw);
 	}
 	
-	public void animate(int frameToStart, int y, int x)
+	public GameDrawLevelUp animate(int y, int x)
 	{
-		super.animate(frameToStart, GameDrawLevelUp.FRAME_ANIMATE);
-		
 		int levelUpX = x + (GameDraw.A - Images.levelUpW) / 2;
 		int levelUpYStart = (int) (y - GameDraw.A + 20 * GameDraw.a);
 		int levelUpYEnd = (int) (y - GameDraw.A + 5 * GameDraw.a);
 		
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
-			this.draws.add(new GameDrawBitmapsMoving(this.gameDraw)
+			add(new GameDrawBitmapsMoving(this.gameDraw)
 					.setLineYX(levelUpYStart, levelUpX, levelUpYEnd, levelUpX)
 					.setBitmaps(new Bitmap[]
-					{
-							Images.levelUp
-					})
+			{
+					Images.levelUp
+			})
 					.setFramesForBitmap(GameDrawLevelUp.FRAME_ANIMATE_MOTION)
-					.animateRepeat(frameToStart + (int) (i * 3 * GameDraw.a), 1));
-		this.draws.add(new GameDrawBitmap(this.gameDraw)
-				.setBitmap(Images.levelUp)
+					.animateRepeat(1)
+					.increaseFrameStart((int) (i * 3 * GameDraw.a)));
+		add(new GameDrawBitmap(this.gameDraw)
 				.setYX(levelUpYEnd, levelUpX)
-				.animate(frameToStart + GameDrawLevelUp.FRAME_ANIMATE_MOTION, GameDrawLevelUp.FRAME_ANIMATE_STATIC));
-		
-		this.frameStart = this.gameDraw.iFrame + frameToStart;
-		this.frameEnd = 0;
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
-			this.frameEnd = Math.max(this.frameEnd, gameDrawOnFrames.frameEnd);
-		this.frameLength = this.frameEnd - this.frameStart;
-	}
-	
-	@Override
-	public void draw(Canvas canvas)
-	{
-		super.draw(canvas);
+				.setBitmap(Images.levelUp)
+				.animate(GameDrawLevelUp.FRAME_ANIMATE_STATIC)
+				.increaseFrameStart(GameDrawLevelUp.FRAME_ANIMATE_MOTION));
+		return this;
 	}
 	
 }

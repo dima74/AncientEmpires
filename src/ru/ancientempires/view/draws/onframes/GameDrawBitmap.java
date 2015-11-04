@@ -1,8 +1,8 @@
 package ru.ancientempires.view.draws.onframes;
 
-import ru.ancientempires.view.draws.GameDrawMain;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import ru.ancientempires.view.draws.GameDrawMain;
 
 public class GameDrawBitmap extends GameDrawOnFrames
 {
@@ -30,11 +30,8 @@ public class GameDrawBitmap extends GameDrawOnFrames
 	}
 	
 	@Override
-	public void draw(Canvas canvas)
+	public void drawOnFrames(Canvas canvas)
 	{
-		super.draw(canvas);
-		if (!this.isDrawing)
-			return;
 		canvas.drawBitmap(this.bitmap, this.x, this.y, null);
 	}
 	

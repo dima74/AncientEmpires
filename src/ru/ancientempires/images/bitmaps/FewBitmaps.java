@@ -2,15 +2,14 @@ package ru.ancientempires.images.bitmaps;
 
 import java.io.IOException;
 
+import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.BitmapHelper;
-import android.graphics.Bitmap;
 
 public class FewBitmaps
 {
 	
 	public static int	ordinal	= 0;
-	
 	public Bitmap[]		bitmaps;
 	
 	public FewBitmaps setAmount(int amount)

@@ -8,13 +8,14 @@ import android.graphics.Color;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.CursorImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.GameView;
 import ru.ancientempires.view.algortihms.InputAlgorithmMain;
-import ru.ancientempires.view.draws.campaign.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
+import ru.ancientempires.view.draws.onframes.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
@@ -31,14 +32,17 @@ public class GameDrawMain
 	
 	public Random rnd = new Random();
 	
-	public final int	gameDrawInfoH;
-	public final int	gameDrawActionH;
-	public final int	startActionY;
+	public int	gameDrawInfoH;
+	public int	gameDrawActionH;
+	public int	mapH;
+	public int	mapW;
+	public int	visibleMapH;
+	public int	visibleMapW;
 	
-	volatile public int	nextOffsetY;
-	volatile public int	nextOffsetX;
-	public int			offsetY;
-	public int			offsetX;
+	volatile public float	nextOffsetY;
+	volatile public float	nextOffsetX;
+	public float			offsetY;
+	public float			offsetX;
 	
 	public int iFrame = 0;
 	
@@ -75,24 +79,26 @@ public class GameDrawMain
 	public ArrayList<GameDraw>	gameDraws			= new ArrayList<GameDraw>();
 	public ArrayList<GameDraw>	gameDrawsEffects	= new ArrayList<GameDraw>();
 	
-	public int	maxOffsetY;
-	public int	maxOffsetX;
-	public int	minOffsetY;
-	public int	minOffsetX;
+	public float	maxOffsetY;
+	public float	maxOffsetX;
+	public float	minOffsetY;
+	public float	minOffsetX;
+	public boolean	isBlackScreen	= false;
 	
 	public GameDrawMain()
 	{
-		this.gameDrawInfoH = GameDraw.A + 8 * 2;// this.gameDrawInfo.a;
-		this.gameDrawActionH = GameDraw.A * 4 / 3;
-		this.startActionY = GameView.h - this.gameDrawActionH;
-		
-		this.maxOffsetY = this.nextOffsetY = this.gameDrawInfoH;
-		this.maxOffsetX = this.nextOffsetX = 0;
-		this.minOffsetY = -(this.game.h * GameDraw.A - GameView.h + this.gameDrawActionH);
-		this.minOffsetX = -(this.game.w * GameDraw.A - GameView.w);
+		this.gameDrawInfoH = GameDrawInfo.mA + 8 * 2;// this.gameDrawInfo.a;
+		this.gameDrawActionH = GameDrawAction.mA - 8;
+		this.mapH = this.game.h * GameDraw.A;
+		this.mapW = this.game.w * GameDraw.A;
 		
 		this.gameDrawAction = new GameDrawAction(this);
 		this.gameDrawInfo = new GameDrawInfo(this);
+		
+		updateOffsetBounds();
+		
+		this.nextOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale) / 2;
+		this.nextOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale) / 2;
 		
 		this.gameDrawCells = new GameDrawCells(this);
 		this.gameDrawCellDual = new GameDrawCells(this).setDual();
@@ -125,6 +131,26 @@ public class GameDrawMain
 		this.gameDrawCursors.add(this.gameDrawCursorDefault);
 	}
 	
+	private void updateOffsetBounds()
+	{
+		this.visibleMapH = GameView.h - this.gameDrawInfoH;
+		this.visibleMapW = GameView.w;
+		if (this.gameDrawAction.isActive)
+			this.visibleMapH -= this.gameDrawActionH;
+		this.minOffsetY = this.maxOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale) / 2;
+		this.minOffsetX = this.maxOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale) / 2;
+		if (this.minOffsetY < 0)
+		{
+			this.minOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale);
+			this.maxOffsetY = 0;
+		}
+		if (this.minOffsetX < 0)
+		{
+			this.minOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale);
+			this.maxOffsetX = 0;
+		}
+	}
+	
 	public void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
 		for (GameDraw gameDraw : this.gameDraws)
@@ -138,6 +164,8 @@ public class GameDrawMain
 		this.offsetX = this.nextOffsetX;
 		canvas.drawColor(Color.WHITE);
 		
+		canvas.save();
+		canvas.scale(GameDraw.mapScale, GameDraw.mapScale);
 		canvas.translate(this.offsetX, this.offsetY);
 		for (GameDraw gameDraw : this.gameDraws)
 			gameDraw.draw(canvas);
@@ -148,17 +176,22 @@ public class GameDrawMain
 				
 		for (GameDraw gameDraw : this.gameDrawsEffects)
 			gameDraw.draw(canvas);
-		canvas.translate(-this.offsetX, -this.offsetY);
+		// canvas.translate(-this.offsetX, -this.offsetY);
+		canvas.restore();
 		
+		canvas.translate(0, GameView.h - this.gameDrawInfoH);
 		this.gameDrawInfo.draw(canvas);
 		if (this.isActiveGame)
 		{
-			canvas.translate(0, this.startActionY);
+			canvas.translate(0, -this.gameDrawActionH);
 			this.gameDrawAction.draw(canvas);
-			canvas.translate(0, -this.startActionY);
+			canvas.translate(0, this.gameDrawActionH);
 		}
+		canvas.translate(0, -(GameView.h - this.gameDrawInfoH));
 		this.gameDrawBlackScreen.draw(canvas);
-		
+		if (this.isBlackScreen)
+			canvas.drawColor(Color.WHITE);
+			
 		FewBitmaps.ordinal = this.iFrame / 8;
 	}
 	
@@ -168,18 +201,25 @@ public class GameDrawMain
 		this.nextOffsetX = Math.max(this.minOffsetX, Math.min(this.maxOffsetX, this.nextOffsetX));
 	}
 	
-	public boolean touch(float touchY, float touchX)
+	public void touch(float touchY, float touchX)
 	{
-		if (!this.isActiveGame)
-			return false;
-		if (touchY < this.gameDrawInfoH)
-			return true;
-		else if (touchY < this.startActionY)
-			return false;
+		if (!this.isActiveGame || touchY > GameView.h - this.gameDrawInfoH)
+			return;
+		if (this.gameDrawAction.isActive && touchY > this.visibleMapH)
+			this.gameDrawAction.touch(touchY, touchX);
 		else
 		{
-			this.gameDrawAction.touch(touchY, touchX);
-			return true;
+			int i = (int) ((touchY / GameDraw.mapScale - this.offsetY) / GameDraw.A);
+			int j = (int) ((touchX / GameDraw.mapScale - this.offsetX) / GameDraw.A);
+			try
+			{
+				this.inputAlgorithmMain.tap(i, j);
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -191,14 +231,8 @@ public class GameDrawMain
 	
 	public void focusOnCell(int i, int j)
 	{
-		int availableY = this.startActionY - this.gameDrawInfoH;
-		int availableX = GameView.w;
-		
-		int newOffsetY = -i * GameDraw.A - GameDraw.A / 2 + availableY / 2;
-		int newOffsetX = -j * GameDraw.A - GameDraw.A / 2 + availableX / 2;
-		
-		this.nextOffsetY = newOffsetY + this.gameDrawInfoH;
-		this.nextOffsetX = newOffsetX;
+		this.nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + this.visibleMapH / GameDraw.mapScale / 2;
+		this.nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + this.visibleMapW / GameDraw.mapScale / 2;
 		updateOffset();
 	}
 	
