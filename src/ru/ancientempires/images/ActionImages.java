@@ -3,15 +3,17 @@ package ru.ancientempires.images;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import android.graphics.Bitmap;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.helpers.BitmapHelper;
-import android.graphics.Bitmap;
-import ru.ancientempires.view.draws.*;
+import ru.ancientempires.view.draws.GameDrawAction;
 
 public class ActionImages
 {
 	
 	private static Bitmap[]	actionBitmaps;
+	public static int		h;
+	public static int		w;
 	
 	public static Bitmap getActionBitmap(ActionType type)
 	{
@@ -44,8 +46,9 @@ public class ActionImages
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.
-					getMultiBitmap(images, path + actionImageNames[i], GameDrawAction.mScale);
+			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.getMultiBitmap(images, path + actionImageNames[i], GameDrawAction.mScale);
+		ActionImages.h = ActionImages.actionBitmaps[actionTypes[0].ordinal].getHeight();
+		ActionImages.w = ActionImages.actionBitmaps[actionTypes[0].ordinal].getWidth();
 	}
 	
 }

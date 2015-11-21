@@ -15,12 +15,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
+import ru.ancientempires.ALog;
 import ru.ancientempires.GameInit;
 import ru.ancientempires.R;
-import ru.ancientempires.TestView2;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.ALog;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.images.Images;
@@ -37,75 +35,13 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_main);
 		
 		MainActivity.context = getBaseContext();
 		MainActivity.assets = getAssets();
 		MainActivity.resources = getResources();
-		
-		/*
-		Button buttonCampaign = (Button) findViewById(R.id.button_campaign);
-		RippleDrawable.createRipple(buttonCampaign, 0xff00ffff);
-		buttonCampaign.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startCampaign();
-			}
-		});
-		
-		Button buttonSingleplayer = (Button) findViewById(R.id.button_singleplayer);
-		RippleDrawable.createRipple(buttonSingleplayer, 0xff00ffff);
-		buttonSingleplayer.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startSinglePlayer();
-			}
-		});
-		
-		Button buttonMultiplayer = (Button) findViewById(R.id.button_multiplayer);
-		RippleDrawable.createRipple(buttonMultiplayer, 0xff00ffff);
-		buttonMultiplayer.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startMultiplayer();
-			}
-		});
-		*/
-		
-		// мой код
 		MyLog.currLog = new ALog();
 		
-		if (false)
-		{
-			setContentView(new TestView2(this));
-			return;
-		}
-		
-		/*
-		ResourceBundle bundle1 = ResourceBundle.getBundle("test2", Locale.getDefault());
-		MyLog.l(bundle1.getString("a2") + " " + bundle1.getString("a1"));
-		ResourceBundle bundle2 = ResourceBundle.getBundle("test2", Locale.ENGLISH);
-		MyLog.l(bundle2.getString("a2") + " " + bundle2.getString("a1"));
-		if (true)
-			return;
-		//*/
-		
-		long s = System.nanoTime();
 		GameInit.init();
-		long e = System.nanoTime();
-		
-		/*
-		Intent intent = new Intent(this, TestActivity.class);
-		startActivity(intent);
-		if (true)
-			return;
-		// */
 		
 		// TODO заменить, чтобы клиент инит сендил мессадж
 		final Handler handler = new Handler(new Handler.Callback()
@@ -153,9 +89,9 @@ public class MainActivity extends Activity
 	
 	protected void startCampaign()
 	{
-		if (this.isStartCampaign)
+		if (isStartCampaign)
 			return;
-		this.isStartCampaign = true;
+		isStartCampaign = true;
 		// MyLog.l("MainActivity.startCampaign()");
 		ProgressDialog progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage(getString(R.string.loading));
@@ -187,19 +123,9 @@ public class MainActivity extends Activity
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, GameActivity.class);
 				startActivity(intent);
-				MainActivity.this.isStartCampaign = false;
+				isStartCampaign = false;
 			};
 		}.execute();
-	}
-	
-	protected void startSinglePlayer()
-	{
-		Toast.makeText(MainActivity.this, "Скоро", Toast.LENGTH_SHORT).show();
-	}
-	
-	protected void startMultiplayer()
-	{
-		Toast.makeText(MainActivity.this, "Скоро", Toast.LENGTH_SHORT).show();
 	}
 	
 }

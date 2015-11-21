@@ -6,7 +6,6 @@ import java.util.zip.ZipFile;
 import com.google.gson.stream.JsonReader;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.helpers.ZIPHelper;
@@ -16,8 +15,8 @@ import ru.ancientempires.model.Game;
 public class Images
 {
 	
-	//public static float	baseMulti	= 1.0f;	// 4.5f / 3.0f;
-	public static int	bitmapSize = 24;
+	// public static float baseMulti = 1.0f; // 4.5f / 3.0f;
+	public static int bitmapSize = 24;
 	
 	public static Bitmap		amountGold;
 	public static Bitmap		amountUnits;
@@ -93,7 +92,6 @@ public class Images
 		String cellsPath = JsonHelper.readString(reader, "cells_folder");
 		reader.close();
 		
-		AssociationScript.rs = new AssociationScript(MainActivity.context);
 		CellImages.loadResources(images, cellsPath, game);
 		UnitImages.loadResources(images, game);
 	}

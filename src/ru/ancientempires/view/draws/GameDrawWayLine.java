@@ -1,21 +1,25 @@
 package ru.ancientempires.view.draws;
 
-import ru.ancientempires.Point;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import ru.ancientempires.Point;
 
 public class GameDrawWayLine extends GameDraw
 {
 	
-	private float[]	wayPoints;
+	public static Paint LINE_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
 	
-	public GameDrawWayLine(GameDrawMain gameDraw)
+	static
 	{
-		super(gameDraw);
+		GameDrawWayLine.LINE_PAINT.setStrokeWidth(GameDraw.A / 3);
+		GameDrawWayLine.LINE_PAINT.setColor(0xFFE10052);
 	}
+	
+	private float[] wayPoints;
 	
 	public void update(Point[] points)
 	{
-		this.wayPoints = new float[(points.length - 1) * 4];
+		wayPoints = new float[(points.length - 1) * 4];
 		
 		// extra 1/12 pixels
 		float one12 = 1.0f / 12;
@@ -47,23 +51,23 @@ public class GameDrawWayLine extends GameDraw
 					y2 -= one12;
 					y1 += one12;
 				}
-			this.wayPoints[k * 4 + 0] = (x1 + 0.5f) * GameDraw.A;
-			this.wayPoints[k * 4 + 1] = (y1 + 0.5f) * GameDraw.A;
-			this.wayPoints[k * 4 + 2] = (x2 + 0.5f) * GameDraw.A;
-			this.wayPoints[k * 4 + 3] = (y2 + 0.5f) * GameDraw.A;
+			wayPoints[k * 4 + 0] = (x1 + 0.5f) * GameDraw.A;
+			wayPoints[k * 4 + 1] = (y1 + 0.5f) * GameDraw.A;
+			wayPoints[k * 4 + 2] = (x2 + 0.5f) * GameDraw.A;
+			wayPoints[k * 4 + 3] = (y2 + 0.5f) * GameDraw.A;
 		}
 	}
 	
 	public void destroy()
 	{
-		this.wayPoints = null;
+		wayPoints = null;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		if (this.wayPoints != null)
-			canvas.drawLines(this.wayPoints, Paints.LINE_PAINT);
+		if (wayPoints != null)
+			canvas.drawLines(wayPoints, GameDrawWayLine.LINE_PAINT);
 	}
 	
 }

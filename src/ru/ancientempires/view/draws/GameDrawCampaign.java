@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.graphics.Canvas;
-import android.graphics.DrawFilter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.Toast;
@@ -69,42 +68,40 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	public ArrayList<Script>			scripts	= new ArrayList<Script>();
 	private Script						blackScreenScript;
 	
-	public GameDrawCampaign(GameDrawMain gameDraw)
+	public GameDrawCampaign()
 	{
-		super(gameDraw);
 		Campaign.iDrawCampaign = this;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		canvas.setDrawFilter(new DrawFilter());
 		int j = 0;
-		for (int i = 0; i < this.draws.size(); i++)
+		for (int i = 0; i < draws.size(); i++)
 		{
-			GameDrawOnFrames gameDraw = this.draws.get(i);
-			Script script = this.scripts.get(i);
+			GameDrawOnFrames gameDraw = draws.get(i);
+			Script script = scripts.get(i);
 			gameDraw.draw(canvas);
 			if (gameDraw.isEndDrawing)
 				Campaign.finish(script);
 			else
 			{
-				this.draws.set(j, gameDraw);
-				this.scripts.set(j, script);
+				draws.set(j, gameDraw);
+				scripts.set(j, script);
 				j++;
 			}
 		}
 		
-		while (this.draws.size() > j)
+		while (draws.size() > j)
 		{
-			this.draws.remove(this.draws.size() - 1);
-			this.scripts.remove(this.scripts.size() - 1);
+			draws.remove(draws.size() - 1);
+			scripts.remove(scripts.size() - 1);
 		}
 		
-		if (this.blackScreenScript != null && this.gameDraw.gameDrawBlackScreen.isEndDrawing)
+		if (blackScreenScript != null && GameDraw.main.gameDrawBlackScreen.isEndDrawing)
 		{
-			Campaign.finish(this.blackScreenScript);
-			this.blackScreenScript = null;
+			Campaign.finish(blackScreenScript);
+			blackScreenScript = null;
 		}
 	}
 	
@@ -118,39 +115,39 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	public void showDialog(String imagePath, String text, ScriptDialog script)
 	{
 		DialogFragment dialogFragment = new MyDialogFragment(imagePath, text, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialog");
+		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "MyDialog");
 	}
 	
 	@Override
 	public void showDialog(String text, ScriptDialogWithoutImage script)
 	{
 		DialogFragment dialogFragment = new MyDialogWithoutImage(text, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "MyDialogWithoutImage");
+		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "MyDialogWithoutImage");
 	}
 	
 	@Override
 	public void showTarget(String textTitle, String textTarget, ScriptShowTarget script)
 	{
 		DialogFragment dialogFragment = new DialogShowTarget(textTitle, textTarget, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowTarget");
+		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "DialogShowTarget");
 	}
 	
 	@Override
 	public void showIntro(String imagePath, String text, ScriptIntro script)
 	{
 		DialogFragment dialogFragment = new DialogShowIntro(imagePath, text, script);
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogShowIntro");
+		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "DialogShowIntro");
 	}
 	
 	@Override
 	public void showTitle(final String text, final Script script)
 	{
-		this.gameDraw.gameActivity.runOnUiThread(new Runnable()
+		GameActivity.gameActivity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				Toast.makeText(GameDrawCampaign.this.gameDraw.gameActivity, text, Toast.LENGTH_SHORT).show();
+				Toast.makeText(GameActivity.gameActivity, text, Toast.LENGTH_SHORT).show();
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override
@@ -166,73 +163,73 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void showBlackScreen(ScriptShowBlackScreen script)
 	{
-		this.gameDraw.gameDrawBlackScreen.startShow();
-		this.blackScreenScript = script;
+		GameDraw.main.gameDrawBlackScreen.startShow();
+		blackScreenScript = script;
 	}
 	
 	@Override
 	public void hideBlackScreen(ScriptHideBlackScreen script)
 	{
-		this.gameDraw.gameDrawBlackScreen.startHide();
-		this.blackScreenScript = script;
+		GameDraw.main.gameDrawBlackScreen.startHide();
+		blackScreenScript = script;
 	}
 	
 	@Override
 	public void blackScreen(ScriptBlackScreen script)
 	{
-		this.gameDraw.isBlackScreen = true;
-		this.blackScreenScript = script;
+		GameDraw.main.isBlackScreen = true;
 	}
 	
 	@Override
 	public void showInfoBar(ScriptShowInfoBar script)
 	{
-		this.gameDraw.gameDrawInfo.isActive = true;
+		GameDraw.main.gameDrawInfo.isActive = true;
 		Campaign.finish(script);
 	}
 	
 	@Override
 	public void hideInfoBar(ScriptHideInfoBar script)
 	{
-		this.gameDraw.gameDrawInfo.isActive = false;
+		GameDraw.main.gameDrawInfo.isActive = false;
 		Campaign.finish(script);
 	}
 	
 	@Override
 	public void enableActiveGame(ScriptEnableActiveGame script)
 	{
-		this.gameDraw.isActiveGame = true;
+		GameDraw.main.isActiveGame = true;
+		GameDraw.main.isDrawCursor = false;
 		Campaign.finish(script);
 	}
 	
 	@Override
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
-		this.gameDraw.isActiveGame = false;
+		GameDraw.main.isActiveGame = false;
 		Campaign.finish(script);
 	}
 	
 	@Override
 	public void cameraMove(int iEnd, int jEnd, Script script)
 	{
-		this.gameDraw.inputAlgorithmMain.tapWithoutAction(iEnd, jEnd);
-		GameDrawCameraMove gameDraw = new GameDrawCameraMove(this.gameDraw);
+		GameDraw.main.inputPlayer.tapWithoutAction(iEnd, jEnd);
+		GameDrawCameraMove gameDraw = new GameDrawCameraMove();
 		gameDraw.start(iEnd, jEnd);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 	@Override
 	public void hideCursor(ScriptHideCursor script)
 	{
-		this.gameDraw.isDrawCursor = false;
+		GameDraw.main.isDrawCursor = false;
 		Campaign.finish(script);
 	}
 	
 	@Override
 	public void showCursor(ScriptShowCursor script)
 	{
-		this.gameDraw.isDrawCursor = true;
+		GameDraw.main.isDrawCursor = true;
 		Campaign.finish(script);
 	}
 	
@@ -261,20 +258,20 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void unitAttack(int i, int j, ScriptUnitAttack script)
 	{
-		GameDrawUnitAttack gameDraw = new GameDrawUnitAttack(this.gameDraw);
+		GameDrawUnitAttack gameDraw = new GameDrawUnitAttack();
 		gameDraw.start(i, j);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 	@Override
 	public void unitDie(int i, int j, ScriptUnitDie script)
 	{
-		this.gameDraw.game.fieldUnits[i][j] = null;
-		GameDrawUnitDie gameDraw = new GameDrawUnitDie(this.gameDraw);
+		GameDraw.game.fieldUnits[i][j] = null;
+		GameDrawUnitDie gameDraw = new GameDrawUnitDie();
 		gameDraw.start(i, j);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 	@Override
@@ -283,8 +280,8 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		Unit unit = new Unit(unitType, player);
 		player.units.add(unit);
 		GameHandler.setUnit(i, j, unit);
-		// if (GameHandler.checkCoord(i, j))
-		// this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
+		if (GameHandler.checkCoord(i, j))
+			GameDraw.main.gameDrawUnits.updateUnit(i, j);
 		Campaign.finish(script);
 	}
 	
@@ -294,8 +291,8 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		Unit unit = GameHandler.getUnit(i, j);
 		GameHandler.removeUnit(i, j);
 		unit.player.units.remove(unit);
-		// if (GameHandler.checkCoord(i, j))
-		// this.gameDraw.gameDrawUnits.updateOneUnit(i, j);
+		if (GameHandler.checkCoord(i, j))
+			GameDraw.main.gameDrawUnits.updateUnit(i, j);
 		Campaign.finish(script);
 	}
 	
@@ -309,18 +306,16 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 			points[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
 		points[points.length - 1] = new Point(iEnd, jEnd);
 		
-		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
+		GameDrawUnitMove gameDraw = new GameDrawUnitMove();
 		gameDraw.init(iStart, jStart);
 		gameDraw.start(points, null);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 		
 		// TODO
 		Unit unit = GameHandler.getUnit(iStart, jStart);
 		GameHandler.removeUnit(iStart, jStart);
 		GameHandler.setUnit(iEnd, jEnd, unit);
-		
-		// this.gameDraw.gameDrawUnits.updateOneUnit(iStart, jStart);
 	}
 	
 	@Override
@@ -349,11 +344,11 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		}
 		points[points.length - 1] = new Point(end.i, end.j);
 		
-		GameDrawUnitMove gameDraw = new GameDrawUnitMove(this.gameDraw);
+		GameDrawUnitMove gameDraw = new GameDrawUnitMove();
 		gameDraw.init(start.i, start.j);
 		gameDraw.start(points, null);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 		
 		// TODO
 		Unit unit = GameHandler.getUnit(start.i, start.j);
@@ -392,9 +387,9 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 					@Override
 					protected void onPreExecute()
 					{
-						this.progressDialog = new ProgressDialog(GameActivity.gameActivity);
-						this.progressDialog.setMessage(GameActivity.gameActivity.getString(R.string.loading));
-						this.progressDialog.show();
+						progressDialog = new ProgressDialog(GameActivity.gameActivity);
+						progressDialog.setMessage(GameActivity.gameActivity.getString(R.string.loading));
+						progressDialog.show();
 					}
 					
 					@Override
@@ -408,7 +403,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 					@Override
 					protected void onPostExecute(Void result)
 					{
-						this.progressDialog.dismiss();
+						progressDialog.dismiss();
 						GameActivity.gameActivity.startGameView();
 					}
 				}.execute();
@@ -420,35 +415,35 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	public void gameOver(ScriptGameOver script)
 	{
 		DialogFragment dialogFragment = new DialogGameOver();
-		dialogFragment.show(this.gameDraw.gameActivity.getFragmentManager(), "DialogGameOver");
+		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "DialogGameOver");
 	}
 	
 	@Override
 	public void sparkDefault(int i, int j, ScriptSparkDefault script)
 	{
-		GameDrawBitmaps gameDraw = new GameDrawBitmaps(this.gameDraw)
+		GameDrawBitmaps gameDraw = new GameDrawBitmaps()
 				.setBitmaps(SparksImages.bitmapsDefault)
 				.setYX(i * GameDraw.A, j * GameDraw.A)
 				.animateRepeat(1);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 	@Override
 	public void sparkAttack(int i, int j, ScriptSparkAttack script)
 	{
-		GameDrawBitmaps gameDraw = new GameDrawBitmaps(this.gameDraw)
+		GameDrawBitmaps gameDraw = new GameDrawBitmaps()
 				.setBitmaps(SparksImages.bitmapsAttack)
 				.setYX(i * GameDraw.A, j * GameDraw.A)
 				.animateRepeat(1);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 	@Override
 	public void setMapPosition(int i, int j, ScriptSetMapPosition script)
 	{
-		this.gameDraw.focusOnCell(i, j);
+		GameDraw.main.focusOnCell(i, j);
 		Campaign.finish(script);
 	}
 	
@@ -474,17 +469,17 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		targetCell.isCapture = false;
 		targetCell.player = null;
 		
-		this.gameDraw.gameDrawBuildingSmokes.update(this.gameDraw.game);
+		GameDraw.main.gameDrawBuildingSmokes.update();
 		
-		this.gameDraw.gameDrawCells.updateOneCell(this.gameDraw.game, i, j);
-		this.gameDraw.gameDrawCellDual.updateOneCell(this.gameDraw.game, i, j);
-		GameDrawOnFrames gameDraw = new GameDrawBitmaps(this.gameDraw)
+		GameDraw.main.gameDrawCells.updateOneCell(i, j);
+		GameDraw.main.gameDrawCellDual.updateOneCell(i, j);
+		GameDrawOnFrames gameDraw = new GameDrawBitmaps()
 				.setYX(i * GameDraw.A, j * GameDraw.A)
 				.setBitmaps(SparksImages.bitmapsDefault)
 				.setFramesForBitmap(4)
 				.animateRepeat(1);
-		this.draws.add(gameDraw);
-		this.scripts.add(script);
+		draws.add(gameDraw);
+		scripts.add(script);
 	}
 	
 }

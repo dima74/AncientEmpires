@@ -10,11 +10,6 @@ import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 public class GameDrawUnitsHeal extends GameDrawOnFramesGroup
 {
 	
-	public GameDrawUnitsHeal(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
-	
 	public void start(ActionResult result)
 	{
 		ArrayList<Unit> unitsToHeal = (ArrayList<Unit>) result.getProperty("unitsToHeal");
@@ -23,7 +18,7 @@ public class GameDrawUnitsHeal extends GameDrawOnFramesGroup
 		for (int i = 0; i < unitsToHeal.size(); i++)
 		{
 			Unit unit = unitsToHeal.get(i);
-			add(new GameDrawNumberSinus(this.gameDraw)
+			add(new GameDrawNumberSinus()
 					.animate(unit.i * GameDraw.A, unit.j * GameDraw.A, +1, valueToHeal.get(i)));
 		}
 	}

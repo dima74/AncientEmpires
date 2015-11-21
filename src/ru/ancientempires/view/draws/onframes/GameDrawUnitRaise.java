@@ -3,7 +3,6 @@ package ru.ancientempires.view.draws.onframes;
 import android.graphics.Canvas;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.view.draws.GameDraw;
-import ru.ancientempires.view.draws.GameDrawMain;
 
 public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 {
@@ -14,11 +13,6 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 	private int	targetJ;
 	
 	private int frameUpdateTargetUnit = -1;
-	
-	public GameDrawUnitRaise(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
 	
 	public void start(int targetI, int targetJ)
 	{
@@ -32,26 +26,26 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 				d, GameDraw.A - d
 		};
 		
-		this.draws.clear();
+		draws.clear();
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
-				add(new GameDrawBitmapsMoving(this.gameDraw)
+				add(new GameDrawBitmapsMoving()
 						.setLineYX(y + array[i], x + array[j], y + GameDraw.A - array[i], x + GameDraw.A - array[j])
 						.setBitmaps(SparksImages.bitmapsDefault)
 						.animateRepeat(3));
-		this.gameDraw.gameDrawUnits.keep[targetI][targetJ] = true;
-		this.frameUpdateTargetUnit = this.frameStart + GameDrawUnitRaise.FRAME_LENGTH / 2;
-		this.gameDraw.gameDrawUnitsDead.keep[this.targetI][this.targetJ] = true;
+		GameDraw.main.gameDrawUnits.keep[targetI][targetJ] = true;
+		frameUpdateTargetUnit = frameStart + GameDrawUnitRaise.FRAME_LENGTH / 2;
+		GameDraw.main.gameDrawUnitsDead.keep[this.targetI][this.targetJ] = true;
 	}
 	
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
 		super.drawOnFrames(canvas);
-		if (this.gameDraw.iFrame == this.frameUpdateTargetUnit)
+		if (GameDraw.iFrame == frameUpdateTargetUnit)
 		{
-			this.gameDraw.gameDrawUnitsDead.keep[this.targetI][this.targetJ] = false;
-			this.gameDraw.gameDrawUnits.keep[this.targetI][this.targetJ] = false;
+			GameDraw.main.gameDrawUnitsDead.keep[targetI][targetJ] = false;
+			GameDraw.main.gameDrawUnits.keep[targetI][targetJ] = false;
 		}
 	}
 	

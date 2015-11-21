@@ -43,8 +43,8 @@ public class MyDialogFragment extends DialogFragment
 		try
 		{
 			View view = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog, null);
-			ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
-			TextView textView = (TextView) view.findViewById(R.id.textview);
+			ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
+			TextView textView = (TextView) view.findViewById(R.id.textUnitName);
 			Bitmap bitmap = BitmapHelper.getBitmap(Client.gameZipFile, this.imagePath);
 			imageView.setImageBitmap(bitmap);
 			textView.setText(this.text);

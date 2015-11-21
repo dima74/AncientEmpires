@@ -1,58 +1,82 @@
 package ru.ancientempires;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.view.inputs.InputPlayer;
 
-public class UnitBuyDialog extends DialogFragment
+public class UnitBuyDialog
 {
 	
-	private NoticeUnitBuy listener;
+	private static AlertDialog	dialog;
+	private static InputPlayer	input;
+	private static Unit[]		units;
+	private static boolean[]	available;
 	
-	private String[]	buyStrings;
-	private Unit[]		buyUnits;
-	private boolean[]	isAvailable;
-	
-	public UnitBuyDialog(Unit[] units, boolean[] isAvailable)
+	public static void showDialog(InputPlayer input, Unit[] units, boolean[] available)
 	{
-		this.buyUnits = units;
-		this.isAvailable = isAvailable;
-		this.buyStrings = new String[units.length];
-		for (int i = 0; i < units.length; i++)
-			this.buyStrings[i] = this.buyUnits[i].type.name;
-	}
-	
-	public UnitBuyDialog setNoticeListener(NoticeUnitBuy listener)
-	{
-		this.listener = listener;
-		return this;
-	}
-	
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.action_buy)
-				.setSingleChoiceItems(this.buyStrings, -1, new DialogInterface.OnClickListener()
+		UnitBuyDialog.input = input;
+		UnitBuyDialog.units = units;
+		UnitBuyDialog.available = available;
+		if (UnitBuyDialog.dialog != null)
+			GameActivity.gameActivity.runOnUiThread(new Runnable()
+			{
+				@Override
+				public void run()
 				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						if (UnitBuyDialog.this.isAvailable[which])
-						{
-							dismiss();
-							UnitBuyDialog.this.listener.onUnitBuy(which);
-						}
-						else
-							Toast.makeText(getActivity(), "Not enough money", Toast.LENGTH_SHORT).show();
-					}
-				})
-				.setNegativeButton(android.R.string.cancel, null);
-		return builder.create();
+					UnitBuyDialog.useExistingDialog();
+				}
+			});
+		else
+			UnitBuyDialog.createNewDialog();
+	}
+	
+	private static void createNewDialog()
+	{
+		View view = GameActivity.gameActivity.getLayoutInflater().inflate(R.layout.list, null);
+		ListView listView = (ListView) view.findViewById(R.id.list);
+		
+		UnitBuyAdapter myAdapter = new UnitBuyAdapter().start(UnitBuyDialog.units, UnitBuyDialog.available);
+		listView.setAdapter(myAdapter);
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parentView, View childView, int position, long id)
+			{
+				if (UnitBuyDialog.available[position])
+				{
+					UnitBuyDialog.dialog.hide();
+					UnitBuyDialog.input.onUnitBuy(position);
+				}
+			}
+		});
+		
+		final AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.gameActivity);
+		builder.setView(view);
+		builder.setTitle("Купить");
+		
+		GameActivity.gameActivity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UnitBuyDialog.dialog = builder.show();
+			}
+		});
+	}
+	
+	private static void useExistingDialog()
+	{
+		ListView listView = (ListView) UnitBuyDialog.dialog.findViewById(R.id.list);
+		UnitBuyAdapter myAdapter = (UnitBuyAdapter) listView.getAdapter();
+		myAdapter.start(UnitBuyDialog.units, UnitBuyDialog.available);
+		myAdapter.notifyDataSetChanged();
+		listView.setSelection(0);
+		UnitBuyDialog.dialog.show();
 	}
 	
 }

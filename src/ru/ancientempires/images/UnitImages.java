@@ -26,6 +26,7 @@ public class UnitImages
 	public static int[]				playerToColorI;
 	public static FewBitmaps[][]	greyUnitsBitmaps;
 	private static FewBitmaps[][]	unitsBitmaps;
+	private static Bitmap[][]		unitsBitmapsBuy;
 	
 	public static FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
@@ -35,12 +36,17 @@ public class UnitImages
 			return UnitImages.unitsBitmaps[unit.type.ordinal][UnitImages.playerToColorI[unit.player.ordinal]];
 	}
 	
+	public static Bitmap getUnitBitmapBuy(Unit unit)
+	{
+		return UnitImages.unitsBitmapsBuy[unit.type.ordinal][UnitImages.playerToColorI[unit.player.ordinal]];
+	}
+	
 	public static void preload(ZipFile images, String path) throws IOException
 	{
 		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
 		reader.beginObject();
 		
-		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.amount][5];
+		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.number][5];
 		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
@@ -74,6 +80,11 @@ public class UnitImages
 			for (int colorI = 0; colorI < UnitImages.colors.length; colorI++)
 				if (player.color == UnitImages.colors[colorI])
 					UnitImages.playerToColorI[player.ordinal] = colorI;
+					
+		UnitImages.unitsBitmapsBuy = new Bitmap[UnitType.number][5];
+		for (int colorI = 0; colorI < UnitImages.colors.length; colorI++)
+			for (int typeI = 0; typeI < UnitType.number; typeI++)
+				UnitImages.unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(UnitImages.unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
 	
 }

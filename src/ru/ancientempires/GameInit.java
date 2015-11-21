@@ -2,13 +2,12 @@ package ru.ancientempires;
 
 import java.io.IOException;
 
+import android.os.AsyncTask;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.AZipHelper;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.draws.GameDrawAction;
-import ru.ancientempires.view.draws.Paints;
-import android.os.AsyncTask;
 
 public class GameInit
 {
@@ -38,7 +37,6 @@ public class GameInit
 					
 					// Debug.startMethodTracing("traces/init");
 					GameDrawAction.initResources();
-					Paints.init();
 					// Debug.stopMethodTracing();
 				}
 				catch (IOException e)

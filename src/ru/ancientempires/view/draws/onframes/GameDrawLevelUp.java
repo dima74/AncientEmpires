@@ -3,7 +3,6 @@ package ru.ancientempires.view.draws.onframes;
 import android.graphics.Bitmap;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.view.draws.GameDraw;
-import ru.ancientempires.view.draws.GameDrawMain;
 
 public class GameDrawLevelUp extends GameDrawOnFramesGroup
 {
@@ -15,11 +14,6 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 	private static final int	FRAME_ANIMATE_MOTION	= 16;
 	private static final int	FRAME_ANIMATE_STATIC	= 32;
 	
-	public GameDrawLevelUp(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
-	
 	public GameDrawLevelUp animate(int y, int x)
 	{
 		int levelUpX = x + (GameDraw.A - Images.levelUpW) / 2;
@@ -28,7 +22,7 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 		
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
-			add(new GameDrawBitmapsMoving(this.gameDraw)
+			add(new GameDrawBitmapsMoving()
 					.setLineYX(levelUpYStart, levelUpX, levelUpYEnd, levelUpX)
 					.setBitmaps(new Bitmap[]
 			{
@@ -37,7 +31,7 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 					.setFramesForBitmap(GameDrawLevelUp.FRAME_ANIMATE_MOTION)
 					.animateRepeat(1)
 					.increaseFrameStart((int) (i * 3 * GameDraw.a)));
-		add(new GameDrawBitmap(this.gameDraw)
+		add(new GameDrawBitmap()
 				.setYX(levelUpYEnd, levelUpX)
 				.setBitmap(Images.levelUp)
 				.animate(GameDrawLevelUp.FRAME_ANIMATE_STATIC)

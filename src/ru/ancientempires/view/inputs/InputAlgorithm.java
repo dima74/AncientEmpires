@@ -1,12 +1,11 @@
-package ru.ancientempires.view.algortihms;
-
+package ru.ancientempires.view.inputs;
 
 public abstract class InputAlgorithm
 {
 	
-	public InputAlgorithmMain	main;
+	public InputPlayer main;
 	
-	public InputAlgorithm(InputAlgorithmMain main)
+	public InputAlgorithm(InputPlayer main)
 	{
 		this.main = main;
 	}
@@ -20,9 +19,7 @@ public abstract class InputAlgorithm
 	}
 	
 	public void destroy()
-	{
-		// this.main.inputAlgorithms.remove(this);
-	}
+	{}
 	
 	public void end()
 	{

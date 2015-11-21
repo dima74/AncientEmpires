@@ -2,7 +2,6 @@ package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDrawMain;
 
 public class GameDrawBitmaps extends GameDrawOnFramesWithRangeValues
 {
@@ -14,11 +13,6 @@ public class GameDrawBitmaps extends GameDrawOnFramesWithRangeValues
 	
 	public int	y;
 	public int	x;
-	
-	public GameDrawBitmaps(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
 	
 	public GameDrawBitmaps setFramesForBitmap(int framesForBitmap)
 	{
@@ -41,14 +35,14 @@ public class GameDrawBitmaps extends GameDrawOnFramesWithRangeValues
 	
 	public GameDrawBitmaps animateRepeat(int repeat)
 	{
-		animateRange(0, this.bitmaps.length * this.framesForBitmap * repeat - 1);
+		animateRange(0, bitmaps.length * framesForBitmap * repeat - 1);
 		return this;
 	}
 	
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
-		canvas.drawBitmap(this.bitmaps[value / this.framesForBitmap % this.bitmaps.length], this.x, this.y, null);
+		canvas.drawBitmap(bitmaps[value / framesForBitmap % bitmaps.length], x, y, null);
 	}
 	
 }

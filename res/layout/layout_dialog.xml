@@ -10,19 +10,19 @@
 		android:layout_height="match_parent" >
 
 		<ImageView
-			android:id="@+id/imageview"
+			android:id="@+id/imageUnit"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
 			android:src="@drawable/i0" />
 
 		<TextView
-			android:id="@+id/textview"
+			android:id="@+id/textUnitName"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
 			android:layout_marginLeft="10dp"
-			android:layout_toEndOf="@+id/imageview"
+			android:layout_toEndOf="@+id/imageUnit"
 			android:text="aincgh cgsnnhgfshc fgnhj dfcggn hdfxgn cskv dcngskvd hzngfcks"
 			android:textSize="15sp" />
 	</RelativeLayout>

@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.AttackResult;
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.view.draws.GameDrawMain;
+import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 {
@@ -20,50 +20,47 @@ public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 	public int	frameToStartPartTwo;
 	public int	framesBeforePartTwo;
 	
-	public GameDrawUnitAttackMain(GameDrawMain gameDraw)
+	public GameDrawUnitAttackMain()
 	{
-		super(gameDraw);
-		this.drawDirect = new GameDrawUnitAttack(gameDraw).setDirect();
-		this.drawReverse = new GameDrawUnitAttack(gameDraw);
+		drawDirect = new GameDrawUnitAttack().setDirect();
+		drawReverse = new GameDrawUnitAttack();
 	}
 	
-	public void start(ActionResult result)
+	public GameDrawUnitAttackMain start(ActionResult result)
 	{
 		AttackResult resultDirect = (AttackResult) result.getProperty("attackResultDirect");
-		this.isUnitDie = !resultDirect.isTargetLive;
+		isUnitDie = !resultDirect.isTargetLive;
 		
-		this.drawDirect.initPartOne(resultDirect);
-		this.framesBeforePartTwo = this.drawDirect.frameCount - 16;
+		drawDirect.initPartOne(resultDirect);
+		framesBeforePartTwo = drawDirect.frameCount - 16;
 		
-		this.isReverseAttack = (boolean) result.getProperty("isReverseAttack");
-		if (this.isReverseAttack)
+		isReverseAttack = (boolean) result.getProperty("isReverseAttack");
+		if (isReverseAttack)
 		{
 			AttackResult resultReverse = (AttackResult) result.getProperty("attackResultReverse");
-			this.drawReverse.initPartOne(resultReverse);
-			this.drawReverse.increaseFrameStart(GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES);
-			this.framesBeforePartTwo = GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES + this.drawReverse.frameCount - 16;
-			this.isUnitDie |= !resultReverse.isTargetLive;
+			drawReverse.initPartOne(resultReverse);
+			drawReverse.increaseFrameStart(GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES);
+			framesBeforePartTwo = GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES + drawReverse.frameCount - 16;
+			isUnitDie |= !resultReverse.isTargetLive;
 		}
 		
-		this.draws.clear();
-		add(this.drawDirect.initPartTwo(this.framesBeforePartTwo));
-		if (this.isReverseAttack)
-			add(this.drawReverse.initPartTwo(this.framesBeforePartTwo));
-		this.gameDraw.gameDrawUnits.field[this.drawDirect.result.i][this.drawDirect.result.j].keepTurn = true;
+		draws.clear();
+		add(drawDirect.initPartTwo(framesBeforePartTwo));
+		if (isReverseAttack)
+			add(drawReverse.initPartTwo(framesBeforePartTwo));
+		GameDraw.main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = true;
+		return this;
 	}
 	
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
 		super.drawOnFrames(canvas);
-		if (this.framePass == this.framesBeforePartTwo - 1)
-			this.gameDraw.gameDrawUnits.field[this.drawDirect.result.i][this.drawDirect.result.j].keepTurn = false;
-		if (this.gameDraw.iFrame == this.frameEnd)
-		{
-			this.gameDraw.gameDrawInfo.update(this.gameDraw.game);
-			if (this.isUnitDie)
+		if (framePass == framesBeforePartTwo - 1)
+			GameDraw.main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = false;
+		if (GameDraw.iFrame == frameEnd)
+			if (isUnitDie)
 				GameActivity.gameView.thread.needUpdateCampaign = true;
-		}
 	}
 	
 }

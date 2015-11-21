@@ -53,8 +53,8 @@ public class CellImages
 	
 	public static void preload(ZipFile images, String path) throws IOException
 	{
-		CellImages.cellBitmaps = new CellBitmap[CellType.amount];
-		CellImages.cellBitmapsDual = new CellBitmap[CellType.amount];
+		CellImages.cellBitmaps = new CellBitmap[CellType.number];
+		CellImages.cellBitmapsDual = new CellBitmap[CellType.number];
 		
 		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
 		reader.beginObject();

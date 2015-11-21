@@ -1,12 +1,11 @@
 package ru.ancientempires.activity;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import ru.ancientempires.GameView;
 import ru.ancientempires.R;
-import ru.ancientempires.UnitBuyDialog;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.action.handlers.UnitHelper;
 import ru.ancientempires.client.Client;
@@ -14,8 +13,6 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.server.ClientServer;
-import ru.ancientempires.view.GameView;
-import ru.ancientempires.view.algortihms.InputAlgorithmMain;
 
 public class GameActivity extends Activity
 {
@@ -34,7 +31,6 @@ public class GameActivity extends Activity
 	public void startGameView()
 	{
 		GameActivity.gameView = new GameView(this);
-		GameActivity.gameView.gameActivity = this;
 		setContentView(GameActivity.gameView);
 	}
 	
@@ -61,6 +57,8 @@ public class GameActivity extends Activity
 		int id = item.getItemId();
 		if (id == R.id.action_settings)
 			return true;
+		else if (id == R.id.action_end_turn)
+			GameActivity.gameView.thread.inputMain.endTurn();
 		else if (id == R.id.action_reset)
 		{
 			ClientServer.server.startGame(Client.getClient().gamePath);
@@ -75,8 +73,8 @@ public class GameActivity extends Activity
 				Unit unit = GameHandler.game.players[1].units.get(0);
 				unit.health = 0;
 				UnitHelper.checkDied(unit);
-				GameActivity.gameView.thread.gameDraw.gameDrawUnits.update(GameHandler.game);
-				GameActivity.gameView.thread.gameDraw.inputAlgorithmMain.tapWithoutAction(unit.i, unit.j);
+				GameActivity.gameView.thread.gameDraw.gameDrawUnits.update();
+				GameActivity.gameView.thread.gameDraw.inputPlayer.tapWithoutAction(unit.i, unit.j);
 				GameActivity.gameView.thread.gameDraw.focusOnCell(unit.i, unit.j);
 				GameActivity.gameView.thread.needUpdateCampaign = true;
 			}
@@ -95,12 +93,6 @@ public class GameActivity extends Activity
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void buyUnit(InputAlgorithmMain main, Unit[] units, boolean[] isAvailable)
-	{
-		DialogFragment dialogFragment = new UnitBuyDialog(units, isAvailable).setNoticeListener(main);
-		dialogFragment.show(getFragmentManager(), "UnitBuyDialog");
 	}
 	
 }

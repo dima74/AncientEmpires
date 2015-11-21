@@ -12,17 +12,11 @@ public abstract class GameDraw
 	public final static float	fA			= Images.bitmapSize * GameDraw.mapScale;
 	public final static float	a			= Images.bitmapSize / 24.0f;			// 1/24 A
 	
-	protected GameDrawMain gameDraw;
+	public static GameDrawMain	main;
+	public static Game			game;
+	public static int			iFrame;
 	
-	public GameDraw(GameDrawMain gameDraw)
-	{
-		this.gameDraw = gameDraw;
-	}
-	
-	public void onSizeChanged(int w, int h, int oldw, int oldh)
-	{}
-	
-	public boolean update(Game game)
+	public boolean update()
 	{
 		return false;
 	}

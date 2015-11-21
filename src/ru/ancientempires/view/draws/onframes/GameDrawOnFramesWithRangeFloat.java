@@ -1,7 +1,6 @@
 package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDrawMain;
 
 public abstract class GameDrawOnFramesWithRangeFloat extends GameDrawOnFrames
 {
@@ -9,11 +8,6 @@ public abstract class GameDrawOnFramesWithRangeFloat extends GameDrawOnFrames
 	private float	start;
 	private float	end;
 	private float	step;
-	
-	public GameDrawOnFramesWithRangeFloat(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
 	
 	public GameDrawOnFramesWithRangeFloat animateRange(float start, float end, float step)
 	{
@@ -32,9 +26,9 @@ public abstract class GameDrawOnFramesWithRangeFloat extends GameDrawOnFrames
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
-		float a = (this.frameCount - 1 - this.framePass) * this.start + this.framePass * this.end;
-		float b = this.frameCount - 1;
-		float value = a / b;
+		float a = (frameCount - 1 - framePass) * start + framePass * end;
+		float b = frameCount - 1;
+		float value = b == 0 ? start : a / b;
 		draw(canvas, value);
 	}
 	

@@ -1,39 +1,30 @@
 package ru.ancientempires.view.draws;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.GameView;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.CursorImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
-import ru.ancientempires.model.Game;
-import ru.ancientempires.view.GameView;
-import ru.ancientempires.view.algortihms.InputAlgorithmMain;
-import ru.ancientempires.view.draws.campaign.GameDrawCameraMove;
 import ru.ancientempires.view.draws.onframes.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
-import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
-import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMoveEnd;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitRaise;
+import ru.ancientempires.view.inputs.InputMain;
+import ru.ancientempires.view.inputs.InputPlayer;
 
 public class GameDrawMain
 {
 	
-	public GameActivity	gameActivity;
-	public Game			game	= Client.getClient().getGame();
-	
-	public InputAlgorithmMain inputAlgorithmMain;
+	public InputMain	inputMain;
+	public InputPlayer	inputPlayer;
 	
 	public Random rnd = new Random();
 	
-	public int	gameDrawInfoH;
-	public int	gameDrawActionH;
 	public int	mapH;
 	public int	mapW;
 	public int	visibleMapH;
@@ -44,37 +35,43 @@ public class GameDrawMain
 	public float			offsetY;
 	public float			offsetX;
 	
-	public int iFrame = 0;
-	
-	public GameDrawCells		gameDrawCells;
-	public GameDrawRange		gameDrawZoneMove	= new GameDrawRange(this).setCursor(CursorImages.cursorWay);
-	public GameDrawRange		gameDrawZoneAttack	= new GameDrawRange(this).setCursor(CursorImages.cursorAttack);
-	public GameDrawRange		gameDrawZoneRaise	= new GameDrawRange(this).setCursor(CursorImages.cursorAttack);
-	public GameDrawCells		gameDrawCellDual;
-	public GameDrawUnits		gameDrawUnits		= new GameDrawUnits(this);
-	public GameDrawUnitsDead	gameDrawUnitsDead	= new GameDrawUnitsDead(this);
-	public GameDrawWayLine		gameDrawWayLine		= new GameDrawWayLine(this);
-	
-	public GameDrawBuildingSmokes	gameDrawBuildingSmokes;
-	public GameDrawUnitMove			gameDrawUnitMove;
-	public GameDrawUnitMoveEnd		gameDrawUnitMoveEnd	= new GameDrawUnitMoveEnd(this);
-	public GameDrawUnitAttackMain	gameDrawUnitAttack	= new GameDrawUnitAttackMain(this);
-	public GameDrawCellAttack		gameDrawCellAttack	= new GameDrawCellAttack(this);
-	public GameDrawUnitRaise		gameDrawUnitRaise	= new GameDrawUnitRaise(this);
-	public GameDrawUnitsHeal		gameDrawUnitsHeal	= new GameDrawUnitsHeal(this);
-	
-	public GameDrawAction	gameDrawAction;
-	public GameDrawInfo		gameDrawInfo;
+	private int				gameDrawActionY;
+	public GameDrawAction	gameDrawAction	= new GameDrawAction();
+	public GameDrawInfo		gameDrawInfo	= new GameDrawInfo();
 	public boolean			isActiveGame	= true;
 	
-	public GameDraw				gameDrawCampaign	= new GameDrawCampaign(this);
-	public GameDrawBlackScreen	gameDrawBlackScreen	= new GameDrawBlackScreen(this);
+	{
+		GameDraw.main = this;
+		GameDraw.iFrame = 0;
+	}
 	
-	public boolean						isDrawCursor			= true;
-	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor(this).setCursor(CursorImages.cursor);
-	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerWay);
-	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor(this).setCursor(CursorImages.cursorPointerAttack);
-	public ArrayList<GameDrawCursor>	gameDrawCursors;
+	public GameDrawCells			gameDrawCells			= new GameDrawCells();
+	// public GameDrawRange gameDrawZoneMove = new GameDrawRange().setCursor(CursorImages.cursorWay);
+	// public GameDrawRange gameDrawZoneAttack = new GameDrawRange().setCursor(CursorImages.cursorAttack);
+	// public GameDrawRange gameDrawZoneRaise = new GameDrawRange().setCursor(CursorImages.cursorAttack);
+	public GameDrawCells			gameDrawCellDual		= new GameDrawCells().setDual();
+	public GameDrawUnitsDead		gameDrawUnitsDead		= new GameDrawUnitsDead();
+	public GameDrawUnits			gameDrawUnits			= new GameDrawUnits();
+	// public GameDrawWayLine gameDrawWayLine = new GameDrawWayLine();
+	public GameDrawBuildingSmokes	gameDrawBuildingSmokes	= new GameDrawBuildingSmokes();
+	
+	public GameDrawPlayer		gameDrawPlayer		= new GameDrawPlayer();
+	public GameDrawRangeAll		gameDrawRangeAll	= new GameDrawRangeAll();
+	// public GameDrawUnitMove gameDrawUnitMove = new GameDrawUnitMove();
+	public GameDrawUnitMoveEnd	gameDrawUnitMoveEnd	= new GameDrawUnitMoveEnd();
+	// public GameDrawUnitAttackMain gameDrawUnitAttack = new GameDrawUnitAttackMain();
+	public GameDrawCellAttack	gameDrawCellAttack	= new GameDrawCellAttack();
+	public GameDrawUnitRaise	gameDrawUnitRaise	= new GameDrawUnitRaise();
+	public GameDrawUnitsHeal	gameDrawUnitsHeal	= new GameDrawUnitsHeal();
+	
+	public GameDraw				gameDrawCampaign	= new GameDrawCampaign();
+	public GameDrawBlackScreen	gameDrawBlackScreen	= new GameDrawBlackScreen();
+	
+	public boolean						isDrawCursor			= false;
+	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor().setCursor(CursorImages.cursor);
+	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor().setCursor(CursorImages.cursorPointerWay);
+	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor().setCursor(CursorImages.cursorPointerAttack);
+	public ArrayList<GameDrawCursor>	gameDrawCursors			= new ArrayList<GameDrawCursor>(Arrays.asList(gameDrawCursorDefault));
 	
 	public ArrayList<GameDraw>	gameDraws			= new ArrayList<GameDraw>();
 	public ArrayList<GameDraw>	gameDrawsEffects	= new ArrayList<GameDraw>();
@@ -87,158 +84,123 @@ public class GameDrawMain
 	
 	public GameDrawMain()
 	{
-		this.gameDrawInfoH = GameDrawInfo.mA + 8 * 2;// this.gameDrawInfo.a;
-		this.gameDrawActionH = GameDrawAction.mA - 8;
-		this.mapH = this.game.h * GameDraw.A;
-		this.mapW = this.game.w * GameDraw.A;
-		
-		this.gameDrawAction = new GameDrawAction(this);
-		this.gameDrawInfo = new GameDrawInfo(this);
-		
-		updateOffsetBounds();
-		
-		this.nextOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale) / 2;
-		this.nextOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale) / 2;
-		
-		this.gameDrawCells = new GameDrawCells(this);
-		this.gameDrawCellDual = new GameDrawCells(this).setDual();
-		
-		GameDrawUnitMove.framesForCell = 8;
-		GameDrawCameraMove.delta = GameDraw.a * 12;
-		this.gameDrawUnitMove = new GameDrawUnitMove(this);
-		
-		this.gameDraws.add(this.gameDrawCells);
-		this.gameDraws.add(this.gameDrawZoneMove);
-		this.gameDraws.add(this.gameDrawZoneAttack);
-		this.gameDraws.add(this.gameDrawZoneRaise);
-		this.gameDraws.add(this.gameDrawCellDual);
-		this.gameDraws.add(this.gameDrawUnitsDead);
-		this.gameDraws.add(this.gameDrawUnits);
-		this.gameDraws.add(this.gameDrawWayLine);
-		this.gameDraws.add(this.gameDrawUnitMove);
-		
-		this.gameDrawBuildingSmokes = new GameDrawBuildingSmokes(this);
-		
-		this.gameDrawsEffects.add(this.gameDrawBuildingSmokes);
-		this.gameDrawsEffects.add(this.gameDrawUnitMoveEnd);
-		this.gameDrawsEffects.add(this.gameDrawUnitAttack);
-		this.gameDrawsEffects.add(this.gameDrawCellAttack);
-		this.gameDrawsEffects.add(this.gameDrawUnitRaise);
-		this.gameDrawsEffects.add(this.gameDrawUnitsHeal);
-		this.gameDrawsEffects.add(this.gameDrawCampaign);
-		
-		this.gameDrawCursors = new ArrayList<GameDrawCursor>();
-		this.gameDrawCursors.add(this.gameDrawCursorDefault);
-	}
-	
-	private void updateOffsetBounds()
-	{
-		this.visibleMapH = GameView.h - this.gameDrawInfoH;
-		this.visibleMapW = GameView.w;
-		if (this.gameDrawAction.isActive)
-			this.visibleMapH -= this.gameDrawActionH;
-		this.minOffsetY = this.maxOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale) / 2;
-		this.minOffsetX = this.maxOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale) / 2;
-		if (this.minOffsetY < 0)
+		GameDraw.main = this;
+		mapH = GameDraw.game.h * GameDraw.A;
+		mapW = GameDraw.game.w * GameDraw.A;
+		visibleMapH = GameView.h - gameDrawInfo.h;
+		visibleMapW = GameView.w;
+		nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / GameDraw.mapScale) / 2;
+		nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / GameDraw.mapScale) / 2;
+		if (minOffsetY < 0)
 		{
-			this.minOffsetY = -(this.mapH - this.visibleMapH / GameDraw.mapScale);
-			this.maxOffsetY = 0;
+			minOffsetY = -(mapH - visibleMapH / GameDraw.mapScale);
+			maxOffsetY = 0;
 		}
-		if (this.minOffsetX < 0)
+		if (minOffsetX < 0)
 		{
-			this.minOffsetX = -(this.mapW - this.visibleMapW / GameDraw.mapScale);
-			this.maxOffsetX = 0;
+			minOffsetX = -(mapW - visibleMapW / GameDraw.mapScale);
+			maxOffsetX = 0;
 		}
-	}
-	
-	public void onSizeChanged(int w, int h, int oldw, int oldh)
-	{
-		for (GameDraw gameDraw : this.gameDraws)
-			gameDraw.onSizeChanged(w, h, oldw, oldh);
+		gameDrawActionY = (visibleMapH - gameDrawAction.h) / 2;
+		
+		gameDraws.add(gameDrawCells);
+		// this.gameDraws.add(this.gameDrawZoneMove);
+		// this.gameDraws.add(this.gameDrawZoneAttack);
+		// this.gameDraws.add(this.gameDrawZoneRaise);
+		gameDraws.add(gameDrawCellDual);
+		gameDraws.add(gameDrawUnitsDead);
+		gameDraws.add(gameDrawUnits);
+		// gameDraws.add(gameDrawWayLine);
+		gameDraws.add(gameDrawBuildingSmokes);
+		gameDraws.add(gameDrawCampaign);
+		
+		gameDrawsEffects.add(gameDrawPlayer);
+		gameDrawsEffects.add(gameDrawRangeAll);
+		// gameDrawsEffects.add(gameDrawUnitMove);
+		gameDrawsEffects.add(gameDrawUnitMoveEnd);
+		// gameDrawsEffects.add(gameDrawUnitAttack);
+		gameDrawsEffects.add(gameDrawCellAttack);
+		gameDrawsEffects.add(gameDrawUnitRaise);
+		gameDrawsEffects.add(gameDrawUnitsHeal);
 	}
 	
 	public void draw(Canvas canvas)
 	{
-		updateOffset();
-		this.offsetY = this.nextOffsetY;
-		this.offsetX = this.nextOffsetX;
+		FewBitmaps.ordinal = GameDraw.iFrame / 8;
+		
+		correctNextOffset();
+		offsetY = nextOffsetY;
+		offsetX = nextOffsetX;
+		
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.save();
 		canvas.scale(GameDraw.mapScale, GameDraw.mapScale);
-		canvas.translate(this.offsetX, this.offsetY);
-		for (GameDraw gameDraw : this.gameDraws)
+		canvas.translate(offsetX, offsetY);
+		for (GameDraw gameDraw : gameDraws)
 			gameDraw.draw(canvas);
-			
-		if (this.isDrawCursor)
-			for (GameDrawCursor gameDrawCursor : this.gameDrawCursors)
+		if (isDrawCursor)
+			for (GameDrawCursor gameDrawCursor : gameDrawCursors)
 				gameDrawCursor.draw(canvas);
-				
-		for (GameDraw gameDraw : this.gameDrawsEffects)
+		for (GameDraw gameDraw : gameDrawsEffects)
 			gameDraw.draw(canvas);
-		// canvas.translate(-this.offsetX, -this.offsetY);
 		canvas.restore();
 		
-		canvas.translate(0, GameView.h - this.gameDrawInfoH);
-		this.gameDrawInfo.draw(canvas);
-		if (this.isActiveGame)
+		canvas.save();
+		canvas.translate(0, GameView.h - gameDrawInfo.h);
+		gameDrawInfo.draw(canvas);
+		canvas.restore();
+		
+		if (gameDrawAction.isActive())
 		{
-			canvas.translate(0, -this.gameDrawActionH);
-			this.gameDrawAction.draw(canvas);
-			canvas.translate(0, this.gameDrawActionH);
+			canvas.save();
+			canvas.translate(0, gameDrawActionY);
+			gameDrawAction.draw(canvas);
+			canvas.restore();
 		}
-		canvas.translate(0, -(GameView.h - this.gameDrawInfoH));
-		this.gameDrawBlackScreen.draw(canvas);
-		if (this.isBlackScreen)
-			canvas.drawColor(Color.WHITE);
-			
-		FewBitmaps.ordinal = this.iFrame / 8;
+		
+		gameDrawBlackScreen.draw(canvas);
+		if (isBlackScreen)
+			canvas.drawColor(Color.BLACK);
 	}
 	
-	public void updateOffset()
+	public void correctNextOffset()
 	{
-		this.nextOffsetY = Math.max(this.minOffsetY, Math.min(this.maxOffsetY, this.nextOffsetY));
-		this.nextOffsetX = Math.max(this.minOffsetX, Math.min(this.maxOffsetX, this.nextOffsetX));
+		nextOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, nextOffsetY));
+		nextOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, nextOffsetX));
 	}
 	
 	public void touch(float touchY, float touchX)
 	{
-		if (!this.isActiveGame || touchY > GameView.h - this.gameDrawInfoH)
+		if (!isActiveGame || touchY > GameView.h - gameDrawInfo.h)
 			return;
-		if (this.gameDrawAction.isActive && touchY > this.visibleMapH)
-			this.gameDrawAction.touch(touchY, touchX);
-		else
+		if (gameDrawAction.isActive() && gameDrawAction.touch(touchY - gameDrawActionY, touchX))
+			return;
+			
+		int i = (int) ((touchY / GameDraw.mapScale - offsetY) / GameDraw.A);
+		int j = (int) ((touchX / GameDraw.mapScale - offsetX) / GameDraw.A);
+		try
 		{
-			int i = (int) ((touchY / GameDraw.mapScale - this.offsetY) / GameDraw.A);
-			int j = (int) ((touchX / GameDraw.mapScale - this.offsetX) / GameDraw.A);
-			try
-			{
-				this.inputAlgorithmMain.tap(i, j);
-			}
-			catch (Exception e)
-			{
-				MyAssert.a(false);
-				e.printStackTrace();
-			}
+			inputMain.tap(i, j);
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
 		}
 	}
 	
-	public void updateCursors(Game game)
+	public void updateCursors()
 	{
-		for (GameDrawCursor gameDrawCursor : this.gameDrawCursors)
-			gameDrawCursor.update(game);
+		for (GameDrawCursor gameDrawCursor : gameDrawCursors)
+			gameDrawCursor.update();
 	}
 	
 	public void focusOnCell(int i, int j)
 	{
-		this.nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + this.visibleMapH / GameDraw.mapScale / 2;
-		this.nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + this.visibleMapW / GameDraw.mapScale / 2;
-		updateOffset();
-	}
-	
-	public void startGame()
-	{
-		Campaign.start();
+		nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + visibleMapH / GameDraw.mapScale / 2;
+		nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + visibleMapW / GameDraw.mapScale / 2;
+		correctNextOffset();
 	}
 	
 }

@@ -1,22 +1,19 @@
-package ru.ancientempires.view;
+package ru.ancientempires;
 
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.view.draws.GameDraw;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public GameViewThread thread;
+	public GameThread thread;
 	
 	private GestureDetector detector;
-	
-	public GameActivity gameActivity;
 	
 	public static int	h;
 	public static int	w;
@@ -25,28 +22,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		super(context);
 		getHolder().addCallback(this);
-		this.detector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
+		detector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
 		{
 			@Override
 			public boolean onDown(MotionEvent e)
 			{
-				return GameView.this.thread.gameDraw.isActiveGame;
+				return thread.gameDraw.isActiveGame;
 			}
 			
 			@Override
 			public boolean onSingleTapUp(MotionEvent event)
 			{
-				GameView.this.thread.touchY = event.getY();
-				GameView.this.thread.touchX = event.getX();
-				GameView.this.thread.interrupt();
+				thread.touchY = event.getY();
+				thread.touchX = event.getX();
+				thread.interrupt();
 				return true;
 			}
 			
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
 			{
-				GameView.this.thread.gameDraw.nextOffsetY -= distanceY / GameDraw.mapScale;
-				GameView.this.thread.gameDraw.nextOffsetX -= distanceX / GameDraw.mapScale;
+				thread.gameDraw.nextOffsetY -= distanceY / GameDraw.mapScale;
+				thread.gameDraw.nextOffsetX -= distanceX / GameDraw.mapScale;
 				return true;
 			}
 		});
@@ -55,17 +52,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
-		return this.detector.onTouchEvent(event);
+		return detector.onTouchEvent(event);
 	}
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder)
 	{
-		this.thread = new GameViewThread(getHolder());
-		this.thread.gameDraw.onSizeChanged(GameView.w, GameView.h, 0, 0);
-		this.thread.gameDraw.gameActivity = this.gameActivity;
-		this.thread.setRunning(true);
-		this.thread.start();
+		thread = new GameThread(getHolder());
+		thread.setRunning(true);
+		thread.start();
 		
 	}
 	
@@ -82,12 +77,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void stopThread()
 	{
-		this.thread.setRunning(false);
+		thread.setRunning(false);
 		boolean retry = true;
 		while (retry)
 			try
 			{
-				this.thread.join();
+				thread.join();
 				retry = false;
 			}
 			catch (InterruptedException e)
@@ -102,8 +97,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		GameView.h = h;
 		GameView.w = w;
-		if (this.thread != null)
-			this.thread.gameDraw.onSizeChanged(w, h, oldw, oldh);
 	}
 	
 }

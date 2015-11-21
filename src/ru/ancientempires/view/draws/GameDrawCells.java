@@ -2,55 +2,49 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import ru.ancientempires.GameView;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
-import ru.ancientempires.model.Game;
-import ru.ancientempires.view.GameView;
 
 public class GameDrawCells extends GameDraw
 {
 	
-	private final int	h;
-	private final int	w;
+	private final int	h	= GameDraw.game.h;
+	private final int	w	= GameDraw.game.w;
 	private final int	availableY;
 	private final int	availableX;
 	
-	public Bitmap[][]	bitmaps;
+	public Bitmap[][]	bitmaps	= new Bitmap[h][w];
 	private boolean		isDual	= false;
 	
-	public GameDrawCells(GameDrawMain gameDraw)
+	public GameDrawCells()
 	{
-		super(gameDraw);
-		this.h = gameDraw.game.h;
-		this.w = gameDraw.game.w;
-		this.bitmaps = new Bitmap[this.h][this.w];
-		
-		this.availableY = GameView.h - gameDraw.gameDrawInfoH;
-		this.availableX = GameView.w;
+		availableY = GameView.h - GameDraw.main.gameDrawInfo.h;
+		availableX = GameView.w;
 	}
 	
 	public GameDrawCells setDual()
 	{
-		this.isDual = true;
+		isDual = true;
 		return this;
 	}
 	
 	@Override
-	public boolean update(Game game)
+	public boolean update()
 	{
-		for (int i = this.h - 1 - (this.isDual ? 1 : 0); i >= 0; i--)
-			for (int j = this.w - 1; j >= 0; j--)
+		for (int i = h - 1 - (isDual ? 1 : 0); i >= 0; i--)
+			for (int j = w - 1; j >= 0; j--)
 			{
-				Cell cell = game.fieldCells[i + (this.isDual ? 1 : 0)][j];
-				this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
+				Cell cell = GameDraw.game.fieldCells[i + (isDual ? 1 : 0)][j];
+				bitmaps[i][j] = CellImages.getCellBitmap(cell, isDual);
 			}
 		return false;
 	}
 	
-	public void updateOneCell(Game game, int i, int j)
+	public void updateOneCell(int i, int j)
 	{
-		Cell cell = game.fieldCells[i + (this.isDual ? 1 : 0)][j];
-		this.bitmaps[i][j] = CellImages.getCellBitmap(cell, this.isDual);
+		Cell cell = GameDraw.game.fieldCells[i + (isDual ? 1 : 0)][j];
+		bitmaps[i][j] = CellImages.getCellBitmap(cell, isDual);
 	}
 	
 	@Override
@@ -64,12 +58,12 @@ public class GameDrawCells extends GameDraw
 		*/
 		int minI = 0;
 		int minJ = 0;
-		int maxI = this.h;
-		int maxJ = this.w;
+		int maxI = h;
+		int maxJ = w;
 		for (int i = minI; i < maxI; i++)
 			for (int j = minJ; j < maxJ; j++)
 			{
-				final Bitmap bitmapCell = this.bitmaps[i][j];
+				final Bitmap bitmapCell = bitmaps[i][j];
 				if (bitmapCell == null)
 					continue;
 				final int y = GameDraw.A * i;

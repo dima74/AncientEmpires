@@ -3,31 +3,26 @@ package ru.ancientempires.view.draws.onframes;
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDrawMain;
+import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawOnFramesGroup extends GameDrawOnFrames
 {
 	
 	public ArrayList<GameDrawOnFrames> draws = new ArrayList<GameDrawOnFrames>();
 	
-	public GameDrawOnFramesGroup(GameDrawMain gameDraw)
-	{
-		super(gameDraw);
-	}
-	
 	public void add(GameDrawOnFrames gameDraw)
 	{
-		this.draws.add(gameDraw);
-		int frameStart = Math.max(this.gameDraw.iFrame + 1, getFrameStart());
+		draws.add(gameDraw);
+		int frameStart = Math.max(GameDraw.iFrame + 1, getFrameStart());
 		int frameEnd = getFrameEnd();
 		animate(frameEnd - frameStart + 1);
-		super.increaseFrameStart(frameStart - this.gameDraw.iFrame - 1);
+		super.increaseFrameStart(frameStart - GameDraw.iFrame - 1);
 	}
 	
 	public int getFrameStart()
 	{
 		int frameStart = Integer.MAX_VALUE;
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
+		for (GameDrawOnFrames gameDrawOnFrames : draws)
 			frameStart = Math.min(frameStart, gameDrawOnFrames.frameStart);
 		return frameStart;
 	}
@@ -35,7 +30,7 @@ public class GameDrawOnFramesGroup extends GameDrawOnFrames
 	public int getFrameEnd()
 	{
 		int frameEnd = 0;
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
+		for (GameDrawOnFrames gameDrawOnFrames : draws)
 			frameEnd = Math.max(frameEnd, gameDrawOnFrames.frameEnd);
 		return frameEnd;
 	}
@@ -44,7 +39,7 @@ public class GameDrawOnFramesGroup extends GameDrawOnFrames
 	public GameDrawOnFrames increaseFrameStart(int framesBeforeStart)
 	{
 		super.increaseFrameStart(framesBeforeStart);
-		for (GameDrawOnFrames draw : this.draws)
+		for (GameDrawOnFrames draw : draws)
 			draw.increaseFrameStart(framesBeforeStart);
 		return this;
 	}
@@ -52,7 +47,7 @@ public class GameDrawOnFramesGroup extends GameDrawOnFrames
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
-		for (GameDrawOnFrames gameDrawOnFrames : this.draws)
+		for (GameDrawOnFrames gameDrawOnFrames : draws)
 			gameDrawOnFrames.draw(canvas);
 	}
 	

@@ -1,20 +1,23 @@
-package ru.ancientempires.view;
+package ru.ancientempires;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import ru.ancientempires.campaign.Campaign;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.view.algortihms.InputAlgorithmMain;
+import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
+import ru.ancientempires.view.inputs.InputBase;
+import ru.ancientempires.view.inputs.InputMain;
 
-public class GameViewThread extends Thread
+public class GameThread extends Thread
 {
 	
 	public static final long MILLISEC_BETWEEN_FRAMES = 1000 / 30;
 	
-	private SurfaceHolder		surfaceHolder;
-	public GameDrawMain			gameDraw;
-	public InputAlgorithmMain	inputAlgorithmMain;
+	private SurfaceHolder	surfaceHolder;
+	public GameDrawMain		gameDraw;
+	public InputMain		inputMain;
 	
 	volatile private boolean	isRunning;
 	private long				startTime;
@@ -27,13 +30,15 @@ public class GameViewThread extends Thread
 	volatile public boolean	needUpdateCampaign	= false;
 	public boolean			isPause;
 	
-	public GameViewThread(SurfaceHolder surfaceHolder)
+	public GameThread(SurfaceHolder surfaceHolder)
 	{
 		this.surfaceHolder = surfaceHolder;
 		
-		this.gameDraw = new GameDrawMain();
-		this.inputAlgorithmMain = new InputAlgorithmMain(this, this.gameDraw);
-		this.gameDraw.inputAlgorithmMain = this.inputAlgorithmMain;
+		InputBase.thread = this;
+		GameDraw.game = InputBase.game = Client.getClient().getGame();
+		gameDraw = InputBase.gameDraw = new GameDrawMain();
+		gameDraw.inputMain = inputMain = new InputMain();
+		gameDraw.inputPlayer = inputMain.inputPlayer;
 	}
 	
 	public void setRunning(boolean isRunning)
@@ -44,13 +49,13 @@ public class GameViewThread extends Thread
 	@Override
 	public void run()
 	{
-		this.startTime = this.nextTime = System.currentTimeMillis();
-		this.gameDraw.startGame();
+		startTime = nextTime = System.currentTimeMillis();
+		Campaign.start();
 		
 		Canvas canvas;
-		while (this.isRunning)
+		while (isRunning)
 		{
-			long timeToDraw = this.nextTime - System.currentTimeMillis();
+			long timeToDraw = nextTime - System.currentTimeMillis();
 			
 			/*
 			while (this.isPause)
@@ -64,16 +69,16 @@ public class GameViewThread extends Thread
 			
 			if (timeToDraw <= 0)
 			{
-				this.nextTime += GameViewThread.MILLISEC_BETWEEN_FRAMES;
-				canvas = this.surfaceHolder.lockCanvas();
+				nextTime += GameThread.MILLISEC_BETWEEN_FRAMES;
+				canvas = surfaceHolder.lockCanvas();
 				if (canvas != null)
 				{
-					synchronized (this.surfaceHolder)
+					synchronized (surfaceHolder)
 					{
-						this.gameDraw.iFrame++;
+						GameDraw.iFrame++;
 						try
 						{
-							this.gameDraw.draw(canvas);
+							gameDraw.draw(canvas);
 						}
 						catch (Exception e)
 						{
@@ -81,7 +86,7 @@ public class GameViewThread extends Thread
 							e.printStackTrace();
 						}
 					}
-					this.surfaceHolder.unlockCanvasAndPost(canvas);
+					surfaceHolder.unlockCanvasAndPost(canvas);
 				}
 			}
 			
@@ -95,13 +100,13 @@ public class GameViewThread extends Thread
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
-			else if (this.needUpdateCampaign)
-				while (this.needUpdateCampaign)
+			else if (needUpdateCampaign)
+				while (needUpdateCampaign)
 				{
-					this.needUpdateCampaign = false;
+					needUpdateCampaign = false;
 					Campaign.update();
 				}
-			timeToDraw = this.nextTime - System.currentTimeMillis() - 3;
+			timeToDraw = nextTime - System.currentTimeMillis() - 3;
 			if (timeToDraw > 0)
 				try
 				{
@@ -112,14 +117,14 @@ public class GameViewThread extends Thread
 					touch();
 				}
 			else
-				this.nextTime = System.currentTimeMillis();
+				nextTime = System.currentTimeMillis();
 		}
 		// MyLog.l("GameViewThread.run() e");
 	}
 	
 	private void touch()
 	{
-		this.gameDraw.touch(this.touchY, this.touchX);
+		gameDraw.touch(touchY, touchX);
 	}
 	
 }

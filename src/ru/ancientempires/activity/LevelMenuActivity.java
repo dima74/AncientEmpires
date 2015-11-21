@@ -23,7 +23,6 @@ import ru.ancientempires.GameInit;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.graphics.RippleDrawable;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.load.GamePath;
@@ -45,12 +44,12 @@ public class LevelMenuActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_level_menu);
 		
-		this.listView = (ListView) findViewById(R.id.listview);
-		this.listView.setDividerHeight(0);
+		listView = (ListView) findViewById(R.id.listview);
+		listView.setDividerHeight(0);
 		
-		LayoutParams layoutParams = (LayoutParams) this.listView.getLayoutParams();
+		LayoutParams layoutParams = (LayoutParams) listView.getLayoutParams();
 		layoutParams.gravity = Gravity.CENTER_VERTICAL;
-		this.listView.setLayoutParams(layoutParams);
+		listView.setLayoutParams(layoutParams);
 		
 		setContent(GameLoader.gamesFolder);
 		
@@ -59,7 +58,7 @@ public class LevelMenuActivity extends Activity
 			@Override
 			public int getCount()
 			{
-				return LevelMenuActivity.this.names.length;
+				return names.length;
 			}
 			
 			@Override
@@ -80,7 +79,7 @@ public class LevelMenuActivity extends Activity
 				LayoutInflater inflater = getLayoutInflater();
 				View view = inflater.inflate(R.layout.button_layout, parent, false);
 				Button button = (Button) view.findViewById(R.id.button);
-				button.setText(LevelMenuActivity.this.names[position]);
+				button.setText(names[position]);
 				button.setOnClickListener(new OnClickListener()
 				{
 					@Override
@@ -89,28 +88,27 @@ public class LevelMenuActivity extends Activity
 						LevelMenuActivity.this.onClick(position);
 					}
 				});
-				RippleDrawable.createRipple(button, 0xFF00FF00);
 				return view;
 			}
 		};
 		
-		this.listView.setAdapter(adapter);
+		listView.setAdapter(adapter);
 		
 		// debug
-		GamePath gamePath = this.gamesFolder.gamesFolders[1].gamePaths[5];
+		GamePath gamePath = gamesFolder.gamesFolders[0].gamePaths[0];
 		startGame(gamePath);
 	}
 	
 	private void setContent(GamesFolder gamesFolder)
 	{
 		this.gamesFolder = gamesFolder;
-		this.names = getNames(gamesFolder);
+		names = getNames(gamesFolder);
 	}
 	
 	private void updateContent(GamesFolder gamesFolder)
 	{
 		setContent(gamesFolder);
-		((BaseAdapter) this.listView.getAdapter()).notifyDataSetChanged();
+		((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
 	}
 	
 	private String[] getNames(GamesFolder gamesFolder)
@@ -126,22 +124,22 @@ public class LevelMenuActivity extends Activity
 	
 	protected void onClick(int position)
 	{
-		final GamesFolder[] gamesFolders = this.gamesFolder.gamesFolders;
+		final GamesFolder[] gamesFolders = gamesFolder.gamesFolders;
 		if (position < gamesFolders.length)
 		{
 			updateContent(gamesFolders[position]);
-			if (this.names.length == 0)
+			if (names.length == 0)
 				Toast.makeText(this, "Здесь пока ничего нет", Toast.LENGTH_LONG).show();
 		}
 		else
-			startGame(this.gamesFolder.gamePaths[position - gamesFolders.length]);
+			startGame(gamesFolder.gamePaths[position - gamesFolders.length]);
 	}
 	
 	private void startGame(final GamePath gamePath)
 	{
-		if (!this.isCheckInit)
+		if (!isCheckInit)
 		{
-			this.isCheckInit = true;
+			isCheckInit = true;
 			new AsyncTask<Void, Void, Void>()
 			{
 				@Override
@@ -153,7 +151,7 @@ public class LevelMenuActivity extends Activity
 			}.execute();
 		}
 		
-		if (this.isStartGame)
+		if (isStartGame)
 			return;
 		final ProgressDialog progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage(getString(R.string.loading));
@@ -184,7 +182,7 @@ public class LevelMenuActivity extends Activity
 				Intent intent = new Intent();
 				intent.setClass(LevelMenuActivity.this, GameActivity.class);
 				startActivity(intent);
-				LevelMenuActivity.this.isStartGame = false;
+				isStartGame = false;
 				progressDialog.dismiss();
 			};
 		}.execute();
