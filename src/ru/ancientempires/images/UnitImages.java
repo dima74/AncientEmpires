@@ -1,7 +1,6 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -11,8 +10,8 @@ import android.graphics.Bitmap;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.helpers.ImagesFileHelper;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
@@ -41,9 +40,9 @@ public class UnitImages
 		return UnitImages.unitsBitmapsBuy[unit.type.ordinal][UnitImages.playerToColorI[unit.player.ordinal]];
 	}
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public static void preload(String path) throws IOException
 	{
-		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
+		JsonReader reader = ImagesFileHelper.getReader(path + "info.json");
 		reader.beginObject();
 		
 		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.number][5];
@@ -61,7 +60,7 @@ public class UnitImages
 			{
 				Bitmap[] bitmaps = new Bitmap[imageNames.length];
 				for (int j = 0; j < bitmaps.length; j++)
-					bitmaps[j] = BitmapHelper.getBitmap(images, path + UnitImages.colors[colorI].name + "/" + imageNames[j]);
+					bitmaps[j] = BitmapHelper.getBitmap(path + UnitImages.colors[colorI].name + "/" + imageNames[j]);
 				UnitImages.unitsBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
 			}
 			reader.endObject();
@@ -73,7 +72,7 @@ public class UnitImages
 		reader.close();
 	}
 	
-	public static void loadResources(ZipFile images, Game game) throws IOException
+	public static void loadResources(Game game) throws IOException
 	{
 		UnitImages.playerToColorI = new int[game.players.length];
 		for (Player player : game.players)

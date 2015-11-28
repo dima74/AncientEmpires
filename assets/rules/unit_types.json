@@ -1,0 +1,189 @@
+{
+	"default_unit_type":
+	{
+		"baseHealth": 100,
+		"attack": 52.5,
+		"attackDelta": 2.5,
+		"defence": 5,
+		"moveRange": 4,
+		"captureTypes": [ ],
+		"repairTypes": [ ],
+		"attackType": "DEFAULT",
+		"destroyingTypes": [ ],
+		"attackTypeReverse": "DEFAULT",
+		"raiseRangeType": "EMPTY",
+		"raiseUnitType": "SKELETON",
+		"isOnlyOne": false,
+		"hasTombstone": true,
+		"cost": 0,
+		"isFly": false,
+		"canDoTwoActionAfterOne": true,
+		"bonusOnCellWay": [ ],
+		"bonusOnCellAttack": [ ],
+		"bonusOnCellDefence": [ ],
+		"bonusForUnitAttack": [ ],
+		"bonusAfterMovingRangeType": "EMPTY",
+		"bonusForUnitAfterMovingAttack": 0,
+		"bonusForUnitAfterMovingDefence": 0,
+		"bonusForUnitAfterAttackAttack": 0,
+		"bonusForUnitAfterAttackDefence": 0
+	},
+	"unit_types":
+	[
+		{
+			"name": "KING",
+			"attack": 60,
+			"attackDelta": 5,
+			"defence": 20,
+			"captureTypes": [ "BUILDING", "CASTLE" ],
+			"repairTypes": [ "BUILDING" ],
+			"isOnlyOne": true,
+			"hasTombstone": false,
+			"cost": 400
+		},
+		{
+			"name": "SOLDIER",
+			"captureTypes": [ "BUILDING" ],
+			"repairTypes": [ "BUILDING" ],
+			"cost": 150
+		},
+		{
+			"name": "ARCHER",
+			"attackType": "ARCHER",
+			"cost": 250,
+			"bonusForUnitAttack": [ { "DRAGON": 15 } ]
+		},
+		{
+			"name": "ELEMENTAL",
+			"defence": 10,
+			"attackType": "DEFAULT",
+			"cost": 300,
+			"bonusOnCellWay": [ { "WATER": -2 } ],
+			"bonusOnCellAttack": [ { "WATER": 10 } ],
+			"bonusOnCellDefence": [ { "WATER": 15 } ]
+		},
+		{
+			"name": "SORCERESS",
+			"attack": 42.5,
+			"attackDelta": 2.5,
+			"attackType": "DEFAULT",
+			"raiseRangeType": "DEFAULT",
+			"cost": 400
+		},
+		{
+			"name": "WISP",
+			"attack": 37.5,
+			"attackDelta": 2.5,
+			"defence": 10,
+			"attackType": "DEFAULT",
+			"cost": 500,
+			"bonusAfterMovingRangeType": "ARCHER",
+			"bonusForUnitAfterMovingAttack": 10,
+			"bonusForUnitAfterMovingDefence": 0
+		},
+		{
+			"name": "DIRE_WOLF",
+			"attack": 62.5,
+			"attackDelta": 2.5,
+			"defence": 15,
+			"moveRange": 5,
+			"attackType": "DEFAULT",
+			"cost": 600,
+			"bonusForUnitAfterAttackAttack": -10,
+			"bonusForUnitAfterAttackDefence": -10
+		},
+		{
+			"name": "GOLEM",
+			"attack": 65,
+			"attackDelta": 5,
+			"defence": 30,
+			"attackType": "DEFAULT",
+			"cost": 600
+		},
+		{
+			"name": "CATAPULT",
+			"attack": 60,
+			"attackDelta": 10,
+			"defence": 10,
+			"moveRange": 3,
+			"attackType": "CATAPULT",
+			"destroyingTypes": [ "BUILDING" ],
+			"attackTypeReverse": "EMPTY",
+			"cost": 700,
+			"canDoTwoActionAfterOne": false
+		},
+		{
+			"name": "DRAGON",
+			"attack": 75,
+			"attackDelta": 5,
+			"defence": 25,
+			"moveRange": 6,
+			"attackType": "DEFAULT",
+			"cost": 1000,
+			"isFly": true
+		},
+		{
+			"name": "SKELETON",
+			"attack": 45,
+			"attackDelta": 5,
+			"defence": 2,
+			"attackType": "DEFAULT",
+			"moveRange": 4,
+			"hasTombstone": false,
+			"cost": 0
+		},
+		{
+			"name": "CRYSTAL",
+			"attack": 0,
+			"attackDelta": 0,
+			"defence": 15,
+			"attackType": "EMPTY",
+			"moveRange": 3,
+			"cost": 0
+		},
+		{
+			"name": "KING_GALAMAR",
+			"attack": 60,
+			"attackDelta": 5,
+			"defence": 20,
+			"captureTypes": [ "BUILDING", "CASTLE" ],
+			"repairTypes": [ "BUILDING" ],
+			"isOnlyOne": true,
+			"hasTombstone": false,
+			"cost": 400
+		},
+		{
+			"name": "KING_VALADORN",
+			"attack": 60,
+			"attackDelta": 5,
+			"defence": 20,
+			"captureTypes": [ "BUILDING", "CASTLE" ],
+			"repairTypes": [ "BUILDING" ],
+			"isOnlyOne": true,
+			"hasTombstone": false,
+			"cost": 400
+		},
+		{
+			"name": "KING_DEMONLORD",
+			"attack": 60,
+			"attackDelta": 5,
+			"defence": 20,
+			"captureTypes": [ "BUILDING", "CASTLE" ],
+			"repairTypes": [ "BUILDING" ],
+			"isOnlyOne": true,
+			"hasTombstone": false,
+			"cost": 400
+		},
+		{
+			"name": "KING_SAETH",
+			"attack": 60,
+			"attackDelta": 5,
+			"defence": 20,
+			"captureTypes": [ "BUILDING", "CASTLE" ],
+			"repairTypes": [ "BUILDING" ],
+			"isOnlyOne": true,
+			"hasTombstone": false,
+			"cost": 400
+		}
+	]
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cell_types_groups>
+	<default_cell_types_group>
+		<property name="name" value="DEFAULT" />
+	</default_cell_types_group>
+	<cell_types_group>
+		<property name="name" value="WAYS" />
+		<property name="isAdvanced" value="false" />
+		<property name="down_up_cell_type" value="WAY_DOWN_UP" />
+		<property name="left_down_cell_type" value="WAY_LEFT_DOWN" />
+		<property name="left_right_cell_type" value="WAY_LEFT_RIGHT" />
+		<property name="left_right_down_up_cell_type" value="WAY_LEFT_RIGHT_DOWN_UP" />
+		<property name="left_up_cell_type" value="WAY_LEFT_UP" />
+		<property name="right_down_cell_type" value="WAY_RIGHT_DOWN" />
+		<property name="right_up_cell_type" value="WAY_RIGHT_UP" />
+	</cell_types_group>
+	<cell_types_group>
+		<property name="name" value="WATER" />
+		<property name="isAdvanced" value="true" />
+		<property name="left_downleft_down_downright_cell_type" value="WATER_LEFT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="left_downleft_down_cell_type" value="WATER_LEFT_DOWNLEFT_DOWN" />
+		<property name="left_right_downleft_down_downright_cell_type" value="WATER_LEFT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="right_down_downright_cell_type" value="WATER_RIGHT_DOWN_DOWNRIGHT" />
+		<property name="right_downleft_down_downright_cell_type" value="WATER_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="up_upright_left_right_downleft_down_downright_cell_type" value="WATER_UP_UPRIGHT_LEFT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="up_upright_right_down_downright_cell_type" value="WATER_UP_UPRIGHT_RIGHT_DOWN_DOWNRIGHT" />
+		<property name="up_upright_right_downright_cell_type" value="WATER_UP_UPRIGHT_RIGHT_DOWNRIGHT" />
+		<property name="up_upright_right_cell_type" value="WATER_UP_UPRIGHT_RIGHT" />
+		<property name="upleft_left_downleft_down_downright_cell_type" value="WATER_UPLEFT_LEFT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="upleft_left_downleft_down_cell_type" value="WATER_UPLEFT_LEFT_DOWNLEFT_DOWN" />
+		<property name="upleft_up_left_downleft_down_cell_type" value="WATER_UPLEFT_UP_LEFT_DOWNLEFT_DOWN" />
+		<property name="upleft_up_left_downleft_cell_type" value="WATER_UPLEFT_UP_LEFT_DOWNLEFT" />
+		<property name="upleft_up_left_cell_type" value="WATER_UPLEFT_UP_LEFT" />
+		<property name="upleft_up_left_right_downleft_down_downright_cell_type" value="WATER_UPLEFT_UP_LEFT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="upleft_up_upright_left_downleft_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT_DOWNLEFT" />
+		<property name="upleft_up_upright_left_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT" />
+		<property name="upleft_up_upright_left_right_down_downright_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT_RIGHT_DOWN_DOWNRIGHT" />
+		<property name="upleft_up_upright_left_right_downleft_down_downright_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+		<property name="upleft_up_upright_left_right_downleft_down_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT_RIGHT_DOWNLEFT_DOWN" />
+		<property name="upleft_up_upright_left_right_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_LEFT_RIGHT" />
+		<property name="upleft_up_upright_right_downright_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_RIGHT_DOWNRIGHT" />
+		<property name="upleft_up_upright_right_cell_type" value="WATER_UPLEFT_UP_UPRIGHT_RIGHT" />
+		<property name="upright_right_down_downright_cell_type" value="WATER_UPRIGHT_RIGHT_DOWN_DOWNRIGHT" />
+		<property name="upright_right_downleft_down_downright_cell_type" value="WATER_UPRIGHT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT" />
+	</cell_types_group>
+</cell_types_groups>

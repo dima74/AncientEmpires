@@ -14,12 +14,22 @@ import ru.ancientempires.model.Unit;
 public class UnitBuyAdapter extends BaseAdapter
 {
 	
+	private class ViewHolder
+	{
+		
+		public TextView		textUnitName;
+		public ImageView	imageView;
+		public TextView		textUnitCost;
+		
+	}
+	
 	private static final int	BLACK	= Color.BLACK;
 	private static final int	GREY	= 0xFFAAAAAA;
 	
 	private Unit[]		unitsOld;
 	private Unit[]		units	= new Unit[0];
 	private boolean[]	available;
+	private boolean[]	handle;
 	
 	private View[]	viewsOld;
 	private View[]	views;
@@ -31,6 +41,7 @@ public class UnitBuyAdapter extends BaseAdapter
 		viewsOld = views;
 		views = new View[units.length];
 		this.available = available;
+		handle = new boolean[units.length];
 		return this;
 	}
 	
@@ -55,12 +66,16 @@ public class UnitBuyAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
+		if (handle[position])
+			return views[position];
+		handle[position] = true;
 		if (views[position] == null)
 			views[position] = getView(units[position]);
 			
 		int color = available[position] ? UnitBuyAdapter.BLACK : UnitBuyAdapter.GREY;
-		((TextView) views[position].findViewById(R.id.textUnitName)).setTextColor(color);
-		((TextView) views[position].findViewById(R.id.textUnitCost)).setTextColor(color);
+		ViewHolder holder = (ViewHolder) views[position].getTag();
+		holder.textUnitName.setTextColor(color);
+		holder.textUnitCost.setTextColor(color);
 		
 		return views[position];
 	}
@@ -71,17 +86,19 @@ public class UnitBuyAdapter extends BaseAdapter
 			if (unitsOld[i] == unit)
 				return viewsOld[i];
 				
-		View view = GameActivity.gameActivity.getLayoutInflater().inflate(R.layout.listitem, null);
+		View view = GameActivity.gameActivity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
+		ViewHolder holder = new ViewHolder();
+		view.setTag(holder);
 		
-		TextView textView = (TextView) view.findViewById(R.id.textUnitName);
-		textView.setText(unit.type.name);
+		holder.textUnitName = (TextView) view.findViewById(R.id.textUnitName);
+		holder.textUnitName.setText(unit.type.name);
 		
-		ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
+		holder.imageView = (ImageView) view.findViewById(R.id.imageUnit);
 		Bitmap bitmap = UnitImages.getUnitBitmapBuy(unit);
-		imageView.setImageBitmap(bitmap);
+		holder.imageView.setImageBitmap(bitmap);
 		
-		TextView textViewUnitCost = (TextView) view.findViewById(R.id.textUnitCost);
-		textViewUnitCost.setText(String.valueOf(unit.cost));
+		holder.textUnitCost = (TextView) view.findViewById(R.id.textUnitCost);
+		holder.textUnitCost.setText(String.valueOf(unit.cost));
 		
 		return view;
 	}

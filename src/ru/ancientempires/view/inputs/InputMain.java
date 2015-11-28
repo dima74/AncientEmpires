@@ -48,6 +48,8 @@ public class InputMain extends InputBase
 	@Override
 	public void endTurn()
 	{
+		if (!InputBase.gameDraw.isActiveGame)
+			return;
 		currentInput.endTurn();
 		
 		Action action = new Action(ActionType.ACTION_END_TURN);

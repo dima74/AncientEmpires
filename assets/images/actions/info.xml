@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<unit_images_info>
+	<action_images>
+		<action_image type="ACTION_CELL_BUY" image="action_cell_buy.png" />
+		<action_image type="ACTION_UNIT_CAPTURE" image="action_unit_capture.png" />
+		<action_image type="ACTION_UNIT_ATTACK" image="action_unit_attack.png" />
+		<action_image type="ACTION_UNIT_RAISE" image="action_unit_raise.png" />
+		<action_image type="ACTION_UNIT_MOVE" image="action_unit_move.png" />
+		<action_image type="ACTION_GAME_END_TURN" image="action_game_end_turn.png" />
+	</action_images>
+</unit_images_info>

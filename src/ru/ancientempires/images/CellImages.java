@@ -1,7 +1,6 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -11,8 +10,8 @@ import android.graphics.Bitmap;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.helpers.ImagesFileHelper;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Cell;
@@ -51,12 +50,12 @@ public class CellImages
 		return cell.isCapture && CellImages.cellBitmaps[cell.type.ordinal].isSmokes;
 	}
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public static void preload(String path) throws IOException
 	{
 		CellImages.cellBitmaps = new CellBitmap[CellType.number];
 		CellImages.cellBitmapsDual = new CellBitmap[CellType.number];
 		
-		JsonReader reader = ZIPHelper.getJsonReader(images, path + "info.json");
+		JsonReader reader = ImagesFileHelper.getReader(path + "info.json");
 		reader.beginObject();
 		
 		MyAssert.a("images", reader.nextName());
@@ -73,7 +72,7 @@ public class CellImages
 			// defaultBitmap
 			Bitmap[] defaultBitmaps = new Bitmap[imageNames.length];
 			for (int j = 0; j < defaultBitmaps.length; j++)
-				defaultBitmaps[j] = BitmapHelper.getBitmap(images, path + "default/" + imageNames[j]);
+				defaultBitmaps[j] = BitmapHelper.getBitmap(path + "default/" + imageNames[j]);
 			cellBitmap.defaultBitmap = new FewBitmaps().setBitmaps(defaultBitmaps);
 			
 			// colorBitmaps
@@ -84,7 +83,7 @@ public class CellImages
 				{
 					Bitmap[] bitmaps = new Bitmap[imageNames.length];
 					for (int j = 0; j < bitmaps.length; j++)
-						bitmaps[j] = BitmapHelper.getBitmap(images, path + CellImages.colors[colorI].name + "/" + imageNames[j]);
+						bitmaps[j] = BitmapHelper.getBitmap(path + CellImages.colors[colorI].name + "/" + imageNames[j]);
 					cellBitmap.colorBitmaps[colorI] = new FewBitmaps().setBitmaps(bitmaps);
 				}
 			}
@@ -98,7 +97,7 @@ public class CellImages
 					String[] imageNamesDestroying = new Gson().fromJson(reader, String[].class);
 					Bitmap[] bitmaps = new Bitmap[imageNamesDestroying.length];
 					for (int j = 0; j < bitmaps.length; j++)
-						bitmaps[j] = BitmapHelper.getBitmap(images, path + "destroying/" + imageNamesDestroying[j]);
+						bitmaps[j] = BitmapHelper.getBitmap(path + "destroying/" + imageNamesDestroying[j]);
 					cellBitmap.destroyingBitmap = new FewBitmaps().setBitmaps(bitmaps);
 				}
 				
@@ -118,7 +117,7 @@ public class CellImages
 		reader.endObject();
 	}
 	
-	public static void loadResources(ZipFile images, String path, Game game) throws IOException
+	public static void loadResources(String path, Game game) throws IOException
 	{
 		CellImages.playerToColorI = new int[game.players.length];
 		for (Player player : game.players)

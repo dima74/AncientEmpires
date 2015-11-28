@@ -1,35 +1,35 @@
 package ru.ancientempires.activity;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import ru.ancientempires.ALog;
 import ru.ancientempires.GameInit;
+import ru.ancientempires.Localization;
+import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
-import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.images.Images;
-import ru.ancientempires.load.GameLoader;
+import ru.ancientempires.helpers.AssetsHelperAndroid;
+import ru.ancientempires.helpers.FileHelper;
 
-public class MainActivity extends Activity
+public class MainActivity extends ListActivity
 {
 	
 	public static Context		context;
 	public static AssetManager	assets;
 	public static Resources		resources;
+	
+	private boolean			isFirstLaunch	= true;
+	private MenuActions[]	actions;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -39,93 +39,51 @@ public class MainActivity extends Activity
 		MainActivity.context = getBaseContext();
 		MainActivity.assets = getAssets();
 		MainActivity.resources = getResources();
+		
+		FileHelper.setBaseDirectory(getFilesDir());
+		FileHelper.assets = new AssetsHelperAndroid(getAssets());
+		
 		MyLog.currLog = new ALog();
 		
-		GameInit.init();
-		
-		// TODO заменить, чтобы клиент инит сендил мессадж
-		final Handler handler = new Handler(new Handler.Callback()
-		{
-			@Override
-			public boolean handleMessage(Message msg)
-			{
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, LevelMenuActivity.class);
-				startActivity(intent);
-				return true;
-			}
-		});
-		final Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-				if (GameLoader.gamesFolder != null)
-				{
-					timer.cancel();
-					handler.sendMessage(new Message());
-				}
-			}
-		}, 0, 10);
-	}
-	
-	public static int amn = 0;
-	
-	private void checkInit()
-	{
 		try
 		{
-			GameInit.initAsyncTask.get();
+			Localization.load("strings");
 		}
-		catch (InterruptedException | ExecutionException e)
+		catch (IOException e1)
 		{
 			MyAssert.a(false);
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		
+		actions = new MenuActions[]
+		{
+				MenuActions.PLAY,
+				MenuActions.ONLINE,
+				MenuActions.SETTINGS,
+				MenuActions.MAP_EDITOR,
+				MenuActions.INSTRUCTIONS,
+				MenuActions.AUTHORS
+		};
+		
+		setContentView(R.layout.main_menu_list_view);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, MenuActions.convertToNames(actions));
+		setListAdapter(adapter);
+		
+		GameInit.init();
 	}
 	
-	public boolean isStartCampaign = false;
-	
-	protected void startCampaign()
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		if (isStartCampaign)
-			return;
-		isStartCampaign = true;
-		// MyLog.l("MainActivity.startCampaign()");
-		ProgressDialog progressDialog = new ProgressDialog(this);
-		progressDialog.setMessage(getString(R.string.loading));
-		progressDialog.show();
-		new AsyncTask<Void, Void, Void>()
+		switch (actions[position])
 		{
-			@Override
-			protected Void doInBackground(Void... params)
-			{
-				checkInit();
-				// Client.getClient().startGame("first");
-				try
-				{
-					long s = System.nanoTime();
-					Images.loadResources(Client.imagesZipFile, Client.getClient().getGame());
-					long e = System.nanoTime();
-				}
-				catch (IOException e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, GameActivity.class);
-				startActivity(intent);
-				isStartCampaign = false;
-			};
-		}.execute();
+			case PLAY:
+				startActivity(new Intent(this, PlayMenuActivity.class));
+				break;
+				
+			default:
+				break;
+		}
 	}
 	
 }

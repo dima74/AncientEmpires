@@ -1,7 +1,6 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.helpers.BitmapHelper;
@@ -21,11 +20,11 @@ public class CursorImages
 	public static int	cursorH;
 	public static int	cursorW;
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public static void preload(String path) throws IOException
 	{
-		CursorImages.cursorWay = BitmapHelper.getResizeBitmap(images, path + "cursor_way.png");
-		CursorImages.cursorAttack = BitmapHelper.getResizeBitmap(images, path + "cursor_attack.png");
-		CursorImages.cursorMixed = BitmapHelper.getResizeBitmap(images, path + "cursor_mixed.png");
+		CursorImages.cursorWay = BitmapHelper.getResizeBitmap(path + "cursor_way.png");
+		CursorImages.cursorAttack = BitmapHelper.getResizeBitmap(path + "cursor_attack.png");
+		CursorImages.cursorMixed = BitmapHelper.getResizeBitmap(path + "cursor_mixed.png");
 		CursorImages.cursor.setBitmaps(path, new String[]
 		{
 				"cursor_down.png",

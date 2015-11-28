@@ -174,9 +174,13 @@ public class GameDrawMain
 	{
 		if (!isActiveGame || touchY > GameView.h - gameDrawInfo.h)
 			return;
-		if (gameDrawAction.isActive() && gameDrawAction.touch(touchY - gameDrawActionY, touchX))
-			return;
-			
+		if (gameDrawAction.isActive())
+		{
+			gameDrawAction.destroy();
+			if (gameDrawAction.touch(touchY - gameDrawActionY, touchX))
+				return;
+		}
+		
 		int i = (int) ((touchY / GameDraw.mapScale - offsetY) / GameDraw.A);
 		int j = (int) ((touchX / GameDraw.mapScale - offsetX) / GameDraw.A);
 		try

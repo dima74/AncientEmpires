@@ -1,204 +1,169 @@
 package ru.ancientempires.activity;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import ru.ancientempires.GameInit;
+import ru.ancientempires.Localization;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.Images;
-import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 
-public class LevelMenuActivity extends Activity
+public class LevelMenuActivity extends ListActivity
 {
 	
-	private ListView	listView;
-	public String		names[];
-	
-	public GamesFolder	gamesFolder;
-	private boolean		isCheckInit	= false;
+	public GamesFolder	currentFolder;
 	private boolean		isStartGame	= false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_level_menu);
+		setContentView(R.layout.level_menu_list_view);
 		
-		listView = (ListView) findViewById(R.id.listview);
-		listView.setDividerHeight(0);
+		Intent intent = getIntent();
+		currentFolder = GamesFolder.getFolder(intent.getStringExtra(PlayMenuActivity.EXTRA_FOLDER));
+		setTitle(currentFolder.name);
 		
-		LayoutParams layoutParams = (LayoutParams) listView.getLayoutParams();
-		layoutParams.gravity = Gravity.CENTER_VERTICAL;
-		listView.setLayoutParams(layoutParams);
-		
-		setContent(GameLoader.gamesFolder);
-		
-		BaseAdapter adapter = new BaseAdapter()
+		if (!GameInit.foldersInitThread.isAlive())
 		{
-			@Override
-			public int getCount()
-			{
-				return names.length;
-			}
-			
-			@Override
-			public Object getItem(int position)
-			{
-				return null;
-			}
-			
-			@Override
-			public long getItemId(int position)
-			{
-				return position;
-			}
-			
-			@Override
-			public View getView(final int position, View convertView, ViewGroup parent)
-			{
-				LayoutInflater inflater = getLayoutInflater();
-				View view = inflater.inflate(R.layout.button_layout, parent, false);
-				Button button = (Button) view.findViewById(R.id.button);
-				button.setText(names[position]);
-				button.setOnClickListener(new OnClickListener()
-				{
-					@Override
-					public void onClick(View v)
-					{
-						LevelMenuActivity.this.onClick(position);
-					}
-				});
-				return view;
-			}
-		};
-		
-		listView.setAdapter(adapter);
-		
-		// debug
-		GamePath gamePath = gamesFolder.gamesFolders[0].gamePaths[0];
-		startGame(gamePath);
-	}
-	
-	private void setContent(GamesFolder gamesFolder)
-	{
-		this.gamesFolder = gamesFolder;
-		names = getNames(gamesFolder);
-	}
-	
-	private void updateContent(GamesFolder gamesFolder)
-	{
-		setContent(gamesFolder);
-		((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-	}
-	
-	private String[] getNames(GamesFolder gamesFolder)
-	{
-		ArrayList<String> names = new ArrayList<String>();
-		for (GamesFolder newGamesFolder : gamesFolder.gamesFolders)
-			names.add(newGamesFolder.path.replace("/", ""));
-		for (GamePath newGamePath : gamesFolder.gamePaths)
-			names.add(newGamePath.path.replace("/", ""));
-			
-		return names.toArray(new String[0]);
-	}
-	
-	protected void onClick(int position)
-	{
-		final GamesFolder[] gamesFolders = gamesFolder.gamesFolders;
-		if (position < gamesFolders.length)
-		{
-			updateContent(gamesFolders[position]);
-			if (names.length == 0)
-				Toast.makeText(this, "Здесь пока ничего нет", Toast.LENGTH_LONG).show();
-		}
-		else
-			startGame(gamesFolder.gamePaths[position - gamesFolders.length]);
-	}
-	
-	private void startGame(final GamePath gamePath)
-	{
-		if (!isCheckInit)
-		{
-			isCheckInit = true;
-			new AsyncTask<Void, Void, Void>()
-			{
-				@Override
-				protected Void doInBackground(Void... params)
-				{
-					checkInit();
-					return null;
-				}
-			}.execute();
-		}
-		
-		if (isStartGame)
+			start();
 			return;
-		final ProgressDialog progressDialog = new ProgressDialog(this);
-		progressDialog.setMessage(getString(R.string.loading));
-		progressDialog.show();
-		new AsyncTask<Void, Void, Void>()
+		}
+		
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage(getString(R.string.loading));
+		dialog.setCancelable(false);
+		dialog.show();
+		
+		new Thread(new Runnable()
 		{
 			@Override
-			protected Void doInBackground(Void... params)
+			public void run()
 			{
-				Client.getClient().startGame(gamePath);
 				try
 				{
-					long s = System.nanoTime();
-					Images.loadResources(Client.imagesZipFile, Client.getClient().getGame());
-					long e = System.nanoTime();
+					Localization.load("games/strings");
+					GameInit.foldersInitThread.join();
 				}
-				catch (IOException e)
+				catch (InterruptedException | IOException e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
-				return null;
+				runOnUiThread(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						dialog.dismiss();
+						start();
+					}
+					
+				});
 			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				Intent intent = new Intent();
-				intent.setClass(LevelMenuActivity.this, GameActivity.class);
-				startActivity(intent);
-				isStartGame = false;
-				progressDialog.dismiss();
-			};
-		}.execute();
+		}).start();
 	}
 	
-	private void checkInit()
+	public void start()
 	{
-		try
+		String[] values;
+		if (currentFolder.folders != null)
 		{
-			GameInit.initAsyncTask.get();
+			values = new String[currentFolder.folders.length];
+			for (int i = 0; i < currentFolder.folders.length; i++)
+				values[i] = currentFolder.folders[i].name;
 		}
-		catch (InterruptedException | ExecutionException e)
+		else
 		{
-			MyAssert.a(false);
-			e.printStackTrace();
+			values = new String[currentFolder.games.length];
+			for (int i = 0; i < currentFolder.games.length; i++)
+				values[i] = Localization.get(currentFolder.games[i].gameID + ".name");
 		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, values);
+		setListAdapter(adapter);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id)
+	{
+		if (isStartGame)
+			return;
+		isStartGame = true;
+		if (currentFolder.folders != null)
+		{
+			currentFolder = currentFolder.folders[position];
+			start();
+		}
+		else
+		{
+			final ProgressDialog dialog = new ProgressDialog(this);
+			dialog.setMessage(getString(R.string.loading));
+			dialog.setCancelable(false);
+			dialog.show();
+			
+			final GamePath gamePath = currentFolder.games[position];
+			new Thread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					try
+					{
+						GameInit.initThread.join();
+						Client.getClient().startGame(gamePath.gameID);
+						Images.loadResources(Client.getClient().getGame());
+					}
+					catch (InterruptedException | IOException e)
+					{
+						MyAssert.a(false);
+						e.printStackTrace();
+					}
+					
+					runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							dialog.dismiss();
+							startActivity(new Intent().setClass(LevelMenuActivity.this, GameActivity.class));
+							isStartGame = false;
+						}
+					});
+				}
+			}).start();
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.level_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings)
+			return true;
+		return super.onOptionsItemSelected(item);
 	}
 	
 }

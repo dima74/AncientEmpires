@@ -1,14 +1,13 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import com.google.gson.stream.JsonReader;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.helpers.ImagesFileHelper;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.helpers.ZIPHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 
@@ -35,9 +34,9 @@ public class Images
 	public static int	levelUpH;
 	public static int	levelUpW;
 	
-	public static void preloadResources(ZipFile images) throws IOException
+	public static void preloadResources() throws IOException
 	{
-		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, "info.json"));
+		JsonReader reader = ImagesFileHelper.getReader("info.json");
 		reader.beginObject();
 		String cellsPath = JsonHelper.readString(reader, "cells_folder");
 		String unitsPath = JsonHelper.readString(reader, "units_folder");
@@ -52,27 +51,27 @@ public class Images
 		reader.endObject();
 		reader.close();
 		
-		CellImages.preload(images, cellsPath);
-		UnitImages.preload(images, unitsPath);
-		ActionImages.preload(images, actionsPath);
-		SmallNumberImages.preload(images, numbersPath);
-		BigNumberImages.preload(images, bigNumbersPath);
-		SparksImages.preload(images, sparksPath);
-		CursorImages.preload(images, cursorsPath);
-		ArrowsImages.preload(images, arrowsPath);
-		StatusesImages.preload(images, statusesPath);
-		SmokeImages.preload(images, smokePath);
+		CellImages.preload(cellsPath);
+		UnitImages.preload(unitsPath);
+		ActionImages.preload(actionsPath);
+		SmallNumberImages.preload(numbersPath);
+		BigNumberImages.preload(bigNumbersPath);
+		SparksImages.preload(sparksPath);
+		CursorImages.preload(cursorsPath);
+		ArrowsImages.preload(arrowsPath);
+		StatusesImages.preload(statusesPath);
+		SmokeImages.preload(smokePath);
 		
 		// self
-		Images.amountGold = BitmapHelper.getResizeBitmap(images, "amountGold.png");
-		Images.amountUnits = BitmapHelper.getResizeBitmap(images, "amountUnits.png");
-		Images.attack = BitmapHelper.getResizeBitmap(images, "attack.png");
-		Images.defence = BitmapHelper.getResizeBitmap(images, "defence.png");
-		Images.levelIncrease = BitmapHelper.getResizeBitmap(images, "levelIncrease.png");
-		Images.levelUp = BitmapHelper.getResizeBitmap(images, "levelUp.png");
+		Images.amountGold = BitmapHelper.getResizeBitmap("amountGold.png");
+		Images.amountUnits = BitmapHelper.getResizeBitmap("amountUnits.png");
+		Images.attack = BitmapHelper.getResizeBitmap("attack.png");
+		Images.defence = BitmapHelper.getResizeBitmap("defence.png");
+		Images.levelIncrease = BitmapHelper.getResizeBitmap("levelIncrease.png");
+		Images.levelUp = BitmapHelper.getResizeBitmap("levelUp.png");
 		
 		Images.tombstone = new FewBitmaps().setBitmaps("", "tombstone.png");
-		Images.attack = BitmapHelper.getBitmap(images, "gameover.png");
+		Images.attack = BitmapHelper.getBitmap("gameover.png");
 		
 		Images.amountGoldH = Images.amountGold.getHeight();
 		Images.amountGoldW = Images.amountGold.getWidth();
@@ -85,15 +84,15 @@ public class Images
 		Images.bitmapSize = Images.tombstone.bitmaps[0].getHeight();
 	}
 	
-	public static void loadResources(ZipFile images, Game game) throws IOException
+	public static void loadResources(Game game) throws IOException
 	{
-		JsonReader reader = new JsonReader(ZIPHelper.getISR(images, "info.json"));
+		JsonReader reader = ImagesFileHelper.getReader("info.json");
 		reader.beginObject();
 		String cellsPath = JsonHelper.readString(reader, "cells_folder");
 		reader.close();
 		
-		CellImages.loadResources(images, cellsPath, game);
-		UnitImages.loadResources(images, game);
+		CellImages.loadResources(cellsPath, game);
+		UnitImages.loadResources(game);
 	}
 	
 }

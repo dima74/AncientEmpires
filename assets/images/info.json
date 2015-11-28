@@ -1,0 +1,12 @@
+{
+	"cells_folder": "cells/",
+	"units_folder": "units/",
+	"actions_folder": "actions/",
+	"numbers_folder": "numbers/",
+	"big_numbers_folder": "big_numbers/",
+	"sparks_folder": "sparks/",
+	"cursors_folder": "cursors/",
+	"arrows_folder": "arrows/",
+	"statuses_folder": "statuses/",
+	"smoke_folder": "smoke/"
+}

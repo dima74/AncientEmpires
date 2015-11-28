@@ -1,0 +1,1 @@
+{"cells":[{"i":1,"j":2,"isCapture":true,"player":0},{"i":1,"j":13,"isCapture":true,"player":2},{"i":2,"j":4},{"i":2,"j":10},{"i":4,"j":1},{"i":4,"j":7,"isDestroying":true},{"i":4,"j":13},{"i":5,"j":5,"isDestroying":true},{"i":5,"j":9,"isDestroying":true},{"i":8,"j":5},{"i":8,"j":9},{"i":10,"j":7,"isCapture":true,"player":1}]}

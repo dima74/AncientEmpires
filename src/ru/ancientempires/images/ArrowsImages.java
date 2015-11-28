@@ -1,10 +1,9 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
-import ru.ancientempires.helpers.BitmapHelper;
 import android.graphics.Bitmap;
+import ru.ancientempires.helpers.BitmapHelper;
 
 public class ArrowsImages
 {
@@ -13,11 +12,11 @@ public class ArrowsImages
 	public static Bitmap	more;
 	public static Bitmap	less;
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public static void preload(String path) throws IOException
 	{
-		ArrowsImages.equals = BitmapHelper.getResizeBitmap(images, path + "equals.png");
-		ArrowsImages.more = BitmapHelper.getResizeBitmap(images, path + "more.png");
-		ArrowsImages.less = BitmapHelper.getResizeBitmap(images, path + "less.png");
+		ArrowsImages.equals = BitmapHelper.getResizeBitmap(path + "equals.png");
+		ArrowsImages.more = BitmapHelper.getResizeBitmap(path + "more.png");
+		ArrowsImages.less = BitmapHelper.getResizeBitmap(path + "less.png");
 	}
 	
 }

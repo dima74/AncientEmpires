@@ -12,7 +12,6 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.server.ClientServer;
 
 public class GameActivity extends Activity
 {
@@ -44,7 +43,7 @@ public class GameActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game, menu);
+		getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
 	}
 	
@@ -55,17 +54,13 @@ public class GameActivity extends Activity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings)
-			return true;
-		else if (id == R.id.action_end_turn)
+		if (id == R.id.action_end_turn)
 			GameActivity.gameView.thread.inputMain.endTurn();
 		else if (id == R.id.action_reset)
 		{
-			ClientServer.server.startGame(Client.getClient().gamePath);
+			Client.getClient().restartGame();
 			startGameView();
 		}
-		else if (id == R.id.action_exit)
-			android.os.Process.killProcess(android.os.Process.myPid());
 		else if (id == R.id.action_kill_unit)
 		{
 			while (!GameHandler.game.players[1].units.isEmpty())

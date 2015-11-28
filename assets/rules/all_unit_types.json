@@ -1,0 +1,21 @@
+{
+	"all_unit_types":
+	[
+		"KING",
+		"SOLDIER",
+		"ARCHER",
+		"ELEMENTAL",
+		"SORCERESS",
+		"WISP",
+		"DIRE_WOLF",
+		"GOLEM",
+		"CATAPULT",
+		"DRAGON",
+		"SKELETON",
+		"CRYSTAL",
+		"KING_GALAMAR",
+		"KING_VALADORN",
+		"KING_DEMONLORD",
+		"KING_SAETH"
+	]
+}

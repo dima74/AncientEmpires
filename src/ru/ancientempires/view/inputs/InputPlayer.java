@@ -52,12 +52,12 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		{
 			if (inputUnit.isActive)
 				inputUnit.tap(i, j); // сам станет неактивным
-			if (ActionHandlerHelper.canBuyOnCell(i, j))
-				tryBuy(i, j);
-			else if (ActionHandlerHelper.canUnitRepair(i, j))
+			if (ActionHandlerHelper.canUnitRepair(i, j))
 				tryRepair(i, j);
 			else if (ActionHandlerHelper.canUnitCapture(i, j))
 				tryCapture(i, j);
+			else if (ActionHandlerHelper.canBuyOnCell(i, j))
+				tryBuy(i, j);
 		}
 		else
 		{
@@ -78,21 +78,6 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		InputBase.gameDraw.updateCursors();
 	}
 	
-	private boolean tryBuy(int i, int j)
-	{
-		Action action = new Action(ActionType.GET_BUY);
-		action.setProperty("i", i);
-		action.setProperty("j", j);
-		ActionResult result = Client.action(action);
-		
-		Unit[] units = (Unit[]) result.getProperty("units");
-		boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
-		InputBase.thread.isPause = true;
-		
-		UnitBuyDialog.showDialog(this, units, isAvailable);
-		return true;
-	}
-	
 	private boolean tryRepair(int i, int j)
 	{
 		Action action = new Action(ActionType.ACTION_UNIT_REPAIR);
@@ -110,6 +95,21 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		action.setProperty("j", j);
 		Client.action(action);
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
+		return true;
+	}
+	
+	private boolean tryBuy(int i, int j)
+	{
+		Action action = new Action(ActionType.GET_BUY);
+		action.setProperty("i", i);
+		action.setProperty("j", j);
+		ActionResult result = Client.action(action);
+		
+		Unit[] units = (Unit[]) result.getProperty("units");
+		boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
+		InputBase.thread.isPause = true;
+		
+		UnitBuyDialog.showDialog(this, units, isAvailable);
 		return true;
 	}
 	

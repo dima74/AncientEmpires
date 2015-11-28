@@ -112,7 +112,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	}
 	
 	@Override
-	public void showDialog(String imagePath, String text, ScriptDialog script)
+	public void showDialog(int imagePath, String text, ScriptDialog script)
 	{
 		DialogFragment dialogFragment = new MyDialogFragment(imagePath, text, script);
 		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "MyDialog");
@@ -133,9 +133,9 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	}
 	
 	@Override
-	public void showIntro(String imagePath, String text, ScriptIntro script)
+	public void showIntro(int imageID, String text, ScriptIntro script)
 	{
-		DialogFragment dialogFragment = new DialogShowIntro(imagePath, text, script);
+		DialogFragment dialogFragment = new DialogShowIntro(imageID, text, script);
 		dialogFragment.show(GameActivity.gameActivity.getFragmentManager(), "DialogShowIntro");
 	}
 	
@@ -396,7 +396,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 					protected Void doInBackground(Void... params)
 					{
 						GameActivity.gameView.stopThread();
-						Client.getClient().startGame(Campaign.game.nextMission);
+						Client.getClient().startGame(Campaign.game.nextMissionID);
 						return null;
 					}
 					

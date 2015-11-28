@@ -1,14 +1,5 @@
 package ru.ancientempires.view.draws.campaign;
 
-import java.io.IOException;
-
-import ru.ancientempires.R;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.scripts.ScriptDialog;
-import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.helpers.BitmapHelper;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,18 +10,24 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import ru.ancientempires.R;
+import ru.ancientempires.campaign.Campaign;
+import ru.ancientempires.campaign.scripts.ScriptDialog;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.images.CampaignImages;
 
 public class MyDialogFragment extends DialogFragment
 {
 	
-	private String			imagePath	= "campaigns/images/portraits/0.png";
+	private int				imageID;
 	private String			text		= "Это длинный текст";
 	private ScriptDialog	script;
 	protected boolean		isClicked	= false;
 	
-	public MyDialogFragment(String imagePath, String text, ScriptDialog script)
+	public MyDialogFragment(int imagePath, String text, ScriptDialog script)
 	{
-		this.imagePath = imagePath;
+		imageID = imagePath;
 		this.text = text;
 		this.script = script;
 	}
@@ -40,33 +37,28 @@ public class MyDialogFragment extends DialogFragment
 	{
 		Builder builder = new Builder(getActivity());
 		
-		try
+		View view = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog, null);
+		ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
+		TextView textView = (TextView) view.findViewById(R.id.textUnitName);
+		
+		CampaignImages<Bitmap> images = CampaignImages.images;
+		Bitmap bitmap = images.getImage(imageID);
+		
+		imageView.setImageBitmap(bitmap);
+		textView.setText(text);
+		builder.setView(view);
+		
+		Button button = (Button) view.findViewById(R.id.button);
+		button.setOnClickListener(new OnClickListener()
 		{
-			View view = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog, null);
-			ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
-			TextView textView = (TextView) view.findViewById(R.id.textUnitName);
-			Bitmap bitmap = BitmapHelper.getBitmap(Client.gameZipFile, this.imagePath);
-			imageView.setImageBitmap(bitmap);
-			textView.setText(this.text);
-			builder.setView(view);
-			
-			Button button = (Button) view.findViewById(R.id.button);
-			button.setOnClickListener(new OnClickListener()
+			@Override
+			public void onClick(View v)
 			{
-				@Override
-				public void onClick(View v)
-				{
-					dismiss();
-					// setUserVisibleHint(false);
-					MyDialogFragment.this.isClicked = true;
-				}
-			});
-		}
-		catch (IOException e)
-		{
-			MyAssert.a(false);
-			e.printStackTrace();
-		}
+				dismiss();
+				// setUserVisibleHint(false);
+				isClicked = true;
+			}
+		});
 		
 		return builder.create();
 	}
@@ -82,7 +74,7 @@ public class MyDialogFragment extends DialogFragment
 	{
 		MyLog.l(+System.currentTimeMillis() + " ondetach");
 		super.onDetach();
-		if (this.isClicked)
+		if (isClicked)
 			new Thread(new Runnable()
 			{
 				@Override
@@ -97,7 +89,7 @@ public class MyDialogFragment extends DialogFragment
 						MyAssert.a(false);
 						e.printStackTrace();
 					}
-					Campaign.finish(MyDialogFragment.this.script);
+					Campaign.finish(script);
 				}
 			}).start();
 	}

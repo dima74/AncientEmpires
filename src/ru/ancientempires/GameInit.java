@@ -2,37 +2,66 @@ package ru.ancientempires;
 
 import java.io.IOException;
 
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.AZipHelper;
+import ru.ancientempires.images.AndroidImageLoader;
+import ru.ancientempires.images.CampaignImages;
 import ru.ancientempires.images.Images;
+import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.view.draws.GameDrawAction;
 
 public class GameInit
 {
 	
-	public static AsyncTask<Void, Void, Void>	initAsyncTask;
-	public static AsyncTask<Void, Void, Void>	gameInitAsyncTask;
+	public static Thread	foldersInitThread;
+	public static Thread	initThread;
 	
 	public static void init()
 	{
-		GameInit.initAsyncTask = new AsyncTask<Void, Void, Void>()
+		GameInit.foldersInitThread = new Thread()
 		{
 			@Override
-			protected Void doInBackground(Void... params)
+			public void run()
 			{
 				try
 				{
-					Client.setGamesZipFile(AZipHelper.getZipFileFromAssets("games.zip"));
-					Client.setRulesZipFile(AZipHelper.getZipFileFromAssets("rules.zip"));
+					Localization.load("games/strings");
+					Client.gamesFolder = new GamesFolder("", null);
+				}
+				catch (IOException e)
+				{
+					MyAssert.a(false);
+					e.printStackTrace();
+				}
+			}
+		};
+		GameInit.foldersInitThread.start();
+		
+		GameInit.initThread = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					GameInit.foldersInitThread.join();
+				}
+				catch (InterruptedException e)
+				{
+					MyAssert.a(false);
+					e.printStackTrace();
+				}
+				
+				try
+				{
 					// Debug.startMethodTracing("traces/client");
 					Client.init();
 					// Debug.stopMethodTracing();
 					
-					Client.setImagesZipFile(AZipHelper.getZipFileFromAssets("images.zip"));
 					// Debug.startMethodTracing("traces/images");
-					Images.preloadResources(Client.imagesZipFile);
+					Images.preloadResources();
+					CampaignImages.images = new CampaignImages<Bitmap>(new AndroidImageLoader());
 					// Debug.stopMethodTracing();
 					
 					// Debug.startMethodTracing("traces/init");
@@ -44,10 +73,9 @@ public class GameInit
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
-				return null;
 			}
-			
-		}.execute();
+		};
+		GameInit.initThread.start();
 	}
 	
 }

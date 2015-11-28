@@ -42,9 +42,14 @@ public class GameDrawAction extends GameDraw
 		if (y < 0 || y > h)
 			return false;
 		ActionType type = x < w / 2 ? type1 : type2;
-		type1 = type2 = null;
+		destroy();
 		GameDraw.main.inputPlayer.inputUnit.performAction(type);
 		return true;
+	}
+	
+	public void destroy()
+	{
+		type1 = type2 = null;
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package ru.ancientempires.images;
 
 import java.io.IOException;
-import java.util.zip.ZipFile;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.action.ActionType;
@@ -20,7 +19,7 @@ public class ActionImages
 		return ActionImages.actionBitmaps[type.ordinal];
 	}
 	
-	public static void preload(ZipFile images, String path) throws IOException
+	public static void preload(String path) throws IOException
 	{
 		ActionImages.actionBitmaps = new Bitmap[ActionType.amount];
 		String[] actionImageNames = new String[]
@@ -46,7 +45,7 @@ public class ActionImages
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.getMultiBitmap(images, path + actionImageNames[i], GameDrawAction.mScale);
+			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.getMultiBitmap(BitmapHelper.getBitmap(path + actionImageNames[i]), GameDrawAction.mScale);
 		ActionImages.h = ActionImages.actionBitmaps[actionTypes[0].ordinal].getHeight();
 		ActionImages.w = ActionImages.actionBitmaps[actionTypes[0].ordinal].getWidth();
 	}

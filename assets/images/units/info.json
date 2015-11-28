@@ -1,0 +1,21 @@
+{
+	"images":
+	[
+		{ "type": "KING", "images": [ "king_galamar_0.png", "king_galamar_1.png" ] },
+		{ "type": "KING_GALAMAR", "images": [ "king_galamar_0.png", "king_galamar_1.png" ] },
+		{ "type": "KING_VALADORN", "images": [ "king_valadorn_0.png", "king_valadorn_1.png" ] },
+		{ "type": "KING_DEMONLORD", "images": [ "king_demonlord_0.png", "king_demonlord_1.png" ] },
+		{ "type": "KING_SAETH", "images": [ "king_saeth_0.png", "king_saeth_1.png" ] },
+		{ "type": "SOLDIER", "images": [ "soldier_0.png", "soldier_1.png" ] },
+		{ "type": "ARCHER", "images": [ "archer_0.png", "archer_1.png" ] },
+		{ "type": "ELEMENTAL", "images": [ "elemental_0.png", "elemental_1.png" ] },
+		{ "type": "SORCERESS", "images": [ "sorceress_0.png", "sorceress_1.png" ] },
+		{ "type": "WISP", "images": [ "wisp_0.png", "wisp_1.png" ] },
+		{ "type": "DIRE_WOLF", "images": [ "dire_wolf_0.png", "dire_wolf_1.png" ] },
+		{ "type": "GOLEM", "images": [ "golem_0.png", "golem_1.png" ] },
+		{ "type": "CATAPULT", "images": [ "catapult_0.png", "catapult_1.png" ] },
+		{ "type": "DRAGON", "images": [ "dragon_0.png", "dragon_1.png" ] },
+		{ "type": "SKELETON", "images": [ "skeleton_0.png", "skeleton_1.png" ] },
+		{ "type": "CRYSTAL", "images": [ "crystal_0.png", "crystal_1.png" ] }
+	]
+}
