@@ -7,7 +7,7 @@ import ru.ancientempires.view.draws.GameDraw;
 public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 {
 	
-	private static final int FRAME_LENGTH = SparksImages.amountDefault * 3 * 2;
+	private static final int FRAME_LENGTH = SparksImages.get().amountDefault * 3 * 2;
 	
 	private int	targetI;
 	private int	targetJ;
@@ -18,8 +18,8 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 	{
 		this.targetI = targetI;
 		this.targetJ = targetJ;
-		int y = targetI * GameDraw.A - SparksImages.hDefault / 2;
-		int x = targetJ * GameDraw.A - SparksImages.wDefault / 2;
+		int y = targetI * GameDraw.A - SparksImages().hDefault / 2;
+		int x = targetJ * GameDraw.A - SparksImages().wDefault / 2;
 		int d = (int) (4 * GameDraw.a);
 		int[] array =
 		{
@@ -31,7 +31,7 @@ public class GameDrawUnitRaise extends GameDrawOnFramesGroup
 			for (int j = 0; j < 2; j++)
 				add(new GameDrawBitmapsMoving()
 						.setLineYX(y + array[i], x + array[j], y + GameDraw.A - array[i], x + GameDraw.A - array[j])
-						.setBitmaps(SparksImages.bitmapsDefault)
+						.setBitmaps(SparksImages().bitmapsDefault)
 						.animateRepeat(3));
 		GameDraw.main.gameDrawUnits.keep[targetI][targetJ] = true;
 		frameUpdateTargetUnit = frameStart + GameDrawUnitRaise.FRAME_LENGTH / 2;

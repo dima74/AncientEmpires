@@ -41,6 +41,11 @@
             android:label="@string/title_activity_game"
             android:parentActivityName="ru.ancientempires.activity.LevelMenuActivity" >
         </activity>
+        <activity
+            android:name="ru.ancientempires.activity.PlayersChooseActivity"
+            android:parentActivityName="ru.ancientempires.activity.MainActivity"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
     </application>
 
 </manifest>

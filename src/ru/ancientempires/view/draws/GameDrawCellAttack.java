@@ -2,7 +2,6 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 
@@ -23,12 +22,12 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 		draws.clear();
 		add(new GameDrawBitmaps()
 				.setYX(y, x)
-				.setBitmaps(SparksImages.bitmapsAttack)
+				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(1));
 		frameUpdateTargetCell = frameEnd;
 		add(new GameDrawBitmaps()
 				.setYX(y, x)
-				.setBitmaps(SparksImages.bitmapsDefault)
+				.setBitmaps(SparksImages().bitmapsDefault)
 				.setFramesForBitmap(4)
 				.animateRepeat(1)
 				.increaseFrameStart(frameCount));

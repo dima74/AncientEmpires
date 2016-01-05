@@ -2,9 +2,6 @@ package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Canvas;
 import ru.ancientempires.action.AttackResult;
-import ru.ancientempires.images.SmokeImages;
-import ru.ancientempires.images.SparksImages;
-import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawUnitAttack extends GameDrawOnFramesGroup
@@ -36,7 +33,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 				.animate(y, x, -1, result.decreaseHealth));
 		add(new GameDrawBitmaps()
 				.setYX(y, x)
-				.setBitmaps(SparksImages.bitmapsAttack)
+				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(2));
 	}
 	
@@ -46,14 +43,14 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		{
 			add(new GameDrawBitmaps()
 					.setYX(y, x)
-					.setBitmaps(SparksImages.bitmapsDefault)
+					.setBitmaps(SparksImages().bitmapsDefault)
 					.animateRepeat(1)
 					.increaseFrameStart(framesBeforePartTwo));
 					
 			int offsetY = (int) (y - 22 * GameDraw.a);
-			int offsetX = x + (GameDraw.A - StatusesImages.w) / 2;
+			int offsetX = x + (GameDraw.A - StatusesImages().w) / 2;
 			add(new GameDrawBitmapSinus()
-					.animate(offsetY, offsetX, StatusesImages.poison, 2)
+					.animate(offsetY, offsetX, StatusesImages().poison, 2)
 					.increaseFrameStart(framesBeforePartTwo));
 		}
 		
@@ -70,7 +67,7 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 			
 			GameDrawOnFrames gameDrawBitmaps = new GameDrawBitmaps()
 					.setYX(y, x)
-					.setBitmaps(SparksImages.bitmapsDefault)
+					.setBitmaps(SparksImages().bitmapsDefault)
 					.animateRepeat(1)
 					.increaseFrameStart(framesBeforePartTwo);
 			add(gameDrawBitmaps);
@@ -78,11 +75,11 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 			
 			int startY = y;
 			int startX = x;
-			int endY = startY - 3 * 2 * SmokeImages.amountDefault;
+			int endY = startY - 3 * 2 * SmokeImages().amountDefault;
 			int endX = startX;
 			add(new GameDrawBitmapsMoving()
 					.setLineYX(startY, startX, endY, endX)
-					.setBitmaps(SmokeImages.bitmapsDefault)
+					.setBitmaps(SmokeImages().bitmapsDefault)
 					.setFramesForBitmap(4)
 					.animateRepeat(1)
 					.increaseFrameStart(framesBeforePartTwo + gameDrawBitmaps.frameCount));

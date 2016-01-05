@@ -3,18 +3,23 @@ package ru.ancientempires.images;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.client.Client;
 
 public class SmallNumberImages extends NumberImages
 {
 	
-	public static SmallNumberImages	images;
-	public static Bitmap			defenceBitmap;
-	
-	public static void preload(String path) throws IOException
+	public static SmallNumberImages get()
 	{
-		(SmallNumberImages.images = new SmallNumberImages()).preloadBase(path);
-		SmallNumberImages.defenceBitmap = BitmapHelper.getResizeBitmap(path + "defence.png");
+		return Client.client.images.smallNumber;
+	}
+	
+	public Bitmap defenceBitmap;
+	
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
+	{
+		preloadBase(loader);
+		defenceBitmap = loader.loadImage("defence.png");
 	}
 	
 }

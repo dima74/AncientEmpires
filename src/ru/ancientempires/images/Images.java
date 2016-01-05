@@ -2,97 +2,89 @@ package ru.ancientempires.images;
 
 import java.io.IOException;
 
-import com.google.gson.stream.JsonReader;
-
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.ImagesFileHelper;
-import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 
-public class Images
+public class Images extends IImages
 {
 	
-	// public static float baseMulti = 1.0f; // 4.5f / 3.0f;
-	public static int bitmapSize = 24;
-	
-	public static Bitmap		amountGold;
-	public static Bitmap		amountUnits;
-	public static Bitmap		attack;
-	public static Bitmap		defence;
-	public static Bitmap		levelIncrease;
-	public static Bitmap		levelUp;
-	public static FewBitmaps	tombstone;
-	public static Bitmap		gameover;
-	
-	public static int	amountGoldH;
-	public static int	amountGoldW;
-	public static int	amountUnitsH;
-	public static int	amountUnitsW;
-	
-	public static int	levelUpH;
-	public static int	levelUpW;
-	
-	public static void preloadResources() throws IOException
+	public static Images get()
 	{
-		JsonReader reader = ImagesFileHelper.getReader("info.json");
-		reader.beginObject();
-		String cellsPath = JsonHelper.readString(reader, "cells_folder");
-		String unitsPath = JsonHelper.readString(reader, "units_folder");
-		String actionsPath = JsonHelper.readString(reader, "actions_folder");
-		String numbersPath = JsonHelper.readString(reader, "numbers_folder");
-		String bigNumbersPath = JsonHelper.readString(reader, "big_numbers_folder");
-		String sparksPath = JsonHelper.readString(reader, "sparks_folder");
-		String cursorsPath = JsonHelper.readString(reader, "cursors_folder");
-		String arrowsPath = JsonHelper.readString(reader, "arrows_folder");
-		String statusesPath = JsonHelper.readString(reader, "statuses_folder");
-		String smokePath = JsonHelper.readString(reader, "smoke_folder");
-		reader.endObject();
-		reader.close();
-		
-		CellImages.preload(cellsPath);
-		UnitImages.preload(unitsPath);
-		ActionImages.preload(actionsPath);
-		SmallNumberImages.preload(numbersPath);
-		BigNumberImages.preload(bigNumbersPath);
-		SparksImages.preload(sparksPath);
-		CursorImages.preload(cursorsPath);
-		ArrowsImages.preload(arrowsPath);
-		StatusesImages.preload(statusesPath);
-		SmokeImages.preload(smokePath);
-		
-		// self
-		Images.amountGold = BitmapHelper.getResizeBitmap("amountGold.png");
-		Images.amountUnits = BitmapHelper.getResizeBitmap("amountUnits.png");
-		Images.attack = BitmapHelper.getResizeBitmap("attack.png");
-		Images.defence = BitmapHelper.getResizeBitmap("defence.png");
-		Images.levelIncrease = BitmapHelper.getResizeBitmap("levelIncrease.png");
-		Images.levelUp = BitmapHelper.getResizeBitmap("levelUp.png");
-		
-		Images.tombstone = new FewBitmaps().setBitmaps("", "tombstone.png");
-		Images.attack = BitmapHelper.getBitmap("gameover.png");
-		
-		Images.amountGoldH = Images.amountGold.getHeight();
-		Images.amountGoldW = Images.amountGold.getWidth();
-		Images.amountUnitsH = Images.amountUnits.getHeight();
-		Images.amountUnitsW = Images.amountUnits.getWidth();
-		
-		Images.levelUpH = Images.levelUp.getHeight();
-		Images.levelUpW = Images.levelUp.getWidth();
-		
-		Images.bitmapSize = Images.tombstone.bitmaps[0].getHeight();
+		return Client.client.images;
 	}
 	
-	public static void loadResources(Game game) throws IOException
+	// public float baseMulti = 1.0f; // 4.5f / 3.0f;
+	public int bitmapSize = 24;
+	
+	public CellImages			cell		= new CellImages();
+	public UnitImages			unit		= new UnitImages();
+	public ActionImages			action		= new ActionImages();
+	public SmallNumberImages	smallNumber	= new SmallNumberImages();
+	public BigNumberImages		bigNumber	= new BigNumberImages();
+	public SparksImages			sparks		= new SparksImages();
+	public CursorImages			cursor		= new CursorImages();
+	public ArrowsImages			arrows		= new ArrowsImages();
+	public StatusesImages		statuses	= new StatusesImages();
+	public SmokeImages			smoke		= new SmokeImages();
+	
+	public Bitmap		amountGold;
+	public Bitmap		amountUnits;
+	public Bitmap		attack;
+	public Bitmap		defence;
+	public Bitmap		levelIncrease;
+	public Bitmap		levelUp;
+	public FewBitmaps	tombstone;
+	public Bitmap		gameover;
+	
+	public int	amountGoldH;
+	public int	amountGoldW;
+	public int	amountUnitsH;
+	public int	amountUnitsW;
+	
+	public int	levelUpH;
+	public int	levelUpW;
+	
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		JsonReader reader = ImagesFileHelper.getReader("info.json");
-		reader.beginObject();
-		String cellsPath = JsonHelper.readString(reader, "cells_folder");
-		reader.close();
+		cell.preload(loader.getImagesLoader("cells/"));
+		unit.preload(loader.getImagesLoader("units/"));
+		action.preload(loader.getImagesLoader("actions/"));
+		smallNumber.preload(loader.getImagesLoader("numbers/"));
+		bigNumber.preload(loader.getImagesLoader("bigNumbers/"));
+		sparks.preload(loader.getImagesLoader("sparks/"));
+		cursor.preload(loader.getImagesLoader("cursors/"));
+		arrows.preload(loader.getImagesLoader("arrows/"));
+		statuses.preload(loader.getImagesLoader("statuses/"));
+		smoke.preload(loader.getImagesLoader("smoke/"));
 		
-		CellImages.loadResources(cellsPath, game);
-		UnitImages.loadResources(game);
+		// self
+		amountGold = loader.loadImage("amountGold.png");
+		amountUnits = loader.loadImage("amountUnits.png");
+		attack = loader.loadImage("attack.png");
+		defence = loader.loadImage("defence.png");
+		levelIncrease = loader.loadImage("levelIncrease.png");
+		levelUp = loader.loadImage("levelUp.png");
+		
+		tombstone = new FewBitmaps().setBitmaps(loader, "tombstone.png");
+		attack = loader.loadImage("gameover.png");
+		
+		amountGoldH = amountGold.getHeight();
+		amountGoldW = amountGold.getWidth();
+		amountUnitsH = amountUnits.getHeight();
+		amountUnitsW = amountUnits.getWidth();
+		
+		levelUpH = levelUp.getHeight();
+		levelUpW = levelUp.getWidth();
+	}
+	
+	@Override
+	public void load(ImagesLoader loader, Game game) throws IOException
+	{
+		cell.load(loader.getImagesLoader("cells/"), game);
+		unit.load(loader.getImagesLoader("units/"), game);
 	}
 	
 }

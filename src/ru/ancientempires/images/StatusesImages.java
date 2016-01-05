@@ -3,23 +3,23 @@ package ru.ancientempires.images;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
 
-public class StatusesImages
+public class StatusesImages extends IImages
 {
 	
-	public static Bitmap	aura;
-	public static Bitmap	poison;
+	public Bitmap	aura;
+	public Bitmap	poison;
 	
-	public static int	h;
-	public static int	w;
+	public int	h;
+	public int	w;
 	
-	public static void preload(String path) throws IOException
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		StatusesImages.aura = BitmapHelper.getResizeBitmap(path + "aura.png");
-		StatusesImages.poison = BitmapHelper.getResizeBitmap(path + "poison.png");
+		aura = loader.loadImage("aura.png");
+		poison = loader.loadImage("poison.png");
 		
-		StatusesImages.h = StatusesImages.poison.getHeight();
-		StatusesImages.w = StatusesImages.poison.getWidth();
+		h = poison.getHeight();
+		w = poison.getWidth();
 	}
 }

@@ -6,6 +6,7 @@ import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
 import ru.ancientempires.action.handlers.ActionHandlerHelper;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.model.Unit;
 
@@ -107,7 +108,6 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		
 		Unit[] units = (Unit[]) result.getProperty("units");
 		boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
-		InputBase.thread.isPause = true;
 		
 		UnitBuyDialog.showDialog(this, units, isAvailable);
 		return true;
@@ -125,8 +125,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		InputBase.gameDraw.gameDrawInfo.update();
 		inputUnit.start(lastTapI, lastTapJ);
 		
-		InputBase.thread.needUpdateCampaign = true;
-		InputBase.thread.isPause = false;
+		GameActivity.activity.view.thread.needUpdateCampaign = true;
 	}
 	
 	@Override

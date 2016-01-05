@@ -8,9 +8,8 @@ import com.google.gson.stream.JsonToken;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.MyColor;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.ImagesFileHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
@@ -18,34 +17,40 @@ import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 
-public class UnitImages
+public class UnitImages extends IImages
 {
 	
-	private static MyColor[]		colors	= MyColor.colors;
-	public static int[]				playerToColorI;
-	public static FewBitmaps[][]	greyUnitsBitmaps;
-	private static FewBitmaps[][]	unitsBitmaps;
-	private static Bitmap[][]		unitsBitmapsBuy;
+	public static UnitImages get()
+	{
+		return Client.client.images.unit;
+	}
 	
-	public static FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
+	private MyColor[]		colors	= MyColor.values();
+	public int[]			playerToColorI;
+	public FewBitmaps[][]	greyUnitsBitmaps;
+	private FewBitmaps[][]	unitsBitmaps;
+	private Bitmap[][]		unitsBitmapsBuy;
+	
+	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
 		if (unit.isTurn && !keepTurn)
-			return UnitImages.unitsBitmaps[unit.type.ordinal][0];
+			return unitsBitmaps[unit.type.ordinal][0];
 		else
-			return UnitImages.unitsBitmaps[unit.type.ordinal][UnitImages.playerToColorI[unit.player.ordinal]];
+			return unitsBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 	
-	public static Bitmap getUnitBitmapBuy(Unit unit)
+	public Bitmap getUnitBitmapBuy(Unit unit)
 	{
-		return UnitImages.unitsBitmapsBuy[unit.type.ordinal][UnitImages.playerToColorI[unit.player.ordinal]];
+		return unitsBitmapsBuy[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 	
-	public static void preload(String path) throws IOException
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		JsonReader reader = ImagesFileHelper.getReader(path + "info.json");
+		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
 		
-		UnitImages.unitsBitmaps = new FewBitmaps[UnitType.number][5];
+		unitsBitmaps = new FewBitmaps[UnitType.number][5];
 		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
@@ -56,12 +61,12 @@ public class UnitImages
 			int type = UnitType.getType(JsonHelper.readString(reader, "type")).ordinal;
 			MyAssert.a("images", reader.nextName());
 			String[] imageNames = new Gson().fromJson(reader, String[].class);
-			for (int colorI = 0; colorI < UnitImages.colors.length; colorI++)
+			for (int colorI = 0; colorI < colors.length; colorI++)
 			{
 				Bitmap[] bitmaps = new Bitmap[imageNames.length];
 				for (int j = 0; j < bitmaps.length; j++)
-					bitmaps[j] = BitmapHelper.getBitmap(path + UnitImages.colors[colorI].name + "/" + imageNames[j]);
-				UnitImages.unitsBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
+					bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
+				unitsBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
 			}
 			reader.endObject();
 		}
@@ -72,18 +77,19 @@ public class UnitImages
 		reader.close();
 	}
 	
-	public static void loadResources(Game game) throws IOException
+	@Override
+	public void load(ImagesLoader loader, Game game) throws IOException
 	{
-		UnitImages.playerToColorI = new int[game.players.length];
+		playerToColorI = new int[game.players.length];
 		for (Player player : game.players)
-			for (int colorI = 0; colorI < UnitImages.colors.length; colorI++)
-				if (player.color == UnitImages.colors[colorI])
-					UnitImages.playerToColorI[player.ordinal] = colorI;
+			for (int colorI = 0; colorI < colors.length; colorI++)
+				if (player.color == colors[colorI])
+					playerToColorI[player.ordinal] = colorI;
 					
-		UnitImages.unitsBitmapsBuy = new Bitmap[UnitType.number][5];
-		for (int colorI = 0; colorI < UnitImages.colors.length; colorI++)
+		unitsBitmapsBuy = new Bitmap[UnitType.number][5];
+		for (int colorI = 0; colorI < colors.length; colorI++)
 			for (int typeI = 0; typeI < UnitType.number; typeI++)
-				UnitImages.unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(UnitImages.unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
+				unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
 	
 }

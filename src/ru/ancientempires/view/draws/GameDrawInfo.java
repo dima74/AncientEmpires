@@ -4,33 +4,44 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import ru.ancientempires.GameView;
 import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.images.BigNumberImages;
-import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.Images;
-import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.model.Cell;
 
 public class GameDrawInfo extends GameDraw
 {
 	
 	public static float			mScale	= 2.0f;
-	public static int			mA		= (int) (Images.bitmapSize * GameDrawInfo.mScale);
-	private static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	private static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static int			mA		= (int) (Images.get().bitmapSize * GameDrawInfo.mScale);
+	public static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	
-	public boolean	isActive	= true;
-	private Bitmap	backgroundBitmap;
+	static
+	{
+		GameDrawInfo.color1.setColor(0xFFAFB7AB);
+		GameDrawInfo.color2.setColor(0xFF6D7581);
+		GameDrawInfo.color3.setColor(0xFF434A64);
+		GameDrawInfo.color4.setColor(0xFF242A45);
+		GameDrawInfo.color5.setColor(0xFF12142F);
+		
+		GameDrawInfo.paint.setStrokeWidth(1);
+		GameDrawInfo.color1.setStrokeWidth(2);
+		GameDrawInfo.color2.setStrokeWidth(2);
+		GameDrawInfo.color3.setStrokeWidth(2);
+		GameDrawInfo.color4.setStrokeWidth(2);
+		GameDrawInfo.color5.setStrokeWidth(2);
+	}
 	
-	public int	a;
-	public int	h;
-	public int	w;
-	private int	mW;
+	private Bitmap backgroundBitmap;
+	
+	public int	a	= 2;
+	public int	h	= GameDrawInfo.mA + 8 * 2;
+	public int	w	= GameDraw.w;
+	private int	mW	= w - a * 7 - GameDrawInfo.mA;
 	private int	color;
 	
 	private Bitmap	goldBitmap;
@@ -38,28 +49,8 @@ public class GameDrawInfo extends GameDraw
 	
 	public GameDrawInfo()
 	{
-		w = GameView.w;
-		h = GameDrawInfo.mA + 8 * 2;
-		
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(backgroundBitmap);
-		
-		GameDrawInfo.color1.setColor(0xFFAFB7AB);
-		GameDrawInfo.color2.setColor(0xFF6D7581);
-		GameDrawInfo.color3.setColor(0xFF434A64);
-		GameDrawInfo.color4.setColor(0xFF242A45);
-		GameDrawInfo.color5.setColor(0xFF12142F);
-		
-		a = 2;// GameDraw.A / 24;
-		mW = w - a * 7 - GameDrawInfo.mA;
-		
-		GameDrawInfo.paint.setStrokeWidth(1);
-		GameDrawInfo.color1.setStrokeWidth(a);
-		GameDrawInfo.color2.setStrokeWidth(a);
-		GameDrawInfo.color3.setStrokeWidth(a);
-		GameDrawInfo.color4.setStrokeWidth(a);
-		GameDrawInfo.color5.setStrokeWidth(a);
-		
 		drawLeftPart(canvas, h, mW);
 		drawRightPart(canvas, h, w, mW - a);
 	}
@@ -106,23 +97,16 @@ public class GameDrawInfo extends GameDraw
 	}
 	
 	@Override
-	public boolean update()
+	public void update()
 	{
 		color = GameDraw.game.currentPlayer.color.showColor;
-		goldBitmap = BigNumberImages.images.createBitmap(GameDraw.game.currentPlayer.gold);
-		amountBitmap = BigNumberImages.images.createBitmap(GameDraw.game.currentPlayer.units.size());
-		return false;
+		goldBitmap = BigNumberImages().createBitmap(GameDraw.game.currentPlayer.gold);
+		amountBitmap = BigNumberImages().createBitmap(GameDraw.game.currentPlayer.units.size());
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		if (!isActive)
-		{
-			drawLeftPart(canvas, h, w);
-			return;
-		}
-		
 		canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 		
 		if (true)
@@ -133,17 +117,17 @@ public class GameDrawInfo extends GameDraw
 			int bitmapY = a * 4;
 			int bitmapX = mW + a * 3;
 			canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, bitmapX, bitmapY);
-			canvas.drawBitmap(CellImages.getCellBitmap(cell, false), bitmapX, bitmapY, null);
+			canvas.drawBitmap(CellImages().getCellBitmap(cell, false), bitmapX, bitmapY, null);
 			
 			// и ее защиты
-			Bitmap defenceNumberBitmap = SmallNumberImages.images.getBitmap(cell.type.defense);
+			Bitmap defenceNumberBitmap = SmallNumberImages().getBitmap(cell.type.defense);
 			int y = bitmapY + GameDrawInfo.mA - defenceNumberBitmap.getHeight();
 			int x = bitmapX + GameDrawInfo.mA - defenceNumberBitmap.getWidth();
 			canvas.drawBitmap(defenceNumberBitmap, x, y, null);
 			
-			y -= SmallNumberImages.defenceBitmap.getHeight();
-			x -= SmallNumberImages.defenceBitmap.getWidth();
-			canvas.drawBitmap(SmallNumberImages.defenceBitmap, x, y, null);
+			y -= SmallNumberImages().defenceBitmap.getHeight();
+			x -= SmallNumberImages().defenceBitmap.getWidth();
+			canvas.drawBitmap(SmallNumberImages().defenceBitmap, x, y, null);
 			canvas.restore();
 		}
 		
@@ -163,19 +147,19 @@ public class GameDrawInfo extends GameDraw
 		
 		int xGold = (int) (mW * .075f);
 		int xUnits = (int) (mW * .5f);
-		float yGold = (h - Images.amountGoldH * GameDrawInfo.mScale) / 2;
-		float yUnits = (h - Images.amountUnitsH * GameDrawInfo.mScale) / 2;
+		float yGold = (h - Images().amountGoldH * GameDrawInfo.mScale) / 2;
+		float yUnits = (h - Images().amountUnitsH * GameDrawInfo.mScale) / 2;
 		
 		canvas.save();
 		canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, xGold, yGold);
-		canvas.drawBitmap(Images.amountGold, xGold, yGold, null);
-		canvas.drawBitmap(goldBitmap, xGold + Images.amountGoldW + a, yGold, null);
+		canvas.drawBitmap(Images().amountGold, xGold, yGold, null);
+		canvas.drawBitmap(goldBitmap, xGold + Images().amountGoldW + a, yGold, null);
 		canvas.restore();
 		
 		canvas.save();
 		canvas.scale(GameDrawInfo.mScale, GameDrawInfo.mScale, xUnits, yUnits);
-		canvas.drawBitmap(Images.amountUnits, xUnits, yUnits, null);
-		canvas.drawBitmap(amountBitmap, xUnits + Images.amountUnitsW + a, yUnits, null);
+		canvas.drawBitmap(Images().amountUnits, xUnits, yUnits, null);
+		canvas.drawBitmap(amountBitmap, xUnits + Images().amountUnitsW + a, yUnits, null);
 		canvas.restore();
 	}
 	

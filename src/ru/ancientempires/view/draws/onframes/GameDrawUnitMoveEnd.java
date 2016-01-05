@@ -1,7 +1,6 @@
 package ru.ancientempires.view.draws.onframes;
 
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.view.draws.GameDraw;
 
@@ -17,7 +16,7 @@ public class GameDrawUnitMoveEnd extends GameDrawOnFramesGroup
 			for (Unit unit : units)
 				add(new GameDrawBitmaps()
 						.setYX(unit.i * GameDraw.A, unit.j * GameDraw.A)
-						.setBitmaps(SparksImages.bitmapsDefault)
+						.setBitmaps(SparksImages().bitmapsDefault)
 						.animateRepeat(1)
 						.increaseFrameStart(frameToStart));
 		}

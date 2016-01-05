@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class UnitBitmap
 {
@@ -20,21 +19,21 @@ public class UnitBitmap
 	public UnitBitmap(Unit unit)
 	{
 		this.unit = unit;
-		this.health = unit.health;
-		this.y = unit.i * GameDraw.A;
-		this.x = unit.j * GameDraw.A;
+		health = unit.health;
+		y = unit.i * 24;
+		x = unit.j * 24;
 	}
 	
 	public Bitmap getBaseBitmap()
 	{
-		return UnitImages.getUnitBitmap(this.unit, this.keepTurn).getBitmap();
+		return UnitImages.get().getUnitBitmap(unit, keepTurn).getBitmap();
 	}
 	
 	public Bitmap getHealthBitmap()
 	{
-		if (this.canUpdateHealth)
-			this.health = this.unit.health;
-		return this.health == 100 ? null : SmallNumberImages.images.getBitmap(this.health);
+		if (canUpdateHealth)
+			health = unit.health;
+		return health == 100 ? null : SmallNumberImages.get().getBitmap(health);
 	}
 	
 }

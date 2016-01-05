@@ -2,58 +2,48 @@ package ru.ancientempires.images;
 
 import java.io.IOException;
 
-import com.google.gson.stream.JsonReader;
-
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.helpers.ImagesFileHelper;
-import ru.ancientempires.helpers.JsonHelper;
 
-public class SmokeImages
+public class SmokeImages extends IImages
 {
 	
-	public static Bitmap[]	bitmapsDefault;
-	public static Bitmap[]	bitmapsSmall;
+	public Bitmap[]	bitmapsDefault;
+	public Bitmap[]	bitmapsSmall;
 	
-	public static int	amountDefault;
-	public static int	amountSmall;
+	public int	amountDefault;
+	public int	amountSmall;
 	
-	public static int	hDefault;
-	public static int	wDefault;
+	public int	hDefault;
+	public int	wDefault;
 	
-	public static int	hSmall;
-	public static int	wSmall;
+	public int	hSmall;
+	public int	wSmall;
 	
-	public static void preload(String path) throws IOException
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		JsonReader reader = ImagesFileHelper.getReader(path + "info.json");
-		reader.beginObject();
-		String pathDefault = path + JsonHelper.readString(reader, "folder_default");
-		String pathSmall = path + JsonHelper.readString(reader, "folder_small");
-		reader.endObject();
-		reader.close();
-		SmokeImages.preloadDefault(pathDefault);
-		SmokeImages.preloadSmall(pathSmall);
+		preloadDefault(loader.getImagesLoader("default/"));
+		preloadSmall(loader.getImagesLoader("small/"));
 	}
 	
-	private static void preloadDefault(String path) throws IOException
+	private void preloadDefault(ImagesLoader loader) throws IOException
 	{
-		SmokeImages.amountDefault = 4;
-		SmokeImages.bitmapsDefault = new Bitmap[SmokeImages.amountDefault];
-		for (int i = 0; i < SmokeImages.amountDefault; i++)
-			SmokeImages.bitmapsDefault[i] = BitmapHelper.getResizeBitmap(path + i + ".png");
-		SmokeImages.hDefault = SmokeImages.bitmapsDefault[0].getHeight();
-		SmokeImages.wDefault = SmokeImages.bitmapsDefault[0].getWidth();
+		amountDefault = 4;
+		bitmapsDefault = new Bitmap[amountDefault];
+		for (int i = 0; i < amountDefault; i++)
+			bitmapsDefault[i] = loader.loadImage(i + ".png");
+		hDefault = bitmapsDefault[0].getHeight();
+		wDefault = bitmapsDefault[0].getWidth();
 	}
 	
-	private static void preloadSmall(String path) throws IOException
+	private void preloadSmall(ImagesLoader loader) throws IOException
 	{
-		SmokeImages.amountSmall = 4;
-		SmokeImages.bitmapsSmall = new Bitmap[SmokeImages.amountSmall];
-		for (int i = 0; i < SmokeImages.amountSmall; i++)
-			SmokeImages.bitmapsSmall[i] = BitmapHelper.getResizeBitmap(path + i + ".png");
-		SmokeImages.hSmall = SmokeImages.bitmapsSmall[0].getHeight();
-		SmokeImages.wSmall = SmokeImages.bitmapsSmall[0].getWidth();
+		amountSmall = 4;
+		bitmapsSmall = new Bitmap[amountSmall];
+		for (int i = 0; i < amountSmall; i++)
+			bitmapsSmall[i] = loader.loadImage(i + ".png");
+		hSmall = bitmapsSmall[0].getHeight();
+		wSmall = bitmapsSmall[0].getWidth();
 	}
 	
 }

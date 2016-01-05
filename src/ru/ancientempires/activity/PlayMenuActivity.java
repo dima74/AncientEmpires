@@ -16,40 +16,45 @@ public class PlayMenuActivity extends ListActivity
 	
 	public static final String EXTRA_FOLDER = "ru.ancientempires.folder";
 	
-	private MenuActions[] actions;
+	private static MenuActions[] actions = new MenuActions[]
+	{
+			MenuActions.CAMPAIGN,
+			MenuActions.SKIRMISH,
+			MenuActions.USER_MAPS,
+			MenuActions.LOAD
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		actions = new MenuActions[]
-		{
-				MenuActions.CAMPAIGN,
-				MenuActions.SKIRMISH,
-				MenuActions.USER_MAPS,
-				MenuActions.LOAD
-		};
-		
 		setContentView(R.layout.main_menu_list_view);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, MenuActions.convertToNames(actions));
-		setListAdapter(adapter);
+		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, PlayMenuActivity.actions));
+		
+		// start("multiplayer");
+		start("campaign");
 	}
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		switch (actions[position])
+		switch (PlayMenuActivity.actions[position])
 		{
 			case CAMPAIGN:
-				startActivity(new Intent(this, LevelMenuActivity.class).putExtra(PlayMenuActivity.EXTRA_FOLDER, "campaign"));
+				start("campaign");
 				break;
 			case SKIRMISH:
-				startActivity(new Intent(this, LevelMenuActivity.class).putExtra(PlayMenuActivity.EXTRA_FOLDER, "multiplayer"));
+				start("multiplayer");
 				break;
 			default:
 				break;
 		}
+	}
+	
+	private void start(String folderID)
+	{
+		startActivity(new Intent(this, LevelMenuActivity.class).putExtra(PlayMenuActivity.EXTRA_FOLDER, folderID));
 	}
 	
 	@Override

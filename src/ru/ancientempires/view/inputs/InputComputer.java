@@ -1,5 +1,6 @@
 package ru.ancientempires.view.inputs;
 
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.ii.II;
 
 public class InputComputer extends InputBase
@@ -13,7 +14,7 @@ public class InputComputer extends InputBase
 		InputBase.gameDraw.gameDrawCells.update();
 		InputBase.gameDraw.gameDrawCellDual.update();
 		InputBase.gameDraw.gameDrawInfo.update();
-		InputBase.thread.needUpdateCampaign = true;
+		GameActivity.activity.view.thread.needUpdateCampaign = true;
 	}
 	
 	@Override

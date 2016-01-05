@@ -1,97 +1,58 @@
 package ru.ancientempires.view.draws.campaign;
 
+import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.graphics.Bitmap;
-import android.os.Bundle;
+import android.content.Context;
+import android.graphics.PixelFormat;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import ru.ancientempires.R;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.scripts.ScriptDialog;
-import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.images.CampaignImages;
+import android.view.View.OnTouchListener;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.campaign.scripts.Script;
 
-public class MyDialogFragment extends DialogFragment
+public class MyDialogFragment
 {
 	
-	private int				imageID;
-	private String			text		= "Это длинный текст";
-	private ScriptDialog	script;
-	protected boolean		isClicked	= false;
+	public AlertDialog	dialog;
+	public View			viewOverlay;
+	public Script		script;
 	
-	public MyDialogFragment(int imagePath, String text, ScriptDialog script)
+	public void showDialog(final Builder builder, Script script)
 	{
-		imageID = imagePath;
-		this.text = text;
 		this.script = script;
-	}
-	
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
-	{
-		Builder builder = new Builder(getActivity());
-		
-		View view = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog, null);
-		ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
-		TextView textView = (TextView) view.findViewById(R.id.textUnitName);
-		
-		CampaignImages<Bitmap> images = CampaignImages.images;
-		Bitmap bitmap = images.getImage(imageID);
-		
-		imageView.setImageBitmap(bitmap);
-		textView.setText(text);
-		builder.setView(view);
-		
-		Button button = (Button) view.findViewById(R.id.button);
-		button.setOnClickListener(new OnClickListener()
+		builder.setCancelable(false);
+		GameActivity.activity.runOnUiThread(new Runnable()
 		{
 			@Override
-			public void onClick(View v)
+			public void run()
 			{
-				dismiss();
-				// setUserVisibleHint(false);
-				isClicked = true;
+				dialog = builder.show();
+				
+				WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+						1, 1,
+						LayoutParams.TYPE_APPLICATION,
+						LayoutParams.FLAG_NOT_FOCUSABLE
+								// | LayoutParams.FLAG_NOT_TOUCH_MODAL
+								| LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+						PixelFormat.TRANSPARENT);
+				viewOverlay = new View(GameActivity.activity);
+				WindowManager windowManager = (WindowManager) GameActivity.activity.getSystemService(Context.WINDOW_SERVICE);
+				windowManager.addView(viewOverlay, params);
+				viewOverlay.setOnTouchListener(new OnTouchListener()
+				{
+					@Override
+					public boolean onTouch(View v, MotionEvent event)
+					{
+						dialog.dismiss();
+						((WindowManager) GameActivity.activity.getSystemService(Context.WINDOW_SERVICE)).removeView(viewOverlay);
+						MyDialogFragment.this.script.finish();
+						return false;
+					}
+				});
 			}
 		});
-		
-		return builder.create();
-	}
-	
-	@Override
-	public void onStart()
-	{
-		super.onStart();
-	}
-	
-	@Override
-	public void onDetach()
-	{
-		MyLog.l(+System.currentTimeMillis() + " ondetach");
-		super.onDetach();
-		if (isClicked)
-			new Thread(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						Thread.sleep(100);
-					}
-					catch (InterruptedException e)
-					{
-						MyAssert.a(false);
-						e.printStackTrace();
-					}
-					Campaign.finish(script);
-				}
-			}).start();
 	}
 	
 }

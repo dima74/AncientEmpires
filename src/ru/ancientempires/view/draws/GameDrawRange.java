@@ -9,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
-import ru.ancientempires.GameView;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.view.inputs.InputAlgorithmUnitRange;
 
@@ -34,7 +33,7 @@ public class GameDrawRange extends GameDraw
 		
 		range = new boolean[0][0];
 		
-		cacheBitmap = Bitmap.createBitmap(GameView.w, GameView.h, Config.ARGB_8888);
+		cacheBitmap = Bitmap.createBitmap(GameDraw.w, GameDraw.h, Config.ARGB_8888);
 		selfCanvas = new Canvas(cacheBitmap);
 	}
 	

@@ -3,7 +3,6 @@ package ru.ancientempires.view.inputs;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.ActionType;
-import ru.ancientempires.action.handlers.PlayerHelper;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.view.draws.GameDraw;
 
@@ -27,15 +26,21 @@ public class InputMain extends InputBase
 	public void beginTurn()
 	{
 		InputBase.gameDraw.isDrawCursor = false;
-		if (!PlayerHelper.isPlayerActive(InputBase.game.currentPlayer))
+		switch (InputBase.game.currentPlayer.type)
 		{
-			endTurn();
-			return;
+			case NONE:
+				endTurn();
+				return;
+			case PLAYER:
+				currentInput = inputPlayer;
+				currentInput.beginTurn();
+				break;
+			case COMPUTER:
+				currentInput = inputComputer;
+				currentInput.beginTurn();
+				endTurn();
+				break;
 		}
-		currentInput = InputBase.game.currentPlayer.isCPU ? inputComputer : inputPlayer;
-		currentInput.beginTurn();
-		if (InputBase.game.currentPlayer.isCPU)
-			endTurn();
 		InputBase.gameDraw.gameDrawInfo.update();
 	}
 	

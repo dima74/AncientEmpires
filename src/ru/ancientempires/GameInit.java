@@ -2,70 +2,56 @@ package ru.ancientempires;
 
 import java.io.IOException;
 
-import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.images.AndroidImageLoader;
-import ru.ancientempires.images.CampaignImages;
-import ru.ancientempires.images.Images;
-import ru.ancientempires.load.GamesFolder;
-import ru.ancientempires.view.draws.GameDrawAction;
 
 public class GameInit
 {
 	
-	public static Thread	foldersInitThread;
-	public static Thread	initThread;
+	/*
+		Механизм инициализации игры:
+			0. Загружаем строки, как загрузили - показываем главное меню.
+			1. Начинаем загружать список игр - GamePath'ы
+					Если надо показать список игр, а он ещё не загрузился, то 
+					показываем прогресс бар и дозагружаем.
+			2. После загрузки списка игр начинаем загружать правила и картинки.
+				Если надо начинать игру, а вторая часть ещё не загрузилась, то 
+					показываем прогресс бар и дозагружаем.
+	*/
 	
-	public static void init()
+	public Thread	foldersInitThread;
+	public Thread	initThread;
+	
+	public void init()
 	{
-		GameInit.foldersInitThread = new Thread()
+		foldersInitThread = new Thread()
 		{
 			@Override
 			public void run()
 			{
 				try
 				{
-					Localization.load("games/strings");
-					Client.gamesFolder = new GamesFolder("", null);
+					Client.client.loadPart1();
 				}
 				catch (IOException e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
+				initThread.start();
 			}
 		};
-		GameInit.foldersInitThread.start();
+		foldersInitThread.start();
 		
-		GameInit.initThread = new Thread()
+		initThread = new Thread()
 		{
 			@Override
 			public void run()
 			{
-				try
-				{
-					GameInit.foldersInitThread.join();
-				}
-				catch (InterruptedException e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
-				
 				try
 				{
 					// Debug.startMethodTracing("traces/client");
-					Client.init();
-					// Debug.stopMethodTracing();
-					
-					// Debug.startMethodTracing("traces/images");
-					Images.preloadResources();
-					CampaignImages.images = new CampaignImages<Bitmap>(new AndroidImageLoader());
-					// Debug.stopMethodTracing();
-					
-					// Debug.startMethodTracing("traces/init");
-					GameDrawAction.initResources();
+					Client.client.loadPart2();
 					// Debug.stopMethodTracing();
 				}
 				catch (IOException e)
@@ -75,7 +61,6 @@ public class GameInit
 				}
 			}
 		};
-		GameInit.initThread.start();
 	}
 	
 }

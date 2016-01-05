@@ -3,87 +3,86 @@ package ru.ancientempires.activity;
 import java.io.IOException;
 
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import ru.ancientempires.ALog;
-import ru.ancientempires.GameInit;
-import ru.ancientempires.Localization;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.helpers.AssetsHelperAndroid;
-import ru.ancientempires.helpers.FileHelper;
 
 public class MainActivity extends ListActivity
 {
 	
-	public static Context		context;
-	public static AssetManager	assets;
-	public static Resources		resources;
-	
-	private boolean			isFirstLaunch	= true;
-	private MenuActions[]	actions;
+	private static MenuActions[] actions = new MenuActions[]
+	{
+			MenuActions.PLAY,
+			MenuActions.ONLINE,
+			MenuActions.SETTINGS,
+			MenuActions.MAP_EDITOR,
+			MenuActions.INSTRUCTIONS,
+			MenuActions.AUTHORS
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		MainActivity.context = getBaseContext();
-		MainActivity.assets = getAssets();
-		MainActivity.resources = getResources();
-		
-		FileHelper.setBaseDirectory(getFilesDir());
-		FileHelper.assets = new AssetsHelperAndroid(getAssets());
-		
-		MyLog.currLog = new ALog();
-		
-		try
-		{
-			Localization.load("strings");
-		}
-		catch (IOException e1)
-		{
-			MyAssert.a(false);
-			e1.printStackTrace();
-		}
-		
-		actions = new MenuActions[]
-		{
-				MenuActions.PLAY,
-				MenuActions.ONLINE,
-				MenuActions.SETTINGS,
-				MenuActions.MAP_EDITOR,
-				MenuActions.INSTRUCTIONS,
-				MenuActions.AUTHORS
-		};
-		
+		if (Client.client == null)
+			try
+			{
+				Client.client = new Client(this);
+				Client.client.loadPart0();
+			}
+			catch (IOException e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
+			
 		setContentView(R.layout.main_menu_list_view);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, MenuActions.convertToNames(actions));
-		setListAdapter(adapter);
+		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, MainActivity.actions));
 		
-		GameInit.init();
+		startActivity(new Intent(this, PlayMenuActivity.class));
 	}
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		switch (actions[position])
+		switch (MainActivity.actions[position])
 		{
 			case PLAY:
 				startActivity(new Intent(this, PlayMenuActivity.class));
 				break;
-				
 			default:
 				break;
 		}
 	}
+	
+	/*
+	WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+			1, 1,
+			LayoutParams.TYPE_APPLICATION,
+			LayoutParams.FLAG_NOT_FOCUSABLE
+					// | LayoutParams.FLAG_NOT_TOUCH_MODAL
+					| LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+			PixelFormat.TRANSPARENT);
+	View viewOverlay = new View(this);
+	WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+	windowManager.addView(viewOverlay, params);
+	viewOverlay.setOnTouchListener(new OnTouchListener()
+	{
+		@Override
+		public boolean onTouch(View v, MotionEvent event)
+		{
+			// MyLog.l("onTouch() " + MotionEvent.actionToString(event.getAction()));
+			return false;
+		}
+	});
+	windowManager.removeView(viewOverlay);
+	//*/
 	
 }

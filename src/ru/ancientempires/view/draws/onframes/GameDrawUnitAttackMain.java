@@ -60,7 +60,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 			GameDraw.main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = false;
 		if (GameDraw.iFrame == frameEnd)
 			if (isUnitDie)
-				GameActivity.gameView.thread.needUpdateCampaign = true;
+				GameActivity.activity.view.thread.needUpdateCampaign = true;
 	}
 	
 }

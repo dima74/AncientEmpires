@@ -6,9 +6,7 @@ import java.util.Random;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import ru.ancientempires.GameView;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.images.CursorImages;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawBlackScreen;
 import ru.ancientempires.view.draws.onframes.GameDrawBuildingSmokes;
@@ -17,7 +15,7 @@ import ru.ancientempires.view.draws.onframes.GameDrawUnitRaise;
 import ru.ancientempires.view.inputs.InputMain;
 import ru.ancientempires.view.inputs.InputPlayer;
 
-public class GameDrawMain
+public class GameDrawMain extends GameDraw
 {
 	
 	public InputMain	inputMain;
@@ -36,9 +34,12 @@ public class GameDrawMain
 	public float			offsetX;
 	
 	private int				gameDrawActionY;
-	public GameDrawAction	gameDrawAction	= new GameDrawAction();
-	public GameDrawInfo		gameDrawInfo	= new GameDrawInfo();
-	public boolean			isActiveGame	= true;
+	public GameDrawAction	gameDrawAction		= new GameDrawAction();
+	public GameDrawInfoNull	gameDrawInfoNull	= new GameDrawInfoNull();
+	public GameDrawInfo		gameDrawInfo		= new GameDrawInfo();
+	public GameDrawInfoMove	gameDrawInfoMove	= new GameDrawInfoMove();
+	public int				gameDrawInfoY		= gameDrawInfo.h;
+	volatile public boolean	isActiveGame		= true;
 	
 	{
 		GameDraw.main = this;
@@ -68,9 +69,9 @@ public class GameDrawMain
 	public GameDrawBlackScreen	gameDrawBlackScreen	= new GameDrawBlackScreen();
 	
 	public boolean						isDrawCursor			= false;
-	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor().setCursor(CursorImages.cursor);
-	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor().setCursor(CursorImages.cursorPointerWay);
-	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor().setCursor(CursorImages.cursorPointerAttack);
+	public GameDrawCursor				gameDrawCursorDefault	= new GameDrawCursor().setCursor(CursorImages().cursor);
+	public GameDrawCursor				gameDrawCursorMove		= new GameDrawCursor().setCursor(CursorImages().cursorPointerWay);
+	public GameDrawCursor				gameDrawCursorAttack	= new GameDrawCursor().setCursor(CursorImages().cursorPointerAttack);
 	public ArrayList<GameDrawCursor>	gameDrawCursors			= new ArrayList<GameDrawCursor>(Arrays.asList(gameDrawCursorDefault));
 	
 	public ArrayList<GameDraw>	gameDraws			= new ArrayList<GameDraw>();
@@ -84,11 +85,10 @@ public class GameDrawMain
 	
 	public GameDrawMain()
 	{
-		GameDraw.main = this;
 		mapH = GameDraw.game.h * GameDraw.A;
 		mapW = GameDraw.game.w * GameDraw.A;
-		visibleMapH = GameView.h - gameDrawInfo.h;
-		visibleMapW = GameView.w;
+		visibleMapH = GameDraw.h - gameDrawInfo.h;
+		visibleMapW = GameDraw.w;
 		nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / GameDraw.mapScale) / 2;
 		nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / GameDraw.mapScale) / 2;
 		if (minOffsetY < 0)
@@ -124,13 +124,16 @@ public class GameDrawMain
 		gameDrawsEffects.add(gameDrawUnitsHeal);
 	}
 	
+	@Override
 	public void draw(Canvas canvas)
 	{
 		FewBitmaps.ordinal = GameDraw.iFrame / 8;
 		
-		correctNextOffset();
-		offsetY = nextOffsetY;
-		offsetX = nextOffsetX;
+		synchronized (this)
+		{
+			offsetY = nextOffsetY;
+			offsetX = nextOffsetX;
+		}
 		
 		canvas.drawColor(Color.WHITE);
 		
@@ -147,7 +150,10 @@ public class GameDrawMain
 		canvas.restore();
 		
 		canvas.save();
-		canvas.translate(0, GameView.h - gameDrawInfo.h);
+		canvas.translate(0, GameDraw.h - gameDrawInfo.h);
+		gameDrawInfoNull.draw(canvas);
+		gameDrawInfoMove.draw(canvas);
+		canvas.translate(0, gameDrawInfoY);
 		gameDrawInfo.draw(canvas);
 		canvas.restore();
 		
@@ -164,15 +170,22 @@ public class GameDrawMain
 			canvas.drawColor(Color.BLACK);
 	}
 	
-	public void correctNextOffset()
+	synchronized public void onScroll(float distanceY, float distanceX)
 	{
+		setNextOffset(nextOffsetY - distanceY, nextOffsetX - distanceX);
+	}
+	
+	synchronized public void setNextOffset(float offsetY, float offsetX)
+	{
+		nextOffsetY = offsetY;
+		nextOffsetX = offsetX;
 		nextOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, nextOffsetY));
 		nextOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, nextOffsetX));
 	}
 	
 	public void touch(float touchY, float touchX)
 	{
-		if (!isActiveGame || touchY > GameView.h - gameDrawInfo.h)
+		if (!isActiveGame || touchY > GameDraw.h - gameDrawInfo.h)
 			return;
 		if (gameDrawAction.isActive())
 		{
@@ -202,9 +215,9 @@ public class GameDrawMain
 	
 	public void focusOnCell(int i, int j)
 	{
-		nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + visibleMapH / GameDraw.mapScale / 2;
-		nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + visibleMapW / GameDraw.mapScale / 2;
-		correctNextOffset();
+		float nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + visibleMapH / GameDraw.mapScale / 2;
+		float nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + visibleMapW / GameDraw.mapScale / 2;
+		setNextOffset(nextOffsetY, nextOffsetX);
 	}
 	
 }

@@ -23,13 +23,12 @@ public class GameDrawCursor extends GameDraw
 	}
 	
 	@Override
-	public boolean update()
+	public void update()
 	{
 		int y = GameDraw.A * GameDraw.game.currentPlayer.cursorI;
 		int x = GameDraw.A * GameDraw.game.currentPlayer.cursorJ;
 		cursorY = y - cursorH / 2;
 		cursorX = x - cursorW / 2;
-		return false;
 	}
 	
 	@Override

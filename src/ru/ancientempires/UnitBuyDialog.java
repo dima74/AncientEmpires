@@ -23,7 +23,7 @@ public class UnitBuyDialog
 		UnitBuyDialog.units = units;
 		UnitBuyDialog.available = available;
 		if (UnitBuyDialog.dialog != null)
-			GameActivity.gameActivity.runOnUiThread(new Runnable()
+			GameActivity.activity.runOnUiThread(new Runnable()
 			{
 				@Override
 				public void run()
@@ -37,7 +37,7 @@ public class UnitBuyDialog
 	
 	private static void createNewDialog()
 	{
-		View view = GameActivity.gameActivity.getLayoutInflater().inflate(R.layout.unit_buy_list_view, null);
+		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_list_view, null);
 		ListView listView = (ListView) view.findViewById(R.id.list);
 		
 		UnitBuyAdapter myAdapter = new UnitBuyAdapter().start(UnitBuyDialog.units, UnitBuyDialog.available);
@@ -55,11 +55,11 @@ public class UnitBuyDialog
 			}
 		});
 		
-		final AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.gameActivity);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.activity);
 		builder.setView(view);
-		builder.setTitle(GameActivity.gameActivity.getString(R.string.buy));
+		builder.setTitle(GameActivity.activity.getString(R.string.buy));
 		
-		GameActivity.gameActivity.runOnUiThread(new Runnable()
+		GameActivity.activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()

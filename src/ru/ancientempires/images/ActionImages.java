@@ -4,24 +4,23 @@ import java.io.IOException;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.action.ActionType;
-import ru.ancientempires.helpers.BitmapHelper;
-import ru.ancientempires.view.draws.GameDrawAction;
 
-public class ActionImages
+public class ActionImages extends IImages
 {
 	
-	private static Bitmap[]	actionBitmaps;
-	public static int		h;
-	public static int		w;
+	private Bitmap[]	actionBitmaps;
+	public int			h;
+	public int			w;
 	
-	public static Bitmap getActionBitmap(ActionType type)
+	public Bitmap getActionBitmap(ActionType type)
 	{
-		return ActionImages.actionBitmaps[type.ordinal];
+		return actionBitmaps[type.ordinal];
 	}
 	
-	public static void preload(String path) throws IOException
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		ActionImages.actionBitmaps = new Bitmap[ActionType.amount];
+		actionBitmaps = new Bitmap[ActionType.amount];
 		String[] actionImageNames = new String[]
 		{
 				"action_cell_buy.png",
@@ -45,9 +44,9 @@ public class ActionImages
 		};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-			ActionImages.actionBitmaps[actionTypes[i].ordinal] = BitmapHelper.getMultiBitmap(BitmapHelper.getBitmap(path + actionImageNames[i]), GameDrawAction.mScale);
-		ActionImages.h = ActionImages.actionBitmaps[actionTypes[0].ordinal].getHeight();
-		ActionImages.w = ActionImages.actionBitmaps[actionTypes[0].ordinal].getWidth();
+			actionBitmaps[actionTypes[i].ordinal] = loader.loadImageAndResize(actionImageNames[i], 2.5f);
+		h = actionBitmaps[actionTypes[0].ordinal].getHeight();
+		w = actionBitmaps[actionTypes[0].ordinal].getWidth();
 	}
 	
 }

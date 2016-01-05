@@ -5,9 +5,8 @@ import java.io.IOException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
-import ru.ancientempires.helpers.BitmapHelper;
 
-public abstract class NumberImages
+public abstract class NumberImages extends IImages
 {
 	
 	public Bitmap	minus;
@@ -29,13 +28,13 @@ public abstract class NumberImages
 	public Bitmap createBitmap(int number)
 	{
 		int copyNumber = number;
-		int amountDigits = 1;
+		int numberDigits = 1;
 		while ((copyNumber /= 10) > 0)
-			amountDigits++;
+			numberDigits++;
 			
-		Bitmap bitmap = Bitmap.createBitmap(w * amountDigits, h, Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(w * numberDigits, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		for (int i = amountDigits - 1; i >= 0; i--, number /= 10)
+		for (int i = numberDigits - 1; i >= 0; i--, number /= 10)
 			canvas.drawBitmap(digits[number % 10], i * w, 0, null);
 		return bitmap;
 	}
@@ -45,11 +44,11 @@ public abstract class NumberImages
 		return sign == 0 ? getBitmap(number) : sign == +1 ? numbersPlus[number] : numbersMinus[number];
 	}
 	
-	public void preloadBase(String path) throws IOException
+	public void preloadBase(ImagesLoader loader) throws IOException
 	{
 		for (int i = 0; i < 10; i++)
-			digits[i] = BitmapHelper.getResizeBitmap(path + i + ".png");
-		minus = BitmapHelper.getResizeBitmap(path + "-.png");
+			digits[i] = loader.loadImage(i + ".png");
+		minus = loader.loadImage("-.png");
 		h = digits[0].getHeight();
 		w = digits[0].getWidth();
 		

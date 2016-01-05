@@ -86,7 +86,7 @@ public class UnitBuyAdapter extends BaseAdapter
 			if (unitsOld[i] == unit)
 				return viewsOld[i];
 				
-		View view = GameActivity.gameActivity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
+		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
 		ViewHolder holder = new ViewHolder();
 		view.setTag(holder);
 		
@@ -94,7 +94,7 @@ public class UnitBuyAdapter extends BaseAdapter
 		holder.textUnitName.setText(unit.type.name);
 		
 		holder.imageView = (ImageView) view.findViewById(R.id.imageUnit);
-		Bitmap bitmap = UnitImages.getUnitBitmapBuy(unit);
+		Bitmap bitmap = UnitImages.get().getUnitBitmapBuy(unit);
 		holder.imageView.setImageBitmap(bitmap);
 		
 		holder.textUnitCost = (TextView) view.findViewById(R.id.textUnitCost);

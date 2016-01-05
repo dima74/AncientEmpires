@@ -2,7 +2,6 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
 import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.images.Images;
 
 public class GameDrawUnitsDead extends GameDraw
 {
@@ -19,7 +18,7 @@ public class GameDrawUnitsDead extends GameDraw
 				if (!keep[i][j])
 					isTombstone[i][j] = GameHandler.fieldDeadUnits[i][j] != null;
 				if (isTombstone[i][j])
-					canvas.drawBitmap(Images.tombstone.getBitmap(), j * GameDraw.A, i * GameDraw.A, null);
+					canvas.drawBitmap(Images().tombstone.getBitmap(), j * GameDraw.A, i * GameDraw.A, null);
 			}
 	}
 	

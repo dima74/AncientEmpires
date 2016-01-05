@@ -3,7 +3,7 @@ package ru.ancientempires.images.bitmaps;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
+import ru.ancientempires.images.ImagesLoader;
 
 public class FewBitmaps
 {
@@ -29,11 +29,11 @@ public class FewBitmaps
 		return this;
 	}
 	
-	public FewBitmaps setBitmaps(String path, String... names) throws IOException
+	public FewBitmaps setBitmaps(ImagesLoader loader, String... names) throws IOException
 	{
 		bitmaps = new Bitmap[names.length];
 		for (int i = 0; i < names.length; i++)
-			bitmaps[i] = BitmapHelper.getResizeBitmap(path + names[i]);
+			bitmaps[i] = loader.loadImage(names[i]);
 		return this;
 	}
 	

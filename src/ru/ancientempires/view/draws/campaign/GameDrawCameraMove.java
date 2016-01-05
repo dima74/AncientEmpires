@@ -36,7 +36,10 @@ public class GameDrawCameraMove extends GameDrawOnFramesGroup
 			@Override
 			public void draw(Canvas canvas, float value)
 			{
-				GameDraw.main.nextOffsetY = value;
+				synchronized (GameDraw.main)
+				{
+					GameDraw.main.nextOffsetY = value;
+				}
 			}
 		}.animateRange(startOffsetY, endOffsetY, stepY));
 		add(new GameDrawOnFramesWithRangeFloat()
@@ -44,7 +47,10 @@ public class GameDrawCameraMove extends GameDrawOnFramesGroup
 			@Override
 			public void draw(Canvas canvas, float value)
 			{
-				GameDraw.main.nextOffsetX = value;
+				synchronized (GameDraw.main)
+				{
+					GameDraw.main.nextOffsetX = value;
+				}
 			}
 		}.animateRange(startOffsetX, endOffsetX, stepX));
 		

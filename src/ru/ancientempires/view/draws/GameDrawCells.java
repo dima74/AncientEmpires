@@ -2,8 +2,6 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.GameView;
-import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
 
 public class GameDrawCells extends GameDraw
@@ -19,8 +17,8 @@ public class GameDrawCells extends GameDraw
 	
 	public GameDrawCells()
 	{
-		availableY = GameView.h - GameDraw.main.gameDrawInfo.h;
-		availableX = GameView.w;
+		availableY = h - GameDraw.main.gameDrawInfo.h;
+		availableX = w;
 	}
 	
 	public GameDrawCells setDual()
@@ -30,21 +28,20 @@ public class GameDrawCells extends GameDraw
 	}
 	
 	@Override
-	public boolean update()
+	public void update()
 	{
 		for (int i = h - 1 - (isDual ? 1 : 0); i >= 0; i--)
 			for (int j = w - 1; j >= 0; j--)
 			{
 				Cell cell = GameDraw.game.fieldCells[i + (isDual ? 1 : 0)][j];
-				bitmaps[i][j] = CellImages.getCellBitmap(cell, isDual);
+				bitmaps[i][j] = CellImages().getCellBitmap(cell, isDual);
 			}
-		return false;
 	}
 	
 	public void updateOneCell(int i, int j)
 	{
 		Cell cell = GameDraw.game.fieldCells[i + (isDual ? 1 : 0)][j];
-		bitmaps[i][j] = CellImages.getCellBitmap(cell, isDual);
+		bitmaps[i][j] = CellImages().getCellBitmap(cell, isDual);
 	}
 	
 	@Override

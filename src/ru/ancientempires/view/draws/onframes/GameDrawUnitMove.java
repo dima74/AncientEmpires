@@ -68,7 +68,7 @@ public class GameDrawUnitMove extends GameDrawOnFramesWithRangeValues
 		if (GameHandler.checkCoord(endI, endJ))
 			GameDraw.main.gameDrawUnitsDead.keep[endI][endJ] = false;
 		GameDraw.main.gameDrawUnits.moveUnits.remove(unitBitmap);
-		GameActivity.gameView.thread.needUpdateCampaign = true;
+		GameActivity.activity.view.thread.needUpdateCampaign = true;
 		destroy();
 	}
 	

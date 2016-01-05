@@ -1,15 +1,13 @@
 package ru.ancientempires.view.inputs;
 
-import ru.ancientempires.GameThread;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.view.draws.GameDrawMain;
 
 public abstract class InputBase
 {
 	
-	public static GameThread	thread;
-	public static GameDrawMain		gameDraw;
-	public static Game				game;
+	public static GameDrawMain	gameDraw;
+	public static Game			game;
 	
 	public abstract void beginTurn();
 	

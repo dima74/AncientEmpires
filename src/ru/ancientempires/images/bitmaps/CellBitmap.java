@@ -1,9 +1,9 @@
 package ru.ancientempires.images.bitmaps;
 
 import android.graphics.Bitmap;
+import ru.ancientempires.images.CellImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
-import ru.ancientempires.images.*;
 
 public class CellBitmap
 {
@@ -24,11 +24,11 @@ public class CellBitmap
 	{
 		CellType type = cell.type;
 		if (type.isDestroying && cell.isDestroying)
-			return this.destroyingBitmap;
+			return destroyingBitmap;
 		else if (type.isCapture && cell.isCapture)
-			return this.colorBitmaps[CellImages.playerToColorI[cell.player.ordinal]];
+			return colorBitmaps[CellImages.get().playerToColorI[cell.player.ordinal]];
 		else
-			return this.defaultBitmap;
+			return defaultBitmap;
 	}
 	
 }

@@ -3,46 +3,46 @@ package ru.ancientempires.images;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.helpers.BitmapHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
-public class CursorImages
+public class CursorImages extends IImages
 {
 	
-	public static Bitmap	cursorWay;
-	public static Bitmap	cursorAttack;
-	public static Bitmap	cursorMixed;
+	public Bitmap	cursorWay;
+	public Bitmap	cursorAttack;
+	public Bitmap	cursorMixed;
 	
-	public static final FewBitmaps	cursor				= new FewBitmaps();
-	public static final FewBitmaps	cursorPointerAttack	= new FewBitmaps();
-	public static final FewBitmaps	cursorPointerWay	= new FewBitmaps();
+	public final FewBitmaps	cursor				= new FewBitmaps();
+	public final FewBitmaps	cursorPointerAttack	= new FewBitmaps();
+	public final FewBitmaps	cursorPointerWay	= new FewBitmaps();
 	
-	public static int	cursorH;
-	public static int	cursorW;
+	public int	cursorH;
+	public int	cursorW;
 	
-	public static void preload(String path) throws IOException
+	@Override
+	public void preload(ImagesLoader loader) throws IOException
 	{
-		CursorImages.cursorWay = BitmapHelper.getResizeBitmap(path + "cursor_way.png");
-		CursorImages.cursorAttack = BitmapHelper.getResizeBitmap(path + "cursor_attack.png");
-		CursorImages.cursorMixed = BitmapHelper.getResizeBitmap(path + "cursor_mixed.png");
-		CursorImages.cursor.setBitmaps(path, new String[]
+		cursorWay = loader.loadImage("cursor_way.png");
+		cursorAttack = loader.loadImage("cursor_attack.png");
+		cursorMixed = loader.loadImage("cursor_mixed.png");
+		cursor.setBitmaps(loader, new String[]
 		{
 				"cursor_down.png",
 				"cursor_up.png"
 		});
-		CursorImages.cursorPointerAttack.setBitmaps(path, new String[]
+		cursorPointerAttack.setBitmaps(loader, new String[]
 		{
 				"cursor_pointer_attack_0.png",
 				"cursor_pointer_attack_1.png",
 				"cursor_pointer_attack_2.png"
 		});
-		CursorImages.cursorPointerWay.setBitmaps(path, new String[]
+		cursorPointerWay.setBitmaps(loader, new String[]
 		{
 				"cursor_pointer_way.png"
 		});
 		
-		CursorImages.cursorH = CursorImages.cursor.getBitmap().getHeight();
-		CursorImages.cursorW = CursorImages.cursor.getBitmap().getWidth();
+		cursorH = cursor.getBitmap().getHeight();
+		cursorW = cursor.getBitmap().getWidth();
 	}
 	
 }

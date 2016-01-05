@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.images.CursorImages;
 
 public class GameDrawRangeAll extends GameDraw
 {
@@ -37,11 +36,11 @@ public class GameDrawRangeAll extends GameDraw
 			{
 				boolean isRedBitmap = fieldAttack[i][j] || fieldRaise[i][j];
 				if (fieldMove[i][j] && isRedBitmap)
-					field[i][j] = CursorImages.cursorMixed;// после замени катапульту на ведьму и добавь надгробие рядом с ней
+					field[i][j] = CursorImages().cursorMixed;// после замени катапульту на ведьму и добавь надгробие рядом с ней
 				else if (fieldMove[i][j])
-					field[i][j] = CursorImages.cursorWay;
+					field[i][j] = CursorImages().cursorWay;
 				else if (isRedBitmap)
-					field[i][j] = CursorImages.cursorAttack;
+					field[i][j] = CursorImages().cursorAttack;
 			}
 	}
 	

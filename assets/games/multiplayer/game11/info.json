@@ -1,1 +1,1 @@
-{"gameID":"multiplayer.game11","numberPlayers":4,"isCampaign":false}
+{"gameID":"multiplayer.game11","baseGameID":"","nextGameID":"","numberPlayers":4,"isBaseGame":true,"canChooseTeams":true,"h":19,"w":19}

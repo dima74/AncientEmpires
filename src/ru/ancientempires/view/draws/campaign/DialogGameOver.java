@@ -1,41 +1,37 @@
 package ru.ancientempires.view.draws.campaign;
 
-import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.client.Client;
-import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.os.Bundle;
+import android.content.Intent;
+import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activity.MainActivity;
 
-public class DialogGameOver extends DialogFragment
+public class DialogGameOver
 {
 	
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
+	public void createDialog()
 	{
-		Builder builder = new AlertDialog.Builder(getActivity());
+		Builder builder = new Builder(GameActivity.activity);
 		builder.setTitle("Поражение!");
 		builder.setPositiveButton("Заново", new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				Client.getClient().restartGame();
-				GameActivity.gameActivity.startGameView();
+				GameActivity.startGame(GameActivity.activity, GameHandler.game.path.baseGameID, true);
 			}
 		});
-		builder.setNegativeButton("Выйти", new OnClickListener()
+		builder.setNegativeButton("В главное меню", new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				getActivity().finish();
+				GameActivity.activity.startActivity(new Intent(GameActivity.activity, MainActivity.class));
 			}
 		});
-		return builder.create();
+		builder.create();
 	}
 	
 }
