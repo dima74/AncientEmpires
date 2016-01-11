@@ -4,58 +4,49 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.action.Action;
-import ru.ancientempires.helpers.FileHelper;
 import ru.ancientempires.model.Game;
 
 public class GameSaver
 {
 	
-	private FileHelper	loader;
-	private Game		game;
-	private SaveInfo	saveInfo;
+	private GameSaveLoader	loader;
+	private Game			game;
+	private SaveInfo		saveInfo	= new SaveInfo();
 	
 	public GameSaver(Game game)
 	{
 		this.game = game;
-		loader = game.path.getLoader();
+		loader = new GameSaveLoader(game.path.getLoader(), saveInfo);
+		saveInfo.loader = loader;
 	}
 	
 	public void save() throws IOException
 	{
 		if (saveInfo == null)
-			saveInfo = new SaveInfo(loader).load();
+			saveInfo.load();
 		checkSaveSnapshot();
 	}
 	
 	private void checkSaveSnapshot() throws IOException
 	{
-		if (saveInfo.numberActions % 100 == 0)
+		if (saveInfo.numberActionsAfterLastSave == 100)
 		{
-			loaderSnapshots().mkdirs("");
-			loaderActions().mkdirs("");
-			new GameSnapshotSaver(game, loaderSnapshots()).save();
 			++saveInfo.numberSnapshots;
+			saveInfo.numberActionsAfterLastSave = 0;
+			loader.snapshots().mkdirs("");
+			loader.actions().mkdirs("");
+			new GameSnapshotSaver(game, loader.snapshots()).save();
 			saveInfo.save();
 		}
 	}
 	
 	public void save(Action action) throws IOException
 	{
-		String relativeNumberAction = String.valueOf(saveInfo.numberActions % 100);
-		DataOutputStream dos = loaderActions().openDOS(relativeNumberAction);
-		// action.saveBase(dos);
-		++saveInfo.numberActions;
+		String relativeNumberAction = "" + saveInfo.numberActionsAfterLastSave++;
+		DataOutputStream dos = loader.actions().openDOS(relativeNumberAction);
+		action.saveBase(dos);
 		saveInfo.save();
-	}
-	
-	private FileHelper loaderSnapshots()
-	{
-		return loader.getLoader("snapshots/" + saveInfo.numberSnapshots + "/");
-	}
-	
-	private FileHelper loaderActions()
-	{
-		return loader.getLoader("actions/" + saveInfo.numberSnapshots + "/");
+		checkSaveSnapshot();
 	}
 	
 }

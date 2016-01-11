@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.ActionHandler;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
@@ -68,12 +67,11 @@ public class ClientServer extends Server
 	
 	public ActionResult action(Action action)
 	{
-		ActionHandler actionHandler = ActionHandler.getActionHandler(action.type);
 		// MyLog.l(actionHandler.getClass().getSimpleName().replace("ActionHandler", "") + " " + action);
-		ActionResult result = actionHandler.action(action);
+		ActionResult result = action.action();
 		MyAssert.a(result.successfully);
 		if (!result.successfully)
-			actionHandler.action(action);
+			action.action();
 			
 		try
 		{

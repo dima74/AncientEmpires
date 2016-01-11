@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.campaign.scripts.Script;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.Game;
 
 public class Campaign
@@ -15,7 +15,7 @@ public class Campaign
 	public Script[]			scripts;		// all all
 	public IDrawCampaign	iDrawCampaign;
 	
-	public void load(FileHelper loader, Game game) throws IOException
+	public void load(FileLoader loader, Game game) throws IOException
 	{
 		this.game = game;
 		scripts = new CampaignLoader(loader, game, this).load();

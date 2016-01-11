@@ -3,6 +3,7 @@ package ru.ancientempires.load;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 import com.google.gson.Gson;
@@ -14,7 +15,7 @@ import ru.ancientempires.PlayerType;
 import ru.ancientempires.SimpleTeam;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
@@ -28,7 +29,7 @@ public class GameLoader
 {
 	
 	public GamePath		path;
-	public FileHelper	loader;
+	public FileLoader	loader;
 	public Game			game	= new Game();;
 	
 	public GameLoader(GamePath path)
@@ -48,7 +49,7 @@ public class GameLoader
 			loadLastTeams();
 		loadMap();
 		loadCells();
-		loadAllUnits();
+		loadUnits();
 		
 		Client.client.defaultGameLoader.loadLocalization("strings");
 		if (loader.exists("strings.json"))
@@ -178,16 +179,16 @@ public class GameLoader
 	
 	private void loadMap() throws NumberFormatException, IOException
 	{
-		DataInputStream mapDIS = loader.openDIS("map.map");
+		DataInputStream input = loader.openDIS("map.map");
 		game.fieldCells = new Cell[game.h][game.w];
 		for (int i = 0; i < game.h; i++)
 			for (int j = 0; j < game.w; j++)
 			{
-				int ordinal = mapDIS.readInt();
+				int ordinal = input.readInt();
 				CellType type = CellType.getType(ordinal);
 				game.fieldCells[i][j] = Cell.getNew(type);
 			}
-		mapDIS.close();
+		input.close();
 	}
 	
 	private void loadCells() throws IOException
@@ -217,7 +218,7 @@ public class GameLoader
 		
 		reader.beginObject();
 		game.fieldUnits = loadUnits(reader, "units", true);
-		game.fieldDeadUnits = loadUnits(reader, "unitsDead", false);
+		game.fieldUnitsDead = loadUnits(reader, "unitsDead", false);
 		loadstaticUnitsDead(reader);
 		reader.endObject();
 		reader.close();
@@ -246,14 +247,14 @@ public class GameLoader
 	
 	private void loadstaticUnitsDead(JsonReader reader) throws IOException
 	{
-		game.staticUnitsDead = new ArrayList[game.players.length];
+		game.unitsStaticDead = new ArrayList[game.players.length];
 		for (int i = 0; i < game.players.length; i++)
-			game.staticUnitsDead[i] = new ArrayList<Unit>();
+			game.unitsStaticDead[i] = new ArrayList<Unit>();
 			
 		MyAssert.a("staticUnitsDead", reader.nextName());
 		reader.beginArray();
 		while (reader.peek() == JsonToken.BEGIN_OBJECT)
-			game.staticUnitsDead[nextUnit(reader).player.ordinal].add(nextUnit(reader));
+			game.unitsStaticDead[nextUnit(reader).player.ordinal].add(nextUnit(reader));
 		reader.endArray();
 	}
 	
@@ -263,6 +264,57 @@ public class GameLoader
 		Unit unit = new Unit(UnitType.getType(JsonHelper.readString(reader, "type")), game.players[JsonHelper.readInt(reader, "player")]);
 		RulesLoader.loadUnitPropetries(reader, unit);
 		reader.endObject();
+		return unit;
+	}
+	
+	private void loadUnits() throws IOException
+	{
+		DataInputStream input = loader.openDIS("units.dat");
+		game.fieldUnits = loadUnitsField(input, true);
+		loadUnits(input, game.unitsOutside = new HashSet<Unit>(), true);
+		game.fieldUnitsDead = loadUnitsField(input, false);
+		
+		game.unitsStaticDead = new ArrayList[game.players.length];
+		for (int i = 0; i < game.players.length; i++)
+			loadUnits(input, game.unitsStaticDead[i] = new ArrayList<Unit>(), false);
+			
+		input.close();
+	}
+	
+	private Unit[][] loadUnitsField(DataInputStream input, boolean addToPlayer) throws IOException
+	{
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		loadUnits(input, units, addToPlayer);
+		Unit[][] field = new Unit[game.h][game.w];
+		for (Unit unit : units)
+			field[unit.i][unit.j] = unit;
+		return field;
+	}
+	
+	public void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
+	{
+		int numberUnits = input.readInt();
+		for (int i = 0; i < numberUnits; i++)
+			units.add(loadUnit(input, addToPlayer));
+	}
+	
+	private Unit loadUnit(DataInputStream input, boolean addToPlayer) throws IOException
+	{
+		UnitType type = UnitType.getType(input.readUTF());
+		Player player = game.players[input.readInt()];
+		Unit unit = new Unit(type, player);
+		unit.i = input.readInt();
+		unit.j = input.readInt();
+		unit.health = input.readInt();
+		unit.level = input.readInt();
+		unit.experience = input.readInt();
+		unit.isMove = input.readBoolean();
+		unit.isTurn = input.readBoolean();
+		game.namedUnits.tryLoad(input, unit);
+		game.numberedUnits.tryLoad(input, unit);
+		
+		if (addToPlayer)
+			player.units.add(unit);
 		return unit;
 	}
 	

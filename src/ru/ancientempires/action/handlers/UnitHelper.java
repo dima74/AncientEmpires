@@ -9,9 +9,9 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
-import ru.ancientempires.tasks.Task;
-import ru.ancientempires.tasks.TaskType;
-import ru.ancientempires.tasks.handlers.TaskHandler;
+import ru.ancientempires.tasks.TaskIncreaseUnitAttack;
+import ru.ancientempires.tasks.TaskIncreaseUnitDefence;
+import ru.ancientempires.tasks.TaskRemoveTombstone;
 
 public abstract class UnitHelper extends GameHandler
 {
@@ -41,27 +41,27 @@ public abstract class UnitHelper extends GameHandler
 	public static int handleAfterAttackEffect(Unit unit, Unit targetUnit)
 	{
 		int bonusSign = (int) Math.signum(unit.type.bonusForUnitAfterAttackAttack + unit.type.bonusForUnitAfterAttackDefence);
-		
 		if (bonusSign != 0)
 		{
 			if (unit.type.bonusForUnitAfterAttackAttack != 0)
 			{
 				targetUnit.attack += unit.type.bonusForUnitAfterAttackAttack;
-				Task task = new Task(TaskType.TASK_INCREASE_UNIT_ATTACK, GameHandler.amountPlayers);
-				task.setProperty("unit", targetUnit);
-				task.setProperty("value", -unit.type.bonusForUnitAfterAttackAttack);
-				TaskHandler.addNewTask(task);
+				new TaskIncreaseUnitAttack()
+						.setUnit(targetUnit)
+						.setValue(-unit.type.bonusForUnitAfterAttackAttack)
+						.setTurn(GameHandler.amountPlayers)
+						.register();
 			}
 			if (unit.type.bonusForUnitAfterAttackDefence != 0)
 			{
 				targetUnit.defence += unit.type.bonusForUnitAfterAttackDefence;
-				Task task = new Task(TaskType.TASK_INCREASE_UNIT_DEFENSE, GameHandler.amountPlayers);
-				task.setProperty("unit", targetUnit);
-				task.setProperty("value", -unit.type.bonusForUnitAfterAttackDefence);
-				TaskHandler.addNewTask(task);
+				new TaskIncreaseUnitDefence()
+						.setUnit(targetUnit)
+						.setValue(-unit.type.bonusForUnitAfterAttackDefence)
+						.setTurn(GameHandler.amountPlayers)
+						.register();
 			}
 		}
-		
 		return bonusSign;
 	}
 	
@@ -72,14 +72,14 @@ public abstract class UnitHelper extends GameHandler
 		if (unit.type.isStatic)
 		{
 			ActionHandlerHelper.clearUnitState(unit);
-			GameHandler.game.staticUnitsDead[unit.player.ordinal].add(unit);
+			GameHandler.game.unitsStaticDead[unit.player.ordinal].add(unit);
 		}
 		if (unit.type.hasTombstone)
 		{
-			Task task = new Task(TaskType.TASK_REMOVE_TOMBSTONE, GameHandler.amountPlayers + 1);
-			task.setProperty("i", unit.i);
-			task.setProperty("j", unit.j);
-			TaskHandler.addNewTask(task);
+			new TaskRemoveTombstone()
+					.setIJ(unit.i, unit.j)
+					.setTurn(GameHandler.amountPlayers + 1)
+					.register();
 			GameHandler.fieldDeadUnits[unit.i][unit.j] = unit;
 		}
 		

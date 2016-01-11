@@ -78,7 +78,6 @@ public class Unit
 		
 		isMove = defaultUnit.isMove;
 		isTurn = defaultUnit.isTurn;
-		
 		return this;
 	}
 	
@@ -89,7 +88,6 @@ public class Unit
 		defence = type.defence;
 		moveRadius = type.moveRadius;
 		cost = type.cost;
-		
 		return this;
 	}
 	

@@ -11,10 +11,8 @@ import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.ActionType;
-import ru.ancientempires.action.handlers.ActionHandler;
 import ru.ancientempires.framework.LogWriter;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.images.ImagesLoader;
@@ -24,8 +22,6 @@ import ru.ancientempires.load.RulesLoader;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.server.Server;
-import ru.ancientempires.tasks.TaskType;
-import ru.ancientempires.tasks.handlers.TaskHandler;
 
 public class Client
 {
@@ -41,10 +37,10 @@ public class Client
 	
 	public LogWriter log;
 	
-	public FileHelper	fileLoader;
-	public FileHelper	gamesLoader;
-	public FileHelper	defaultGameLoader;
-	public FileHelper	rulesLoader;
+	public FileLoader	fileLoader;
+	public FileLoader	gamesLoader;
+	public FileLoader	defaultGameLoader;
+	public FileLoader	rulesLoader;
 	
 	public ImagesLoader	imagesLoader;
 	public Images		images	= new Images();
@@ -64,7 +60,7 @@ public class Client
 	public Client(Activity activity) throws IOException
 	{
 		log = new LogWriter();
-		fileLoader = new FileHelper(activity);
+		fileLoader = new FileLoader(activity);
 		gamesLoader = fileLoader.getLoader("games/");
 		rulesLoader = fileLoader.getLoader("rules/");
 		defaultGameLoader = gamesLoader.getLoader("defaultGame/");
@@ -98,10 +94,6 @@ public class Client
 	// То что нужно для непосредственно игры
 	public void loadPart2() throws IOException
 	{
-		ActionType.init();
-		TaskType.init();
-		ActionHandler.init();
-		TaskHandler.init();
 		new RulesLoader(rulesLoader).load();
 		images.preload(imagesLoader);
 	}
@@ -126,9 +118,9 @@ public class Client
 		init.initThread.join();
 	}
 	
-	public Game getGame()
+	public static Game getGame()
 	{
-		return clientServer.game;
+		return Client.client.clientServer.game;
 	}
 	
 	public void startGame(String gameID) throws IOException
@@ -143,7 +135,7 @@ public class Client
 	
 	public static ActionResult action(Action action)
 	{
-		if (action.type.critical)
+		if (action.isCritical())
 			// TODO
 			for (Server server : Client.client.servers)
 			{

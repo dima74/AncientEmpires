@@ -33,7 +33,7 @@ public class GameThread extends Thread
 		MyLog.l("new thread");
 		this.surfaceHolder = surfaceHolder;
 		
-		GameDraw.game = InputBase.game = Client.client.getGame();
+		GameDraw.game = InputBase.game = Client.getGame();
 		gameDraw = InputBase.gameDraw = new GameDrawMain();
 		gameDraw.inputMain = inputMain = new InputMain();
 		gameDraw.inputPlayer = inputMain.inputPlayer;
@@ -59,7 +59,7 @@ public class GameThread extends Thread
 		GameThread.thread = this;
 		MyLog.l("thread start " + hashCode());
 		
-		Client.client.getGame().campaign.start();
+		Client.getGame().campaign.start();
 		
 		while (isRunning)
 		{
@@ -109,7 +109,7 @@ public class GameThread extends Thread
 			if (needUpdateCampaign)
 			{
 				needUpdateCampaign = false;
-				Client.client.getGame().campaign.update();
+				Client.getGame().campaign.update();
 			}
 			
 			// TODO сделать другой тайминговый механизм: не засыпать тут, а передавать в gameDraw.draw() время, прошедшее с последнего рисования. По нему впринципе можно вычислить iFrame, если не хочется переписывать все draw()

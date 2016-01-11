@@ -2,7 +2,7 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import ru.ancientempires.action.ActionType;
+import ru.ancientempires.action.handlers.ActionFromTo;
 import ru.ancientempires.images.Images;
 
 public class GameDrawAction extends GameDraw
@@ -18,28 +18,28 @@ public class GameDrawAction extends GameDraw
 		GameDrawAction.whiteAlphaPaint.setColor(0xDDFFFFFF);
 	}
 	
-	private ActionType	type1;
-	private ActionType	type2;
+	private ActionFromTo	action1;
+	private ActionFromTo	action2;
 	
 	public int	h	= ActionImages().h * 2;
 	public int	w	= GameDraw.w;
 	
-	public void start(ActionType type1, ActionType type2)
+	public void start(ActionFromTo action1, ActionFromTo action2)
 	{
-		this.type1 = type1;
-		this.type2 = type2;
+		this.action1 = action1;
+		this.action2 = action2;
 	}
 	
 	public boolean isActive()
 	{
-		return type1 != null;
+		return action1 != null;
 	}
 	
 	public boolean touch(float y, float x)
 	{
 		if (y < 0 || y > h)
 			return false;
-		ActionType type = x < w / 2 ? type1 : type2;
+		ActionFromTo type = x < w / 2 ? action1 : action2;
 		destroy();
 		GameDraw.main.inputPlayer.inputUnit.performAction(type);
 		return true;
@@ -47,7 +47,7 @@ public class GameDrawAction extends GameDraw
 	
 	public void destroy()
 	{
-		type1 = type2 = null;
+		action1 = action2 = null;
 	}
 	
 	@Override
@@ -58,8 +58,8 @@ public class GameDrawAction extends GameDraw
 		int delta = w / 3;
 		int x1 = w / 2 - delta / 2 - ActionImages().w / 2;
 		int x2 = w / 2 + delta / 2 - ActionImages().w / 2;
-		canvas.drawBitmap(ActionImages().getActionBitmap(type1), x1, y, null);
-		canvas.drawBitmap(ActionImages().getActionBitmap(type2), x2, y, null);
+		canvas.drawBitmap(ActionImages().getActionBitmap(action1), x1, y, null);
+		canvas.drawBitmap(ActionImages().getActionBitmap(action2), x2, y, null);
 	}
 	
 }

@@ -22,7 +22,7 @@ public abstract class GameHandler
 		GameHandler.game = game;
 		GameHandler.fieldCells = game.fieldCells;
 		GameHandler.fieldUnits = game.fieldUnits;
-		GameHandler.fieldDeadUnits = game.fieldDeadUnits;
+		GameHandler.fieldDeadUnits = game.fieldUnitsDead;
 		GameHandler.h = game.h;
 		GameHandler.w = game.w;
 		GameHandler.amountPlayers = game.players.length;

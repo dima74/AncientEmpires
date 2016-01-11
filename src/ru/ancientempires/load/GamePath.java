@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 
 // Этот класс описывает описывает общую информацию сохранения (нм меняется от снимка к снимку)
@@ -70,14 +70,14 @@ public class GamePath
 		reader.endObject();
 	}
 	
-	public FileHelper getLoader()
+	public FileLoader getLoader()
 	{
 		return Client.client.gamesLoader.getLoader(path);
 	}
 	
 	public void save() throws IOException
 	{
-		FileHelper loader = getLoader();
+		FileLoader loader = getLoader();
 		JsonWriter writer = loader.getWriter("info.json");
 		writer.beginObject();
 		writer.name("gameID").value(gameID);

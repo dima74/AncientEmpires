@@ -33,7 +33,7 @@ public class ScriptSparkAttack extends Script
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.sparkAttack(this.i, this.j, this);
+		campaign.iDrawCampaign.sparksAttack(this.i, this.j, this);
 	}
 	
 	@Override

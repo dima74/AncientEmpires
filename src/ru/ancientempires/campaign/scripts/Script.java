@@ -7,9 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.conditions.ConditionUnitNumber;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 
 public abstract class Script
@@ -28,8 +26,6 @@ public abstract class Script
 	
 	public boolean checkGeneral()
 	{
-		if (this instanceof ConditionUnitNumber)
-			MyLog.l(System.currentTimeMillis(), previous.length);
 		for (Script script : previous)
 			if (!script.isFinishing)
 				return false;
@@ -70,7 +66,7 @@ public abstract class Script
 	
 	public Game getGame()
 	{
-		return Client.client.getGame();
+		return Client.getGame();
 	}
 	
 }

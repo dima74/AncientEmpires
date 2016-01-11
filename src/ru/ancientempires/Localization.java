@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 
 public class Localization
 {
@@ -22,7 +22,7 @@ public class Localization
 	
 	private Map<String, String> map = new HashMap<String, String>();
 	
-	public void load(FileHelper loader, String prefix) throws IOException
+	public void load(FileLoader loader, String prefix) throws IOException
 	{
 		String lang = Locale.getDefault().getLanguage();
 		String name = prefix + "_" + lang + ".json";

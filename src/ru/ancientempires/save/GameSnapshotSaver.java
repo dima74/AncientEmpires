@@ -4,6 +4,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
@@ -11,7 +13,7 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.SimplePlayer;
 import ru.ancientempires.SimpleTeam;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
@@ -21,14 +23,14 @@ public class GameSnapshotSaver
 {
 	
 	private Game		game;
-	private FileHelper	loader;
+	private FileLoader	loader;
 	
 	public GameSnapshotSaver(Game game)
 	{
 		this(game, game.path.getLoader());
 	}
 	
-	public GameSnapshotSaver(Game game, FileHelper loader)
+	public GameSnapshotSaver(Game game, FileLoader loader)
 	{
 		this.game = game;
 		this.loader = loader;
@@ -133,7 +135,7 @@ public class GameSnapshotSaver
 	
 	public void saveMap() throws IOException
 	{
-		DataOutputStream dos = new DataOutputStream(loader.openOS("map.map"));
+		DataOutputStream dos = loader.openDOS("map.map");
 		for (int i = 0; i < game.h; i++)
 			for (int j = 0; j < game.w; j++)
 				dos.writeInt(game.fieldCells[i][j].type.ordinal);
@@ -172,7 +174,7 @@ public class GameSnapshotSaver
 		writer.close();
 	}
 	
-	public void saveUnits() throws IOException
+	public void saveUnits2() throws IOException
 	{
 		JsonWriter writer = loader.getWriter("units.json");
 		writer.beginObject();
@@ -187,7 +189,7 @@ public class GameSnapshotSaver
 		writer.endArray();
 		
 		writer.name("unitsDead").beginArray();
-		for (Unit[] line : game.fieldDeadUnits)
+		for (Unit[] line : game.fieldUnitsDead)
 			for (Unit unit : line)
 				if (unit != null)
 					saveUnit(writer, unit);
@@ -195,7 +197,7 @@ public class GameSnapshotSaver
 		
 		writer.name("staticUnitsDead").beginArray();
 		for (Player player : game.players)
-			for (Unit unit : game.staticUnitsDead[player.ordinal])
+			for (Unit unit : game.unitsStaticDead[player.ordinal])
 				saveUnit(writer, unit);
 		writer.endArray();
 		
@@ -211,6 +213,49 @@ public class GameSnapshotSaver
 		writer.name("i").value(unit.i);
 		writer.name("j").value(unit.j);
 		writer.endObject();
+	}
+	
+	public void saveUnits() throws IOException
+	{
+		DataOutputStream output = loader.openDOS("units.dat");
+		saveUnits(output, convertFieldToList(game.fieldUnits));
+		saveUnits(output, game.unitsOutside);
+		saveUnits(output, convertFieldToList(game.fieldUnitsDead));
+		for (ArrayList<Unit> list : game.unitsStaticDead)
+			saveUnits(output, list);
+		output.close();
+	}
+	
+	private ArrayList<Unit> convertFieldToList(Unit[][] field)
+	{
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		for (Unit[] line : field)
+			for (Unit unit : line)
+				if (unit != null)
+					units.add(unit);
+		return units;
+	}
+	
+	public void saveUnits(DataOutputStream output, Collection<Unit> units) throws IOException
+	{
+		output.writeInt(units.size());
+		for (Unit unit : units)
+			saveUnit(output, unit);
+	}
+	
+	public void saveUnit(DataOutputStream output, Unit unit) throws IOException
+	{
+		output.writeUTF(unit.type.name);
+		output.writeInt(unit.player.ordinal);
+		output.writeInt(unit.i);
+		output.writeInt(unit.j);
+		output.writeInt(unit.health);
+		output.writeInt(unit.level);
+		output.writeInt(unit.experience);
+		output.writeBoolean(unit.isMove);
+		output.writeBoolean(unit.isTurn);
+		game.namedUnits.trySave(output, unit);
+		game.numberedUnits.trySave(output, unit);
 	}
 	
 	public JsonWriter getJsonWriter(File folder, String path) throws IOException

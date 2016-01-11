@@ -4,19 +4,19 @@ import java.io.IOException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 
-public class ImagesLoader extends FileHelper
+public class ImagesLoader extends FileLoader
 {
 	
-	public ImagesLoader(FileHelper fileHelper)
+	public ImagesLoader(FileLoader fileHelper)
 	{
-		super(fileHelper, "");
+		super(fileHelper);
 	}
 	
-	public ImagesLoader(FileHelper fileHelper, String prefix)
+	public ImagesLoader(FileLoader loader, String prefix)
 	{
-		super(fileHelper, prefix);
+		super(loader, prefix);
 	}
 	
 	public Bitmap loadImage(String name) throws IOException

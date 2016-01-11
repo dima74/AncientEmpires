@@ -7,9 +7,15 @@ import java.util.Vector;
 
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.ActionType;
-import ru.ancientempires.action.handlers.ActionHandlerGetUnitWay;
+import ru.ancientempires.action.handlers.ActionCellBuy;
+import ru.ancientempires.action.handlers.ActionGetCellBuy;
+import ru.ancientempires.action.handlers.ActionGetUnitWay;
 import ru.ancientempires.action.handlers.ActionHandlerHelper;
+import ru.ancientempires.action.handlers.ActionUnitAttack;
+import ru.ancientempires.action.handlers.ActionUnitCapture;
+import ru.ancientempires.action.handlers.ActionUnitMove;
+import ru.ancientempires.action.handlers.ActionUnitRaise;
+import ru.ancientempires.action.handlers.ActionUnitRepair;
 import ru.ancientempires.action.handlers.CheckerUnit;
 import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.action.handlers.UnitHelper;
@@ -210,9 +216,7 @@ public class II extends GameHandler
 			
 			if (var2 > 0)
 			{
-				Action actionGet = new Action(ActionType.GET_BUY);
-				actionGet.setProperty("i", var5);
-				actionGet.setProperty("j", var4);
+				Action actionGet = new ActionGetCellBuy().setIJ(var5, var4);
 				ActionResult result = Client.action(actionGet);
 				Unit[] units = (Unit[]) result.getProperty("units");
 				boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
@@ -250,10 +254,9 @@ public class II extends GameHandler
 					// && canBuyUnit(fractionsAllKings[this.currentTurningPlayer][var6], var4, var5))
 					// var1 = buyUnit(fractionsAllKings[this.currentTurningPlayer][var6], var4, var5);
 					// Если можем купит короля -> покупаем
-					Action action = new Action(ActionType.ACTION_CELL_BUY);
-					action.setProperty("i", var5);
-					action.setProperty("j", var4);
-					action.setProperty("unit", 0);
+					Action action = new ActionCellBuy()
+							.setUnit(0)
+							.setIJ(var5, var4);
 					Client.action(action);
 					var1 = GameHandler.fieldUnits[var5][var4];
 				}
@@ -266,20 +269,18 @@ public class II extends GameHandler
 					if (soldierToBuy != null && countUnits(soldierToBuy.type) < 2 && canBuyUnit(soldierToBuy, var4, var5))
 					{
 						// мечников меньше 2, покупаем в {var4, var5}
-						Action action = new Action(ActionType.ACTION_CELL_BUY);
-						action.setProperty("i", var5);
-						action.setProperty("j", var4);
-						action.setProperty("unit", iSoldier);
+						Action action = new ActionCellBuy()
+								.setUnit(iSoldier)
+								.setIJ(var5, var4);
 						Client.action(action);
 						var1 = GameHandler.fieldUnits[var5][var4];
 					}
 					else if (archerToBuy != null && countUnits(UnitType.getType("ARCHER")) < 2 && canBuyUnit(archerToBuy, var4, var5))
 					{
 						// лучников меньше 2, покупаем в {var4, var5}
-						Action action = new Action(ActionType.ACTION_CELL_BUY);
-						action.setProperty("i", var5);
-						action.setProperty("j", var4);
-						action.setProperty("unit", iArcher);
+						Action action = new ActionCellBuy()
+								.setUnit(iArcher)
+								.setIJ(var5, var4);
 						Client.action(action);
 						var1 = GameHandler.fieldUnits[var5][var4];
 					}
@@ -333,10 +334,9 @@ public class II extends GameHandler
 								}
 							if (!unitsToBuy.isEmpty())
 							{
-								Action action = new Action(ActionType.ACTION_CELL_BUY);
-								action.setProperty("i", var5);
-								action.setProperty("j", var4);
-								action.setProperty("unit", unitsToBuy.get(GameHandler.game.random.nextInt(unitsToBuy.size())));
+								Action action = new ActionCellBuy()
+										.setUnit(unitsToBuy.get(GameHandler.game.random.nextInt(unitsToBuy.size())))
+										.setIJ(var5, var4);
 								Client.action(action);
 								var1 = GameHandler.fieldUnits[var5][var4];
 							}
@@ -362,11 +362,9 @@ public class II extends GameHandler
 		else
 			return;
 			
-		Action action = new Action(ActionType.ACTION_UNIT_MOVE);
-		action.setProperty("i", currentSelectedUnit.i);
-		action.setProperty("j", currentSelectedUnit.j);
-		action.setProperty("targetI", var_3781);
-		action.setProperty("targetJ", var_3733);
+		Action action = new ActionUnitMove()
+				.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j)
+				.setIJ(var_3781, var_3733);
 		Client.action(action);
 		
 		if (var_37c2 == null && var_37e4 == null)
@@ -387,9 +385,7 @@ public class II extends GameHandler
 					var_3903[var18] = currentSelectedUnit;
 				}
 				
-				action = new Action(ActionType.ACTION_UNIT_CAPTURE);
-				action.setProperty("i", currentSelectedUnit.i);
-				action.setProperty("j", currentSelectedUnit.j);
+				action = new ActionUnitCapture(currentSelectedUnit.i, currentSelectedUnit.j);
 				Client.action(action);
 				// setBuildingFraction(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, fractionsTurnQueue[this.currentSelectedfractionPosInTurnQueue]);
 				// PaintableObject.currentRenderer.setCurrentDisplayable(createMessageScreen((String) null, PaintableObject.getLocaleString(73), height_, 1000));
@@ -409,9 +405,7 @@ public class II extends GameHandler
 					var_3903[var18] = currentSelectedUnit;
 				}
 				
-				action = new Action(ActionType.ACTION_UNIT_REPAIR);
-				action.setProperty("i", currentSelectedUnit.i);
-				action.setProperty("j", currentSelectedUnit.j);
+				action = new ActionUnitRepair(currentSelectedUnit.i, currentSelectedUnit.j);
 				Client.action(action);
 				// setMapElement(FRACTION_BUILDINGS, this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY);
 				// PaintableObject.currentRenderer.setCurrentDisplayable(createMessageScreen((String) null, PaintableObject.getLocaleString(74), height_, 1000));
@@ -437,22 +431,18 @@ public class II extends GameHandler
 			{
 				// sprCursor.setExternalFrameSequence(CURSOR_FRAME_SEQUENCES[1]);
 				// moveCursor(this.var_37c2.currentMapPosX, this.var_37c2.currentMapPosY);
-				action = new Action(ActionType.ACTION_UNIT_ATTACK);
-				action.setProperty("i", currentSelectedUnit.i);
-				action.setProperty("j", currentSelectedUnit.j);
-				action.setProperty("targetI", var_37c2.i);
-				action.setProperty("targetJ", var_37c2.j);
+				action = new ActionUnitAttack()
+						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j)
+						.setIJ(var_37c2.i, var_37c2.j);
 				Client.action(action);
 				var_37c2 = null;
 			}
 			else if (var_37e4 != null)
 			{
 				// moveCursor(this.var_37e4.currentMapPosX, this.var_37e4.currentMapPosY);
-				action = new Action(ActionType.ACTION_UNIT_RAISE);
-				action.setProperty("i", currentSelectedUnit.i);
-				action.setProperty("j", currentSelectedUnit.j);
-				action.setProperty("targetI", var_37e4.i);
-				action.setProperty("targetJ", var_37e4.j);
+				action = new ActionUnitRaise()
+						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j)
+						.setIJ(var_37e4.i, var_37e4.j);
 				Client.action(action);
 				var_37e4 = null;
 				var_36e4 = 7;
@@ -977,7 +967,7 @@ public class II extends GameHandler
 		Unit nextUnit = GameHandler.fieldUnits[ny][nx];
 		if (nextUnit != null && nextUnit.player.team != unit.player.team)
 			return;
-		final int cellWeight = ActionHandlerGetUnitWay.getDifficulte(unit, ny, nx);
+		final int cellWeight = ActionGetUnitWay.getDifficulte(unit, ny, nx);
 		alphaData[nx][ny] = Math.max(alphaData[nx][ny], alphaData[x][y] - cellWeight);
 	}
 	

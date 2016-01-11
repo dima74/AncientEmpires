@@ -5,9 +5,11 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.action.handlers.PlayerHelper;
+import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Player;
 
 public class ConditionCastleNumber extends Script
@@ -43,8 +45,19 @@ public class ConditionCastleNumber extends Script
 	@Override
 	public boolean check()
 	{
-		int number = PlayerHelper.getCastleNumber(player);
+		int number = getCastleNumber(player);
 		return ConditionCastleNumber.sign(this.number - number) == comparator;
+	}
+	
+	public int getCastleNumber(Player player)
+	{
+		CellType castle = CellType.getType("CASTLE");
+		int number = 0;
+		for (Cell[] line : GameHandler.fieldCells)
+			for (Cell cell : line)
+				if (cell.type == castle && cell.player == player)
+					number++;
+		return number;
 	}
 	
 	@Override

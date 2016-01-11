@@ -33,64 +33,71 @@ import ru.ancientempires.model.UnitType;
 public interface IDrawCampaign
 {
 	
+	public void showIntro(Bitmap image, String text, ScriptIntro script);
+	
+	public void showTitle(String text, Script script);
+	
 	public void showDialog(Bitmap image, String text, ScriptDialog script);
 	
 	public void showDialog(String text, ScriptDialogWithoutImage script);
 	
-	public void showTitle(final String text, Script script);
-	
 	public void showTarget(String textTitle, String textTarget, ScriptShowTarget script);
-	
-	public void showIntro(Bitmap image, String text, ScriptIntro script);
-	
-	public void cameraMove(int iEnd, int jEnd, Script script);
-	
-	public void hideCursor(ScriptHideCursor script);
-	
-	public void showCursor(ScriptShowCursor script);
 	
 	public void delay(int milliseconds, ScriptDelay script);
 	
-	public void unitDie(int i, int j, ScriptUnitDie script);
-	
-	public void unitAttack(int i, int j, ScriptUnitAttack script);
-	
-	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script);
-	
-	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script);
-	
-	public void closeMission();
-	
+	//
 	public void showBlackScreen(ScriptShowBlackScreen script);
 	
 	public void hideBlackScreen(ScriptHideBlackScreen script);
 	
 	public void blackScreen(ScriptBlackScreen script);
 	
-	public void updateCampaign();
+	//
+	public void hideCursor(ScriptHideCursor script);
 	
+	public void showCursor(ScriptShowCursor script);
+	
+	//
+	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script);
+	
+	public void cameraMove(int iEnd, int jEnd, Script script);
+	
+	public void setMapPosition(int i, int j, ScriptSetMapPosition script);
+	
+	//
+	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script);
+	
+	//
+	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script);
+	
+	public void unitMove(Point[] keyPoints, ScriptUnitMoveExtended script);
+	
+	public void unitAttack(int i, int j, ScriptUnitAttack script);
+	
+	public void unitDie(int i, int j, ScriptUnitDie script);
+	
+	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script);
+	
+	public void removeUnit(int i, int j, ScriptRemoveUnit script);
+	
+	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script);
+	
+	//
+	public void sparksDefault(int i, int j, ScriptSparkDefault script);
+	
+	public void sparksAttack(int i, int j, ScriptSparkAttack script);
+	
+	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script);
+	
+	//
 	public void enableActiveGame(ScriptEnableActiveGame script);
 	
 	public void disableActiveGame(ScriptDisableActiveGame script);
 	
 	public void gameOver(ScriptGameOver script);
 	
-	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script);
+	public void closeMission();
 	
-	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script);
-	
-	public void removeUnit(int i, int j, ScriptRemoveUnit script);
-	
-	public void sparkDefault(int i, int j, ScriptSparkDefault script);
-	
-	public void unitMove(Point[] way, ScriptUnitMoveExtended script);
-	
-	public void sparkAttack(int i, int j, ScriptSparkAttack script);
-	
-	public void setMapPosition(int i, int j, ScriptSetMapPosition script);
-	
-	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script);
-	
-	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script);
+	public void updateCampaign();
 	
 }

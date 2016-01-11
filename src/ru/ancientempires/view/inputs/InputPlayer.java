@@ -4,8 +4,11 @@ import ru.ancientempires.NoticeUnitBuy;
 import ru.ancientempires.UnitBuyDialog;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.ActionType;
+import ru.ancientempires.action.handlers.ActionCellBuy;
+import ru.ancientempires.action.handlers.ActionGetCellBuy;
 import ru.ancientempires.action.handlers.ActionHandlerHelper;
+import ru.ancientempires.action.handlers.ActionUnitCapture;
+import ru.ancientempires.action.handlers.ActionUnitRepair;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.model.Unit;
@@ -81,9 +84,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	
 	private boolean tryRepair(int i, int j)
 	{
-		Action action = new Action(ActionType.ACTION_UNIT_REPAIR);
-		action.setProperty("i", i);
-		action.setProperty("j", j);
+		Action action = new ActionUnitRepair(i, j);
 		Client.action(action);
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
@@ -91,9 +92,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	
 	private boolean tryCapture(int i, int j)
 	{
-		Action action = new Action(ActionType.ACTION_UNIT_CAPTURE);
-		action.setProperty("i", i);
-		action.setProperty("j", j);
+		Action action = new ActionUnitCapture(i, j);
 		Client.action(action);
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
@@ -101,9 +100,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	
 	private boolean tryBuy(int i, int j)
 	{
-		Action action = new Action(ActionType.GET_BUY);
-		action.setProperty("i", i);
-		action.setProperty("j", j);
+		Action action = new ActionGetCellBuy().setIJ(i, j);
 		ActionResult result = Client.action(action);
 		
 		Unit[] units = (Unit[]) result.getProperty("units");
@@ -116,10 +113,9 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	@Override
 	public void onUnitBuy(int iUnit)
 	{
-		Action action = new Action(ActionType.ACTION_CELL_BUY);
-		action.setProperty("i", lastTapI);
-		action.setProperty("j", lastTapJ);
-		action.setProperty("unit", iUnit);
+		Action action = new ActionCellBuy()
+				.setUnit(iUnit)
+				.setIJ(lastTapI, lastTapJ);
 		Client.action(action);
 		
 		InputBase.gameDraw.gameDrawInfo.update();

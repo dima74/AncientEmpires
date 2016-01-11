@@ -2,7 +2,6 @@ package ru.ancientempires.action.handlers;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.action.ActionType;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.RangeType;
@@ -20,26 +19,14 @@ public class ActionHandlerHelper extends GameHandler
 					GameHandler.game.currentEarns[cell.player.ordinal] += cell.type.earn;
 	}
 	
-	public static ArrayList<ActionType> getAvailableActionsForUnit(Unit unit)
+	public static boolean canUnitAction(Unit unit)
 	{
-		ArrayList<ActionType> actionTypes = new ArrayList<ActionType>();
-		if (unit != null && !unit.isTurn && unit.player == GameHandler.game.currentPlayer)
-		{
-			if (ActionHandlerHelper.canUnitMove(unit))
-				actionTypes.add(ActionType.ACTION_UNIT_MOVE);
-				
-			if (ActionHandlerHelper.canUnitAttack(unit))
-				actionTypes.add(ActionType.ACTION_UNIT_ATTACK);
-				
-			if (ActionHandlerHelper.canUnitRepair(unit))
-				actionTypes.add(ActionType.ACTION_UNIT_REPAIR);
-			else if (ActionHandlerHelper.canUnitCapture(unit))
-				actionTypes.add(ActionType.ACTION_UNIT_CAPTURE);
-				
-			else if (ActionHandlerHelper.canUnitRaise(unit))
-				actionTypes.add(ActionType.ACTION_UNIT_RAISE);
-		}
-		return actionTypes;
+		return unit != null && !unit.isTurn && unit.player == GameHandler.game.currentPlayer
+				&& (ActionHandlerHelper.canUnitMove(unit)
+						|| ActionHandlerHelper.canUnitAttack(unit)
+						|| ActionHandlerHelper.canUnitRepair(unit)
+						|| ActionHandlerHelper.canUnitCapture(unit)
+						|| ActionHandlerHelper.canUnitRaise(unit));
 	}
 	
 	public static boolean canUnitMove(Unit unit)
@@ -162,10 +149,12 @@ public class ActionHandlerHelper extends GameHandler
 		return false;
 	}
 	
+	/*
 	public static boolean isUnit(int i, int j)
 	{
 		return GameHandler.getUnit(i, j) != null;
 	}
+	*/
 	
 	public static boolean isEmptyCells(int i, int j, UnitType type)
 	{
@@ -185,7 +174,7 @@ public class ActionHandlerHelper extends GameHandler
 			@Override
 			public boolean check(Unit targetUnit)
 			{
-				if (targetUnit.player == player && !targetUnit.isTurn && ActionHandlerHelper.getAvailableActionsForUnit(targetUnit).isEmpty())
+				if (targetUnit.player == player && !targetUnit.isTurn && !ActionHandlerHelper.canUnitAction(targetUnit))
 				{
 					targetUnit.setTurn();
 					return true;
@@ -211,7 +200,7 @@ public class ActionHandlerHelper extends GameHandler
 		return GameHandler.game.floatingUnit == null && !GameHandler.fieldCells[i][j].type.buyUnitsDefault.isEmpty() && GameHandler.fieldCells[i][j].player == GameHandler.game.currentPlayer;
 	}
 	
-	public static boolean isActiveUnit(int i, int j)
+	public static boolean isUnitActive(int i, int j)
 	{
 		Unit unit = GameHandler.fieldUnits[i][j];
 		Unit floatingUnit = GameHandler.game.floatingUnit;
@@ -221,12 +210,12 @@ public class ActionHandlerHelper extends GameHandler
 	
 	public static boolean canUnitRepair(int i, int j)
 	{
-		return ActionHandlerHelper.isActiveUnit(i, j) && ActionHandlerHelper.canUnitRepair(GameHandler.fieldUnits[i][j]);
+		return ActionHandlerHelper.isUnitActive(i, j) && ActionHandlerHelper.canUnitRepair(GameHandler.fieldUnits[i][j]);
 	}
 	
 	public static boolean canUnitCapture(int i, int j)
 	{
-		return ActionHandlerHelper.isActiveUnit(i, j) && ActionHandlerHelper.canUnitCapture(GameHandler.fieldUnits[i][j]);
+		return ActionHandlerHelper.isUnitActive(i, j) && ActionHandlerHelper.canUnitCapture(GameHandler.fieldUnits[i][j]);
 	}
 	
 }

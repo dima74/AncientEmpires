@@ -10,7 +10,7 @@ import com.google.gson.stream.JsonToken;
 import ru.ancientempires.bonuses.BonusForUnit;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
@@ -23,9 +23,9 @@ import ru.ancientempires.model.UnitType;
 public class RulesLoader
 {
 	
-	private FileHelper loader;
+	private FileLoader loader;
 	
-	public RulesLoader(FileHelper loader)
+	public RulesLoader(FileLoader loader)
 	{
 		this.loader = loader;
 	}

@@ -1,57 +1,60 @@
 package ru.ancientempires.action;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import ru.ancientempires.model.UnitType;
+import ru.ancientempires.action.handlers.ActionCellBuy;
+import ru.ancientempires.action.handlers.ActionGameEndTurn;
+import ru.ancientempires.action.handlers.ActionGetCellBuy;
+import ru.ancientempires.action.handlers.ActionGetUnit;
+import ru.ancientempires.action.handlers.ActionUnitAttack;
+import ru.ancientempires.action.handlers.ActionUnitCapture;
+import ru.ancientempires.action.handlers.ActionUnitMove;
+import ru.ancientempires.action.handlers.ActionUnitRaise;
+import ru.ancientempires.action.handlers.ActionUnitRepair;
 
-public class Action
+public abstract class Action
 {
 	
-	// public static List<Class<? extends Action>> actions = Arrays.asList();
-	
-	public ActionType type;
-	
-	Map<String, Object> properties = new HashMap<String, Object>();
-	
-	public Action(ActionType type)
-	{
-		this.type = type;
-	}
-	
-	public Action setProperty(String name, Object property)
-	{
-		properties.put(name, property);
-		return this;
-	}
-	
-	public Object getProperty(String property)
-	{
-		return properties.get(property);
-	}
-	
-	@Override
-	public String toString()
-	{
-		String s = "";
-		if (getProperty("i") != null)
-			s += "{" + getProperty("i") + ", " + getProperty("j") + "} ";
-		if (getProperty("targetI") != null)
-			s += "-> {" + getProperty("targetI") + ", " + getProperty("targetJ") + "} ";
-		Integer type = (Integer) getProperty("type");
-		if (type != null)
-			s += UnitType.getType(type).name + " ";
+	public static List<Class<? extends Action>> actions = Arrays.asList(
+			ActionGetUnit.class,
+			ActionGetCellBuy.class,
+			ActionCellBuy.class,
+			ActionUnitMove.class,
+			ActionUnitRepair.class,
+			ActionUnitCapture.class,
+			ActionUnitAttack.class,
+			ActionUnitRaise.class,
+			ActionGameEndTurn.class);
 			
-		return s + " " + properties.toString();
+	public ActionResult result = new ActionResult();
+	
+	public boolean isCritical()
+	{
+		return true;
 	}
 	
-	// public void saveBase(DataOutputStream output) throws IOException
-	// {
-	// output.write(Action.actions.indexOf(getClass()));
-	// save(output);
-	// output.close();
-	// }
+	public abstract ActionResult action();
 	
-	// public abstract void save(DataOutputStream output);
+	public void saveBase(DataOutputStream output) throws IOException
+	{
+		output.writeByte(ordinal());
+		save(output);
+		output.close();
+	}
+	
+	public int ordinal()
+	{
+		return Action.actions.indexOf(getClass());
+	}
+	
+	public void load(DataInputStream input) throws IOException
+	{}
+	
+	public void save(DataOutputStream output) throws IOException
+	{}
 	
 }

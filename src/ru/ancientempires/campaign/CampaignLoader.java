@@ -10,21 +10,21 @@ import com.google.gson.stream.JsonToken;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptType;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileHelper;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Game;
 
 public class CampaignLoader
 {
 	
-	private FileHelper	loader;
+	private FileLoader	loader;
 	private Game		game;
 	private Campaign	campaign;
 	
 	private ArrayList<Script>	scripts			= new ArrayList<Script>();
 	private ArrayList<int[]>	scriptsPrevious	= new ArrayList<int[]>();
 	
-	public CampaignLoader(FileHelper loader, Game game, Campaign campaign)
+	public CampaignLoader(FileLoader loader, Game game, Campaign campaign)
 	{
 		this.loader = loader;
 		this.game = game;

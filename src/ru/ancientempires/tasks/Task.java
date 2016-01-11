@@ -1,33 +1,52 @@
 package ru.ancientempires.tasks;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import ru.ancientempires.tasks.handlers.TaskHandler;
+import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.client.Client;
 
-public class Task
+public abstract class Task
 {
 	
-	public TaskType		type;
-	public int			turnToRun;
+	public static List<Class<? extends Task>>	tasks	= Arrays.asList(
+			TaskRemoveTombstone.class,
+			TaskIncreaseUnitAttack.class,
+			TaskIncreaseUnitDefence.class);
+	public int									turnToRun;
 	
-	Map<String, Object>	properties	= new HashMap<String, Object>();
-	
-	public Task(TaskType type, int diffTurn)
+	public Task setTurn(int differenceTurn)
 	{
-		this.type = type;
-		this.turnToRun = TaskHandler.game.currentTurn + diffTurn;
-	}
-	
-	public Task setProperty(String name, Object property)
-	{
-		this.properties.put(name, property);
+		turnToRun = GameHandler.game.currentTurn + differenceTurn;
 		return this;
 	}
 	
-	public Object getProperty(String property)
+	public void register()
 	{
-		return this.properties.get(property);
+		Client.getGame().registerTask(this);
 	}
+	
+	public abstract void run();
+	
+	public int ordinal()
+	{
+		return Task.tasks.indexOf(getClass());
+	}
+	
+	public void saveBase(DataOutputStream output) throws IOException
+	{
+		output.writeByte(ordinal());
+		save(output);
+		output.close();
+	}
+	
+	public void load(DataInputStream input) throws IOException
+	{}
+	
+	public void save(DataOutputStream output) throws IOException
+	{}
 	
 }
