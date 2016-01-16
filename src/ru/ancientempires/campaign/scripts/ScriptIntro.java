@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonWriter;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.Localization;
-import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.JsonHelper;
 

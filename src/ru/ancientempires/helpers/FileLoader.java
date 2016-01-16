@@ -81,9 +81,19 @@ public class FileLoader
 		getFile(name).mkdirs();
 	}
 	
+	public void mkdirs()
+	{
+		mkdirs("");
+	}
+	
 	public OutputStream openOS(String name) throws IOException
 	{
 		return new FileOutputStream(getFile(name));
+	}
+	
+	public OutputStream openOSAppend(String name) throws IOException
+	{
+		return new FileOutputStream(getFile(name), true);
 	}
 	
 	public DataOutputStream openDOS(String name) throws IOException

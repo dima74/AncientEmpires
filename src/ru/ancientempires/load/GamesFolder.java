@@ -1,7 +1,5 @@
 package ru.ancientempires.load;
 
-import java.io.IOException;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -18,12 +16,12 @@ public class GamesFolder
 	public String			folderID;
 	public String			name;
 	
-	public GamesFolder(Client client, String path, GamesFolder parentFolder) throws IOException
+	public GamesFolder(String path, GamesFolder parentFolder) throws Exception
 	{
 		if (path != "")
 		{
 			String folderID = path.replace('/', '.').substring(0, path.length() - 1);
-			client.allFolders.put(folderID, this);
+			Client.client.allFolders.put(folderID, this);
 			name = Localization.get(folderID);
 		}
 		this.parentFolder = parentFolder;
@@ -37,14 +35,14 @@ public class GamesFolder
 				String[] strings = new Gson().fromJson(reader, String[].class);
 				folders = new GamesFolder[strings.length];
 				for (int i = 0; i < strings.length; i++)
-					folders[i] = new GamesFolder(client, path + strings[i], this);
+					folders[i] = new GamesFolder(path + strings[i], this);
 			}
 			else if ("games".equals(name))
 			{
 				String[] strings = new Gson().fromJson(reader, String[].class);
 				games = new GamePath[strings.length];
 				for (int i = 0; i < strings.length; i++)
-					games[i] = new GamePath(client, path + strings[i]);
+					games[i] = GamePath.get(path + strings[i], true);
 			}
 		}
 		reader.endObject();

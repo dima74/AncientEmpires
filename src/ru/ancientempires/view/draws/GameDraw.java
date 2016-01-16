@@ -1,6 +1,7 @@
 package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
+import ru.ancientempires.GameView;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.ArrowsImages;
@@ -13,9 +14,8 @@ import ru.ancientempires.images.SmokeImages;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.UnitImages;
-import ru.ancientempires.model.Game;
 
-public abstract class GameDraw
+public class GameDraw extends IInput
 {
 	
 	public Images Images()
@@ -73,16 +73,18 @@ public abstract class GameDraw
 		return Client.client.images.smoke;
 	}
 	
-	public static final float	mapScale	= 2;
-	public static final int		A			= Images.get().bitmapSize;
-	public static final float	fA			= Images.get().bitmapSize * GameDraw.mapScale;
-	public static final float	a			= Images.get().bitmapSize / 24.0f;				// 1/24 A
+	public float		mapScale	= 2;
+	public int			A			= Images.get().bitmapSize;
+	public float		fA			= Images.get().bitmapSize * mapScale;
+	public float		a			= A / 24.0f;
+	public int			h			= GameView.h;
+	public int			w			= GameView.w;
+	public GameDrawMain	main		= GameDrawMain.main;
 	
-	public static int			h;
-	public static int			w;
-	public static GameDrawMain	main;
-	public static Game			game;
-	public static int			iFrame;
+	public int iFrame()
+	{
+		return GameDrawMain.main.iFrame;
+	}
 	
 	public void update()
 	{}

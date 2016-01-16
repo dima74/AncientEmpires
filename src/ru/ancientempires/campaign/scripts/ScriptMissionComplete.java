@@ -2,17 +2,16 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.Localization;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.Localization;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptMissionComplete extends Script
 {
 	
-	private String	text;
+	private String text;
 	
 	public ScriptMissionComplete()
 	{}
@@ -25,20 +24,20 @@ public class ScriptMissionComplete extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.text = Localization.get(JsonHelper.readString(reader, "text"));
+		text = Localization.get(JsonHelper.readString(reader, "text"));
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.showTitle(this.text, this);
+		campaign.iDrawCampaign.showTitle(text, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("text").value(this.text);
+		writer.name("text").value(text);
 	}
 	
 }

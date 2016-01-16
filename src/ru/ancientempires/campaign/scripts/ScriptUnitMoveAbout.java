@@ -2,12 +2,10 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptUnitMoveAbout extends Script
 {
@@ -31,10 +29,10 @@ public class ScriptUnitMoveAbout extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.iStart = JsonHelper.readInt(reader, "iStart");
-		this.jStart = JsonHelper.readInt(reader, "jStart");
-		this.iEnd = JsonHelper.readInt(reader, "iEnd");
-		this.jEnd = JsonHelper.readInt(reader, "jEnd");
+		iStart = JsonHelper.readInt(reader, "iStart");
+		jStart = JsonHelper.readInt(reader, "jStart");
+		iEnd = JsonHelper.readInt(reader, "iEnd");
+		jEnd = JsonHelper.readInt(reader, "jEnd");
 	}
 	
 	@Override
@@ -42,7 +40,7 @@ public class ScriptUnitMoveAbout extends Script
 	{
 		super.start();
 		find();
-		campaign.iDrawCampaign.unitMove(this.iStart, this.jStart, this.iEnd, this.jEnd, this);
+		campaign.iDrawCampaign.unitMove(iStart, jStart, iEnd, jEnd, this);
 	}
 	
 	private void find()
@@ -57,12 +55,12 @@ public class ScriptUnitMoveAbout extends Script
 	
 	private boolean tryIJ(int relI, int relJ)
 	{
-		int absI = this.iEnd + relI;
-		int absJ = this.jEnd + relJ;
-		if (GameHandler.checkCoord(absI, absJ) && GameHandler.fieldUnits[absI][absJ] == null)
+		int absI = iEnd + relI;
+		int absJ = jEnd + relJ;
+		if (game.checkCoordinates(absI, absJ) && game.fieldUnits[absI][absJ] == null)
 		{
-			this.iEnd = absI;
-			this.jEnd = absJ;
+			iEnd = absI;
+			jEnd = absJ;
 			return true;
 		}
 		return false;
@@ -71,10 +69,10 @@ public class ScriptUnitMoveAbout extends Script
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("iStart").value(this.iStart);
-		writer.name("jStart").value(this.jStart);
-		writer.name("iEnd").value(this.iEnd);
-		writer.name("jEnd").value(this.jEnd);
+		writer.name("iStart").value(iStart);
+		writer.name("jStart").value(jStart);
+		writer.name("iEnd").value(iEnd);
+		writer.name("jEnd").value(jEnd);
 	}
 	
 }

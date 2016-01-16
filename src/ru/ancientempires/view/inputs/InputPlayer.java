@@ -2,15 +2,13 @@ package ru.ancientempires.view.inputs;
 
 import ru.ancientempires.NoticeUnitBuy;
 import ru.ancientempires.UnitBuyDialog;
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.ActionCellBuy;
-import ru.ancientempires.action.handlers.ActionGetCellBuy;
-import ru.ancientempires.action.handlers.ActionHandlerHelper;
-import ru.ancientempires.action.handlers.ActionUnitCapture;
-import ru.ancientempires.action.handlers.ActionUnitRepair;
+import ru.ancientempires.action.ActionCellBuy;
+import ru.ancientempires.action.ActionGetCellBuy;
+import ru.ancientempires.action.ActionUnitCapture;
+import ru.ancientempires.action.ActionUnitRepair;
+import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Unit;
 
 public class InputPlayer extends InputBase implements NoticeUnitBuy
@@ -29,8 +27,8 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	@Override
 	public void beginTurn()
 	{
-		tapWithoutAction(InputBase.game.currentPlayer.cursorI, InputBase.game.currentPlayer.cursorJ);
-		InputBase.gameDraw.focusOnCell(InputBase.game.currentPlayer.cursorI, InputBase.game.currentPlayer.cursorJ);
+		tapWithoutAction(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
+		InputBase.gameDraw.focusOnCell(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
 	}
 	
 	/*
@@ -56,11 +54,11 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		{
 			if (inputUnit.isActive)
 				inputUnit.tap(i, j); // сам станет неактивным
-			if (ActionHandlerHelper.canUnitRepair(i, j))
+			if (new ActionHelper().canUnitRepair(i, j))
 				tryRepair(i, j);
-			else if (ActionHandlerHelper.canUnitCapture(i, j))
+			else if (new ActionHelper().canUnitCapture(i, j))
 				tryCapture(i, j);
-			else if (ActionHandlerHelper.canBuyOnCell(i, j))
+			else if (new ActionHelper().canBuyOnCell(i, j))
 				tryBuy(i, j);
 		}
 		else
@@ -68,7 +66,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 			boolean isMove = false;
 			if (inputUnit.isActive)
 				isMove = inputUnit.tap(i, j);
-			if (!inputUnit.start(i, j) && !isMove && ActionHandlerHelper.canBuyOnCell(i, j))
+			if (!inputUnit.start(i, j) && !isMove && new ActionHelper().canBuyOnCell(i, j))
 				tryBuy(i, j);
 		}
 	}
@@ -77,35 +75,36 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	{
 		lastTapI = i;
 		lastTapJ = j;
-		InputBase.game.currentPlayer.cursorI = i;
-		InputBase.game.currentPlayer.cursorJ = j;
+		game.currentPlayer.cursorI = i;
+		game.currentPlayer.cursorJ = j;
 		InputBase.gameDraw.updateCursors();
 	}
 	
 	private boolean tryRepair(int i, int j)
 	{
-		Action action = new ActionUnitRepair(i, j);
-		Client.action(action);
+		new ActionUnitRepair()
+				.setIJ(i, j)
+				.perform();
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
 	}
 	
 	private boolean tryCapture(int i, int j)
 	{
-		Action action = new ActionUnitCapture(i, j);
-		Client.action(action);
+		new ActionUnitCapture()
+				.setIJ(i, j)
+				.perform();
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
 	}
 	
 	private boolean tryBuy(int i, int j)
 	{
-		Action action = new ActionGetCellBuy().setIJ(i, j);
-		ActionResult result = Client.action(action);
-		
-		Unit[] units = (Unit[]) result.getProperty("units");
-		boolean[] isAvailable = (boolean[]) result.getProperty("isAvailable");
-		
+		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
+				.setIJ(i, j)
+				.perform();
+		Unit[] units = result.units;
+		boolean[] isAvailable = result.isAvailable;
 		UnitBuyDialog.showDialog(this, units, isAvailable);
 		return true;
 	}
@@ -113,11 +112,11 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	@Override
 	public void onUnitBuy(int iUnit)
 	{
-		Action action = new ActionCellBuy()
+		new ActionCellBuy()
 				.setUnit(iUnit)
-				.setIJ(lastTapI, lastTapJ);
-		Client.action(action);
-		
+				.setIJ(lastTapI, lastTapJ)
+				.perform();
+				
 		InputBase.gameDraw.gameDrawInfo.update();
 		inputUnit.start(lastTapI, lastTapJ);
 		

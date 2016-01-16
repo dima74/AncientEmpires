@@ -69,4 +69,7 @@ public abstract class Script
 		return Client.getGame();
 	}
 	
+	public void performAction()
+	{}
+	
 }

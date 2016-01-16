@@ -1,7 +1,6 @@
 package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawBlackScreen extends GameDrawOnFramesWithRangeValues
 {
@@ -13,7 +12,7 @@ public class GameDrawBlackScreen extends GameDrawOnFramesWithRangeValues
 	
 	public void startHide()
 	{
-		GameDraw.main.isBlackScreen = false;
+		main.isBlackScreen = false;
 		animateRange(240, 0, 16);
 	}
 	
@@ -27,7 +26,7 @@ public class GameDrawBlackScreen extends GameDrawOnFramesWithRangeValues
 	public void onEndDraw()
 	{
 		if (end == 255)
-			GameDraw.main.isBlackScreen = true;
+			main.isBlackScreen = true;
 	}
 	
 }

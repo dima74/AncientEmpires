@@ -1,1 +1,1 @@
-{"gameID":"multiplayer.game5","baseGameID":"","nextGameID":"","numberPlayers":2,"isBaseGame":true,"canChooseTeams":true,"h":15,"w":15}
+{"gameID":"multiplayer.game5","numberPlayers":2,"isBaseGame":true,"canChooseTeams":true,"h":15,"w":15,"defaultLocalization":"en_US","localizations":["ru_RU"]}

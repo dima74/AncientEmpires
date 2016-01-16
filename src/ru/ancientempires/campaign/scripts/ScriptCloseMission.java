@@ -1,6 +1,6 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.campaign.Campaign;
+import ru.ancientempires.framework.MyAssert;
 
 public class ScriptCloseMission extends Script
 {
@@ -10,7 +10,15 @@ public class ScriptCloseMission extends Script
 	{
 		super.start();
 		if (campaign.game.path.nextGameID != null)
-			campaign.iDrawCampaign.closeMission();
+			try
+			{
+				campaign.iDrawCampaign.closeMission();
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 		else
 		{
 			// TODO

@@ -11,7 +11,7 @@ public class GameDrawWayLine extends GameDraw
 	
 	static
 	{
-		GameDrawWayLine.LINE_PAINT.setStrokeWidth(GameDraw.A / 3);
+		GameDrawWayLine.LINE_PAINT.setStrokeWidth(new GameDraw().A / 3);
 		GameDrawWayLine.LINE_PAINT.setColor(0xFFE10052);
 	}
 	
@@ -51,10 +51,10 @@ public class GameDrawWayLine extends GameDraw
 					y2 -= one12;
 					y1 += one12;
 				}
-			wayPoints[k * 4 + 0] = (x1 + 0.5f) * GameDraw.A;
-			wayPoints[k * 4 + 1] = (y1 + 0.5f) * GameDraw.A;
-			wayPoints[k * 4 + 2] = (x2 + 0.5f) * GameDraw.A;
-			wayPoints[k * 4 + 3] = (y2 + 0.5f) * GameDraw.A;
+			wayPoints[k * 4 + 0] = (x1 + 0.5f) * A;
+			wayPoints[k * 4 + 1] = (y1 + 0.5f) * A;
+			wayPoints[k * 4 + 2] = (x2 + 0.5f) * A;
+			wayPoints[k * 4 + 3] = (y2 + 0.5f) * A;
 		}
 	}
 	

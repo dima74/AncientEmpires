@@ -2,12 +2,12 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.Coordinate;
-import ru.ancientempires.campaign.CoordinateInteger;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
+import ru.ancientempires.campaign.Coordinate;
+import ru.ancientempires.campaign.CoordinateInteger;
 
 public class ScriptUnitMove extends Script
 {
@@ -39,26 +39,35 @@ public class ScriptUnitMove extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.i = Coordinate.getNew(reader, "i");
-		this.j = Coordinate.getNew(reader, "j");
-		this.targetI = Coordinate.getNew(reader, "targetI");
-		this.targetJ = Coordinate.getNew(reader, "targetJ");
+		i = Coordinate.getNew(reader, "i");
+		j = Coordinate.getNew(reader, "j");
+		targetI = Coordinate.getNew(reader, "targetI");
+		targetJ = Coordinate.getNew(reader, "targetJ");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.unitMove(this.i.get(), this.j.get(), this.targetI.get(), this.targetJ.get(), this);
+		campaign.iDrawCampaign.unitMove(i.get(), j.get(), targetI.get(), targetJ.get(), this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		this.i.save(writer, "i");
-		this.j.save(writer, "j");
-		this.targetI.save(writer, "targetI");
-		this.targetJ.save(writer, "targetJ");
+		i.save(writer, "i");
+		j.save(writer, "j");
+		targetI.save(writer, "targetI");
+		targetJ.save(writer, "targetJ");
+	}
+	
+	@Override
+	public void performAction()
+	{
+		new ActionCampaignUnitMove()
+				.setIJ(i.get(), j.get())
+				.setTargetIJ(targetI.get(), targetJ.get())
+				.perform();
 	}
 	
 }

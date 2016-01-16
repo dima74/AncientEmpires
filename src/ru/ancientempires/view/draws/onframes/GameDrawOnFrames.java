@@ -15,7 +15,7 @@ public abstract class GameDrawOnFrames extends GameDraw
 	
 	public GameDrawOnFrames animate(int frameCount)
 	{
-		frameStart = GameDraw.iFrame + 1;
+		frameStart = iFrame() + 1;
 		frameEnd = frameStart + frameCount - 1;
 		framePass = 0;
 		frameLeft = this.frameCount = frameCount;
@@ -33,7 +33,7 @@ public abstract class GameDrawOnFrames extends GameDraw
 	@Override
 	public final void draw(Canvas canvas)
 	{
-		if (frameLeft == 0 || GameDraw.iFrame < frameStart)
+		if (frameLeft == 0 || iFrame() < frameStart)
 			return;
 		frameLeft--;
 		drawOnFrames(canvas);

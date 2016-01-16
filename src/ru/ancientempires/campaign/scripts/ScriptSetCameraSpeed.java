@@ -2,16 +2,15 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetCameraSpeed extends Script
 {
 	
-	private int	delta;
+	private int delta;
 	
 	public ScriptSetCameraSpeed()
 	{}
@@ -24,20 +23,20 @@ public class ScriptSetCameraSpeed extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.delta = JsonHelper.readInt(reader, "delta");
+		delta = JsonHelper.readInt(reader, "delta");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.setCameraSpeed(this.delta, this);
+		campaign.iDrawCampaign.setCameraSpeed(delta, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("delta").value(this.delta);
+		writer.name("delta").value(delta);
 	}
 	
 }

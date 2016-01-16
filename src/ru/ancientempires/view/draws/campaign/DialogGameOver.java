@@ -4,11 +4,11 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.activity.MainActivity;
+import ru.ancientempires.handler.IGameHandler;
 
-public class DialogGameOver
+public class DialogGameOver extends IGameHandler
 {
 	
 	public void createDialog()
@@ -20,7 +20,7 @@ public class DialogGameOver
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				GameActivity.startGame(GameActivity.activity, GameHandler.game.path.baseGameID, true);
+				GameActivity.startGame(GameActivity.activity, game.path.baseGameID, true);
 			}
 		});
 		builder.setNegativeButton("В главное меню", new OnClickListener()

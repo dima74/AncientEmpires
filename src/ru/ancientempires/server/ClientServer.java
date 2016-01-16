@@ -3,11 +3,10 @@ package ru.ancientempires.server;
 import java.io.IOException;
 
 import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
@@ -25,54 +24,52 @@ public class ClientServer extends Server
 	}
 	
 	@Override
-	public void startGame(String gameID) throws IOException
+	public void startGame(String gameID) throws Exception
 	{
 		// Если это не базовая игра, то просто загружаем её
 		// Иначе копируем в games/ANDROID_ID/
-		try
+		GamePath path = Client.getGame(gameID);
+		if (path.isBaseGame)
 		{
-			GamePath path = Client.getGame(gameID);
-			if (path.isBaseGame)
-			{
-				String newID = client.ID + ".save" + client.numberSaves++ + "/";
-				String newPath = newID.replace('.', '/');
-				GamePath newGamePath = new GamePath(client, path.path, newID);
-				newGamePath.path = newPath;
-				newGamePath.isBaseGame = false;
-				newGamePath.canChooseTeams = false;
-				game = new GameLoader(path).loadGame();
-				game.path = newGamePath;
-			}
-			else
-				game = new GameLoader(path).loadGame();
-			client.images.load(client.imagesLoader, game);
+			String newID = client.ID + ".save" + client.numberSaves++;
+			String newPath = newID.replace('.', '/') + "/";
+			client.gamesLoader.getLoader(newPath).mkdirs();
+			
+			GamePath newGamePath = GamePath
+					.get(path.path, false)
+					.copyTo(newPath, newID);
+			newGamePath.isBaseGame = false;
+			newGamePath.canChooseTeams = false;
+			game = new GameLoader(path).load();
+			game.path = newGamePath;
+			
+			game.saver = new GameSaver(game);
+			game.saver.initFromBase();
+			
+			client.save();
 		}
-		catch (IOException e)
+		else
 		{
-			MyAssert.a(false);
-			e.printStackTrace();
+			game = new GameLoader(path).load();
+			game.saver = new GameSaver(game);
+			game.saver.init();
 		}
-		game.saver = new GameSaver(game);
-		game.saver.save();
+		client.images.load(client.imagesLoader, game);
 		
-		GameHandler.initGame(game);
+		game.ii = new II();
+		game.ii.init();
 	}
 	
 	@Override
-	public void stopGame()
+	public void stopGame() throws Exception
 	{
+		Client.getGame().saver.finishSave();
 		if (game.path.nextGameID != null)
 			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
-	public ActionResult action(Action action)
+	public void commit(Action action)
 	{
-		// MyLog.l(actionHandler.getClass().getSimpleName().replace("ActionHandler", "") + " " + action);
-		ActionResult result = action.action();
-		MyAssert.a(result.successfully);
-		if (!result.successfully)
-			action.action();
-			
 		try
 		{
 			game.saver.save(action);
@@ -82,8 +79,6 @@ public class ClientServer extends Server
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-		
-		return result;
 	}
 	
 }

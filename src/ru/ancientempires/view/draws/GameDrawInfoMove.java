@@ -9,7 +9,7 @@ public class GameDrawInfoMove extends GameDrawOnFrames
 	public void startShow()
 	{
 		int frameCount = 0;
-		for (int y = GameDraw.main.gameDrawInfoY; y != 0; y /= 2)
+		for (int y = main.gameDrawInfoY; y != 0; y /= 2)
 			frameCount++;
 		animate(frameCount);
 		
@@ -18,7 +18,7 @@ public class GameDrawInfoMove extends GameDrawOnFrames
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
-		GameDraw.main.gameDrawInfoY /= 2;
+		main.gameDrawInfoY /= 2;
 	}
 	
 }

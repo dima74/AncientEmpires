@@ -6,14 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 
-public class ConditionUnitIntoBounds extends Script
+public class ConditionUnitIntoBounds extends Condition
 {
 	
 	private Player		player;
@@ -43,7 +41,7 @@ public class ConditionUnitIntoBounds extends Script
 			for (int i = bounds.iMin; i <= bounds.iMax; i++)
 				for (int j = bounds.jMin; j <= bounds.jMax; j++)
 				{
-					Unit unit = GameHandler.getUnit(i, j);
+					Unit unit = game.getUnit(i, j);
 					if (unit != null && unit.player == player)
 						return true;
 				}

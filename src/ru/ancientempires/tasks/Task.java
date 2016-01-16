@@ -6,21 +6,30 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.handler.IGameHandler;
 
-public abstract class Task
+public abstract class Task extends IGameHandler
 {
 	
-	public static List<Class<? extends Task>>	tasks	= Arrays.asList(
+	public static List<Class<? extends Task>> classes = Arrays.asList(
 			TaskRemoveTombstone.class,
 			TaskIncreaseUnitAttack.class,
 			TaskIncreaseUnitDefence.class);
-	public int									turnToRun;
+			
+	public static Task loadNew(DataInputStream input) throws Exception
+	{
+		int ordinal = input.readShort();
+		Task task = Task.classes.get(ordinal).newInstance();
+		task.load(input);
+		return task;
+	}
+	
+	public int turnToRun;
 	
 	public Task setTurn(int differenceTurn)
 	{
-		turnToRun = GameHandler.game.currentTurn + differenceTurn;
+		turnToRun = game.currentTurn + differenceTurn;
 		return this;
 	}
 	
@@ -33,14 +42,13 @@ public abstract class Task
 	
 	public int ordinal()
 	{
-		return Task.tasks.indexOf(getClass());
+		return Task.classes.indexOf(getClass());
 	}
 	
 	public void saveBase(DataOutputStream output) throws IOException
 	{
-		output.writeByte(ordinal());
+		output.writeShort(ordinal());
 		save(output);
-		output.close();
 	}
 	
 	public void load(DataInputStream input) throws IOException

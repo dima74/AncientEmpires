@@ -1,11 +1,10 @@
 package ru.ancientempires.save;
 
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
@@ -18,6 +17,7 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.tasks.Task;
 
 public class GameSnapshotSaver
 {
@@ -48,6 +48,9 @@ public class GameSnapshotSaver
 		saveMap();
 		saveCells();
 		saveUnits();
+		if (!game.campaign.isDefault)
+			game.campaign.saveState(loader);
+		saveTasks();
 	}
 	
 	public void saveGameInfo() throws IOException
@@ -135,7 +138,7 @@ public class GameSnapshotSaver
 	
 	public void saveMap() throws IOException
 	{
-		DataOutputStream dos = loader.openDOS("map.map");
+		DataOutputStream dos = loader.openDOS("map.dat");
 		for (int i = 0; i < game.h; i++)
 			for (int j = 0; j < game.w; j++)
 				dos.writeInt(game.fieldCells[i][j].type.ordinal);
@@ -258,11 +261,23 @@ public class GameSnapshotSaver
 		game.numberedUnits.trySave(output, unit);
 	}
 	
-	public JsonWriter getJsonWriter(File folder, String path) throws IOException
+	private void saveTasks() throws IOException
 	{
-		File file = new File(folder, path);
-		file.createNewFile();
-		return new JsonWriter(new FileWriter(file));
+		DataOutputStream output = loader.openDOS("tasks.dat");
+		int number = 0;
+		for (Entry<Integer, ArrayList<Task>> entry : game.tasks.entrySet())
+			if (!entry.getValue().isEmpty())
+				number++;
+		output.writeInt(number);
+		for (Entry<Integer, ArrayList<Task>> entry : game.tasks.entrySet())
+			if (!entry.getValue().isEmpty())
+			{
+				output.writeInt(entry.getKey());
+				output.writeInt(entry.getValue().size());
+				for (Task task : entry.getValue())
+					task.saveBase(output);
+			}
+		output.close();
 	}
 	
 }

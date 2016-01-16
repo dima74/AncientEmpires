@@ -1,8 +1,7 @@
 package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Canvas;
-import ru.ancientempires.action.AttackResult;
-import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.action.result.AttackResult;
 
 public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 {
@@ -25,8 +24,8 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	public void initPartOne(AttackResult result)
 	{
 		this.result = result;
-		y = result.targetI * GameDraw.A;
-		x = result.targetJ * GameDraw.A;
+		y = result.targetI * A;
+		x = result.targetJ * A;
 		
 		draws.clear();
 		add(new GameDrawNumberSinus()
@@ -47,8 +46,8 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 					.animateRepeat(1)
 					.increaseFrameStart(framesBeforePartTwo));
 					
-			int offsetY = (int) (y - 22 * GameDraw.a);
-			int offsetX = x + (GameDraw.A - StatusesImages().w) / 2;
+			int offsetY = (int) (y - 22 * a);
+			int offsetX = x + (A - StatusesImages().w) / 2;
 			add(new GameDrawBitmapSinus()
 					.animate(offsetY, offsetX, StatusesImages().poison, 2)
 					.increaseFrameStart(framesBeforePartTwo));
@@ -56,14 +55,14 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 		
 		if (result.isLevelUp)
 			add(new GameDrawLevelUp()
-					.animate(result.i * GameDraw.A, result.j * GameDraw.A)
+					.animate(result.i * A, result.j * A)
 					.increaseFrameStart(framesBeforePartTwo + 4));
 					
-		GameDraw.main.gameDrawUnits.field[result.targetI][result.targetJ].canUpdateHealth = false;
+		main.gameDrawUnits.field[result.targetI][result.targetJ].canUpdateHealth = false;
 		if (!result.isTargetLive)
 		{
-			GameDraw.main.gameDrawUnitsDead.keep[result.targetI][result.targetJ] = true;
-			GameDraw.main.gameDrawUnits.keep[result.targetI][result.targetJ] = true;
+			main.gameDrawUnitsDead.keep[result.targetI][result.targetJ] = true;
+			main.gameDrawUnits.keep[result.targetI][result.targetJ] = true;
 			
 			GameDrawOnFrames gameDrawBitmaps = new GameDrawBitmaps()
 					.setYX(y, x)
@@ -91,17 +90,17 @@ public class GameDrawUnitAttack extends GameDrawOnFramesGroup
 	public void drawOnFrames(Canvas canvas)
 	{
 		super.drawOnFrames(canvas);
-		if (GameDraw.iFrame == frameStart)
+		if (iFrame() == frameStart)
 		{
-			GameDraw.main.gameDrawUnits.field[result.targetI][result.targetJ].canUpdateHealth = true;
-			if (result.i == GameDraw.main.inputPlayer.lastTapI && result.j == GameDraw.main.inputPlayer.lastTapJ)
-				GameDraw.main.inputPlayer.tapWithoutAction(result.targetI, result.targetJ);
+			main.gameDrawUnits.field[result.targetI][result.targetJ].canUpdateHealth = true;
+			if (result.i == main.inputPlayer.lastTapI && result.j == main.inputPlayer.lastTapJ)
+				main.inputPlayer.tapWithoutAction(result.targetI, result.targetJ);
 		}
-		if (GameDraw.iFrame == frameStartSmoke - 1)
+		if (iFrame() == frameStartSmoke - 1)
 		{
-			GameDraw.main.gameDrawUnitsDead.keep[result.targetI][result.targetJ] = false;
-			GameDraw.main.gameDrawUnits.keep[result.targetI][result.targetJ] = false;
-			GameDraw.main.gameDrawInfo.update();
+			main.gameDrawUnitsDead.keep[result.targetI][result.targetJ] = false;
+			main.gameDrawUnits.keep[result.targetI][result.targetJ] = false;
+			main.gameDrawInfo.update();
 		}
 	}
 	

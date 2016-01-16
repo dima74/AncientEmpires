@@ -1,9 +1,7 @@
 package ru.ancientempires.view.inputs;
 
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.ActionGameEndTurn;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.action.ActionGameEndTurn;
+import ru.ancientempires.action.result.ActionResultGameEndTurn;
 import ru.ancientempires.view.draws.GameDraw;
 
 public class InputMain extends InputBase
@@ -26,7 +24,7 @@ public class InputMain extends InputBase
 	public void beginTurn()
 	{
 		InputBase.gameDraw.isDrawCursor = false;
-		switch (InputBase.game.currentPlayer.type)
+		switch (game.currentPlayer.type)
 		{
 			case NONE:
 				endTurn();
@@ -57,8 +55,7 @@ public class InputMain extends InputBase
 			return;
 		currentInput.endTurn();
 		
-		Action action = new ActionGameEndTurn();
-		ActionResult result = Client.action(action);
+		ActionResultGameEndTurn result = new ActionGameEndTurn().perform();
 		InputBase.gameDraw.gameDrawUnitsHeal.start(result);
 		
 		beginTurn();

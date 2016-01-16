@@ -1,7 +1,5 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.campaign.Campaign;
-
 public class ScriptShowBlackScreen extends Script
 {
 	

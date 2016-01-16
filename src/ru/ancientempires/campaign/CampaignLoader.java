@@ -1,6 +1,5 @@
 package ru.ancientempires.campaign;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -31,13 +30,13 @@ public class CampaignLoader
 		this.campaign = campaign;
 	}
 	
-	public Script[] load() throws IOException
+	public Script[] load() throws Exception
 	{
 		loadScripts();
 		return endLoad();
 	}
 	
-	private void loadScripts() throws IOException
+	private void loadScripts() throws Exception
 	{
 		JsonReader reader = loader.getReader("campaign.json");
 		reader.beginObject();
@@ -50,7 +49,7 @@ public class CampaignLoader
 		reader.close();
 	}
 	
-	public void loadNewScript(JsonReader reader) throws IOException
+	public void loadNewScript(JsonReader reader) throws Exception
 	{
 		reader.beginObject();
 		
@@ -58,15 +57,7 @@ public class CampaignLoader
 		// MyLog.l(type);
 		
 		MyAssert.a(reader.nextName(), "previous");
-		Script script = null;
-		try
-		{
-			script = type.scriptClass.newInstance();
-		}
-		catch (InstantiationException | IllegalAccessException e)
-		{
-			MyAssert.a(false);
-		}
+		Script script = type.scriptClass.newInstance();
 		script.type = type;
 		script.game = game;
 		script.campaign = campaign;

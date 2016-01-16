@@ -1,10 +1,9 @@
 package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Canvas;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.AttackResult;
+import ru.ancientempires.action.result.ActionResultUnitAttack;
+import ru.ancientempires.action.result.AttackResult;
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 {
@@ -26,18 +25,18 @@ public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 		drawReverse = new GameDrawUnitAttack();
 	}
 	
-	public GameDrawUnitAttackMain start(ActionResult result)
+	public GameDrawUnitAttackMain start(ActionResultUnitAttack result)
 	{
-		AttackResult resultDirect = (AttackResult) result.getProperty("attackResultDirect");
+		AttackResult resultDirect = result.attackResultDirect;
 		isUnitDie = !resultDirect.isTargetLive;
 		
 		drawDirect.initPartOne(resultDirect);
 		framesBeforePartTwo = drawDirect.frameCount - 16;
 		
-		isReverseAttack = (boolean) result.getProperty("isReverseAttack");
+		isReverseAttack = result.isReverseAttack;
 		if (isReverseAttack)
 		{
-			AttackResult resultReverse = (AttackResult) result.getProperty("attackResultReverse");
+			AttackResult resultReverse = result.attackResultReverse;
 			drawReverse.initPartOne(resultReverse);
 			drawReverse.increaseFrameStart(GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES);
 			framesBeforePartTwo = GameDrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES + drawReverse.frameCount - 16;
@@ -48,7 +47,7 @@ public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 		add(drawDirect.initPartTwo(framesBeforePartTwo));
 		if (isReverseAttack)
 			add(drawReverse.initPartTwo(framesBeforePartTwo));
-		GameDraw.main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = true;
+		main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = true;
 		return this;
 	}
 	
@@ -57,8 +56,8 @@ public class GameDrawUnitAttackMain extends GameDrawOnFramesGroup
 	{
 		super.drawOnFrames(canvas);
 		if (framePass == framesBeforePartTwo - 1)
-			GameDraw.main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = false;
-		if (GameDraw.iFrame == frameEnd)
+			main.gameDrawUnits.field[drawDirect.result.i][drawDirect.result.j].keepTurn = false;
+		if (iFrame() == frameEnd)
 			if (isUnitDie)
 				GameActivity.activity.view.thread.needUpdateCampaign = true;
 	}

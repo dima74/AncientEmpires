@@ -4,13 +4,13 @@ import java.io.IOException;
 
 import android.graphics.Bitmap;
 import ru.ancientempires.action.Action;
-import ru.ancientempires.action.handlers.ActionCellBuy;
-import ru.ancientempires.action.handlers.ActionGameEndTurn;
-import ru.ancientempires.action.handlers.ActionUnitAttack;
-import ru.ancientempires.action.handlers.ActionUnitCapture;
-import ru.ancientempires.action.handlers.ActionUnitMove;
-import ru.ancientempires.action.handlers.ActionUnitRaise;
-import ru.ancientempires.action.handlers.ActionUnitRepair;
+import ru.ancientempires.action.ActionCellBuy;
+import ru.ancientempires.action.ActionGameEndTurn;
+import ru.ancientempires.action.ActionUnitAttack;
+import ru.ancientempires.action.ActionUnitCapture;
+import ru.ancientempires.action.ActionUnitMove;
+import ru.ancientempires.action.ActionUnitRaise;
+import ru.ancientempires.action.ActionUnitRepair;
 
 public class ActionImages extends IImages
 {

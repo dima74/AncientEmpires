@@ -7,12 +7,11 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.campaign.NamedUnits;
-import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Unit;
 
-public class ConditionNamedUnitIntoBounds extends Script
+public class ConditionNamedUnitIntoBounds extends Condition
 {
 	
 	private String		name;

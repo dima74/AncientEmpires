@@ -2,16 +2,15 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetUnitSpeed extends Script
 {
 	
-	private int	framesForCell;
+	private int framesForCell;
 	
 	public ScriptSetUnitSpeed()
 	{}
@@ -24,20 +23,20 @@ public class ScriptSetUnitSpeed extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.framesForCell = JsonHelper.readInt(reader, "framesForCell");
+		framesForCell = JsonHelper.readInt(reader, "framesForCell");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.setUnitSpeed(this.framesForCell, this);
+		campaign.iDrawCampaign.setUnitSpeed(framesForCell, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("framesForCell").value(this.framesForCell);
+		writer.name("framesForCell").value(framesForCell);
 	}
 	
 }

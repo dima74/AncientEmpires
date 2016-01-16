@@ -2,13 +2,12 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.Campaign;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 import ru.ancientempires.campaign.NamedCoordinates;
 import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.helpers.JsonHelper;
-
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 public class ScriptSetCoordinateNamedUnitI extends Script
 {
@@ -28,23 +27,23 @@ public class ScriptSetCoordinateNamedUnitI extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.name = JsonHelper.readString(reader, "name");
-		this.unit = JsonHelper.readString(reader, "unit");
+		name = JsonHelper.readString(reader, "name");
+		unit = JsonHelper.readString(reader, "unit");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		NamedCoordinates.set(this.name, NamedUnits.get(this.unit).i);
+		NamedCoordinates.set(name, NamedUnits.get(unit).i);
 		campaign.finish(this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("name").value(this.name);
-		writer.name("unit").value(this.unit);
+		writer.name("name").value(name);
+		writer.name("unit").value(unit);
 	}
 	
 }

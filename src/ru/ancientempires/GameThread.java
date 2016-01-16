@@ -5,7 +5,6 @@ import android.view.SurfaceHolder;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawMain;
 import ru.ancientempires.view.inputs.InputBase;
 import ru.ancientempires.view.inputs.InputMain;
@@ -33,7 +32,6 @@ public class GameThread extends Thread
 		MyLog.l("new thread");
 		this.surfaceHolder = surfaceHolder;
 		
-		GameDraw.game = InputBase.game = Client.getGame();
 		gameDraw = InputBase.gameDraw = new GameDrawMain();
 		gameDraw.inputMain = inputMain = new InputMain();
 		gameDraw.inputPlayer = inputMain.inputPlayer;
@@ -69,7 +67,7 @@ public class GameThread extends Thread
 			{
 				synchronized (surfaceHolder)
 				{
-					GameDraw.iFrame++;
+					gameDraw.iFrame++;
 					try
 					{
 						gameDraw.draw(canvas);

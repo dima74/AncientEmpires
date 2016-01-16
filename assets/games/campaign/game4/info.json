@@ -1,1 +1,1 @@
-{"gameID":"campaign.game4","baseGameID":"","nextGameID":"campaign.game5","numberPlayers":2,"isBaseGame":true,"canChooseTeams":false,"h":12,"w":20}
+{"gameID":"campaign.game4","nextGameID":"campaign.game5","numberPlayers":2,"isBaseGame":true,"canChooseTeams":false,"h":12,"w":20,"defaultLocalization":"en_US","localizations":["ru_RU"]}

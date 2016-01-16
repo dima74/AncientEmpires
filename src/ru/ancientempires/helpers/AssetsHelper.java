@@ -34,4 +34,9 @@ public class AssetsHelper
 		}
 	}
 	
+	public String[] list(String name) throws IOException
+	{
+		return assets.list(name);
+	}
+	
 }

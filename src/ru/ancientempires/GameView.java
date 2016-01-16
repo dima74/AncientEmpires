@@ -6,10 +6,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
+	
+	public static int	h;
+	public static int	w;
 	
 	private GestureDetector	detector;
 	public GameThread		thread;
@@ -45,7 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			{
 				if (!thread.gameDraw.isActiveGame)
 					return false;
-				thread.gameDraw.onScroll(distanceY / GameDraw.mapScale, distanceX / GameDraw.mapScale);
+				thread.gameDraw.onScroll(distanceY, distanceX);
 				return true;
 			}
 		});
@@ -80,8 +82,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
-		GameDraw.h = h;
-		GameDraw.w = w;
+		GameView.h = h;
+		GameView.w = w;
 	}
 	
 }

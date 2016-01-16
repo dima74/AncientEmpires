@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.stream.JsonReader;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
 
 import android.app.Activity;
 import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
 import ru.ancientempires.framework.LogWriter;
 import ru.ancientempires.helpers.FileLoader;
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.images.ImagesLoader;
 import ru.ancientempires.load.GamePath;
@@ -72,30 +71,30 @@ public class Client
 	public void loadPart0() throws IOException
 	{
 		fileLoader.loadLocalization("strings");
-		// Начинает загружать 1 и 2 части
-		init = new GameInit();
-		init.init();
 	}
 	
 	// То что нужно для показа списка игр
-	public void loadPart1() throws IOException
+	public void loadPart1() throws Exception
 	{
 		gamesLoader.loadLocalization("strings");
-		baseFolder = new GamesFolder(this, "", null);
+		baseFolder = new GamesFolder("", null);
 		
 		// ID = ANDROID_ID;
-		JsonReader reader = fileLoader.getReader("info.json");
-		reader.beginObject();
-		numberSaves = JsonHelper.readInt(reader, "numberSaves");
-		reader.endObject();
-		reader.close();
+		load();
 	}
 	
 	// То что нужно для непосредственно игры
-	public void loadPart2() throws IOException
+	public void loadPart2() throws Exception
 	{
 		new RulesLoader(rulesLoader).load();
 		images.preload(imagesLoader);
+	}
+	
+	// Начинает загружать 1 и 2 части
+	public void startLoadParts12()
+	{
+		init = new GameInit();
+		init.init();
 	}
 	
 	public boolean isFinishPart1()
@@ -123,26 +122,48 @@ public class Client
 		return Client.client.clientServer.game;
 	}
 	
-	public void startGame(String gameID) throws IOException
+	public void startGame(String gameID) throws Exception
 	{
 		clientServer.startGame(gameID);
 	}
 	
-	public void stopGame()
+	public void stopGame() throws Exception
 	{
 		clientServer.stopGame();
 	}
 	
-	public static ActionResult action(Action action)
+	public static void commit(Action action)
 	{
-		if (action.isCritical())
+		if (action.changesGame())
+		{
 			// TODO
 			for (Server server : Client.client.servers)
 			{
 				// TODO
 			}
-			
-		return Client.client.clientServer.action(action);
+			Client.client.clientServer.commit(action);
+		}
+	}
+	
+	public class SaveInfo
+	{
+		public int numberSaves;
+		
+	}
+	
+	public void load() throws Exception
+	{
+		SaveInfo saveInfo = new Gson().fromJson(fileLoader.getReader("info.json"), SaveInfo.class);
+		numberSaves = saveInfo.numberSaves;
+	}
+	
+	public void save() throws Exception
+	{
+		SaveInfo saveInfo = new SaveInfo();
+		saveInfo.numberSaves = numberSaves;
+		JsonWriter writer = fileLoader.getWriter("info.json");
+		new Gson().toJson(saveInfo, SaveInfo.class, writer);
+		writer.close();
 	}
 	
 }

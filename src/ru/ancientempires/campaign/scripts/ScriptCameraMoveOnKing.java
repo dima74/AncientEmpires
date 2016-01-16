@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.action.handlers.UnitHelper;
+import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
@@ -33,7 +33,7 @@ public class ScriptCameraMoveOnKing extends Script
 	public void start()
 	{
 		super.start();
-		Unit king = UnitHelper.getKing(player);
+		Unit king = new UnitHelper().getKing(player);
 		campaign.iDrawCampaign.cameraMove(king.i, king.j, this);
 	}
 	

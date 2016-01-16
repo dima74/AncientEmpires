@@ -1,25 +1,21 @@
 package ru.ancientempires.view.draws.onframes;
 
-import ru.ancientempires.action.ActionResult;
+import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawUnitMoveEnd extends GameDrawOnFramesGroup
 {
 	
-	public void start(ActionResult result, int frameToStart)
+	public void start(ActionResultUnitMove result, int frameToStart)
 	{
 		draws.clear();
-		if ((int) result.getProperty("sign") == +1)
-		{
-			Unit[] units = (Unit[]) result.getProperty("units");
-			for (Unit unit : units)
+		if (result.sign == +1)
+			for (Unit unit : result.units)
 				add(new GameDrawBitmaps()
-						.setYX(unit.i * GameDraw.A, unit.j * GameDraw.A)
+						.setYX(unit.i * A, unit.j * A)
 						.setBitmaps(SparksImages().bitmapsDefault)
 						.animateRepeat(1)
 						.increaseFrameStart(frameToStart));
-		}
 	}
 	
 }

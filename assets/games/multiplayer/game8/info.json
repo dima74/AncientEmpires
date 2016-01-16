@@ -1,1 +1,1 @@
-{"gameID":"multiplayer.game8","baseGameID":"","nextGameID":"","numberPlayers":4,"isBaseGame":true,"canChooseTeams":true,"h":13,"w":13}
+{"gameID":"multiplayer.game8","numberPlayers":4,"isBaseGame":true,"canChooseTeams":true,"h":13,"w":13,"defaultLocalization":"en_US","localizations":["ru_RU"]}

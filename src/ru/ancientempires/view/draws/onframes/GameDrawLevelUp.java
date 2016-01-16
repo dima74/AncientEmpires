@@ -1,7 +1,6 @@
 package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Bitmap;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawLevelUp extends GameDrawOnFramesGroup
 {
@@ -15,9 +14,9 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 	
 	public GameDrawLevelUp animate(int y, int x)
 	{
-		int levelUpX = x + (GameDraw.A - Images().levelUpW) / 2;
-		int levelUpYStart = (int) (y - GameDraw.A + 20 * GameDraw.a);
-		int levelUpYEnd = (int) (y - GameDraw.A + 5 * GameDraw.a);
+		int levelUpX = x + (A - Images().levelUpW) / 2;
+		int levelUpYStart = (int) (y - A + 20 * a);
+		int levelUpYEnd = (int) (y - A + 5 * a);
 		
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
@@ -29,7 +28,7 @@ public class GameDrawLevelUp extends GameDrawOnFramesGroup
 			})
 					.setFramesForBitmap(GameDrawLevelUp.FRAME_ANIMATE_MOTION)
 					.animateRepeat(1)
-					.increaseFrameStart((int) (i * 3 * GameDraw.a)));
+					.increaseFrameStart((int) (i * 3 * a)));
 		add(new GameDrawBitmap()
 				.setYX(levelUpYEnd, levelUpX)
 				.setBitmap(Images().levelUp)

@@ -24,7 +24,7 @@ public class Localization
 	
 	public void load(FileLoader loader, String prefix) throws IOException
 	{
-		String lang = Locale.getDefault().getLanguage();
+		String lang = Locale.getDefault().toString();
 		String name = prefix + "_" + lang + ".json";
 		String nameDefault = prefix + ".json";
 		JsonReader reader = loader.getReader(loader.exists(name) ? name : nameDefault);

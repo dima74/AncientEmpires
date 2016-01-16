@@ -4,28 +4,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ru.ancientempires.Point;
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.ActionFromTo;
-import ru.ancientempires.action.handlers.ActionGetUnit;
-import ru.ancientempires.action.handlers.ActionUnitAttack;
-import ru.ancientempires.action.handlers.ActionUnitMove;
-import ru.ancientempires.action.handlers.ActionUnitRaise;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.action.ActionFromTo;
+import ru.ancientempires.action.ActionGetUnit;
+import ru.ancientempires.action.ActionUnitAttack;
+import ru.ancientempires.action.ActionUnitMove;
+import ru.ancientempires.action.ActionUnitRaise;
+import ru.ancientempires.action.result.ActionResultGetUnit;
+import ru.ancientempires.action.result.ActionResultUnitAttack;
+import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.GameDrawRangeAll;
+import ru.ancientempires.view.draws.IInput;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 
-public class InputUnit
+public class InputUnit extends IInput
 {
 	
-	public InputPlayer main;
+	public InputPlayer inputMain;
 	
 	public InputUnit(InputPlayer main)
 	{
-		this.main = main;
+		inputMain = main;
 		drawRange = InputBase.gameDraw.gameDrawRangeAll;
 	}
 	
@@ -49,22 +49,23 @@ public class InputUnit
 	
 	public boolean start(int i, int j)
 	{
-		Action action = new ActionGetUnit().setIJ(i, j);
-		ActionResult result = Client.action(action);
-		
-		boolean canMove = (boolean) result.getProperty("canMove");
-		boolean canAttack = (boolean) result.getProperty("canAttack");
-		boolean canRaise = (boolean) result.getProperty("canRaise");
+		ActionResultGetUnit result = (ActionResultGetUnit) new ActionGetUnit()
+				.setIJ(i, j)
+				.perform();
+				
+		boolean canMove = result.canMove;
+		boolean canAttack = result.canAttack;
+		boolean canRaise = result.canRaise;
 		if (!canMove && !canAttack && !canRaise)
 			return false;
 			
 		startI = i;
 		startJ = j;
-		previousMoveI = (int[][]) result.getProperty("previousMoveI");
-		previousMoveJ = (int[][]) result.getProperty("previousMoveJ");
-		fieldMoveReal = (boolean[][]) result.getProperty("fieldMoveReal");
-		fieldAttackReal = (boolean[][]) result.getProperty("fieldAttackReal");
-		fieldRaiseReal = (boolean[][]) result.getProperty("fieldRaiseReal");
+		previousMoveI = result.previousMoveI;
+		previousMoveJ = result.previousMoveJ;
+		fieldMoveReal = result.fieldMoveReal;
+		fieldAttackReal = result.fieldAttackReal;
+		fieldRaiseReal = result.fieldRaiseReal;
 		
 		diameter = fieldMoveReal.length;
 		radius = diameter / 2;
@@ -109,21 +110,22 @@ public class InputUnit
 	{
 		action.setIJ(startI, startJ);
 		action.setTargetIJ(endI, endJ);
-		ActionResult result = Client.action(action);
 		
 		if (action.getClass() == ActionUnitMove.class)
 		{
+			ActionResultUnitMove result = ((ActionUnitMove) action).perform();
 			GameDrawUnitMove gameDraw = new GameDrawUnitMove();
 			gameDraw.init(startI, startJ);
 			gameDraw.start(InputUnit.getPoints(startI, startJ, endI, endJ, previousMoveI, previousMoveJ), result);
-			GameDraw.main.gameDrawPlayer.add(gameDraw);
+			main.gameDrawPlayer.add(gameDraw);
 			destroy();
 		}
 		else if (action.getClass() == ActionUnitAttack.class)
 		{
-			main.tapWithoutAction(endI, endJ);
-			if ((boolean) result.getProperty("isAttackUnit"))
-				GameDraw.main.gameDrawPlayer.add(new GameDrawUnitAttackMain().start(result));
+			ActionResultUnitAttack result = ((ActionUnitAttack) action).perform();
+			inputMain.tapWithoutAction(endI, endJ);
+			if (result.isAttackUnit)
+				main.gameDrawPlayer.add(new GameDrawUnitAttackMain().start(result));
 			else
 			{
 				InputBase.gameDraw.gameDrawBuildingSmokes.update();

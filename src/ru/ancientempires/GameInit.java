@@ -1,7 +1,5 @@
 package ru.ancientempires;
 
-import java.io.IOException;
-
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 
@@ -33,7 +31,7 @@ public class GameInit
 				{
 					Client.client.loadPart1();
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
@@ -54,7 +52,7 @@ public class GameInit
 					Client.client.loadPart2();
 					// Debug.stopMethodTracing();
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();

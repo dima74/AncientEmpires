@@ -25,8 +25,8 @@ public class GameDrawCursor extends GameDraw
 	@Override
 	public void update()
 	{
-		int y = GameDraw.A * GameDraw.game.currentPlayer.cursorI;
-		int x = GameDraw.A * GameDraw.game.currentPlayer.cursorJ;
+		int y = A * game.currentPlayer.cursorI;
+		int x = A * game.currentPlayer.cursorJ;
 		cursorY = y - cursorH / 2;
 		cursorX = x - cursorW / 2;
 	}
@@ -37,9 +37,9 @@ public class GameDrawCursor extends GameDraw
 		if (!isDrawing)
 			return;
 			
-		canvas.translate(GameDraw.A / 2, GameDraw.A / 2);
+		canvas.translate(A / 2, A / 2);
 		canvas.drawBitmap(cursor.getBitmap(), cursorX, cursorY, null);
-		canvas.translate(-GameDraw.A / 2, -GameDraw.A / 2);
+		canvas.translate(-A / 2, -A / 2);
 	}
 	
 }

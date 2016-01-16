@@ -2,8 +2,7 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.action.ActionResult;
-import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.action.result.ActionResultGetUnit;
 
 public class GameDrawRangeAll extends GameDraw
 {
@@ -20,13 +19,13 @@ public class GameDrawRangeAll extends GameDraw
 	
 	private Bitmap[][] field;
 	
-	public void start(int startI, int startJ, ActionResult result)
+	public void start(int startI, int startJ, ActionResultGetUnit result)
 	{
 		this.startI = startI;
 		this.startJ = startJ;
-		fieldMove = (boolean[][]) result.getProperty("fieldMoveReal");
-		fieldAttack = (boolean[][]) result.getProperty("fieldAttackReal");
-		fieldRaise = (boolean[][]) result.getProperty("fieldRaiseReal");
+		fieldMove = result.fieldMoveReal;
+		fieldAttack = result.fieldAttackReal;
+		fieldRaise = result.fieldRaiseReal;
 		diameter = fieldMove.length;
 		radius = diameter / 2;
 		
@@ -58,8 +57,8 @@ public class GameDrawRangeAll extends GameDraw
 				{
 					int i = startI - radius + relativeI;
 					int j = startJ - radius + relativeJ;
-					if (GameHandler.checkCoord(i, j) && field[relativeI][relativeJ] != null)
-						canvas.drawBitmap(field[relativeI][relativeJ], j * GameDraw.A, i * GameDraw.A, null);
+					if (game.checkCoordinates(i, j) && field[relativeI][relativeJ] != null)
+						canvas.drawBitmap(field[relativeI][relativeJ], j * A, i * A, null);
 				}
 	}
 	

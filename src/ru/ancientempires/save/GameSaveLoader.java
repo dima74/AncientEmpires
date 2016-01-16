@@ -11,6 +11,7 @@ public class GameSaveLoader extends FileLoader
 	{
 		super(loader);
 		this.saveInfo = saveInfo;
+		saveInfo.loader = this;
 	}
 	
 	public FileLoader snapshots()

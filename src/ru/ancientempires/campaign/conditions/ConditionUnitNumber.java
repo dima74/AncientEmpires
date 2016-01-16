@@ -5,11 +5,10 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Player;
 
-public class ConditionUnitNumber extends Script
+public class ConditionUnitNumber extends Condition
 {
 	
 	private Player	player;

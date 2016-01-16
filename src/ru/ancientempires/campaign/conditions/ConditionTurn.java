@@ -5,11 +5,9 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.helpers.JsonHelper;
 
-public class ConditionTurn extends Script
+public class ConditionTurn extends Condition
 {
 	
 	private int turn;
@@ -31,7 +29,7 @@ public class ConditionTurn extends Script
 	@Override
 	public boolean check()
 	{
-		return GameHandler.game.currentTurn == turn;
+		return game.currentTurn == turn;
 	}
 	
 	@Override

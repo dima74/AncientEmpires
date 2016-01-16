@@ -10,7 +10,7 @@ public class GameDrawInfoNull extends GameDraw
 	
 	public int	a	= 2;
 	public int	h	= GameDrawInfo.mA + 8 * 2;
-	public int	w	= GameDraw.w;
+	public int	w	= super.w;
 	
 	private Bitmap backgroundBitmap;
 	

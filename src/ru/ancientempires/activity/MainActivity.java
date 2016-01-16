@@ -36,6 +36,7 @@ public class MainActivity extends ListActivity
 			{
 				Client.client = new Client(this);
 				Client.client.loadPart0();
+				Client.client.startLoadParts12();
 			}
 			catch (IOException e)
 			{

@@ -2,7 +2,7 @@ package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import ru.ancientempires.action.handlers.ActionFromTo;
+import ru.ancientempires.action.ActionFromTo;
 import ru.ancientempires.images.Images;
 
 public class GameDrawAction extends GameDraw
@@ -22,7 +22,7 @@ public class GameDrawAction extends GameDraw
 	private ActionFromTo	action2;
 	
 	public int	h	= ActionImages().h * 2;
-	public int	w	= GameDraw.w;
+	public int	w	= super.w;
 	
 	public void start(ActionFromTo action1, ActionFromTo action2)
 	{
@@ -41,7 +41,7 @@ public class GameDrawAction extends GameDraw
 			return false;
 		ActionFromTo type = x < w / 2 ? action1 : action2;
 		destroy();
-		GameDraw.main.inputPlayer.inputUnit.performAction(type);
+		main.inputPlayer.inputUnit.performAction(type);
 		return true;
 	}
 	

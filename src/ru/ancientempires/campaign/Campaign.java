@@ -1,5 +1,7 @@
 package ru.ancientempires.campaign;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.IDrawCampaign;
@@ -12,12 +14,17 @@ public class Campaign
 	
 	public Game game;
 	
-	public Script[]			scripts;		// all all
+	public Script[]			scripts;
 	public IDrawCampaign	iDrawCampaign;
+	public boolean			isDefault	= false;
 	
-	public void load(FileLoader loader, Game game) throws IOException
+	public Campaign(Game game)
 	{
 		this.game = game;
+	}
+	
+	public void load(FileLoader loader) throws Exception
+	{
 		scripts = new CampaignLoader(loader, game, this).load();
 	}
 	
@@ -47,6 +54,28 @@ public class Campaign
 	{
 		script.isFinishing = true;
 		iDrawCampaign.updateCampaign();
+	}
+	
+	public void saveState(FileLoader loader) throws IOException
+	{
+		DataOutputStream output = loader.openDOS("campaignState.dat");
+		for (Script script : game.campaign.scripts)
+		{
+			output.writeBoolean(script.isStarting);
+			output.writeBoolean(script.isFinishing);
+		}
+		output.close();
+	}
+	
+	public void loadState(FileLoader loader) throws IOException
+	{
+		DataInputStream input = loader.openDIS("campaignState.dat");
+		for (Script script : game.campaign.scripts)
+		{
+			script.isStarting = input.readBoolean();
+			script.isFinishing = input.readBoolean();
+		}
+		input.close();
 	}
 	
 }

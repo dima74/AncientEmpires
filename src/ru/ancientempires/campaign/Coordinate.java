@@ -1,12 +1,13 @@
+
 package ru.ancientempires.campaign;
 
 import java.io.IOException;
 
-import ru.ancientempires.framework.MyAssert;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.framework.MyAssert;
 
 public abstract class Coordinate
 {

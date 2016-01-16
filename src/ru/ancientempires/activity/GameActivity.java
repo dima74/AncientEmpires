@@ -1,7 +1,5 @@
 package ru.ancientempires.activity;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,14 +9,14 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import ru.ancientempires.GameView;
 import ru.ancientempires.R;
-import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.action.handlers.UnitHelper;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 
 public class GameActivity extends Activity
@@ -29,6 +27,7 @@ public class GameActivity extends Activity
 	public static GameActivity	activity;
 	public GameView				view;
 	public boolean				isFirst					= true;
+	public Game					game					= Client.getGame();
 	
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
@@ -75,7 +74,7 @@ public class GameActivity extends Activity
 					Client.client.finishPart2();
 					Client.client.startGame(gameID);
 				}
-				catch (InterruptedException | IOException e)
+				catch (Exception e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
@@ -147,14 +146,14 @@ public class GameActivity extends Activity
 		if (id == R.id.action_end_turn)
 			view.thread.inputMain.endTurn();
 		else if (id == R.id.action_reset)
-			GameActivity.startGame(this, GameHandler.game.path.baseGameID, true);
+			GameActivity.startGame(this, game.path.baseGameID, true);
 		else if (id == R.id.action_kill_unit)
 		{
-			while (!GameHandler.game.players[1].units.isEmpty())
+			while (!game.players[1].units.isEmpty())
 			{
-				Unit unit = GameHandler.game.players[1].units.get(0);
+				Unit unit = game.players[1].units.get(0);
 				unit.health = 0;
-				UnitHelper.checkDied(unit);
+				new UnitHelper().checkDied(unit);
 				view.thread.gameDraw.gameDrawUnits.update();
 				view.thread.gameDraw.inputPlayer.tapWithoutAction(unit.i, unit.j);
 				view.thread.gameDraw.focusOnCell(unit.i, unit.j);
@@ -165,11 +164,11 @@ public class GameActivity extends Activity
 		else if (id == R.id.action_capture_castle)
 		{
 			CellType type = CellType.getType("CASTLE");
-			for (Cell[] line : GameHandler.fieldCells)
+			for (Cell[] line : game.fieldCells)
 				for (Cell cell : line)
 					if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
 					{
-						cell.player = GameHandler.game.players[0];
+						cell.player = game.players[0];
 						view.thread.needUpdateCampaign = true;
 					}
 			return true;

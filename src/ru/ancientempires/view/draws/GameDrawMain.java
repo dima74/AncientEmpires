@@ -18,6 +18,8 @@ import ru.ancientempires.view.inputs.InputPlayer;
 public class GameDrawMain extends GameDraw
 {
 	
+	public static GameDrawMain main;
+	
 	public InputMain	inputMain;
 	public InputPlayer	inputPlayer;
 	
@@ -27,6 +29,7 @@ public class GameDrawMain extends GameDraw
 	public int	mapW;
 	public int	visibleMapH;
 	public int	visibleMapW;
+	public int	iFrame;
 	
 	volatile public float	nextOffsetY;
 	volatile public float	nextOffsetX;
@@ -42,8 +45,7 @@ public class GameDrawMain extends GameDraw
 	volatile public boolean	isActiveGame		= true;
 	
 	{
-		GameDraw.main = this;
-		GameDraw.iFrame = 0;
+		GameDrawMain.main = this;
 	}
 	
 	public GameDrawCells			gameDrawCells			= new GameDrawCells();
@@ -85,20 +87,20 @@ public class GameDrawMain extends GameDraw
 	
 	public GameDrawMain()
 	{
-		mapH = GameDraw.game.h * GameDraw.A;
-		mapW = GameDraw.game.w * GameDraw.A;
-		visibleMapH = GameDraw.h - gameDrawInfo.h;
-		visibleMapW = GameDraw.w;
-		nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / GameDraw.mapScale) / 2;
-		nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / GameDraw.mapScale) / 2;
+		mapH = game.h * A;
+		mapW = game.w * A;
+		visibleMapH = h - gameDrawInfo.h;
+		visibleMapW = w;
+		nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
+		nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
 		if (minOffsetY < 0)
 		{
-			minOffsetY = -(mapH - visibleMapH / GameDraw.mapScale);
+			minOffsetY = -(mapH - visibleMapH / mapScale);
 			maxOffsetY = 0;
 		}
 		if (minOffsetX < 0)
 		{
-			minOffsetX = -(mapW - visibleMapW / GameDraw.mapScale);
+			minOffsetX = -(mapW - visibleMapW / mapScale);
 			maxOffsetX = 0;
 		}
 		gameDrawActionY = (visibleMapH - gameDrawAction.h) / 2;
@@ -127,7 +129,7 @@ public class GameDrawMain extends GameDraw
 	@Override
 	public void draw(Canvas canvas)
 	{
-		FewBitmaps.ordinal = GameDraw.iFrame / 8;
+		FewBitmaps.ordinal = iFrame / 8;
 		
 		synchronized (this)
 		{
@@ -138,19 +140,19 @@ public class GameDrawMain extends GameDraw
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.save();
-		canvas.scale(GameDraw.mapScale, GameDraw.mapScale);
+		canvas.scale(mapScale, mapScale);
 		canvas.translate(offsetX, offsetY);
 		for (GameDraw gameDraw : gameDraws)
-			gameDraw.draw(canvas);
+			draw(canvas);
 		if (isDrawCursor)
 			for (GameDrawCursor gameDrawCursor : gameDrawCursors)
 				gameDrawCursor.draw(canvas);
 		for (GameDraw gameDraw : gameDrawsEffects)
-			gameDraw.draw(canvas);
+			draw(canvas);
 		canvas.restore();
 		
 		canvas.save();
-		canvas.translate(0, GameDraw.h - gameDrawInfo.h);
+		canvas.translate(0, h - gameDrawInfo.h);
 		gameDrawInfoNull.draw(canvas);
 		gameDrawInfoMove.draw(canvas);
 		canvas.translate(0, gameDrawInfoY);
@@ -185,7 +187,9 @@ public class GameDrawMain extends GameDraw
 	
 	public void touch(float touchY, float touchX)
 	{
-		if (!isActiveGame || touchY > GameDraw.h - gameDrawInfo.h)
+		touchY /= mapScale;
+		touchX /= mapScale;
+		if (!isActiveGame || touchY > h - gameDrawInfo.h)
 			return;
 		if (gameDrawAction.isActive())
 		{
@@ -194,8 +198,8 @@ public class GameDrawMain extends GameDraw
 				return;
 		}
 		
-		int i = (int) ((touchY / GameDraw.mapScale - offsetY) / GameDraw.A);
-		int j = (int) ((touchX / GameDraw.mapScale - offsetX) / GameDraw.A);
+		int i = (int) ((touchY / mapScale - offsetY) / A);
+		int j = (int) ((touchX / mapScale - offsetX) / A);
 		try
 		{
 			inputMain.tap(i, j);
@@ -215,8 +219,8 @@ public class GameDrawMain extends GameDraw
 	
 	public void focusOnCell(int i, int j)
 	{
-		float nextOffsetY = -i * GameDraw.A - GameDraw.A / 2 + visibleMapH / GameDraw.mapScale / 2;
-		float nextOffsetX = -j * GameDraw.A - GameDraw.A / 2 + visibleMapW / GameDraw.mapScale / 2;
+		float nextOffsetY = -i * A - A / 2 + visibleMapH / mapScale / 2;
+		float nextOffsetX = -j * A - A / 2 + visibleMapW / mapScale / 2;
 		setNextOffset(nextOffsetY, nextOffsetX);
 	}
 	

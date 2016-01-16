@@ -2,7 +2,6 @@ package ru.ancientempires.view.draws.onframes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawBitmapSinus extends GameDrawOnFramesWithRangeValues
 {
@@ -29,7 +28,7 @@ public class GameDrawBitmapSinus extends GameDrawOnFramesWithRangeValues
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
-		canvas.drawBitmap(bitmap, x, (int) (y + GameDrawBitmapSinus.YS[value] * GameDraw.a), null);
+		canvas.drawBitmap(bitmap, x, (int) (y + GameDrawBitmapSinus.YS[value] * a), null);
 	}
 	
 }

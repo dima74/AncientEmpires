@@ -17,7 +17,6 @@ import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.CellTypeGroup;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.RangeType;
-import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 
 public class RulesLoader
@@ -40,7 +39,6 @@ public class RulesLoader
 		loadCellTypes();
 		// loadCellTypesGroups(cellTypeGroupsNameFile);
 		loadRangeTypes();
-		loadDefaultUnit();
 		loadUnitTypes();
 	}
 	
@@ -338,37 +336,6 @@ public class RulesLoader
 		}
 		reader.endArray();
 		return bonuses.toArray(new BonusForUnit[0]);
-	}
-	
-	private void loadDefaultUnit() throws IOException
-	{
-		JsonReader reader = loader.getReader("defaultUnit.json");
-		reader.beginObject();
-		RulesLoader.loadUnitPropetries(reader, Unit.defaultUnit);
-		reader.endObject();
-		reader.close();
-	}
-	
-	public static void loadUnitPropetries(JsonReader reader, Unit unit) throws IOException
-	{
-		while (reader.peek() == JsonToken.NAME)
-		{
-			String name = reader.nextName();
-			if ("i".equals(name))
-				unit.i = reader.nextInt();
-			else if ("j".equals(name))
-				unit.j = reader.nextInt();
-			else if ("health".equals(name))
-				unit.health = reader.nextInt();
-			else if ("level".equals(name))
-				unit.level = reader.nextInt();
-			else if ("experience".equals(name))
-				unit.experience = reader.nextInt();
-			else if ("isMove".equals(name))
-				unit.isMove = reader.nextBoolean();
-			else if ("isTurn".equals(name))
-				unit.isTurn = reader.nextBoolean();
-		}
 	}
 	
 	public static Cell nextCell(JsonReader reader, Player[] players) throws IOException

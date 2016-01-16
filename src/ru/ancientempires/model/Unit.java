@@ -1,15 +1,13 @@
 package ru.ancientempires.model;
 
-import ru.ancientempires.action.handlers.ActionHandlerHelper;
-import ru.ancientempires.action.handlers.CheckerUnit;
-import ru.ancientempires.action.handlers.GameHandler;
+import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.bonuses.BonusForUnit;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
+import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.handler.IGameHandler;
 
-public class Unit
+public class Unit extends IGameHandler
 {
-	
-	public static Unit defaultUnit = new Unit();
 	
 	public UnitType	type;
 	public Player	player;
@@ -32,9 +30,8 @@ public class Unit
 	
 	public boolean checkFloating()
 	{
-		Unit floatingUnit = GameHandler.game.floatingUnit;
-		return (floatingUnit == null || floatingUnit.i == i && floatingUnit.j == j)
-				&& this != floatingUnit;
+		Unit floatingUnit = game.floatingUnit;
+		return (floatingUnit == null || floatingUnit.i == i && floatingUnit.j == j) && this != floatingUnit;
 	}
 	
 	public void setTurn()
@@ -59,14 +56,10 @@ public class Unit
 	 -> свойства из defaultType и UnitType
 	 */
 	
-	private Unit()
-	{}
-	
 	public Unit(UnitType type, Player player)
 	{
 		this.type = type;
 		this.player = player;
-		setProperties(Unit.defaultUnit);
 		setProperties(type);
 	}
 	
@@ -106,7 +99,7 @@ public class Unit
 	
 	public int sub_462(int j, int i, Unit targetUnit)
 	{
-		System.out.println(attack * 2 + " " + defence + " " + getOffenceBonusAgainstUnitEx(targetUnit, j, i) + " " + getDefenceBonusAgainstUnitEx(targetUnit, j, i));
+		// System.out.println(attack * 2 + " " + defence + " " + getOffenceBonusAgainstUnitEx(targetUnit, j, i) + " " + getDefenceBonusAgainstUnitEx(targetUnit, j, i));
 		return (int) ((attack * 2 + defence + getOffenceBonusAgainstUnitEx(targetUnit, j, i) + getDefenceBonusAgainstUnitEx(targetUnit, j, i)) * health / 100);
 	}
 	
@@ -123,11 +116,11 @@ public class Unit
 	private int getDefenceBonusAgainstUnitEx(Unit targetUnit, int j, int i)
 	{
 		int add = 0;
-		Cell cell = GameHandler.fieldCells[i][j];
+		Cell cell = game.fieldCells[i][j];
 		for (BonusOnCellGroup bonus : type.bonusOnCellDefence)
 			if (cell.type.group == bonus.group)
 				add += bonus.value;
-		return level * 2 + GameHandler.fieldCells[i][j].type.defense + add;
+		return level * 2 + game.fieldCells[i][j].type.defense + add;
 	}
 	
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)
@@ -141,7 +134,7 @@ public class Unit
 					type.field[maxRange + i][maxRange + j] = true;
 		type.field[maxRange][maxRange] = false;
 		
-		return ActionHandlerHelper.getUnitsInRange(y, x, type, new CheckerUnit()
+		return new ActionHelper().getUnitsInRange(y, x, type, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
@@ -153,7 +146,7 @@ public class Unit
 	
 	public Unit[] getUnitsToAttack(int x, int y)
 	{
-		return ActionHandlerHelper.getUnitsInRange(y, x, type.attackRange, new CheckerUnit()
+		return new ActionHelper().getUnitsInRange(y, x, type.attackRange, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
@@ -165,7 +158,7 @@ public class Unit
 	
 	public Unit[] getUnitsToRaise(int x, int y)
 	{
-		return ActionHandlerHelper.getUnitsInRange(GameHandler.fieldDeadUnits, y, x, type.raiseRange, new CheckerUnit()
+		return new ActionHelper().getUnitsInRange(game.fieldUnitsDead, y, x, type.raiseRange, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)

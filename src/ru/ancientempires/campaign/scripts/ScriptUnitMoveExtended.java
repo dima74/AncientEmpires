@@ -2,18 +2,18 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.Point;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.framework.MyAssert;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import ru.ancientempires.Point;
+import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
+import ru.ancientempires.framework.MyAssert;
+
 public class ScriptUnitMoveExtended extends Script
 {
 	
-	private Point[]	keyPoints;
+	private Point[] keyPoints;
 	
 	public ScriptUnitMoveExtended()
 	{}
@@ -29,21 +29,32 @@ public class ScriptUnitMoveExtended extends Script
 	public void load(JsonReader reader) throws IOException
 	{
 		MyAssert.a("keyPoints", reader.nextName());
-		this.keyPoints = new Gson().fromJson(reader, Point[].class);
+		keyPoints = new Gson().fromJson(reader, Point[].class);
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.unitMove(this.keyPoints, this);
+		campaign.iDrawCampaign.unitMove(keyPoints, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
 		writer.name("keyPoints");
-		new Gson().toJson(this.keyPoints, Point[].class, writer);
+		new Gson().toJson(keyPoints, Point[].class, writer);
+	}
+	
+	@Override
+	public void performAction()
+	{
+		Point start = keyPoints[0];
+		Point end = keyPoints[keyPoints.length - 1];
+		new ActionCampaignUnitMove()
+				.setIJ(start.i, start.j)
+				.setTargetIJ(end.i, end.j)
+				.perform();
 	}
 	
 }

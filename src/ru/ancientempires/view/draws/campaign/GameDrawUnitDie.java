@@ -1,6 +1,5 @@
 package ru.ancientempires.view.draws.campaign;
 
-import ru.ancientempires.view.draws.GameDraw;
 import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawBitmapsMoving;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
@@ -16,12 +15,12 @@ public class GameDrawUnitDie extends GameDrawOnFramesGroup
 		this.i = i;
 		this.j = j;
 		add(new GameDrawBitmaps()
-				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsDefault)
 				.animateRepeat(2));
 				
-		int startY = i * GameDraw.A;
-		int startX = j * GameDraw.A;
+		int startY = i * A;
+		int startX = j * A;
 		int endY = startY - 3 * 2 * SmokeImages().amountDefault;
 		int endX = startX;
 		add(new GameDrawBitmapsMoving()
@@ -35,7 +34,7 @@ public class GameDrawUnitDie extends GameDrawOnFramesGroup
 	public void onEndDraw()
 	{
 		super.onEndDraw();
-		GameDraw.main.gameDrawUnits.updateUnit(i, j);
+		main.gameDrawUnits.updateUnit(i, j);
 	}
 	
 }

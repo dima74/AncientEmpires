@@ -2,13 +2,11 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.action.handlers.GameHandler;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.campaign.NamedUnits;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.campaign.NamedUnits;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetNamedUnit extends Script
 {
@@ -30,25 +28,25 @@ public class ScriptSetNamedUnit extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.i = JsonHelper.readInt(reader, "i");
-		this.j = JsonHelper.readInt(reader, "j");
-		this.name = JsonHelper.readString(reader, "name");
+		i = JsonHelper.readInt(reader, "i");
+		j = JsonHelper.readInt(reader, "j");
+		name = JsonHelper.readString(reader, "name");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		NamedUnits.set(this.name, GameHandler.getUnit(this.i, this.j));
+		NamedUnits.set(name, game.getUnit(i, j));
 		campaign.finish(this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("i").value(this.i);
-		writer.name("j").value(this.j);
-		writer.name("name").value(this.name);
+		writer.name("i").value(i);
+		writer.name("j").value(j);
+		writer.name("name").value(name);
 	}
 	
 }

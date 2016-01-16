@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.model.Cell;
 
@@ -40,7 +39,7 @@ public class GameDrawInfo extends GameDraw
 	
 	public int	a	= 2;
 	public int	h	= GameDrawInfo.mA + 8 * 2;
-	public int	w	= GameDraw.w;
+	public int	w	= super.w;
 	private int	mW	= w - a * 7 - GameDrawInfo.mA;
 	private int	color;
 	
@@ -99,9 +98,9 @@ public class GameDrawInfo extends GameDraw
 	@Override
 	public void update()
 	{
-		color = GameDraw.game.currentPlayer.color.showColor;
-		goldBitmap = BigNumberImages().createBitmap(GameDraw.game.currentPlayer.gold);
-		amountBitmap = BigNumberImages().createBitmap(GameDraw.game.currentPlayer.units.size());
+		color = game.currentPlayer.color.showColor;
+		goldBitmap = BigNumberImages().createBitmap(game.currentPlayer.gold);
+		amountBitmap = BigNumberImages().createBitmap(game.currentPlayer.units.size());
 	}
 	
 	@Override
@@ -111,7 +110,7 @@ public class GameDrawInfo extends GameDraw
 		
 		if (true)
 		{
-			Cell cell = GameHandler.fieldCells[GameHandler.game.currentPlayer.cursorI][GameHandler.game.currentPlayer.cursorJ];
+			Cell cell = game.fieldCells[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
 			// изображение клеточки
 			canvas.save();
 			int bitmapY = a * 4;

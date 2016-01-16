@@ -96,7 +96,7 @@ public interface IDrawCampaign
 	
 	public void gameOver(ScriptGameOver script);
 	
-	public void closeMission();
+	public void closeMission() throws Exception;
 	
 	public void updateCampaign();
 	

@@ -8,7 +8,7 @@ import ru.ancientempires.view.draws.onframes.GameDrawOnFramesWithRangeFloat;
 public class GameDrawCameraMove extends GameDrawOnFramesGroup
 {
 	
-	public static float delta = GameDraw.a * 12;
+	public static float delta = new GameDraw().a * 12;
 	
 	private float	startOffsetY;
 	private float	startOffsetX;
@@ -17,17 +17,17 @@ public class GameDrawCameraMove extends GameDrawOnFramesGroup
 	
 	public void start(int iEnd, int jEnd)
 	{
-		startOffsetY = GameDraw.main.offsetY;
-		startOffsetX = GameDraw.main.offsetX;
+		startOffsetY = main.offsetY;
+		startOffsetX = main.offsetX;
 		
-		endOffsetY = -iEnd * GameDraw.A - GameDraw.A / 2 + GameDraw.main.visibleMapH / GameDraw.mapScale / 2;
-		endOffsetX = -jEnd * GameDraw.A - GameDraw.A / 2 + GameDraw.main.visibleMapW / GameDraw.mapScale / 2;
-		endOffsetY = Math.max(GameDraw.main.minOffsetY, Math.min(GameDraw.main.maxOffsetY, endOffsetY));
-		endOffsetX = Math.max(GameDraw.main.minOffsetX, Math.min(GameDraw.main.maxOffsetX, endOffsetX));
+		endOffsetY = -iEnd * A - A / 2 + main.visibleMapH / mapScale / 2;
+		endOffsetX = -jEnd * A - A / 2 + main.visibleMapW / mapScale / 2;
+		endOffsetY = Math.max(main.minOffsetY, Math.min(main.maxOffsetY, endOffsetY));
+		endOffsetX = Math.max(main.minOffsetX, Math.min(main.maxOffsetX, endOffsetX));
 		
 		float deltaY = endOffsetY - startOffsetY;
 		float deltaX = endOffsetX - startOffsetX;
-		int frameLength = Math.round(Math.max(Math.abs(deltaY), Math.abs(deltaX)) * GameDraw.mapScale / GameDrawCameraMove.delta);
+		int frameLength = Math.round(Math.max(Math.abs(deltaY), Math.abs(deltaX)) * mapScale / GameDrawCameraMove.delta);
 		float stepY = deltaY == 0 ? 1 : deltaY / frameLength;
 		float stepX = deltaX == 0 ? 1 : deltaX / frameLength;
 		
@@ -36,9 +36,9 @@ public class GameDrawCameraMove extends GameDrawOnFramesGroup
 			@Override
 			public void draw(Canvas canvas, float value)
 			{
-				synchronized (GameDraw.main)
+				synchronized (main)
 				{
-					GameDraw.main.nextOffsetY = value;
+					main.nextOffsetY = value;
 				}
 			}
 		}.animateRange(startOffsetY, endOffsetY, stepY));
@@ -47,14 +47,14 @@ public class GameDrawCameraMove extends GameDrawOnFramesGroup
 			@Override
 			public void draw(Canvas canvas, float value)
 			{
-				synchronized (GameDraw.main)
+				synchronized (main)
 				{
-					GameDraw.main.nextOffsetX = value;
+					main.nextOffsetX = value;
 				}
 			}
 		}.animateRange(startOffsetX, endOffsetX, stepX));
 		
-		GameDraw.main.inputPlayer.tapWithoutAction(iEnd, jEnd);
+		main.inputPlayer.tapWithoutAction(iEnd, jEnd);
 	}
 	
 }

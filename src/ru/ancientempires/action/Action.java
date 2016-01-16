@@ -6,20 +6,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.ancientempires.action.handlers.ActionCellBuy;
-import ru.ancientempires.action.handlers.ActionGameEndTurn;
-import ru.ancientempires.action.handlers.ActionGetCellBuy;
-import ru.ancientempires.action.handlers.ActionGetUnit;
-import ru.ancientempires.action.handlers.ActionUnitAttack;
-import ru.ancientempires.action.handlers.ActionUnitCapture;
-import ru.ancientempires.action.handlers.ActionUnitMove;
-import ru.ancientempires.action.handlers.ActionUnitRaise;
-import ru.ancientempires.action.handlers.ActionUnitRepair;
+import ru.ancientempires.action.result.ActionResult;
+import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.model.Game;
 
 public abstract class Action
 {
 	
-	public static List<Class<? extends Action>> actions = Arrays.asList(
+	public static List<Class<? extends Action>> classes = Arrays.asList(
 			ActionGetUnit.class,
 			ActionGetCellBuy.class,
 			ActionCellBuy.class,
@@ -30,25 +25,63 @@ public abstract class Action
 			ActionUnitRaise.class,
 			ActionGameEndTurn.class);
 			
-	public ActionResult result = new ActionResult();
+	public static Action loadNew(DataInputStream input) throws Exception
+	{
+		int ordinal = input.readShort();
+		Action action = Action.classes.get(ordinal).newInstance();
+		action.load(input);
+		return action;
+	}
 	
-	public boolean isCritical()
+	public ActionResult	result;
+	public Game			game	= Client.getGame();
+	
+	public boolean changesGame()
 	{
 		return true;
 	}
 	
-	public abstract ActionResult action();
+	public boolean isCampaign()
+	{
+		return false;
+	}
+	
+	public <T extends ActionResult> T commit(T result)
+	{
+		this.result = result;
+		Client.commit(this);
+		return result;
+	}
+	
+	public ActionResult commit()
+	{
+		result = null;
+		Client.commit(this);
+		return null;
+	}
+	
+	public boolean check(boolean successfully)
+	{
+		if (!successfully)
+			perform();
+		MyAssert.a(successfully);
+		return successfully;
+	}
+	
+	public abstract ActionResult perform();
+	
+	public void performQuick()
+	{}
 	
 	public void saveBase(DataOutputStream output) throws IOException
 	{
-		output.writeByte(ordinal());
+		output.writeShort(ordinal());
 		save(output);
-		output.close();
 	}
 	
 	public int ordinal()
 	{
-		return Action.actions.indexOf(getClass());
+		return Action.classes.indexOf(getClass());
 	}
 	
 	public void load(DataInputStream input) throws IOException

@@ -1,7 +1,7 @@
 package ru.ancientempires.view.draws;
 
 import android.graphics.Canvas;
-import ru.ancientempires.action.ActionResult;
+import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.view.draws.onframes.GameDrawBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawOnFramesGroup;
 
@@ -16,8 +16,8 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 	{
 		this.targetI = targetI;
 		this.targetJ = targetJ;
-		int y = targetI * GameDraw.A;
-		int x = targetJ * GameDraw.A;
+		int y = targetI * A;
+		int x = targetJ * A;
 		
 		draws.clear();
 		add(new GameDrawBitmaps()
@@ -37,10 +37,10 @@ public class GameDrawCellAttack extends GameDrawOnFramesGroup
 	public void drawOnFrames(Canvas canvas)
 	{
 		super.drawOnFrames(canvas);
-		if (GameDraw.iFrame == frameUpdateTargetCell)
+		if (iFrame() == frameUpdateTargetCell)
 		{
-			GameDraw.main.gameDrawCells.updateOneCell(targetI, targetJ);
-			GameDraw.main.gameDrawCellDual.updateOneCell(targetI, targetJ);
+			main.gameDrawCells.updateOneCell(targetI, targetJ);
+			main.gameDrawCellDual.updateOneCell(targetI, targetJ);
 		}
 	}
 	

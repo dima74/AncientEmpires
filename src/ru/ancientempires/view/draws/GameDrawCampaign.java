@@ -1,5 +1,6 @@
 package ru.ancientempires.view.draws;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
@@ -8,7 +9,6 @@ import android.os.Handler;
 import android.widget.Toast;
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
-import ru.ancientempires.action.handlers.GameHandler;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
@@ -40,7 +40,6 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
-import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.view.draws.campaign.DialogGameOver;
 import ru.ancientempires.view.draws.campaign.DialogShowIntro;
@@ -92,7 +91,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		}
 		
 		if (blackScreenScript != null
-				&& GameDraw.main.gameDrawBlackScreen.isEndDrawing)
+				&& main.gameDrawBlackScreen.isEndDrawing)
 		{
 			blackScreenScript.finish();
 			blackScreenScript = null;
@@ -171,34 +170,34 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void showBlackScreen(ScriptShowBlackScreen script)
 	{
-		GameDraw.main.gameDrawBlackScreen.startShow();
+		main.gameDrawBlackScreen.startShow();
 		blackScreenScript = script;
 	}
 	
 	@Override
 	public void hideBlackScreen(ScriptHideBlackScreen script)
 	{
-		GameDraw.main.gameDrawBlackScreen.startHide();
+		main.gameDrawBlackScreen.startHide();
 		blackScreenScript = script;
 	}
 	
 	@Override
 	public void blackScreen(ScriptBlackScreen script)
 	{
-		GameDraw.main.isBlackScreen = true;
+		main.isBlackScreen = true;
 	}
 	
 	//
 	@Override
 	public void hideCursor(ScriptHideCursor script)
 	{
-		GameDraw.main.isDrawCursor = false;
+		main.isDrawCursor = false;
 	}
 	
 	@Override
 	public void showCursor(ScriptShowCursor script)
 	{
-		GameDraw.main.isDrawCursor = true;
+		main.isDrawCursor = true;
 	}
 	
 	//
@@ -211,7 +210,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void cameraMove(int iEnd, int jEnd, Script script)
 	{
-		GameDraw.main.inputPlayer.tapWithoutAction(iEnd, jEnd);
+		main.inputPlayer.tapWithoutAction(iEnd, jEnd);
 		GameDrawCameraMove gameDraw = new GameDrawCameraMove();
 		gameDraw.start(iEnd, jEnd);
 		draws.add(gameDraw);
@@ -221,7 +220,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void setMapPosition(int i, int j, ScriptSetMapPosition script)
 	{
-		GameDraw.main.focusOnCell(i, j);
+		main.focusOnCell(i, j);
 	}
 	
 	//
@@ -235,13 +234,11 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script)
 	{
-		Point[] points = new Point[Math.abs(iEnd - iStart)
-				+ Math.abs(jEnd - jStart) + 1];
+		Point[] points = new Point[Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart) + 1];
 		for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
 			points[Math.abs(i - iStart)] = new Point(i, jStart);
 		for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
-			points[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(
-					iEnd, j);
+			points[Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
 		points[points.length - 1] = new Point(iEnd, jEnd);
 		
 		GameDrawUnitMove gameDraw = new GameDrawUnitMove();
@@ -250,10 +247,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		draws.add(gameDraw);
 		scripts.add(script);
 		
-		// TODO
-		Unit unit = GameHandler.getUnit(iStart, jStart);
-		GameHandler.removeUnit(iStart, jStart);
-		GameHandler.setUnit(iEnd, jEnd, unit);
+		script.performAction();
 	}
 	
 	@Override
@@ -278,8 +272,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 			for (int i = iStart; i != iEnd; i += Math.signum(iEnd - iStart))
 				points[nPoint + Math.abs(i - iStart)] = new Point(i, jStart);
 			for (int j = jStart; j != jEnd; j += Math.signum(jEnd - jStart))
-				points[nPoint + Math.abs(iEnd - iStart)
-						+ Math.abs(j - jStart)] = new Point(iEnd, j);
+				points[nPoint + Math.abs(iEnd - iStart) + Math.abs(j - jStart)] = new Point(iEnd, j);
 			nPoint += Math.abs(iEnd - iStart) + Math.abs(jEnd - jStart);
 		}
 		points[points.length - 1] = new Point(end.i, end.j);
@@ -290,10 +283,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		draws.add(gameDraw);
 		scripts.add(script);
 		
-		// TODO
-		Unit unit = GameHandler.getUnit(start.i, start.j);
-		GameHandler.removeUnit(start.i, start.j);
-		GameHandler.setUnit(end.i, end.j, unit);
+		script.performAction();
 	}
 	
 	@Override
@@ -308,7 +298,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void unitDie(int i, int j, ScriptUnitDie script)
 	{
-		GameDraw.game.fieldUnits[i][j] = null;
+		script.performAction();
 		GameDrawUnitDie gameDraw = new GameDrawUnitDie();
 		gameDraw.start(i, j);
 		draws.add(gameDraw);
@@ -318,29 +308,23 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
 	{
-		Unit unit = new Unit(unitType, player);
-		player.units.add(unit);
-		GameHandler.setUnit(i, j, unit);
-		if (GameHandler.checkCoord(i, j))
-			GameDraw.main.gameDrawUnits.updateUnit(i, j);
+		script.performAction();
+		if (game.checkCoordinates(i, j))
+			main.gameDrawUnits.updateUnit(i, j);
 	}
 	
 	@Override
 	public void removeUnit(int i, int j, ScriptRemoveUnit script)
 	{
-		Unit unit = GameHandler.getUnit(i, j);
-		GameHandler.removeUnit(i, j);
-		unit.player.units.remove(unit);
-		if (GameHandler.checkCoord(i, j))
-			GameDraw.main.gameDrawUnits.updateUnit(i, j);
+		script.performAction();
+		if (game.checkCoordinates(i, j))
+			main.gameDrawUnits.updateUnit(i, j);
 	}
 	
 	@Override
 	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script)
 	{
-		Unit unit = GameHandler.getUnit(i, j);
-		GameHandler.removeUnit(i, j);
-		GameHandler.setUnit(iNew, jNew, unit);
+		script.performAction();
 	}
 	
 	//
@@ -349,7 +333,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	{
 		GameDrawBitmaps gameDraw = new GameDrawBitmaps()
 				.setBitmaps(SparksImages().bitmapsDefault)
-				.setYX(i * GameDraw.A, j * GameDraw.A).animateRepeat(1);
+				.setYX(i * A, j * A).animateRepeat(1);
 		draws.add(gameDraw);
 		scripts.add(script);
 	}
@@ -359,7 +343,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	{
 		GameDrawBitmaps gameDraw = new GameDrawBitmaps()
 				.setBitmaps(SparksImages().bitmapsAttack)
-				.setYX(i * GameDraw.A, j * GameDraw.A).animateRepeat(1);
+				.setYX(i * A, j * A).animateRepeat(1);
 		draws.add(gameDraw);
 		scripts.add(script);
 	}
@@ -368,19 +352,19 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script)
 	{
 		// TODO
-		Cell targetCell = GameHandler.fieldCells[i][j];
+		Cell targetCell = game.fieldCells[i][j];
 		if (targetCell.player != null)
-			GameHandler.game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
+			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 		targetCell.isDestroying = true;
 		targetCell.isCapture = false;
 		targetCell.player = null;
 		
-		GameDraw.main.gameDrawBuildingSmokes.update();
+		main.gameDrawBuildingSmokes.update();
 		
-		GameDraw.main.gameDrawCells.updateOneCell(i, j);
-		GameDraw.main.gameDrawCellDual.updateOneCell(i, j);
+		main.gameDrawCells.updateOneCell(i, j);
+		main.gameDrawCellDual.updateOneCell(i, j);
 		GameDrawOnFrames gameDraw = new GameDrawBitmaps()
-				.setYX(i * GameDraw.A, j * GameDraw.A)
+				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsDefault).setFramesForBitmap(4)
 				.animateRepeat(1);
 		draws.add(gameDraw);
@@ -391,21 +375,29 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void enableActiveGame(ScriptEnableActiveGame script)
 	{
-		GameDraw.main.isActiveGame = true;
-		GameDraw.main.isDrawCursor = false;
+		main.isActiveGame = true;
+		main.isDrawCursor = false;
 		GameDrawUnitMove.framesForCell = 8;
 		GameDrawCameraMove.delta = 6;
-		GameDraw.main.gameDrawInfoMove.startShow();
+		main.gameDrawInfoMove.startShow();
 		GameActivity.activity.invalidateOptionsMenu();
 		
-		// Client.getGame().saver.save();
+		try
+		{
+			Client.getGame().saver.saveSnapshot();
+		}
+		catch (IOException e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
-		GameDraw.main.isActiveGame = false;
-		GameDraw.main.isDrawCursor = false;
+		main.isActiveGame = false;
+		main.isDrawCursor = false;
 		GameActivity.activity.invalidateOptionsMenu();
 	}
 	
@@ -416,7 +408,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	}
 	
 	@Override
-	public void closeMission()
+	public void closeMission() throws Exception
 	{
 		Client.client.stopGame();
 	}

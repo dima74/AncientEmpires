@@ -2,11 +2,11 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptUnitDie extends Script
 {
@@ -26,22 +26,30 @@ public class ScriptUnitDie extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.i = JsonHelper.readInt(reader, "i");
-		this.j = JsonHelper.readInt(reader, "j");
+		i = JsonHelper.readInt(reader, "i");
+		j = JsonHelper.readInt(reader, "j");
 	}
 	
 	@Override
 	public void start()
 	{
 		super.start();
-		campaign.iDrawCampaign.unitDie(this.i, this.j, this);
+		campaign.iDrawCampaign.unitDie(i, j, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("i").value(this.i);
-		writer.name("j").value(this.j);
+		writer.name("i").value(i);
+		writer.name("j").value(j);
+	}
+	
+	@Override
+	public void performAction()
+	{
+		new ActionCampaignRemoveUnit()
+				.setIJ(i, j)
+				.perform();
 	}
 	
 }

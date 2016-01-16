@@ -1,7 +1,6 @@
 package ru.ancientempires.view.inputs;
 
 import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.ii.II;
 
 public class InputComputer extends InputBase
 {
@@ -9,7 +8,7 @@ public class InputComputer extends InputBase
 	@Override
 	public void beginTurn()
 	{
-		II.ii.turn();
+		game.ii.turn();
 		InputBase.gameDraw.gameDrawUnits.update();
 		InputBase.gameDraw.gameDrawCells.update();
 		InputBase.gameDraw.gameDrawCellDual.update();

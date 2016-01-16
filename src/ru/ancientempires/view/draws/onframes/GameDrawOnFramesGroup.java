@@ -3,7 +3,6 @@ package ru.ancientempires.view.draws.onframes;
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
-import ru.ancientempires.view.draws.GameDraw;
 
 public class GameDrawOnFramesGroup extends GameDrawOnFrames
 {
@@ -13,10 +12,10 @@ public class GameDrawOnFramesGroup extends GameDrawOnFrames
 	public void add(GameDrawOnFrames gameDraw)
 	{
 		draws.add(gameDraw);
-		int frameStart = Math.max(GameDraw.iFrame + 1, getFrameStart());
+		int frameStart = Math.max(iFrame() + 1, getFrameStart());
 		int frameEnd = getFrameEnd();
 		animate(frameEnd - frameStart + 1);
-		super.increaseFrameStart(frameStart - GameDraw.iFrame - 1);
+		super.increaseFrameStart(frameStart - iFrame() - 1);
 	}
 	
 	public int getFrameStart()

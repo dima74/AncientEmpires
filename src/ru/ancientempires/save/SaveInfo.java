@@ -10,15 +10,13 @@ import ru.ancientempires.helpers.JsonHelper;
 public class SaveInfo
 {
 	
-	public int				numberSnapshots;
+	volatile public int		numberSnapshots;
 	// == numberActions в info.json в папке "actions/%numberSnapshots - 1%"
-	public int				numberActionsAfterLastSave;
+	volatile public int		numberActionsAfterLastSave;
 	public GameSaveLoader	loader;
 	
 	public SaveInfo load() throws IOException
 	{
-		if (!loader.exists("saveInfo.json"))
-			return this;
 		JsonReader reader = loader.getReader("saveInfo.json");
 		reader.beginObject();
 		numberSnapshots = JsonHelper.readInt(reader, "numberSnapshots");

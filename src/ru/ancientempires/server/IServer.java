@@ -1,12 +1,10 @@
 package ru.ancientempires.server;
 
-import java.io.IOException;
-
 public interface IServer
 {
 	
-	void startGame(String gameID) throws IOException;
+	void startGame(String gameID) throws Exception;
 	
-	public void stopGame();
+	public void stopGame() throws Exception;
 	
 }
