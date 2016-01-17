@@ -23,7 +23,14 @@ public class Player
 	public int	cursorJ;
 	
 	@Override
-	public String toString()
+	public boolean equals(Object o)
+	{
+		Player player = (Player) o;
+		return ordinal == player.ordinal;
+	}
+	
+	// @Override
+	public String toString1()
 	{
 		return "Player [" + units + "]";
 	}

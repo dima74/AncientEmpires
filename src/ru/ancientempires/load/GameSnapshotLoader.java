@@ -34,7 +34,7 @@ public class GameSnapshotLoader
 	public FileLoader	loaderCampaign;
 	public Game			game	= new Game();
 	
-	public GameSnapshotLoader(GamePath path) throws IOException
+	public GameSnapshotLoader(GamePath path) throws Exception
 	{
 		this.path = path;
 		loaderCampaign = path.getLoader();
@@ -58,18 +58,16 @@ public class GameSnapshotLoader
 		if (loaderCampaign.exists("strings.json"))
 			loaderCampaign.loadLocalization("strings");
 			
-		try
+		if (loaderCampaign.exists("campaign.json"))
 		{
-			if (loaderCampaign.exists("campaign.json"))
-				game.campaign.load(loaderCampaign);
-			else
-				game.campaign.load(Client.client.defaultGameLoader);
+			game.campaign.load(loaderCampaign);
+			game.campaign.loadState(loader);
 		}
-		catch (Exception e)
+		else
 		{
-			MyAssert.a(false);
+			game.campaign.load(Client.client.defaultGameLoader);
+			game.campaign.loadState(Client.client.defaultGameLoader);
 		}
-		game.campaign.loadState(loader);
 		
 		//
 		for (CellType cellType : CellType.types)
@@ -245,7 +243,7 @@ public class GameSnapshotLoader
 		return field;
 	}
 	
-	public void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
+	private void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
 	{
 		int numberUnits = input.readInt();
 		for (int i = 0; i < numberUnits; i++)
@@ -269,6 +267,7 @@ public class GameSnapshotLoader
 		
 		if (addToPlayer)
 			player.units.add(unit);
+		unit.game = game;
 		return unit;
 	}
 	

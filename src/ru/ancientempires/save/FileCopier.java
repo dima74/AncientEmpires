@@ -27,10 +27,15 @@ public class FileCopier
 	
 	public void copy(String name) throws IOException
 	{
-		if (!from.exists(name))
+		copyWithRename(name, name);
+	}
+	
+	public void copyWithRename(String oldName, String newName) throws IOException
+	{
+		if (!from.exists(oldName))
 			return;
-		InputStream input = from.openIS(name);
-		OutputStream output = to.openOS(name);
+		InputStream input = from.openIS(oldName);
+		OutputStream output = to.openOS(newName);
 		int size = input.read(buffer);
 		output.write(buffer, 0, size);
 		input.close();

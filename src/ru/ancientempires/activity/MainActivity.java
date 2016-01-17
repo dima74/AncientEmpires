@@ -11,6 +11,7 @@ import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 
 public class MainActivity extends ListActivity
@@ -43,7 +44,8 @@ public class MainActivity extends ListActivity
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
-			
+		Debug.create(this);
+		
 		setContentView(R.layout.main_menu_list_view);
 		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, MainActivity.actions));
 		
@@ -61,6 +63,20 @@ public class MainActivity extends ListActivity
 			default:
 				break;
 		}
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		Debug.onStart(this);
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		Debug.onStop(this);
 	}
 	
 	/*

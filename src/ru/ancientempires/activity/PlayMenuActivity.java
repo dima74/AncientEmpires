@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
+import ru.ancientempires.framework.Debug;
 
 public class PlayMenuActivity extends ListActivity
 {
@@ -24,16 +25,34 @@ public class PlayMenuActivity extends ListActivity
 			MenuActions.LOAD
 	};
 	
+	private static int	count;
+	private int			number	= ++PlayMenuActivity.count;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Debug.create(this);
 		
 		setContentView(R.layout.main_menu_list_view);
 		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, PlayMenuActivity.actions));
 		
-		// start("multiplayer");
-		start("campaign");
+		start("multiplayer");
+		// start("campaign");
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		Debug.onStart(this);
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		Debug.onStop(this);
 	}
 	
 	@Override

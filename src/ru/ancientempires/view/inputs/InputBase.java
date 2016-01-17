@@ -6,7 +6,8 @@ import ru.ancientempires.view.draws.GameDrawMain;
 public abstract class InputBase extends IGameHandler
 {
 	
-	public static GameDrawMain gameDraw;
+	public static GameDrawMain	gameDraw;
+	public InputMain			main;
 	
 	public abstract void beginTurn();
 	

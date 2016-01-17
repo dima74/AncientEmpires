@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 
+import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionCellBuy;
+import ru.ancientempires.action.ActionGameEndTurn;
 import ru.ancientempires.action.ActionGetCellBuy;
 import ru.ancientempires.action.ActionUnitAttack;
 import ru.ancientempires.action.ActionUnitCapture;
@@ -15,10 +17,11 @@ import ru.ancientempires.action.ActionUnitRepair;
 import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.GameHandler;
 import ru.ancientempires.handler.UnitHelper;
+import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.RangeType;
@@ -29,105 +32,40 @@ import ru.ancientempires.model.UnitType;
 public class II extends GameHandler
 {
 	
-	private Cell[] buildings;
+	ArrayList<Action> actions = new ArrayList<Action>();
 	
-	public void init()
+	public void perform(Action action)
 	{
-		ArrayList<Cell> cells = new ArrayList<Cell>();
-		for (Cell[] line : fieldCells)
-			for (Cell cell : line)
-				if (cell.type.isCapture)
-					cells.add(cell);
-		buildings = cells.toArray(new Cell[0]);
-		mapAlphaData = new int[w][h];
-		var_39e3 = new int[w][h];
+		action.needCommit = false;
+		action.game = game;
+		action.perform();
+		action.game = Client.getGame();
+		action.needCommit = true;
+		actions.add(action);
 	}
 	
-	// private byte[][] buildingData; // new byte[buildingCount][3] {x, y, номер игрока, -1 разрушенный, 0 ничейный, 1 синий, 2 красный, 3 зеленый, 4 черный}
-	private int[][] mapAlphaData; // new byte[mapWidth][mapHeight]
-	
-	private int	var_3733;	// 0
-	private int	var_3781;	// 0
-	
-	private Unit	var_37c2;	// null
-	private Unit	var_37e4;	// null
-	private Unit	var_381f;	// null
-	
-	public Unit[]	var_38d5;
-	private Unit[]	var_3903;	// new Unit[buildings.length];
-	private byte[]	var_3947;	// new byte[buildings.length];
-	private int[][]	var_395f;	// local
-	
-	private int[]	var_399e;	// new int[buildingCount] каждый ход обнуляется
-	public int		var_39d0;	// local
-	private int[][]	var_39e3;	// new byte[mapWidth][mapHeight];
-	
-	private int var_36e4; // 0-выбор юнита, 3-ход, 4-в конце хода что делать дальше, 5-атака
-	
-	private int	var_3a15;
-	private int	var_3a34;
-	public int	var_3a41;
-	private int	var_3a5c;
-	
-	private Unit			currentSelectedUnit;
-	private Vector<Unit>	var_3aad;
-	
-	private boolean[]	isKingsLive;
-	private boolean		isKingLive;
-	
-	public void initTurn()
+	public void turnFull()
 	{
-		for (Player player : game.players)
-			for (Unit unit : player.units)
-				unit.setGame(game);
-				
-		// мечники
-		// виспы
-		// лучники
-		// остальные
-		final int[] priority = new int[UnitType.number];
-		priority[UnitType.getType("SOLDIER").ordinal] = 3;
-		priority[UnitType.getType("WISP").ordinal] = 2;
-		priority[UnitType.getType("ARCHER").ordinal] = 1;
-		
-		var_3aad = new Vector<Unit>(game.currentPlayer.units);
-		Collections.sort(var_3aad, new Comparator<Unit>()
+		ArrayList<Action> actions = turn();
+		for (Action action : actions)
+			action.perform();
+	}
+	
+	public ArrayList<Action> turn()
+	{
+		try
 		{
-			public boolean less(Unit a, Unit b)
-			{
-				return priority[a.type.ordinal] > priority[b.type.ordinal] || priority[a.type.ordinal] == priority[b.type.ordinal] && a.health > b.health;
-			}
-			
-			@Override
-			public int compare(Unit a, Unit b)
-			{
-				return less(a, b) ? -1 : less(b, a) ? 1 : 0;
-			}
-			
-		});
-		
-		isKingsLive = new boolean[numberPlayers];
-		for (Player player : game.players)
-		{
-			Unit king = this.getKing(player);
-			isKingsLive[player.ordinal] = king != null;
-			for (int i = 0; i < h; i++)
-				for (int j = 0; j < w; j++)
-					isKingsLive[player.ordinal] |= fieldCells[i][j].type.name == "CASTLE" && fieldCells[i][j].player == player;
+			game = Client.getGame();
+			game.saver.waitSave();
+			setGame(new GameLoader(game.path).load());
 		}
-		isKingLive = isKingsLive[game.currentPlayer.ordinal];
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 		
-		var_3903 = new Unit[buildings.length];
-		var_3947 = new byte[buildings.length];
-		var_399e = new int[buildings.length];
-		var_36e4 = 0;
-	}
-	
-	ArrayList<Unit> nextMove = new ArrayList<Unit>();
-	
-	public void turn()
-	{
-		MyLog.l("");
+		init();
 		initTurn();
 		while (!var_3aad.isEmpty())
 		{
@@ -255,10 +193,9 @@ public class II extends GameHandler
 					// && canBuyUnit(fractionsAllKings[this.currentTurningPlayer][var6], var4, var5))
 					// var1 = buyUnit(fractionsAllKings[this.currentTurningPlayer][var6], var4, var5);
 					// Если можем купит короля -> покупаем
-					new ActionCellBuy()
+					perform(new ActionCellBuy()
 							.setUnit(0)
-							.setIJ(var5, var4)
-							.perform();
+							.setIJ(var5, var4));
 					var1 = fieldUnits[var5][var4];
 				}
 				
@@ -270,19 +207,17 @@ public class II extends GameHandler
 					if (soldierToBuy != null && countUnits(soldierToBuy.type) < 2 && canBuyUnit(soldierToBuy, var4, var5))
 					{
 						// мечников меньше 2, покупаем в {var4, var5}
-						new ActionCellBuy()
+						perform(new ActionCellBuy()
 								.setUnit(iSoldier)
-								.setIJ(var5, var4)
-								.perform();
+								.setIJ(var5, var4));
 						var1 = fieldUnits[var5][var4];
 					}
 					else if (archerToBuy != null && countUnits(UnitType.getType("ARCHER")) < 2 && canBuyUnit(archerToBuy, var4, var5))
 					{
 						// лучников меньше 2, покупаем в {var4, var5}
-						new ActionCellBuy()
+						perform(new ActionCellBuy()
 								.setUnit(iArcher)
-								.setIJ(var5, var4)
-								.perform();
+								.setIJ(var5, var4));
 						var1 = fieldUnits[var5][var4];
 					}
 					else
@@ -335,10 +270,9 @@ public class II extends GameHandler
 								}
 							if (!unitsToBuy.isEmpty())
 							{
-								new ActionCellBuy()
+								perform(new ActionCellBuy()
 										.setUnit(unitsToBuy.get(game.random.nextInt(unitsToBuy.size())))
-										.setIJ(var5, var4)
-										.perform();
+										.setIJ(var5, var4));
 								var1 = fieldUnits[var5][var4];
 							}
 						}
@@ -352,6 +286,10 @@ public class II extends GameHandler
 		
 		var_38d5 = null;
 		var_3aad = null;
+		
+		perform(new ActionGameEndTurn());
+		MyAssert.a(!actions.isEmpty());
+		return actions;
 	}
 	
 	public void turn(Unit var1)
@@ -363,10 +301,9 @@ public class II extends GameHandler
 		else
 			return;
 			
-		new ActionUnitMove()
+		perform(new ActionUnitMove()
 				.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
-				.setTargetIJ(var_3781, var_3733)
-				.perform();
+				.setTargetIJ(var_3781, var_3733));
 				
 		if (var_37c2 == null && var_37e4 == null)
 		{
@@ -386,9 +323,8 @@ public class II extends GameHandler
 					var_3903[var18] = currentSelectedUnit;
 				}
 				
-				new ActionUnitCapture()
-						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
-						.perform();
+				perform(new ActionUnitCapture()
+						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j));
 				// setBuildingFraction(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, fractionsTurnQueue[this.currentSelectedfractionPosInTurnQueue]);
 				// PaintableObject.currentRenderer.setCurrentDisplayable(createMessageScreen((String) null, PaintableObject.getLocaleString(73), height_, 1000));
 				// Renderer.startPlayer(9, 1);
@@ -407,9 +343,8 @@ public class II extends GameHandler
 					var_3903[var18] = currentSelectedUnit;
 				}
 				
-				new ActionUnitRepair()
-						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
-						.perform();
+				perform(new ActionUnitRepair()
+						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j));
 				// setMapElement(FRACTION_BUILDINGS, this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY);
 				// PaintableObject.currentRenderer.setCurrentDisplayable(createMessageScreen((String) null, PaintableObject.getLocaleString(74), height_, 1000));
 				// Renderer.startPlayer(9, 1);
@@ -434,24 +369,118 @@ public class II extends GameHandler
 			{
 				// sprCursor.setExternalFrameSequence(CURSOR_FRAME_SEQUENCES[1]);
 				// moveCursor(this.var_37c2.currentMapPosX, this.var_37c2.currentMapPosY);
-				new ActionUnitAttack()
-						.setIJ(var_37c2.i, var_37c2.j)
-						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j)
-						.perform();
+				perform(new ActionUnitAttack()
+						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
+						.setTargetIJ(var_37c2.i, var_37c2.j));
 				var_37c2 = null;
 			}
 			else if (var_37e4 != null)
 			{
 				// moveCursor(this.var_37e4.currentMapPosX, this.var_37e4.currentMapPosY);
-				new ActionUnitRaise()
+				perform(new ActionUnitRaise()
 						.setIJ(var_37e4.i, var_37e4.j)
-						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j)
-						.perform();
+						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j));
 				var_37e4 = null;
 				var_36e4 = 7;
 			}
 		}
 	}
+	
+	private Cell[] buildings;
+	
+	public void init()
+	{
+		ArrayList<Cell> cells = new ArrayList<Cell>();
+		for (Cell[] line : fieldCells)
+			for (Cell cell : line)
+				if (cell.type.isCapture)
+					cells.add(cell);
+		buildings = cells.toArray(new Cell[0]);
+		mapAlphaData = new int[w][h];
+		var_39e3 = new int[w][h];
+	}
+	
+	// private byte[][] buildingData; // new byte[buildingCount][3] {x, y, номер игрока, -1 разрушенный, 0 ничейный, 1 синий, 2 красный, 3 зеленый, 4 черный}
+	private int[][] mapAlphaData; // new byte[mapWidth][mapHeight]
+	
+	private int	var_3733;	// 0
+	private int	var_3781;	// 0
+	
+	private Unit	var_37c2;	// null
+	private Unit	var_37e4;	// null
+	private Unit	var_381f;	// null
+	
+	public Unit[]	var_38d5;
+	private Unit[]	var_3903;	// new Unit[buildings.length];
+	private byte[]	var_3947;	// new byte[buildings.length];
+	private int[][]	var_395f;	// local
+	
+	private int[]	var_399e;	// new int[buildingCount] каждый ход обнуляется
+	public int		var_39d0;	// local
+	private int[][]	var_39e3;	// new byte[mapWidth][mapHeight];
+	
+	private int var_36e4; // 0-выбор юнита, 3-ход, 4-в конце хода что делать дальше, 5-атака
+	
+	private int	var_3a15;
+	private int	var_3a34;
+	public int	var_3a41;
+	private int	var_3a5c;
+	
+	private Unit			currentSelectedUnit;
+	private Vector<Unit>	var_3aad;
+	
+	private boolean[]	isKingsLive;
+	private boolean		isKingLive;
+	
+	public void initTurn()
+	{
+		for (Player player : game.players)
+			for (Unit unit : player.units)
+				unit.setGame(game);
+				
+		// мечники
+		// виспы
+		// лучники
+		// остальные
+		final int[] priority = new int[UnitType.number];
+		priority[UnitType.getType("SOLDIER").ordinal] = 3;
+		priority[UnitType.getType("WISP").ordinal] = 2;
+		priority[UnitType.getType("ARCHER").ordinal] = 1;
+		
+		var_3aad = new Vector<Unit>(game.currentPlayer.units);
+		Collections.sort(var_3aad, new Comparator<Unit>()
+		{
+			public boolean less(Unit a, Unit b)
+			{
+				return priority[a.type.ordinal] > priority[b.type.ordinal] || priority[a.type.ordinal] == priority[b.type.ordinal] && a.health > b.health;
+			}
+			
+			@Override
+			public int compare(Unit a, Unit b)
+			{
+				return less(a, b) ? -1 : less(b, a) ? 1 : 0;
+			}
+			
+		});
+		
+		isKingsLive = new boolean[numberPlayers];
+		for (Player player : game.players)
+		{
+			Unit king = this.getKing(player);
+			isKingsLive[player.ordinal] = king != null;
+			for (int i = 0; i < h; i++)
+				for (int j = 0; j < w; j++)
+					isKingsLive[player.ordinal] |= fieldCells[i][j].type.name == "CASTLE" && fieldCells[i][j].player == player;
+		}
+		isKingLive = isKingsLive[game.currentPlayer.ordinal];
+		
+		var_3903 = new Unit[buildings.length];
+		var_3947 = new byte[buildings.length];
+		var_399e = new int[buildings.length];
+		var_36e4 = 0;
+	}
+	
+	ArrayList<Unit> nextMove = new ArrayList<Unit>();
 	
 	public final void sub_109f(Unit var1)
 	{
@@ -800,7 +829,7 @@ public class II extends GameHandler
 		if (var1.type.name == "SORCERESS" && var5 != null)
 			var6 += 100;
 		if (var1.type.name == "WISP")
-			var6 += 25 * new ActionHelper().getUnitsInRange(var3, var2, UnitType.getType("WISP").bonusAfterMovingRange, new CheckerUnit()
+			var6 += 25 * new ActionHelper(game).getUnitsInRange(var3, var2, UnitType.getType("WISP").bonusAfterMovingRange, new CheckerUnit()
 			{
 				@Override
 				public boolean check(Unit targetUnit)
@@ -970,7 +999,7 @@ public class II extends GameHandler
 		Unit nextUnit = fieldUnits[ny][nx];
 		if (nextUnit != null && nextUnit.player.team != unit.player.team)
 			return;
-		final int cellWeight = Client.getGame().getSteps(unit, ny, nx);
+		final int cellWeight = game.getSteps(unit, ny, nx);
 		alphaData[nx][ny] = Math.max(alphaData[nx][ny], alphaData[x][y] - cellWeight);
 	}
 	

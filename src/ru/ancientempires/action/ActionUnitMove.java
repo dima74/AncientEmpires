@@ -30,17 +30,13 @@ public class ActionUnitMove extends ActionFromTo
 			return false;
 		unit = game.fieldUnits[i][j];
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
-		return unit != null && (targetUnit == null || targetUnit == unit) && canMoveUnit();
-	}
-	
-	private boolean canMoveUnit()
-	{
-		return !unit.isMove;
+		return new ActionHelper(game).isUnitActive(i, j) && (targetUnit == null || targetUnit == unit) && !unit.isMove;
 	}
 	
 	@Override
 	public void performQuick()
 	{
+		unit = game.fieldUnits[i][j];
 		UnitType type = unit.type;
 		
 		game.fieldUnitsDead[targetI][targetJ] = null;
@@ -48,7 +44,7 @@ public class ActionUnitMove extends ActionFromTo
 		game.setUnit(targetI, targetJ, unit);
 		
 		unit.isMove = true;
-		unit.isTurn = !new ActionHelper().canUnitAction(unit);
+		unit.isTurn = !new ActionHelper(game).canUnitAction(unit);
 		if (!type.canDoTwoActionAfterOne && !(i == targetI && j == targetJ))
 			unit.setTurn();
 			
@@ -61,7 +57,7 @@ public class ActionUnitMove extends ActionFromTo
 	private void handleAfterMoveEffect()
 	{
 		final ArrayList<Unit> units = new ArrayList<Unit>();
-		new ActionHelper().forUnitsInRange(targetI, targetJ, unit.type.bonusAfterMovingRange, new CheckerUnit()
+		new ActionHelper(game).forUnitsInRange(targetI, targetJ, unit.type.bonusAfterMovingRange, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)

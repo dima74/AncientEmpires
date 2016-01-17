@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import ru.ancientempires.GameView;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
@@ -27,7 +27,7 @@ public class GameActivity extends Activity
 	public static GameActivity	activity;
 	public GameView				view;
 	public boolean				isFirst					= true;
-	public Game					game					= Client.getGame();
+	public Game					game;
 	
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
@@ -55,7 +55,7 @@ public class GameActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		MyLog.l(hashCode() + " GameActivity.onCreate()");
+		Debug.create(this);
 		GameActivity.activity = this;
 		
 		final ProgressDialog dialog = new ProgressDialog(GameActivity.activity);
@@ -73,6 +73,7 @@ public class GameActivity extends Activity
 				{
 					Client.client.finishPart2();
 					Client.client.startGame(gameID);
+					game = Client.getGame();
 				}
 				catch (Exception e)
 				{
@@ -99,7 +100,7 @@ public class GameActivity extends Activity
 	protected void onStart()
 	{
 		super.onStart();
-		MyLog.l(hashCode() + " GameActivity.onStart()");
+		Debug.onStart(this);
 		if (!isFirst)
 		{
 			view = new GameView(GameActivity.this);
@@ -117,7 +118,7 @@ public class GameActivity extends Activity
 	protected void onStop()
 	{
 		super.onStop();
-		MyLog.l(hashCode() + " GameActivity.onStop()");
+		Debug.onStop(this);
 		if (view != null)
 			((ViewGroup) view.getParent()).removeView(view);
 		view = null;
@@ -144,7 +145,7 @@ public class GameActivity extends Activity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_end_turn)
-			view.thread.inputMain.endTurn();
+			view.thread.inputMain.endTurn(true);
 		else if (id == R.id.action_reset)
 			GameActivity.startGame(this, game.path.baseGameID, true);
 		else if (id == R.id.action_kill_unit)

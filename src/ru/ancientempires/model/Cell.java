@@ -37,26 +37,50 @@ public class Cell
 		this.type = type;
 		if (cell == null)
 			return;
-		this.isCapture = cell.isCapture;
-		this.isDestroying = cell.isDestroying;
-		this.i = cell.i;
-		this.j = cell.j;
+		isCapture = cell.isCapture;
+		isDestroying = cell.isDestroying;
+		i = cell.i;
+		j = cell.j;
 	}
 	
 	public int getSteps()
 	{
-		return this.type.baseSteps;
+		return type.baseSteps;
 	}
 	
 	public Team getTeam()
 	{
-		return this.player == null ? null : this.player.team;
+		return player == null ? null : player.team;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		Cell cell = (Cell) o;
+		if (type != cell.type)
+			return false;
+		if (i != cell.i)
+			return false;
+		if (j != cell.j)
+			return false;
+		if (isCapture != cell.isCapture)
+			return false;
+		if (isDestroying != cell.isDestroying)
+			return false;
+		if (player == null)
+		{
+			if (cell.player != null)
+				return false;
+		}
+		else if (!player.equals(cell.player))
+			return false;
+		return true;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "Cell [type=" + this.type + "]";
+		return "Cell [type=" + type + "]";
 	}
 	
 }

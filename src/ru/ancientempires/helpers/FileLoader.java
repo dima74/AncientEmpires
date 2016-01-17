@@ -24,7 +24,7 @@ public class FileLoader
 	
 	public AssetsHelper	assets;
 	public File			baseDirectory;
-	private String		prefix;
+	public String		prefix;
 	
 	public FileLoader(Activity activity)
 	{

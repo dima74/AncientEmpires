@@ -27,6 +27,7 @@ import ru.ancientempires.SimplePlayer;
 import ru.ancientempires.SimpleTeam;
 import ru.ancientempires.Strings;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.load.GamePath;
@@ -131,6 +132,7 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Debug.create(this);
 		setContentView(R.layout.choose_view);
 		
 		final String gameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
@@ -181,7 +183,21 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		button.setText(Strings.FIGHT.toString());
 		button.setOnClickListener(this);
 		
-		onClick(null);
+		// onClick(null);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		Debug.onStart(this);
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		Debug.onStop(this);
 	}
 	
 	private View getView(SimplePlayer player, int team)

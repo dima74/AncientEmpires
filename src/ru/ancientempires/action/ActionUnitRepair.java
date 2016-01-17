@@ -13,7 +13,7 @@ public class ActionUnitRepair extends ActionFrom
 	@Override
 	public ActionResult perform()
 	{
-		if (!check(game.checkCoordinates(i, j) && new ActionHelper().canUnitRepair(i, j)))
+		if (!check(game.checkCoordinates(i, j) && new ActionHelper(game).canUnitRepair(i, j)))
 			return null;
 		performQuick();
 		return commit();

@@ -2,9 +2,10 @@ package ru.ancientempires.view.inputs;
 
 import ru.ancientempires.action.ActionGameEndTurn;
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
+import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.view.draws.GameDraw;
 
-public class InputMain extends InputBase
+public class InputMain extends IGameHandler
 {
 	
 	public InputPlayer		inputPlayer;
@@ -15,19 +16,20 @@ public class InputMain extends InputBase
 	{
 		inputPlayer = new InputPlayer();
 		inputComputer = new InputComputer();
+		inputPlayer.main = this;
+		inputComputer.main = this;
 		for (GameDraw gameDraw : InputBase.gameDraw.gameDraws)
 			gameDraw.update();
 		beginTurn();
 	}
 	
-	@Override
 	public void beginTurn()
 	{
 		InputBase.gameDraw.isDrawCursor = false;
 		switch (game.currentPlayer.type)
 		{
 			case NONE:
-				endTurn();
+				endTurn(true);
 				return;
 			case PLAYER:
 				currentInput = inputPlayer;
@@ -36,29 +38,36 @@ public class InputMain extends InputBase
 			case COMPUTER:
 				currentInput = inputComputer;
 				currentInput.beginTurn();
-				endTurn();
+				endTurn(false);
 				break;
 		}
 		InputBase.gameDraw.gameDrawInfo.update();
 	}
 	
-	@Override
 	public void tap(int i, int j)
 	{
 		currentInput.tap(i, j);
 	}
 	
-	@Override
-	public void endTurn()
+	public void endTurn(boolean performEndTurn)
 	{
 		if (!InputBase.gameDraw.isActiveGame)
 			return;
 		currentInput.endTurn();
-		
-		ActionResultGameEndTurn result = new ActionGameEndTurn().perform();
-		InputBase.gameDraw.gameDrawUnitsHeal.start(result);
-		
+		if (performEndTurn)
+			performEndTurn();
 		beginTurn();
+	}
+	
+	private void performEndTurn()
+	{
+		performEndTurn(new ActionGameEndTurn());
+	}
+	
+	public void performEndTurn(ActionGameEndTurn action)
+	{
+		ActionResultGameEndTurn result = action.perform();
+		InputBase.gameDraw.gameDrawUnitsHeal.start(result);
 	}
 	
 }

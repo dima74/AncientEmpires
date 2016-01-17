@@ -5,7 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.framework.Debug;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -19,6 +19,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public GameView(Context context)
 	{
 		super(context);
+		Debug.create(this);
 		getHolder().addCallback(this);
 		detector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
 		{
@@ -63,7 +64,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated(SurfaceHolder holder)
 	{
-		MyLog.l(hashCode() + " GameView.surfaceCreated()");
+		Debug.onStart(this);
 		thread = new GameThread(getHolder());
 		thread.start();
 	}
@@ -75,7 +76,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
-		MyLog.l(hashCode() + " GameView.surfaceDestroyed()");
+		Debug.onStop(this);
 		thread.isRunning = false;
 	}
 	

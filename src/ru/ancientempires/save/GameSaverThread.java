@@ -3,7 +3,6 @@ package ru.ancientempires.save;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.save.GameSaver.SaveAction;
 
 public class GameSaverThread extends Thread
 {
@@ -19,16 +18,10 @@ public class GameSaverThread extends Thread
 			while (isRunning)
 			{
 				Save action;
-				while ((action = queue.poll()) != null)
+				while ((action = queue.peek()) != null)
 				{
-					System.out.print(action.getClass().getSimpleName().replace("Save", ""));
-					if (action instanceof SaveAction)
-					{
-						SaveAction saveAction = (SaveAction) action;
-						System.out.print(" " + saveAction.action.getClass().getSimpleName());
-					}
-					System.out.println();
 					action.save();
+					queue.poll();
 				}
 				Thread.yield();
 			}

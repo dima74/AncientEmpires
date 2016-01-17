@@ -46,24 +46,31 @@ public abstract class Action
 		return false;
 	}
 	
+	public boolean needCommit = true;
+	
 	public <T extends ActionResult> T commit(T result)
 	{
 		this.result = result;
-		Client.commit(this);
+		if (needCommit)
+			Client.commit(this);
 		return result;
 	}
 	
 	public ActionResult commit()
 	{
 		result = null;
-		Client.commit(this);
+		if (needCommit)
+			Client.commit(this);
 		return null;
 	}
 	
 	public boolean check(boolean successfully)
 	{
 		if (!successfully)
+		{
+			MyAssert.a(false);
 			perform();
+		}
 		MyAssert.a(successfully);
 		return successfully;
 	}
@@ -89,5 +96,34 @@ public abstract class Action
 	
 	public void save(DataOutputStream output) throws IOException
 	{}
+	
+	@Override
+	public String toString()
+	{
+		String s = this.getClass().getSimpleName().replace("Action", "") + " ";
+		if (this instanceof ActionFromTo)
+		{
+			ActionFromTo thisCast = (ActionFromTo) this;
+			s += coordinates(thisCast.i, thisCast.j)
+					+ "->"
+					+ coordinates(thisCast.targetI, thisCast.targetJ);
+		}
+		else if (this instanceof ActionFrom)
+		{
+			ActionFrom thisCast = (ActionFrom) this;
+			s += coordinates(thisCast.i, thisCast.j);
+		}
+		else if (this instanceof ActionTo)
+		{
+			ActionTo action = (ActionTo) this;
+			s += coordinates(action.targetI, action.targetJ);
+		}
+		return s;
+	}
+	
+	private String coordinates(int i, int j)
+	{
+		return "(" + i + "," + j + ")";
+	}
 	
 }

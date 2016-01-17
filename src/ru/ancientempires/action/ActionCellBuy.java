@@ -41,7 +41,7 @@ public class ActionCellBuy extends ActionFrom
 		unit = result.units[iUnit];
 		if (!unit.type.isStatic)
 			unit = new Unit(unit.type, unit.player);
-		return new ActionHelper().isEmptyCells(i, j, unit.type);
+		return new ActionHelper(game).isEmptyCells(i, j, unit.type);
 	}
 	
 	private boolean checkPlayer()
@@ -55,6 +55,7 @@ public class ActionCellBuy extends ActionFrom
 		unit.health = unit.type.baseHealth;
 		unit.player = game.currentPlayer;
 		unit.player.units.add(unit);
+		unit.game = game;
 		
 		game.currentPlayer.gold -= unit.cost;
 		game.setUnit(i, j, unit);

@@ -20,6 +20,10 @@ public class GameDrawMain extends GameDraw
 	
 	public static GameDrawMain main;
 	
+	{
+		GameDrawMain.main = this;
+	}
+	
 	public InputMain	inputMain;
 	public InputPlayer	inputPlayer;
 	
@@ -43,10 +47,6 @@ public class GameDrawMain extends GameDraw
 	public GameDrawInfoMove	gameDrawInfoMove	= new GameDrawInfoMove();
 	public int				gameDrawInfoY		= gameDrawInfo.h;
 	volatile public boolean	isActiveGame		= true;
-	
-	{
-		GameDrawMain.main = this;
-	}
 	
 	public GameDrawCells			gameDrawCells			= new GameDrawCells();
 	// public GameDrawRange gameDrawZoneMove = new GameDrawRange().setCursor(CursorImages.cursorWay);
@@ -143,12 +143,12 @@ public class GameDrawMain extends GameDraw
 		canvas.scale(mapScale, mapScale);
 		canvas.translate(offsetX, offsetY);
 		for (GameDraw gameDraw : gameDraws)
-			draw(canvas);
+			gameDraw.draw(canvas);
 		if (isDrawCursor)
 			for (GameDrawCursor gameDrawCursor : gameDrawCursors)
 				gameDrawCursor.draw(canvas);
 		for (GameDraw gameDraw : gameDrawsEffects)
-			draw(canvas);
+			gameDraw.draw(canvas);
 		canvas.restore();
 		
 		canvas.save();
@@ -174,7 +174,7 @@ public class GameDrawMain extends GameDraw
 	
 	synchronized public void onScroll(float distanceY, float distanceX)
 	{
-		setNextOffset(nextOffsetY - distanceY, nextOffsetX - distanceX);
+		setNextOffset(nextOffsetY - distanceY / mapScale, nextOffsetX - distanceX / mapScale);
 	}
 	
 	synchronized public void setNextOffset(float offsetY, float offsetX)
@@ -187,8 +187,6 @@ public class GameDrawMain extends GameDraw
 	
 	public void touch(float touchY, float touchX)
 	{
-		touchY /= mapScale;
-		touchX /= mapScale;
 		if (!isActiveGame || touchY > h - gameDrawInfo.h)
 			return;
 		if (gameDrawAction.isActive())

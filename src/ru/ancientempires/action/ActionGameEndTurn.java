@@ -3,7 +3,6 @@ package ru.ancientempires.action;
 import java.util.ArrayList;
 
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
-import ru.ancientempires.client.Client;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Player;
@@ -30,7 +29,7 @@ public class ActionGameEndTurn extends Action
 		
 		clearPlayerState(oldPlayer);
 		game.currentTurn++;
-		Client.getGame().runTasks();
+		game.runTasks();
 		healUnits();
 		earnGold();
 	}
@@ -38,7 +37,7 @@ public class ActionGameEndTurn extends Action
 	private void clearPlayerState(Player player)
 	{
 		for (Unit unit : player.units)
-			new ActionHelper().clearUnitState(unit);
+			new ActionHelper(game).clearUnitState(unit);
 	}
 	
 	private void healUnits()

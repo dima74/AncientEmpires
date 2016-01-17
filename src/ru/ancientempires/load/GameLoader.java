@@ -25,7 +25,7 @@ public class GameLoader
 			{
 				Action action = Action.loadNew(loader.actions().openDIS("" + i));
 				action.game = game;
-				action.perform();
+				action.performQuick();
 			}
 		}
 		return game;

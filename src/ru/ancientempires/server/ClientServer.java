@@ -51,13 +51,13 @@ public class ClientServer extends Server
 		else
 		{
 			game = new GameLoader(path).load();
+			game.path = path;
 			game.saver = new GameSaver(game);
 			game.saver.init();
 		}
 		client.images.load(client.imagesLoader, game);
 		
 		game.ii = new II();
-		game.ii.init();
 	}
 	
 	@Override

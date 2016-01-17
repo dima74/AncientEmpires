@@ -13,7 +13,7 @@ public class ActionUnitCapture extends ActionFrom
 	@Override
 	public ActionResult perform()
 	{
-		if (!check(game.checkCoordinates(i, j) && new ActionHelper().canUnitCapture(i, j)))
+		if (!check(game.checkCoordinates(i, j) && new ActionHelper(game).canUnitCapture(i, j)))
 			return null;
 			
 		performQuick();

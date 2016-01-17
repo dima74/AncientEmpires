@@ -65,7 +65,6 @@ public class GameSaver
 		@Override
 		public void save() throws IOException
 		{
-			System.out.println(game.players[0].units);
 			
 			++saveInfo.numberSnapshots;
 			loader.snapshots().mkdirs("");
@@ -79,7 +78,6 @@ public class GameSaver
 	
 	public void saveSnapshot() throws IOException
 	{
-		System.out.println("GameSaver.saveSnapshot()");
 		add(new SaveSnapshot());
 	}
 	
@@ -111,8 +109,13 @@ public class GameSaver
 	
 	public void save(Action action) throws IOException
 	{
-		System.out.println("GameSaver.save()");
 		add(new SaveAction(action));
+	}
+	
+	public void waitSave() throws InterruptedException
+	{
+		while (!thread.queue.isEmpty())
+			Thread.yield();
 	}
 	
 	public void finishSave() throws InterruptedException

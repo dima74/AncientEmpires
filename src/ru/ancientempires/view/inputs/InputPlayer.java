@@ -17,12 +17,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	public int	lastTapI;
 	public int	lastTapJ;
 	
-	public InputUnit inputUnit;
-	
-	public InputPlayer()
-	{
-		inputUnit = new InputUnit(this);
-	}
+	public InputUnit inputUnit = new InputUnit(this);
 	
 	@Override
 	public void beginTurn()

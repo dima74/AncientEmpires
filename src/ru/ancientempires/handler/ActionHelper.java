@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ru.ancientempires.action.CheckerCell;
 import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.RangeType;
 import ru.ancientempires.model.Unit;
@@ -12,6 +13,14 @@ import ru.ancientempires.model.UnitType;
 
 public class ActionHelper extends GameHandler
 {
+	
+	public ActionHelper()
+	{}
+	
+	public ActionHelper(Game game)
+	{
+		setGame(game);
+	}
 	
 	public boolean canUnitAction(Unit unit)
 	{

@@ -14,7 +14,7 @@ public class Unit extends IGameHandler
 	
 	public int	i;
 	public int	j;
-	public int	health;
+	public int	health	= 100;
 	public int	level;
 	public int	experience;
 	
@@ -85,9 +85,38 @@ public class Unit extends IGameHandler
 	}
 	
 	@Override
+	public boolean equals(Object o)
+	{
+		Unit unit = (Unit) o;
+		if (type != unit.type)
+			return false;
+		if (health != unit.health)
+			return false;
+		if (level != unit.level)
+			return false;
+		if (experience != unit.experience)
+			return false;
+		if (attack != unit.attack)
+			return false;
+		if (attackDelta != unit.attackDelta)
+			return false;
+		if (defence != unit.defence)
+			return false;
+		if (moveRadius != unit.moveRadius)
+			return false;
+		if (cost != unit.cost)
+			return false;
+		if (isMove != unit.isMove)
+			return false;
+		if (isTurn != unit.isTurn)
+			return false;
+		return true;
+	}
+	
+	@Override
 	public String toString()
 	{
-		return type.name + " (" + i + ", " + j + ") " + player.ordinal + " " + health;
+		return type.name + " (" + i + ", " + j + ") " + player.ordinal + " " + health + " " + isTurn;
 	}
 	
 	public int var_8f7;
@@ -134,7 +163,7 @@ public class Unit extends IGameHandler
 					type.field[maxRange + i][maxRange + j] = true;
 		type.field[maxRange][maxRange] = false;
 		
-		return new ActionHelper().getUnitsInRange(y, x, type, new CheckerUnit()
+		return new ActionHelper(game).getUnitsInRange(y, x, type, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
@@ -146,7 +175,7 @@ public class Unit extends IGameHandler
 	
 	public Unit[] getUnitsToAttack(int x, int y)
 	{
-		return new ActionHelper().getUnitsInRange(y, x, type.attackRange, new CheckerUnit()
+		return new ActionHelper(game).getUnitsInRange(y, x, type.attackRange, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
@@ -158,7 +187,7 @@ public class Unit extends IGameHandler
 	
 	public Unit[] getUnitsToRaise(int x, int y)
 	{
-		return new ActionHelper().getUnitsInRange(game.fieldUnitsDead, y, x, type.raiseRange, new CheckerUnit()
+		return new ActionHelper(game).getUnitsInRange(game.fieldUnitsDead, y, x, type.raiseRange, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)

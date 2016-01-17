@@ -11,6 +11,7 @@ import android.widget.ListView;
 import ru.ancientempires.Localization;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GamesFolder;
 
@@ -24,6 +25,7 @@ public class LevelMenuActivity extends ListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Debug.create(this);
 		setContentView(R.layout.level_menu_list_view);
 		
 		currentFolder = Client.client.allFolders.get(getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER));
@@ -72,7 +74,15 @@ public class LevelMenuActivity extends ListActivity
 	protected void onStart()
 	{
 		super.onStart();
+		Debug.onStart(this);
 		isStartingGameInProcess = false;
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		Debug.onStop(this);
 	}
 	
 	public void start()
@@ -93,7 +103,8 @@ public class LevelMenuActivity extends ListActivity
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, names);
 		setListAdapter(adapter);
 		
-		GameActivity.startGame(this, currentFolder.games[0].gameID, false);
+		int i = "campaign".equals(getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER)) ? 0 : 5;
+		GameActivity.startGame(this, currentFolder.games[i].gameID, false);
 	}
 	
 	@Override

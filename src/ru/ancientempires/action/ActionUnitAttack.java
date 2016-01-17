@@ -94,7 +94,7 @@ public class ActionUnitAttack extends ActionFromTo
 		if (isReverseAttack)
 			result.attackResultReverse = attackResultReverse;
 			
-		result.unitsToUpdate = new ActionHelper().getUnitsChangedStateNearCell(unit.player, targetI, targetJ);
+		result.unitsToUpdate = new ActionHelper(game).getUnitsChangedStateNearCell(unit.player, targetI, targetJ);
 	}
 	
 	private AttackResult attack(Unit unit, Unit targetUnit, boolean reverse)

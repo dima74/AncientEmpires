@@ -3,8 +3,8 @@ package ru.ancientempires;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.view.draws.GameDrawMain;
 import ru.ancientempires.view.inputs.InputBase;
 import ru.ancientempires.view.inputs.InputMain;
@@ -29,7 +29,7 @@ public class GameThread extends Thread
 	
 	public GameThread(SurfaceHolder surfaceHolder)
 	{
-		MyLog.l("new thread");
+		Debug.create(this);
 		this.surfaceHolder = surfaceHolder;
 		
 		gameDraw = InputBase.gameDraw = new GameDrawMain();
@@ -40,7 +40,7 @@ public class GameThread extends Thread
 	@Override
 	public void run()
 	{
-		MyLog.l("run");
+		Debug.onStart(this);
 		if (GameThread.thread != null)
 		{
 			MyAssert.a(!GameThread.thread.isRunning);
@@ -55,7 +55,6 @@ public class GameThread extends Thread
 			}
 		}
 		GameThread.thread = this;
-		MyLog.l("thread start " + hashCode());
 		
 		Client.getGame().campaign.start();
 		
@@ -124,6 +123,7 @@ public class GameThread extends Thread
 					e.printStackTrace();
 				}
 		}
+		Debug.onStop(this);
 	}
 	
 }
