@@ -57,6 +57,8 @@ public class Cell
 	public boolean equals(Object o)
 	{
 		Cell cell = (Cell) o;
+		if (this == cell)
+			return true;
 		if (type != cell.type)
 			return false;
 		if (i != cell.i)
@@ -72,7 +74,7 @@ public class Cell
 			if (cell.player != null)
 				return false;
 		}
-		else if (!player.equals(cell.player))
+		else if (player.ordinal != cell.player.ordinal)
 			return false;
 		return true;
 	}

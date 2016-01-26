@@ -6,6 +6,7 @@ import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.BonusForUnit;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
@@ -15,6 +16,11 @@ import ru.ancientempires.tasks.TaskRemoveTombstone;
 
 public class UnitHelper extends GameHandler
 {
+	
+	public UnitHelper(Game game)
+	{
+		setGame(game);
+	}
 	
 	public int getQualitySum(Unit unit)
 	{
@@ -46,7 +52,7 @@ public class UnitHelper extends GameHandler
 			if (unit.type.bonusForUnitAfterAttackAttack != 0)
 			{
 				targetUnit.attack += unit.type.bonusForUnitAfterAttackAttack;
-				new TaskIncreaseUnitAttack()
+				new TaskIncreaseUnitAttack(game)
 						.setUnit(targetUnit)
 						.setValue(-unit.type.bonusForUnitAfterAttackAttack)
 						.setTurn(game.numberPlayers())
@@ -55,7 +61,7 @@ public class UnitHelper extends GameHandler
 			if (unit.type.bonusForUnitAfterAttackDefence != 0)
 			{
 				targetUnit.defence += unit.type.bonusForUnitAfterAttackDefence;
-				new TaskIncreaseUnitDefence()
+				new TaskIncreaseUnitDefence(game)
 						.setUnit(targetUnit)
 						.setValue(-unit.type.bonusForUnitAfterAttackDefence)
 						.setTurn(game.numberPlayers())
@@ -71,12 +77,12 @@ public class UnitHelper extends GameHandler
 			return;
 		if (unit.type.isStatic)
 		{
-			new ActionHelper().clearUnitState(unit);
+			new ActionHelper(game).clearUnitState(unit);
 			game.unitsStaticDead[unit.player.ordinal].add(unit);
 		}
 		if (unit.type.hasTombstone)
 		{
-			new TaskRemoveTombstone()
+			new TaskRemoveTombstone(game)
 					.setIJ(unit.i, unit.j)
 					.setTurn(game.numberPlayers() + 1)
 					.register();
@@ -94,7 +100,8 @@ public class UnitHelper extends GameHandler
 			if (targetUnit.type == bonus.type)
 				add += bonus.value;
 				
-		float part = game.random.nextFloat() * 2 - 1;
+		// float part = game.random.nextFloat() * 2 - 1;
+		float part = 0;
 		return (int) Math.min(unit.health / 100f * Math.max(unit.attack + unit.attackDelta * part + add - getUnitDefence(targetUnit), 0), targetUnit.health);
 	}
 	

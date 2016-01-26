@@ -14,9 +14,6 @@ import ru.ancientempires.model.UnitType;
 public class ActionHelper extends GameHandler
 {
 	
-	public ActionHelper()
-	{}
-	
 	public ActionHelper(Game game)
 	{
 		setGame(game);
@@ -152,13 +149,6 @@ public class ActionHelper extends GameHandler
 		return false;
 	}
 	
-	/*
-	public boolean isUnit(int i, int j)
-	{
-		return game.getUnit(i, j) != null;
-	}
-	*/
-	
 	public boolean isEmptyCells(int i, int j, UnitType type)
 	{
 		return true;
@@ -187,28 +177,17 @@ public class ActionHelper extends GameHandler
 		});
 	}
 	
-	private boolean checkAccess(Unit unit, int targetI, int targetJ)
-	{
-		boolean[][] field = unit.type.attackRange.field;
-		int radius = field.length / 2;
-		int i = radius + targetI - unit.i;
-		int j = radius + targetJ - unit.j;
-		return i >= 0 && i < field.length && j >= 0 && j < field.length && field[i][j];
-	}
-	
 	// Для вызывания из gameDraw
 	
 	public boolean canBuyOnCell(int i, int j)
 	{
-		return game.floatingUnit == null && !game.fieldCells[i][j].type.buyUnitsDefault.isEmpty() && game.fieldCells[i][j].player == game.currentPlayer;
+		return game.checkFloating() && !game.fieldCells[i][j].type.buyUnitsDefault.isEmpty() && game.fieldCells[i][j].player == game.currentPlayer;
 	}
 	
 	public boolean isUnitActive(int i, int j)
 	{
 		Unit unit = game.fieldUnits[i][j];
-		Unit floatingUnit = game.floatingUnit;
-		return unit != null && !unit.isTurn && unit.player == game.currentPlayer
-				&& (floatingUnit == null || game.fieldUnits[floatingUnit.i][floatingUnit.j] == unit);
+		return unit != null && !unit.isTurn && unit.player == game.currentPlayer && game.checkFloating(unit);
 	}
 	
 	public boolean canUnitRepair(int i, int j)

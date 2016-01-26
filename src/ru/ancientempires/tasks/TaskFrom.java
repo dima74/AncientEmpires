@@ -4,8 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ru.ancientempires.tasks.Task;
-
 public abstract class TaskFrom extends Task
 {
 	

@@ -27,4 +27,10 @@ public class JsonHelper
 		return reader.nextBoolean();
 	}
 	
+	public static long readLong(JsonReader reader, String name) throws IOException
+	{
+		MyAssert.a(name, reader.nextName());
+		return reader.nextLong();
+	}
+	
 }

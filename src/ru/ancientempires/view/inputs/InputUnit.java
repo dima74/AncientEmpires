@@ -51,7 +51,7 @@ public class InputUnit extends IInput
 	{
 		ActionResultGetUnit result = (ActionResultGetUnit) new ActionGetUnit()
 				.setIJ(i, j)
-				.perform();
+				.perform(game);
 				
 		boolean canMove = result.canMove;
 		boolean canAttack = result.canAttack;
@@ -113,7 +113,7 @@ public class InputUnit extends IInput
 		
 		if (action.getClass() == ActionUnitMove.class)
 		{
-			ActionResultUnitMove result = ((ActionUnitMove) action).perform();
+			ActionResultUnitMove result = ((ActionUnitMove) action).perform(game);
 			GameDrawUnitMove gameDraw = new GameDrawUnitMove();
 			gameDraw.init(startI, startJ);
 			gameDraw.start(InputUnit.getPoints(startI, startJ, endI, endJ, previousMoveI, previousMoveJ), result);
@@ -122,7 +122,7 @@ public class InputUnit extends IInput
 		}
 		else if (action.getClass() == ActionUnitAttack.class)
 		{
-			ActionResultUnitAttack result = ((ActionUnitAttack) action).perform();
+			ActionResultUnitAttack result = ((ActionUnitAttack) action).perform(game);
 			inputMain.tapWithoutAction(endI, endJ);
 			if (result.isAttackUnit)
 				main.gameDrawPlayer.add(new GameDrawUnitAttackMain().start(result));

@@ -22,8 +22,8 @@ import ru.ancientempires.tasks.Task;
 public class GameSnapshotSaver
 {
 	
-	private Game		game;
-	private FileLoader	loader;
+	public Game			game;
+	public FileLoader	loader;
 	
 	public GameSnapshotSaver(Game game)
 	{
@@ -43,6 +43,7 @@ public class GameSnapshotSaver
 			saveDefaultTeams();
 		else
 			saveTeams();
+		saveTasks();
 		saveGameInfo();
 		savePlayers();
 		saveMap();
@@ -50,7 +51,6 @@ public class GameSnapshotSaver
 		saveUnits();
 		if (!game.campaign.isDefault)
 			game.campaign.saveState(loader);
-		saveTasks();
 	}
 	
 	public void saveGameInfo() throws IOException
@@ -61,6 +61,8 @@ public class GameSnapshotSaver
 		writer.name("w").value(game.w);
 		writer.name("currentPlayer").value(game.currentPlayer.color.name());
 		writer.name("currentTurn").value(game.currentTurn);
+		writer.name("unitsLimit").value(game.unitsLimit);
+		writer.name("seed").value(game.getSeed());
 		writer.endObject();
 		writer.close();
 	}
@@ -87,7 +89,7 @@ public class GameSnapshotSaver
 		writer.close();
 	}
 	
-	private void saveDefaultTeams() throws IOException
+	public void saveDefaultTeams() throws IOException
 	{
 		SimpleTeam[] teams = new SimpleTeam[game.teams.length];
 		for (int iTeam = 0; iTeam < teams.length; iTeam++)
@@ -110,7 +112,7 @@ public class GameSnapshotSaver
 		writer.close();
 	}
 	
-	private static class SimpleColorsTeam
+	public static class SimpleColorsTeam
 	{
 		public MyColor[] players;
 		
@@ -122,7 +124,7 @@ public class GameSnapshotSaver
 		}
 	}
 	
-	private void saveTeams() throws IOException
+	public void saveTeams() throws IOException
 	{
 		SimpleColorsTeam[] teams = new SimpleColorsTeam[game.teams.length];
 		for (int iTeam = 0; iTeam < teams.length; iTeam++)
@@ -229,7 +231,7 @@ public class GameSnapshotSaver
 		output.close();
 	}
 	
-	private ArrayList<Unit> convertFieldToList(Unit[][] field)
+	public ArrayList<Unit> convertFieldToList(Unit[][] field)
 	{
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		for (Unit[] line : field)
@@ -261,7 +263,7 @@ public class GameSnapshotSaver
 		game.numberedUnits.trySave(output, unit);
 	}
 	
-	private void saveTasks() throws IOException
+	public void saveTasks() throws IOException
 	{
 		DataOutputStream output = loader.openDOS("tasks.dat");
 		int number = 0;

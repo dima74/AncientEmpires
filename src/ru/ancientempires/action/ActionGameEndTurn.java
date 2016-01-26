@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 
@@ -14,15 +15,18 @@ public class ActionGameEndTurn extends Action
 	public ActionResultGameEndTurn result = new ActionResultGameEndTurn();
 	
 	@Override
-	public ActionResultGameEndTurn perform()
+	public ActionResultGameEndTurn perform(Game game)
 	{
-		performQuick();
-		return commit(result);
+		performBase(game);
+		return result;
 	}
 	
 	@Override
 	public void performQuick()
 	{
+		// if (game.currentTurn == 9)
+		// System.out.println(game.isMain + " " + game.tasks.size());
+		
 		Player oldPlayer = game.currentPlayer;
 		Player newPlayer = game.players[(oldPlayer.ordinal + 1) % game.players.length];
 		game.currentPlayer = newPlayer;

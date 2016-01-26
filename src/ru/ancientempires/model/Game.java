@@ -1,9 +1,12 @@
 package ru.ancientempires.model;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
@@ -22,14 +25,33 @@ public class Game
 	
 	public GamePath		path;
 	public GameSaver	saver;
+	public boolean		isMain;
+	public boolean		isSaver;
 	
 	// не сохраняется
 	public int[]			currentEarns;
-	public II				ii;
+	public II				ii				= new II();
 	public NamedUnits		namedUnits		= new NamedUnits();
 	public NumberedUnits	numberedUnits	= new NumberedUnits();
 	
 	public Random random = new Random();
+	
+	public long getSeed()
+	{
+		long seed = 0;
+		try
+		{
+			Field field = Random.class.getDeclaredField("seed");
+			field.setAccessible(true);
+			AtomicLong scrambledSeed = (AtomicLong) field.get(random); // this needs to be XOR'd with 0x5DEECE66DL
+			seed = scrambledSeed.get();
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+		}
+		return seed ^ 0x5DEECE66DL;
+	}
 	
 	public Team[]	teams;
 	public Player[]	players;
@@ -44,10 +66,87 @@ public class Game
 	public Set<Unit>			unitsOutside;
 	public Unit[][]				fieldUnitsDead;
 	public ArrayList<Unit>[]	unitsStaticDead;
-	public Unit					floatingUnit;
+	
+	// если на одной клетке стоят два война, то это задний
+	public Unit floatingUnit;
+	
+	public boolean checkFloating()
+	{
+		return floatingUnit == null;
+	}
+	
+	public boolean checkFloating(Unit unit)
+	{
+		return checkFloating() || unit != floatingUnit && unit.i == floatingUnit.i && unit.j == floatingUnit.j;
+	}
 	
 	public int									currentTurn;
 	public HashMap<Integer, ArrayList<Task>>	tasks	= new HashMap<Integer, ArrayList<Task>>();
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		Game game = (Game) obj;
+		
+		// System.out.println(get());
+		// System.out.println();
+		// System.out.println(game.get());
+		
+		if (!Arrays.deepEquals(teams, game.teams))
+			return false;
+		if (!Arrays.deepEquals(players, game.players))
+			return false;
+		if (currentPlayer.ordinal != game.currentPlayer.ordinal)
+			return false;
+		if (h != game.h)
+			return false;
+		if (w != game.w)
+			return false;
+		if (unitsLimit != game.unitsLimit)
+			return false;
+		if (!Arrays.deepEquals(fieldCells, game.fieldCells))
+			return false;
+		if (!Arrays.deepEquals(fieldUnits, game.fieldUnits))
+		{
+			for (int i = 0; i < h; i++)
+				for (int j = 0; j < w; j++)
+				{
+					Unit unit = fieldUnits[i][j];
+					Unit unit2 = game.fieldUnits[i][j];
+					if (unit == null && unit2 != null || unit != null && !unit.equals(unit2))
+						MyAssert.a(false);
+				}
+			MyAssert.a(false);
+			return false;
+		}
+		if (!unitsOutside.equals(game.unitsOutside))
+			return false;
+		if (!Arrays.deepEquals(fieldUnitsDead, game.fieldUnitsDead))
+		{
+			for (int i = 0; i < h; i++)
+				for (int j = 0; j < w; j++)
+				{
+					Unit unit = fieldUnitsDead[i][j];
+					Unit unit2 = game.fieldUnitsDead[i][j];
+					if (unit == null && unit2 != null || unit != null && !unit.equals(unit2))
+						MyAssert.a(false);
+				}
+			MyAssert.a(false);
+			return false;
+		}
+		if (!Arrays.deepEquals(unitsStaticDead, game.unitsStaticDead))
+			return false;
+		if (floatingUnit == null)
+		{
+			if (game.floatingUnit != null)
+				return false;
+		}
+		else if (!floatingUnit.equals(game.floatingUnit))
+			return false;
+		if (getSeed() != game.getSeed())
+			return false;
+		return true;
+	}
 	
 	public Player getPlayer(MyColor color)
 	{
@@ -92,7 +191,7 @@ public class Game
 		Unit floatingUnit = getUnit(i, j);
 		if (floatingUnit != null)
 		{
-			MyAssert.a(floatingUnit == null);
+			MyAssert.a(this.floatingUnit == null);
 			this.floatingUnit = floatingUnit;
 		}
 		
@@ -114,8 +213,8 @@ public class Game
 			
 		if (floatingUnit != null && i == floatingUnit.i && j == floatingUnit.j)
 		{
-			floatingUnit = null;
 			setUnit(i, j, floatingUnit);
+			floatingUnit = null;
 		}
 	}
 	
@@ -148,6 +247,43 @@ public class Game
 			if (cell.type.group == bonusOnCell.group)
 				additionalSteps += bonusOnCell.value;
 		return cell.getSteps() + additionalSteps;
+	}
+	
+	//
+	
+	public String get()
+	{
+		int health = fieldUnits[3][7] == null ? 0 : fieldUnits[3][7].health;
+		String s = "king health: " + health + "\n";
+		for (Unit[] line : fieldUnits)
+		{
+			for (Unit unit : line)
+			{
+				char c;
+				if (unit == null)
+					c = '.';
+				else
+				{
+					c = unit.type.name.charAt(0);
+					if (unit.player.ordinal == 0)
+						c = Character.toLowerCase(c);
+				}
+				s += c;
+			}
+			s += "\n";
+		}
+		return s;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String s = "";
+		if (isMain)
+			s += "main";
+		if (isSaver)
+			s += "save";
+		return s + " " + hashCode() + " " + getSeed();
 	}
 	
 }

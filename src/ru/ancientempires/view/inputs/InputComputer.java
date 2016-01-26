@@ -12,11 +12,11 @@ public class InputComputer extends InputBase
 	@Override
 	public void beginTurn()
 	{
-		ArrayList<Action> actions = game.ii.turn();
+		ArrayList<Action> actions = game.ii.turn(game);
 		ActionGameEndTurn actionGameEndTurn = (ActionGameEndTurn) actions.get(actions.size() - 1);
 		actions.remove(actions.size() - 1);
 		for (Action action : actions)
-			action.perform();
+			action.perform(game);
 		main.performEndTurn(actionGameEndTurn);
 		
 		InputBase.gameDraw.gameDrawUnits.update();

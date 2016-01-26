@@ -62,7 +62,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	
 	public GameDrawCampaign()
 	{
-		Client.getGame().campaign.iDrawCampaign = this;
+		game.campaign.iDrawCampaign = this;
 	}
 	
 	@Override
@@ -384,7 +384,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		
 		try
 		{
-			Client.getGame().saver.saveSnapshot();
+			game.saver.saveSnapshot();
 		}
 		catch (IOException e)
 		{

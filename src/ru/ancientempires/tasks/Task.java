@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.ancientempires.client.Client;
 import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.Game;
 
 public abstract class Task extends IGameHandler
 {
@@ -17,10 +17,11 @@ public abstract class Task extends IGameHandler
 			TaskIncreaseUnitAttack.class,
 			TaskIncreaseUnitDefence.class);
 			
-	public static Task loadNew(DataInputStream input) throws Exception
+	public static Task loadNew(DataInputStream input, Game game) throws Exception
 	{
 		int ordinal = input.readShort();
 		Task task = Task.classes.get(ordinal).newInstance();
+		task.setGame(game);
 		task.load(input);
 		return task;
 	}
@@ -35,7 +36,7 @@ public abstract class Task extends IGameHandler
 	
 	public void register()
 	{
-		Client.getGame().registerTask(this);
+		game.registerTask(this);
 	}
 	
 	public abstract void run();

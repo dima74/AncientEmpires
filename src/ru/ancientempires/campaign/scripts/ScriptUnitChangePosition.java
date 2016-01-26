@@ -58,7 +58,7 @@ public class ScriptUnitChangePosition extends Script
 		new ActionCampaignUnitChangePosition()
 				.setIJ(i, j)
 				.setTargetIJ(targetI, targetJ)
-				.perform();
+				.perform(game);
 	}
 	
 }

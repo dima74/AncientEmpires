@@ -56,7 +56,7 @@ public class ScriptRemoveUnit extends Script
 	{
 		new ActionCampaignRemoveUnit()
 				.setIJ(i.get(), j.get())
-				.perform();
+				.perform(game);
 	}
 	
 }

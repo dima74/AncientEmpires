@@ -2,7 +2,7 @@ package ru.ancientempires;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.view.draws.GameDrawMain;
@@ -56,7 +56,7 @@ public class GameThread extends Thread
 		}
 		GameThread.thread = this;
 		
-		Client.getGame().campaign.start();
+		GameActivity.activity.game.campaign.start();
 		
 		while (isRunning)
 		{
@@ -106,7 +106,7 @@ public class GameThread extends Thread
 			if (needUpdateCampaign)
 			{
 				needUpdateCampaign = false;
-				Client.getGame().campaign.update();
+				GameActivity.activity.game.campaign.update();
 			}
 			
 			// TODO сделать другой тайминговый механизм: не засыпать тут, а передавать в gameDraw.draw() время, прошедшее с последнего рисования. По нему впринципе можно вычислить iFrame, если не хочется переписывать все draw()

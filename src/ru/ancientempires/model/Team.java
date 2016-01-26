@@ -10,4 +10,16 @@ public class Team
 		this.players = players;
 	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		Team team = (Team) o;
+		if (players.length != team.players.length)
+			return false;
+		for (int i = 0; i < players.length; i++)
+			if (players[i].ordinal != team.players[i].ordinal)
+				return false;
+		return true;
+	}
+	
 }

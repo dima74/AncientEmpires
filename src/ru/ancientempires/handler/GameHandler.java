@@ -14,15 +14,12 @@ public abstract class GameHandler extends IGameHandler
 	public int		w;
 	public int		numberPlayers;
 	
-	{
-		if (game != null)
-			setGame(game);
-	}
-	
 	@Override
 	public void setGame(Game game)
 	{
 		super.setGame(game);
+		if (game == null)
+			return;
 		fieldCells = game.fieldCells;
 		fieldUnits = game.fieldUnits;
 		fieldUnitsDead = game.fieldUnitsDead;

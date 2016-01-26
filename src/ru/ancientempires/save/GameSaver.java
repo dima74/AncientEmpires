@@ -12,14 +12,15 @@ import ru.ancientempires.model.Game;
 public class GameSaver
 {
 	
-	private GameSaveLoader	loader;
-	private Game			game;
-	private SaveInfo		saveInfo	= new SaveInfo();
-	private GameSaverThread	thread;
+	public GameSaveLoader	loader;
+	public Game				game;
+	public Game				mainGame;
+	public SaveInfo			saveInfo	= new SaveInfo();
+	public GameSaverThread	thread;
 	
 	public GameSaver(Game game)
 	{
-		this.game = game;
+		mainGame = game;
 		loader = new GameSaveLoader(game.path.getLoader(), saveInfo);
 		thread = new GameSaverThread();
 		thread.start();
@@ -30,21 +31,23 @@ public class GameSaver
 		@Override
 		public void save() throws Exception
 		{
-			Game oldGame = game;
-			game = new GameLoader(game.path).load();
-			game.path = oldGame.path;
+			game = new GameLoader(mainGame.path).load();
+			game.path = mainGame.path;
+			game.isSaver = true;
 		}
 	}
 	
 	public void initFromBase() throws IOException
 	{
-		FileLoader baseLoader = Client.getGame(game.path.baseGameID).getLoader();
+		FileLoader baseLoader = Client.getGame(mainGame.path.baseGameID).getLoader();
 		FileCopier copier = new FileCopier(baseLoader, loader);
 		copier.copy("campaign.json", "strings.json");
-		for (String lang : game.path.localizations)
+		for (String lang : mainGame.path.localizations)
 			copier.copy("strings_" + lang + ".json");
 			
+		game = mainGame;
 		new SaveSnapshot().save();
+		game = null;
 		add(new LoadFirstSnapshot());
 	}
 	
@@ -54,7 +57,7 @@ public class GameSaver
 		add(new LoadFirstSnapshot());
 	}
 	
-	private void checkSaveSnapshot() throws IOException
+	public void checkSaveSnapshot() throws IOException
 	{
 		if (saveInfo.numberActionsAfterLastSave == 100)
 			saveSnapshot();
@@ -65,12 +68,11 @@ public class GameSaver
 		@Override
 		public void save() throws IOException
 		{
-			
 			++saveInfo.numberSnapshots;
 			loader.snapshots().mkdirs("");
 			loader.actions().mkdirs("");
 			saveInfo.numberActionsAfterLastSave = 0;
-			game.campaign = Client.getGame().campaign;
+			game.campaign = mainGame.campaign;
 			new GameSnapshotSaver(game, loader.snapshots()).save();
 			saveInfo.save();
 		}
@@ -93,8 +95,9 @@ public class GameSaver
 		@Override
 		public void save() throws IOException
 		{
-			action.game = game;
-			action.performQuick();
+			// System.out.println("\t\t" + action);
+			action.checkBase(game);
+			action.performQuickBase(game);
 			if (!action.isCampaign())
 			{
 				String relativeNumberAction = "" + saveInfo.numberActionsAfterLastSave++;
@@ -124,7 +127,7 @@ public class GameSaver
 		thread.join();
 	}
 	
-	private void add(Save save)
+	public void add(Save save)
 	{
 		thread.queue.offer(save);
 	}

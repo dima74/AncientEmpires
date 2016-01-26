@@ -5,16 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ru.ancientempires.client.Client;
 import ru.ancientempires.model.Unit;
 
 public class NumberedUnits
 {
-	
-	public static NumberedUnits get()
-	{
-		return Client.getGame().numberedUnits;
-	}
 	
 	private ArrayList<Unit> units = new ArrayList<Unit>();
 	

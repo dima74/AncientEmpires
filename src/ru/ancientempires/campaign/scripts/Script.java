@@ -64,12 +64,13 @@ public abstract class Script
 		campaign.finish(this);
 	}
 	
+	public void performAction()
+	{}
+	
+	// Используется только в конструкторах, которые вызываются только в редакторе кампании
 	public Game getGame()
 	{
 		return Client.getGame();
 	}
-	
-	public void performAction()
-	{}
 	
 }

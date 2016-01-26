@@ -26,11 +26,23 @@ public class Player
 	public boolean equals(Object o)
 	{
 		Player player = (Player) o;
-		return ordinal == player.ordinal;
+		if (color != player.color)
+			return false;
+		if (ordinal != player.ordinal)
+			return false;
+		if (type != player.type)
+			return false;
+		if (gold != player.gold)
+			return false;
+		if (cursorI != player.cursorI)
+			return false;
+		if (cursorJ != player.cursorJ)
+			return false;
+		return true;
 	}
 	
-	// @Override
-	public String toString1()
+	@Override
+	public String toString()
 	{
 		return "Player [" + units + "]";
 	}

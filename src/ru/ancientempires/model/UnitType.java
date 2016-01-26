@@ -68,6 +68,16 @@ public class UnitType
 	
 	public BonusForUnit[] bonusForUnitAttack;
 	
+	/*
+		Бонусы:
+			1. При атаке другого война
+				- бонусы от типа
+				- бонусы на местности
+			2. При получения поля для хода
+				а. В начале изменение общего moveRadius
+				б. При каждом перемещении между клеточками
+	*/
+	
 	public RangeType	bonusAfterMovingRange;
 	public int			bonusForUnitAfterMovingAttack;
 	public int			bonusForUnitAfterMovingDefence;
@@ -84,36 +94,36 @@ public class UnitType
 	
 	public UnitType setProperties(UnitType type)
 	{
-		this.baseHealth = type.baseHealth;
-		this.attack = type.attack;
-		this.attackDelta = type.attackDelta;
-		this.defence = type.defence;
-		this.moveRadius = type.moveRadius;
-		this.cost = type.cost;
+		baseHealth = type.baseHealth;
+		attack = type.attack;
+		attackDelta = type.attackDelta;
+		defence = type.defence;
+		moveRadius = type.moveRadius;
+		cost = type.cost;
 		
-		this.captureTypes = type.captureTypes;
-		this.repairTypes = type.repairTypes;
-		this.attackRange = type.attackRange;
-		this.destroyingTypes = type.destroyingTypes;
-		this.attackRangeReverse = type.attackRangeReverse;
-		this.raiseRange = type.raiseRange;
-		this.raiseUnit = type.raiseUnit;
+		captureTypes = type.captureTypes;
+		repairTypes = type.repairTypes;
+		attackRange = type.attackRange;
+		destroyingTypes = type.destroyingTypes;
+		attackRangeReverse = type.attackRangeReverse;
+		raiseRange = type.raiseRange;
+		raiseUnit = type.raiseUnit;
 		
-		this.isFly = type.isFly;
-		this.isStatic = type.isStatic;
-		this.hasTombstone = type.hasTombstone;
-		this.canDoTwoActionAfterOne = type.canDoTwoActionAfterOne;
+		isFly = type.isFly;
+		isStatic = type.isStatic;
+		hasTombstone = type.hasTombstone;
+		canDoTwoActionAfterOne = type.canDoTwoActionAfterOne;
 		
-		this.bonusOnCellWay = type.bonusOnCellWay;
-		this.bonusOnCellAttack = type.bonusOnCellAttack;
-		this.bonusOnCellDefence = type.bonusOnCellDefence;
-		this.bonusForUnitAttack = type.bonusForUnitAttack;
+		bonusOnCellWay = type.bonusOnCellWay;
+		bonusOnCellAttack = type.bonusOnCellAttack;
+		bonusOnCellDefence = type.bonusOnCellDefence;
+		bonusForUnitAttack = type.bonusForUnitAttack;
 		
-		this.bonusAfterMovingRange = type.bonusAfterMovingRange;
-		this.bonusForUnitAfterMovingAttack = type.bonusForUnitAfterMovingAttack;
-		this.bonusForUnitAfterMovingDefence = type.bonusForUnitAfterMovingDefence;
-		this.bonusForUnitAfterAttackAttack = type.bonusForUnitAfterAttackAttack;
-		this.bonusForUnitAfterAttackDefence = type.bonusForUnitAfterAttackDefence;
+		bonusAfterMovingRange = type.bonusAfterMovingRange;
+		bonusForUnitAfterMovingAttack = type.bonusForUnitAfterMovingAttack;
+		bonusForUnitAfterMovingDefence = type.bonusForUnitAfterMovingDefence;
+		bonusForUnitAfterAttackAttack = type.bonusForUnitAfterAttackAttack;
+		bonusForUnitAfterAttackDefence = type.bonusForUnitAfterAttackDefence;
 		
 		return this;
 	}
@@ -121,7 +131,7 @@ public class UnitType
 	@Override
 	public String toString()
 	{
-		return this.name;
+		return name;
 	}
 	
 }

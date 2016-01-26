@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.tasks.TaskIncreaseUnitAttack;
@@ -16,19 +17,18 @@ public class ActionUnitMove extends ActionFromTo
 	private Unit					unit;
 	
 	@Override
-	public ActionResultUnitMove perform()
+	public ActionResultUnitMove perform(Game game)
 	{
-		if (!check(checkMoveUnit()))
-			return null;
-		performQuick();
-		return commit(result);
+		performBase(game);
+		return result;
 	}
 	
-	private boolean checkMoveUnit()
+	@Override
+	public boolean check()
 	{
-		if (!(game.checkCoordinates(i, j) && game.checkCoordinates(targetI, targetJ)))
+		if (!super.check())
 			return false;
-		unit = game.fieldUnits[i][j];
+		Unit unit = game.fieldUnits[i][j];
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
 		return new ActionHelper(game).isUnitActive(i, j) && (targetUnit == null || targetUnit == unit) && !unit.isMove;
 	}
@@ -73,7 +73,7 @@ public class ActionUnitMove extends ActionFromTo
 			if (unit.type.bonusForUnitAfterMovingAttack != 0)
 			{
 				targetUnit.attack += unit.type.bonusForUnitAfterMovingAttack;
-				new TaskIncreaseUnitAttack()
+				new TaskIncreaseUnitAttack(game)
 						.setUnit(targetUnit)
 						.setValue(-unit.type.bonusForUnitAfterMovingAttack)
 						.setTurn(game.amountPlayers())
@@ -82,7 +82,7 @@ public class ActionUnitMove extends ActionFromTo
 			if (unit.type.bonusForUnitAfterMovingDefence != 0)
 			{
 				targetUnit.defence += unit.type.bonusForUnitAfterMovingDefence;
-				new TaskIncreaseUnitDefence()
+				new TaskIncreaseUnitDefence(game)
 						.setUnit(targetUnit)
 						.setValue(-unit.type.bonusForUnitAfterMovingDefence)
 						.setTurn(game.amountPlayers())
@@ -91,6 +91,12 @@ public class ActionUnitMove extends ActionFromTo
 		}
 		
 		result.units = units.toArray(new Unit[0]);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Move (%d %d)->(%d %d) (%s %s)", i, j, targetI, targetJ, game.fieldUnits[i][j], game.fieldUnits[targetI][targetJ]);
 	}
 	
 }

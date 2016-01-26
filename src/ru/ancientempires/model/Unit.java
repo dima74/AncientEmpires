@@ -28,36 +28,26 @@ public class Unit extends IGameHandler
 	public boolean	isMove;
 	public boolean	isTurn;
 	
-	public boolean checkFloating()
-	{
-		Unit floatingUnit = game.floatingUnit;
-		return (floatingUnit == null || floatingUnit.i == i && floatingUnit.j == j) && this != floatingUnit;
-	}
-	
 	public void setTurn()
 	{
 		isMove = true;
 		isTurn = true;
 	}
 	
-	/* Три варианта создания нового объекта
-	 0. defaultUnit
-	 	экземпляр
-	 -> загружаем все свойства
-	 
+	/* Два варианта создания нового объекта
 	 1. При загрузке игры: 
 	 	экземпляр 
-	 -> свойства из defaultUnit 
 	 -> свойства из unitType
 	 -> загружаем оставшиеся свойства
 	 
 	 2. При покупки в замке/воскрешении:
 	 	экземпляр
-	 -> свойства из defaultType и UnitType
+	 -> свойства из unitType
 	 */
 	
-	public Unit(UnitType type, Player player)
+	public Unit(UnitType type, Player player, Game game)
 	{
+		setGame(game);
 		this.type = type;
 		this.player = player;
 		setProperties(type);
@@ -90,6 +80,12 @@ public class Unit extends IGameHandler
 		Unit unit = (Unit) o;
 		if (type != unit.type)
 			return false;
+		if (player.ordinal != unit.player.ordinal)
+			return false;
+		if (i != unit.i)
+			return false;
+		if (j != unit.j)
+			return false;
 		if (health != unit.health)
 			return false;
 		if (level != unit.level)
@@ -116,7 +112,7 @@ public class Unit extends IGameHandler
 	@Override
 	public String toString()
 	{
-		return type.name + " (" + i + ", " + j + ") " + player.ordinal + " " + health + " " + isTurn;
+		return String.format("%s (%d %d) %d %d (%b %b) ", type.name, i, j, player.ordinal, health, isMove, isTurn);
 	}
 	
 	public int var_8f7;

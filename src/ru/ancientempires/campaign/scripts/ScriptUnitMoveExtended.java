@@ -54,7 +54,7 @@ public class ScriptUnitMoveExtended extends Script
 		new ActionCampaignUnitMove()
 				.setIJ(start.i, start.j)
 				.setTargetIJ(end.i, end.j)
-				.perform();
+				.perform(game);
 	}
 	
 }

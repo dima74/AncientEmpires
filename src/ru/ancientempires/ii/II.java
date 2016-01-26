@@ -9,20 +9,23 @@ import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionCellBuy;
 import ru.ancientempires.action.ActionGameEndTurn;
 import ru.ancientempires.action.ActionGetCellBuy;
+import ru.ancientempires.action.ActionGetRandomNumber;
 import ru.ancientempires.action.ActionUnitAttack;
 import ru.ancientempires.action.ActionUnitCapture;
 import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.ActionUnitRaise;
 import ru.ancientempires.action.ActionUnitRepair;
 import ru.ancientempires.action.CheckerUnit;
+import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.action.result.ActionResultGetRandomNumber;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.GameHandler;
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.model.Cell;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.RangeType;
 import ru.ancientempires.model.Team;
@@ -32,32 +35,32 @@ import ru.ancientempires.model.UnitType;
 public class II extends GameHandler
 {
 	
-	ArrayList<Action> actions = new ArrayList<Action>();
+	ArrayList<Action> actions;
 	
-	public void perform(Action action)
+	public ActionResult perform(Action action)
 	{
-		action.needCommit = false;
-		action.game = game;
-		action.perform();
-		action.game = Client.getGame();
-		action.needCommit = true;
+		ActionResult result = action.perform(game);
+		action.game = null;
 		actions.add(action);
+		return result;
 	}
 	
-	public void turnFull()
+	public void turnFull(Game mainGame) throws Exception
 	{
-		ArrayList<Action> actions = turn();
+		ArrayList<Action> actions = turn(mainGame);
 		for (Action action : actions)
-			action.perform();
+			action.perform(mainGame);
 	}
 	
-	public ArrayList<Action> turn()
+	public ArrayList<Action> turn(Game mainGame)
 	{
+		actions = new ArrayList<Action>();
 		try
 		{
-			game = Client.getGame();
-			game.saver.waitSave();
-			setGame(new GameLoader(game.path).load());
+			mainGame.saver.waitSave();
+			setGame(new GameLoader(mainGame.path).load());
+			MyAssert.a(game.equals(mainGame));
+			mainGame.equals(game);
 		}
 		catch (Exception e)
 		{
@@ -67,11 +70,18 @@ public class II extends GameHandler
 		
 		init();
 		initTurn();
+		
+		ArrayList<Unit> allUnits = new ArrayList<Unit>(var_3aad);
 		while (!var_3aad.isEmpty())
 		{
 			Unit var1 = var_381f;
 			if (var_381f == null)
 				var1 = var_3aad.elementAt(0);
+				
+			int i = allUnits.indexOf(var1);
+			int j = allUnits.lastIndexOf(var1);
+			MyAssert.a(i == j);
+			// System.out.println(allUnits.get(i).equals(allUnits.get(j)));
 			// MyLog.l(var1, this.var_381f);
 			
 			this.turn(var1);
@@ -156,7 +166,7 @@ public class II extends GameHandler
 			{
 				ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
 						.setIJ(var5, var4)
-						.perform();
+						.perform(game);
 				Unit[] units = result.units;
 				boolean[] isAvailable = result.isAvailable;
 				Unit kingToBuy = null;
@@ -194,7 +204,7 @@ public class II extends GameHandler
 					// var1 = buyUnit(fractionsAllKings[this.currentTurningPlayer][var6], var4, var5);
 					// Если можем купит короля -> покупаем
 					perform(new ActionCellBuy()
-							.setUnit(0)
+							.setUnit(iKing)
 							.setIJ(var5, var4));
 					var1 = fieldUnits[var5][var4];
 				}
@@ -270,8 +280,10 @@ public class II extends GameHandler
 								}
 							if (!unitsToBuy.isEmpty())
 							{
+								ActionResultGetRandomNumber resultRandom = (ActionResultGetRandomNumber) perform(new ActionGetRandomNumber().setBound(unitsToBuy.size()));
+								// System.out.println(resultRandom.number);
 								perform(new ActionCellBuy()
-										.setUnit(unitsToBuy.get(game.random.nextInt(unitsToBuy.size())))
+										.setUnit(unitsToBuy.get(resultRandom.number))
 										.setIJ(var5, var4));
 								var1 = fieldUnits[var5][var4];
 							}
@@ -378,8 +390,8 @@ public class II extends GameHandler
 			{
 				// moveCursor(this.var_37e4.currentMapPosX, this.var_37e4.currentMapPosY);
 				perform(new ActionUnitRaise()
-						.setIJ(var_37e4.i, var_37e4.j)
-						.setTargetIJ(currentSelectedUnit.i, currentSelectedUnit.j));
+						.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
+						.setTargetIJ(var_37e4.i, var_37e4.j));
 				var_37e4 = null;
 				var_36e4 = 7;
 			}
@@ -707,7 +719,7 @@ public class II extends GameHandler
 			
 			for (int var29 = mapAlphaData[var21].length; var23 < var29; ++var23)
 				if (mapAlphaData[var21][var23] > 0 && ((var28 = getUnitEx(var21, var23)) == null
-						|| var28 == var1 && game.floatingUnit == null
+						|| var28 == var1 && game.checkFloating()
 						|| var28 != var1 && var_381f == null && var28.player == var1.player && !var28.isMove))
 				{
 					if (var1.type.canDoTwoActionAfterOne || var28 == var1)
@@ -1041,7 +1053,7 @@ public class II extends GameHandler
 	
 	private Unit getKing(Player player)
 	{
-		UnitType king = new UnitHelper().getKingType(player);
+		UnitType king = new UnitHelper(game).getKingType(player);
 		for (Unit unit : player.units)
 			if (unit.type == king)
 				return unit;

@@ -72,8 +72,7 @@ public class GameActivity extends Activity
 				try
 				{
 					Client.client.finishPart2();
-					Client.client.startGame(gameID);
-					game = Client.getGame();
+					game = Client.client.startGame(gameID);
 				}
 				catch (Exception e)
 				{
@@ -154,7 +153,7 @@ public class GameActivity extends Activity
 			{
 				Unit unit = game.players[1].units.get(0);
 				unit.health = 0;
-				new UnitHelper().checkDied(unit);
+				new UnitHelper(game).checkDied(unit);
 				view.thread.gameDraw.gameDrawUnits.update();
 				view.thread.gameDraw.inputPlayer.tapWithoutAction(unit.i, unit.j);
 				view.thread.gameDraw.focusOnCell(unit.i, unit.j);

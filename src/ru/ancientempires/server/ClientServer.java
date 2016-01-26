@@ -1,12 +1,12 @@
 package ru.ancientempires.server;
 
 import java.io.IOException;
+import java.util.Random;
 
 import ru.ancientempires.action.Action;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
@@ -24,7 +24,7 @@ public class ClientServer extends Server
 	}
 	
 	@Override
-	public void startGame(String gameID) throws Exception
+	public Game startGame(String gameID) throws Exception
 	{
 		// Если это не базовая игра, то просто загружаем её
 		// Иначе копируем в games/ANDROID_ID/
@@ -42,6 +42,7 @@ public class ClientServer extends Server
 			newGamePath.canChooseTeams = false;
 			game = new GameLoader(path).load();
 			game.path = newGamePath;
+			game.random = new Random(213237048392331L);
 			
 			game.saver = new GameSaver(game);
 			game.saver.initFromBase();
@@ -57,21 +58,25 @@ public class ClientServer extends Server
 		}
 		client.images.load(client.imagesLoader, game);
 		
-		game.ii = new II();
+		game.isMain = true;
+		return game;
 	}
 	
 	@Override
 	public void stopGame() throws Exception
 	{
-		Client.getGame().saver.finishSave();
+		game.saver.finishSave();
 		if (game.path.nextGameID != null)
 			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
-	public void commit(Action action)
+	public void commit(Action action) throws IOException
 	{
+		// action.saveBase(MyAssert.output);
+		MyAssert.outputText.println(action);
 		try
 		{
+			// Вот здесь у него поменялось знасение поля Game!
 			game.saver.save(action);
 		}
 		catch (IOException e)

@@ -2,6 +2,7 @@ package ru.ancientempires.action.campaign;
 
 import ru.ancientempires.action.ActionFromTo;
 import ru.ancientempires.action.result.ActionResult;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 
 public class ActionCampaignUnitMove extends ActionFromTo
@@ -14,10 +15,10 @@ public class ActionCampaignUnitMove extends ActionFromTo
 	}
 	
 	@Override
-	public ActionResult perform()
+	public ActionResult perform(Game game)
 	{
-		performQuick();
-		return commit();
+		performBase(game);
+		return null;
 	}
 	
 	@Override

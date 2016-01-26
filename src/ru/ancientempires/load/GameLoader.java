@@ -24,8 +24,8 @@ public class GameLoader
 			for (int i = 0; i < loader.saveInfo.numberActionsAfterLastSave; i++)
 			{
 				Action action = Action.loadNew(loader.actions().openDIS("" + i));
-				action.game = game;
-				action.performQuick();
+				action.checkBase(game);
+				action.performQuickBase(game);
 			}
 		}
 		return game;

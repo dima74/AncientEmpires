@@ -18,6 +18,12 @@ public abstract class ActionFrom extends Action
 	}
 	
 	@Override
+	public boolean check()
+	{
+		return game.checkCoordinates(i, j);
+	}
+	
+	@Override
 	public void load(DataInputStream input) throws IOException
 	{
 		i = input.readShort();

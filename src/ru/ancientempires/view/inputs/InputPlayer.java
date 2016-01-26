@@ -49,11 +49,11 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		{
 			if (inputUnit.isActive)
 				inputUnit.tap(i, j); // сам станет неактивным
-			if (new ActionHelper().canUnitRepair(i, j))
+			if (new ActionHelper(game).canUnitRepair(i, j))
 				tryRepair(i, j);
-			else if (new ActionHelper().canUnitCapture(i, j))
+			else if (new ActionHelper(game).canUnitCapture(i, j))
 				tryCapture(i, j);
-			else if (new ActionHelper().canBuyOnCell(i, j))
+			else if (new ActionHelper(game).canBuyOnCell(i, j))
 				tryBuy(i, j);
 		}
 		else
@@ -61,7 +61,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 			boolean isMove = false;
 			if (inputUnit.isActive)
 				isMove = inputUnit.tap(i, j);
-			if (!inputUnit.start(i, j) && !isMove && new ActionHelper().canBuyOnCell(i, j))
+			if (!inputUnit.start(i, j) && !isMove && new ActionHelper(game).canBuyOnCell(i, j))
 				tryBuy(i, j);
 		}
 	}
@@ -79,7 +79,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	{
 		new ActionUnitRepair()
 				.setIJ(i, j)
-				.perform();
+				.perform(game);
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
 	}
@@ -88,7 +88,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	{
 		new ActionUnitCapture()
 				.setIJ(i, j)
-				.perform();
+				.perform(game);
 		InputBase.gameDraw.gameDrawCells.updateOneCell(i, j);
 		return true;
 	}
@@ -97,7 +97,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 	{
 		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
 				.setIJ(i, j)
-				.perform();
+				.perform(game);
 		Unit[] units = result.units;
 		boolean[] isAvailable = result.isAvailable;
 		UnitBuyDialog.showDialog(this, units, isAvailable);
@@ -110,7 +110,7 @@ public class InputPlayer extends InputBase implements NoticeUnitBuy
 		new ActionCellBuy()
 				.setUnit(iUnit)
 				.setIJ(lastTapI, lastTapJ)
-				.perform();
+				.perform(game);
 				
 		InputBase.gameDraw.gameDrawInfo.update();
 		inputUnit.start(lastTapI, lastTapJ);

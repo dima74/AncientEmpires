@@ -66,7 +66,7 @@ public class InputMain extends IGameHandler
 	
 	public void performEndTurn(ActionGameEndTurn action)
 	{
-		ActionResultGameEndTurn result = action.perform();
+		ActionResultGameEndTurn result = action.perform(game);
 		InputBase.gameDraw.gameDrawUnitsHeal.start(result);
 	}
 	

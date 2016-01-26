@@ -1,9 +1,11 @@
 package ru.ancientempires.server;
 
+import ru.ancientempires.model.Game;
+
 public interface IServer
 {
 	
-	void startGame(String gameID) throws Exception;
+	public Game startGame(String gameID) throws Exception;
 	
 	public void stopGame() throws Exception;
 	

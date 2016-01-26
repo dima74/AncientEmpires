@@ -29,7 +29,7 @@ public class ScriptUnitCreate extends Script
 		this.i = i;
 		this.j = j;
 		this.player = campaign.game.players[player];
-		this.unitType = "KING".equals(unitType) ? new UnitHelper().getKingType(this.player) : UnitType.getType(unitType);
+		this.unitType = "KING".equals(unitType) ? new UnitHelper(game).getKingType(this.player) : UnitType.getType(unitType);
 	}
 	
 	public ScriptUnitCreate(int i, int j, String unitType, int player)
@@ -72,7 +72,7 @@ public class ScriptUnitCreate extends Script
 				.setType(unitType)
 				.setPlayer(player)
 				.setIJ(i.get(), j.get())
-				.perform();
+				.perform(game);
 	}
 	
 }

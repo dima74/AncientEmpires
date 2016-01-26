@@ -9,9 +9,10 @@ import java.util.List;
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.model.Game;
 
-public abstract class Action
+public abstract class Action extends IGameHandler
 {
 	
 	public static List<Class<? extends Action>> classes = Arrays.asList(
@@ -23,7 +24,8 @@ public abstract class Action
 			ActionUnitCapture.class,
 			ActionUnitAttack.class,
 			ActionUnitRaise.class,
-			ActionGameEndTurn.class);
+			ActionGameEndTurn.class,
+			ActionGetRandomNumber.class);
 			
 	public static Action loadNew(DataInputStream input) throws Exception
 	{
@@ -33,8 +35,10 @@ public abstract class Action
 		return action;
 	}
 	
-	public ActionResult	result;
-	public Game			game	= Client.getGame();
+	public Action()
+	{
+		setGame(null);
+	}
 	
 	public boolean changesGame()
 	{
@@ -46,41 +50,39 @@ public abstract class Action
 		return false;
 	}
 	
-	public boolean needCommit = true;
+	public abstract ActionResult perform(Game game);
 	
-	public <T extends ActionResult> T commit(T result)
+	public final void performBase(Game game)
 	{
-		this.result = result;
-		if (needCommit)
+		checkBase(game);
+		performQuick();
+		if (game.isMain)
 			Client.commit(this);
-		return result;
 	}
 	
-	public ActionResult commit()
+	public void checkBase(Game game)
 	{
-		result = null;
-		if (needCommit)
-			Client.commit(this);
-		return null;
-	}
-	
-	public boolean check(boolean successfully)
-	{
-		if (!successfully)
-		{
-			MyAssert.a(false);
-			perform();
-		}
+		setGame(game);
+		boolean successfully = check();
 		MyAssert.a(successfully);
-		return successfully;
+		if (!successfully)
+			check();
 	}
 	
-	public abstract ActionResult perform();
+	public boolean check()
+	{
+		return true;
+	}
 	
-	public void performQuick()
-	{}
+	public abstract void performQuick();
 	
-	public void saveBase(DataOutputStream output) throws IOException
+	public final void performQuickBase(Game game)
+	{
+		setGame(game);
+		performQuick();
+	}
+	
+	public final void saveBase(DataOutputStream output) throws IOException
 	{
 		output.writeShort(ordinal());
 		save(output);
@@ -118,6 +120,7 @@ public abstract class Action
 			ActionTo action = (ActionTo) this;
 			s += coordinates(action.targetI, action.targetJ);
 		}
+		// s = game.hashCode() + " " + s;
 		return s;
 	}
 	

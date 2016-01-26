@@ -33,7 +33,7 @@ public class ScriptCameraMoveOnKing extends Script
 	public void start()
 	{
 		super.start();
-		Unit king = new UnitHelper().getKing(player);
+		Unit king = new UnitHelper(game).getKing(player);
 		campaign.iDrawCampaign.cameraMove(king.i, king.j, this);
 	}
 	

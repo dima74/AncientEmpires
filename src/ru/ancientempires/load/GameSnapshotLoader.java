@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -77,7 +78,7 @@ public class GameSnapshotLoader
 			{
 				cellType.buyUnits[iPlayer] = new ArrayList<Unit>();
 				for (UnitType unitType : cellType.buyUnitsDefault)
-					cellType.buyUnits[iPlayer].add(new Unit(unitType, game.players[iPlayer]));
+					cellType.buyUnits[iPlayer].add(new Unit(unitType, game.players[iPlayer], game));
 			}
 		}
 		
@@ -99,6 +100,11 @@ public class GameSnapshotLoader
 		game.w = JsonHelper.readInt(reader, "w");
 		game.currentPlayer = game.getPlayer(MyColor.valueOf(JsonHelper.readString(reader, "currentPlayer")));
 		game.currentTurn = JsonHelper.readInt(reader, "currentTurn");
+		game.unitsLimit = JsonHelper.readInt(reader, "unitsLimit");
+		long seed = JsonHelper.readLong(reader, "seed");
+		game.random = new Random(seed);
+		if (path.isBaseGame)
+			game.random = new Random();
 		reader.endObject();
 		reader.close();
 	}
@@ -254,7 +260,7 @@ public class GameSnapshotLoader
 	{
 		UnitType type = UnitType.getType(input.readUTF());
 		Player player = game.players[input.readInt()];
-		Unit unit = new Unit(type, player);
+		Unit unit = new Unit(type, player, game);
 		unit.i = input.readInt();
 		unit.j = input.readInt();
 		unit.health = input.readInt();
@@ -267,7 +273,6 @@ public class GameSnapshotLoader
 		
 		if (addToPlayer)
 			player.units.add(unit);
-		unit.game = game;
 		return unit;
 	}
 	
@@ -282,9 +287,8 @@ public class GameSnapshotLoader
 			ArrayList<Task> tasks = new ArrayList<Task>(numberTasks);
 			for (int j = 0; j < numberTasks; j++)
 			{
-				Task task = Task.loadNew(input);
+				Task task = Task.loadNew(input, game);
 				tasks.add(task);
-				task.game = game;
 			}
 			game.tasks.put(turn, tasks);
 		}

@@ -8,13 +8,13 @@ import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 
 public class ActionCellBuy extends ActionFrom
 {
 	
-	private int		iUnit;
-	private Unit	unit;
+	private int iUnit;
 	
 	public ActionCellBuy setUnit(int iUnit)
 	{
@@ -23,24 +23,18 @@ public class ActionCellBuy extends ActionFrom
 	}
 	
 	@Override
-	public ActionResult perform()
+	public ActionResult perform(Game game)
 	{
-		if (!check(checkBuy()))
-			return null;
-		performQuick();
-		return commit();
+		performBase(game);
+		return null;
 	}
 	
-	private boolean checkBuy()
+	@Override
+	public boolean check()
 	{
-		if (!(game.checkCoordinates(i, j) && checkPlayer()))
+		if (!(super.check() && checkPlayer()))
 			return false;
-		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
-				.setIJ(i, j)
-				.perform();
-		unit = result.units[iUnit];
-		if (!unit.type.isStatic)
-			unit = new Unit(unit.type, unit.player);
+		Unit unit = getUnit();
 		return new ActionHelper(game).isEmptyCells(i, j, unit.type);
 	}
 	
@@ -49,13 +43,24 @@ public class ActionCellBuy extends ActionFrom
 		return game.fieldCells[i][j].player == game.currentPlayer;
 	}
 	
+	private Unit getUnit()
+	{
+		ActionGetCellBuy actionGet = new ActionGetCellBuy();
+		actionGet.setIJ(i, j);
+		ActionResultGetCellBuy result = actionGet.perform(game);
+		Unit unit = result.units[iUnit];
+		if (!unit.type.isStatic)
+			unit = new Unit(unit.type, unit.player, game);
+		return unit;
+	}
+	
 	@Override
 	public void performQuick()
 	{
+		Unit unit = getUnit();
 		unit.health = unit.type.baseHealth;
 		unit.player = game.currentPlayer;
 		unit.player.units.add(unit);
-		unit.game = game;
 		
 		game.currentPlayer.gold -= unit.cost;
 		game.setUnit(i, j, unit);

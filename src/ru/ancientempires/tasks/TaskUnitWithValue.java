@@ -5,8 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.tasks.NumberedUnits;
-import ru.ancientempires.tasks.Task;
 
 public abstract class TaskUnitWithValue extends Task
 {
@@ -30,14 +28,14 @@ public abstract class TaskUnitWithValue extends Task
 	public void load(DataInputStream input) throws IOException
 	{
 		int iUnit = input.readInt();
-		unit = NumberedUnits.get().get(iUnit);
+		unit = game.numberedUnits.get(iUnit);
 		value = input.readInt();
 	}
 	
 	@Override
 	public void save(DataOutputStream output) throws IOException
 	{
-		int iUnit = NumberedUnits.get().add(unit);
+		int iUnit = game.numberedUnits.add(unit);
 		output.writeInt(iUnit);
 		output.writeInt(value);
 	}

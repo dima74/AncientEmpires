@@ -18,6 +18,12 @@ public abstract class ActionFromTo extends ActionTo
 	}
 	
 	@Override
+	public boolean check()
+	{
+		return game.checkCoordinates(i, j) && game.checkCoordinates(targetI, targetJ);
+	}
+	
+	@Override
 	public void load(DataInputStream input) throws IOException
 	{
 		super.load(input);

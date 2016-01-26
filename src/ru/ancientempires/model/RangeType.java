@@ -14,7 +14,7 @@ public class RangeType
 		RangeType.number = RangeType.types.length;
 		for (int i = 0; i < RangeType.number; i++)
 			RangeType.types[i].ordinal = i;
-		
+			
 		int maxRadius = 0;
 		for (RangeType type : types)
 			maxRadius = Math.max(maxRadius, type.radius);
@@ -35,25 +35,38 @@ public class RangeType
 		return null;
 	}
 	
-	public static int	number;
+	public static int number;
 	
-	public String		name;
-	public int			ordinal;
+	public String	name;
+	public int		ordinal;
 	
 	public int			radius;
 	public boolean[][]	field;
+	
+	public boolean checkAccess(Unit unit, Unit targetUnit)
+	{
+		return checkAccess(unit, targetUnit.i, targetUnit.j);
+	}
+	
+	public boolean checkAccess(Unit unit, int targetI, int targetJ)
+	{
+		int size = field.length;
+		int relI = targetI - unit.i + radius;
+		int relJ = targetJ - unit.j + radius;
+		return 0 <= relI && relI < size && 0 <= relJ && relJ < size && field[relI][relJ];
+	}
 	
 	@Override
 	public String toString()
 	{
 		String s = "";
-		for (boolean[] element : this.field)
+		for (boolean[] element : field)
 		{
 			for (boolean element2 : element)
 				s += element2 ? '1' : '0';
 			s += "\n";
 		}
-		return "RangeType [" + this.name + "]\n" + s;
+		return "RangeType [" + name + "]\n" + s;
 	}
 	
 }

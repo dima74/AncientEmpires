@@ -12,6 +12,7 @@ import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.framework.LogWriter;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.images.ImagesLoader;
@@ -122,9 +123,9 @@ public class Client
 		return Client.client.clientServer.game;
 	}
 	
-	public void startGame(String gameID) throws Exception
+	public Game startGame(String gameID) throws Exception
 	{
-		clientServer.startGame(gameID);
+		return clientServer.startGame(gameID);
 	}
 	
 	public void stopGame() throws Exception
@@ -141,7 +142,15 @@ public class Client
 			{
 				// TODO
 			}
-			Client.client.clientServer.commit(action);
+			try
+			{
+				Client.client.clientServer.commit(action);
+			}
+			catch (IOException e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 		}
 	}
 	

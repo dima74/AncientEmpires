@@ -49,7 +49,7 @@ public class ScriptUnitDie extends Script
 	{
 		new ActionCampaignRemoveUnit()
 				.setIJ(i, j)
-				.perform();
+				.perform(game);
 	}
 	
 }
