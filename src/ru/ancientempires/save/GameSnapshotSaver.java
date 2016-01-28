@@ -168,7 +168,7 @@ public class GameSnapshotSaver
 					writer.name("isCapture").value(true);
 					writer.name("player").value(cell.player.ordinal);
 				}
-				if (cell.isDestroying)
+				if (cell.isDestroy)
 					writer.name("isDestroying").value(true);
 					
 				writer.endObject();

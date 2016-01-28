@@ -3,7 +3,7 @@ package ru.ancientempires.action;
 import ru.ancientempires.action.result.ActionResultGetUnit;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.RangeType;
+import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Unit;
 
 public class ActionGetUnit extends ActionFrom
@@ -151,7 +151,7 @@ public class ActionGetUnit extends ActionFrom
 				Unit targetUnit = game.fieldUnits[targetI][targetJ];
 				Cell targetCell = game.fieldCells[targetI][targetJ];
 				return targetUnit != null && targetUnit.player.team != unit.player.team
-						|| unit.type.destroyingTypes[targetCell.type.ordinal] && !targetCell.isDestroying && targetCell.getTeam() != unit.player.team;
+						|| unit.type.destroyingTypes[targetCell.type.ordinal] && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
 			}
 		});
 		
@@ -188,7 +188,7 @@ public class ActionGetUnit extends ActionFrom
 				}
 	}
 	
-	private void create(RangeType range, boolean[][] field, boolean[][] fieldReal, CheckerCoordinates checker)
+	private void create(Range range, boolean[][] field, boolean[][] fieldReal, CheckerCoordinates checker)
 	{
 		int startRelativeI = Math.max(-unit.i, -range.radius);
 		int startRelativeJ = Math.max(-unit.j, -range.radius);
@@ -196,7 +196,7 @@ public class ActionGetUnit extends ActionFrom
 		int endRelativeJ = Math.min(game.w - unit.j - 1, range.radius);
 		for (int relativeI = startRelativeI; relativeI <= endRelativeI; relativeI++)
 			for (int relativeJ = startRelativeJ; relativeJ <= endRelativeJ; relativeJ++)
-				if (range.field[range.radius + relativeI][range.radius + relativeJ])
+				if (range.table[range.radius + relativeI][range.radius + relativeJ])
 				{
 					field[radius + relativeI][radius + relativeJ] = true;
 					int targetI = unit.i + relativeI;

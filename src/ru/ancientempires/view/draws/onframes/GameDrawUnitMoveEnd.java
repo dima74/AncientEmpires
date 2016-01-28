@@ -9,7 +9,7 @@ public class GameDrawUnitMoveEnd extends GameDrawOnFramesGroup
 	public void start(ActionResultUnitMove result, int frameToStart)
 	{
 		draws.clear();
-		if (result.sign == +1)
+		if (result.sign > 0)
 			for (Unit unit : result.units)
 				add(new GameDrawBitmaps()
 						.setYX(unit.i * A, unit.j * A)

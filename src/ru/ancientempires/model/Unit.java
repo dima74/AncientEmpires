@@ -1,6 +1,9 @@
 package ru.ancientempires.model;
 
+import java.util.Set;
+
 import ru.ancientempires.action.CheckerUnit;
+import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusForUnit;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.handler.ActionHelper;
@@ -18,12 +21,8 @@ public class Unit extends IGameHandler
 	public int	level;
 	public int	experience;
 	
-	// Определяются типом + бонусами
-	public float	attack;
-	public float	attackDelta;
-	public int		defence;
-	public int		moveRadius;
-	public int		cost;
+	public Set<Bonus>	bonuses;
+	public int			cost;
 	
 	public boolean	isMove;
 	public boolean	isTurn;
@@ -66,12 +65,13 @@ public class Unit extends IGameHandler
 	
 	public Unit setProperties(UnitType type)
 	{
-		attack = type.attack;
-		attackDelta = type.attackDelta;
-		defence = type.defence;
-		moveRadius = type.moveRadius;
 		cost = type.cost;
 		return this;
+	}
+	
+	public Cell getCell()
+	{
+		return game.fieldCells[i][j];
 	}
 	
 	@Override
@@ -92,13 +92,7 @@ public class Unit extends IGameHandler
 			return false;
 		if (experience != unit.experience)
 			return false;
-		if (attack != unit.attack)
-			return false;
-		if (attackDelta != unit.attackDelta)
-			return false;
-		if (defence != unit.defence)
-			return false;
-		if (moveRadius != unit.moveRadius)
+		if (!bonuses.equals(unit.bonuses))
 			return false;
 		if (cost != unit.cost)
 			return false;
@@ -150,15 +144,7 @@ public class Unit extends IGameHandler
 	
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)
 	{
-		RangeType type = new RangeType();
-		type.radius = maxRange;
-		type.field = new boolean[maxRange * 2 + 1][maxRange * 2 + 1];
-		for (int i = -maxRange; i <= maxRange; i++)
-			for (int j = -maxRange; j <= maxRange; j++)
-				if (Math.abs(i) + Math.abs(j) <= maxRange)
-					type.field[maxRange + i][maxRange + j] = true;
-		type.field[maxRange][maxRange] = false;
-		
+		Range type = new Range(null, minRange, maxRange);
 		return new ActionHelper(game).getUnitsInRange(y, x, type, new CheckerUnit()
 		{
 			@Override

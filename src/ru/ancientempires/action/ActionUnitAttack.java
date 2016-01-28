@@ -63,7 +63,7 @@ public class ActionUnitAttack extends ActionFromTo
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 			
-		targetCell.isDestroying = true;
+		targetCell.isDestroy = true;
 		targetCell.isCapture = false;
 		targetCell.player = null;
 		

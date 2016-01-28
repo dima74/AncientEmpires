@@ -30,7 +30,7 @@ public class Cell
 	public Player	player;
 	
 	// только для разрушаемых клеточек
-	public boolean isDestroying;
+	public boolean isDestroy;
 	
 	public Cell(Cell cell, CellType type)
 	{
@@ -38,14 +38,14 @@ public class Cell
 		if (cell == null)
 			return;
 		isCapture = cell.isCapture;
-		isDestroying = cell.isDestroying;
+		isDestroy = cell.isDestroy;
 		i = cell.i;
 		j = cell.j;
 	}
 	
 	public int getSteps()
 	{
-		return type.baseSteps;
+		return type.steps;
 	}
 	
 	public Team getTeam()
@@ -67,7 +67,7 @@ public class Cell
 			return false;
 		if (isCapture != cell.isCapture)
 			return false;
-		if (isDestroying != cell.isDestroying)
+		if (isDestroy != cell.isDestroy)
 			return false;
 		if (player == null)
 		{

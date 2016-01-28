@@ -3,7 +3,6 @@ package ru.ancientempires.handler;
 import java.util.HashMap;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.bonuses.BonusForUnit;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
@@ -24,7 +23,7 @@ public class UnitHelper extends GameHandler
 	
 	public int getQualitySum(Unit unit)
 	{
-		return (int) (2 * unit.attack) + unit.defence;
+		return unit.type.attackMin + unit.type.attackMax + unit.type.defence;
 	}
 	
 	public final int getNextRankExperience(Unit unit)

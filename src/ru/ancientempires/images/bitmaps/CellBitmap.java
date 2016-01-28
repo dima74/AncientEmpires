@@ -23,9 +23,9 @@ public class CellBitmap
 	private FewBitmaps getFewBitmaps(Cell cell)
 	{
 		CellType type = cell.type;
-		if (type.isDestroying && cell.isDestroying)
+		if (type.isDestroying && cell.isDestroy)
 			return destroyingBitmap;
-		else if (type.isCapture && cell.isCapture)
+		else if (type.isCapturing && cell.isCapture)
 			return colorBitmaps[CellImages.get().playerToColorI[cell.player.ordinal]];
 		else
 			return defaultBitmap;

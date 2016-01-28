@@ -81,7 +81,7 @@ public class CellImages extends IImages
 			cellBitmap.defaultBitmap = new FewBitmaps().setBitmaps(defaultBitmaps);
 			
 			// colorBitmaps
-			if (type.isCapture)
+			if (type.isCapturing)
 			{
 				cellBitmap.colorBitmaps = new FewBitmaps[colors.length];
 				for (int colorI = 0; colorI < colors.length; colorI++)

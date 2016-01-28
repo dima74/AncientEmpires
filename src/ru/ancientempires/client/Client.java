@@ -18,8 +18,9 @@ import ru.ancientempires.images.Images;
 import ru.ancientempires.images.ImagesLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
-import ru.ancientempires.load.RulesLoader;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.Rules;
+import ru.ancientempires.rules.RulesLoader;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.server.Server;
 
@@ -41,6 +42,7 @@ public class Client
 	public FileLoader	gamesLoader;
 	public FileLoader	defaultGameLoader;
 	public FileLoader	rulesLoader;
+	public Rules		rules;
 	
 	public ImagesLoader	imagesLoader;
 	public Images		images	= new Images();
@@ -87,7 +89,7 @@ public class Client
 	// То что нужно для непосредственно игры
 	public void loadPart2() throws Exception
 	{
-		new RulesLoader(rulesLoader).load();
+		rules = new RulesLoader(rulesLoader).load();
 		images.preload(imagesLoader);
 	}
 	

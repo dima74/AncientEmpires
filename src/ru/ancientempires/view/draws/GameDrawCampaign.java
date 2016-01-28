@@ -355,7 +355,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 		Cell targetCell = game.fieldCells[i][j];
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
-		targetCell.isDestroying = true;
+		targetCell.isDestroy = true;
 		targetCell.isCapture = false;
 		targetCell.player = null;
 		

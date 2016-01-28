@@ -27,7 +27,7 @@ import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
-import ru.ancientempires.model.RangeType;
+import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
@@ -324,7 +324,7 @@ public class II extends GameHandler
 			// if (sub_d5e(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
 			
 			Cell cell = fieldCells[currentSelectedUnit.i][currentSelectedUnit.j];
-			if (currentSelectedUnit.type.captureTypes[cell.type.ordinal] && !cell.isDestroying && cell.getTeam() != var1.player.team)
+			if (currentSelectedUnit.type.captureTypes[cell.type.ordinal] && !cell.isDestroy && cell.getTeam() != var1.player.team)
 			// может захватить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);
@@ -344,7 +344,7 @@ public class II extends GameHandler
 				// var_12ff = delayCounter;
 			}
 			// else if (sub_d41(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
-			else if (currentSelectedUnit.type.repairTypes[cell.type.ordinal] && cell.isDestroying)
+			else if (currentSelectedUnit.type.repairTypes[cell.type.ordinal] && cell.isDestroy)
 			// может чинить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);
@@ -405,7 +405,7 @@ public class II extends GameHandler
 		ArrayList<Cell> cells = new ArrayList<Cell>();
 		for (Cell[] line : fieldCells)
 			for (Cell cell : line)
-				if (cell.type.isCapture)
+				if (cell.type.isCapturing)
 					cells.add(cell);
 		buildings = cells.toArray(new Cell[0]);
 		mapAlphaData = new int[w][h];
@@ -957,8 +957,8 @@ public class II extends GameHandler
 	
 	private boolean canPerformCloseAttack(Unit unit, int targetJ, int targetI)
 	{
-		RangeType type = unit.type.attackRangeReverse;
-		boolean[][] field = type.field;
+		Range type = unit.type.attackRangeReverse;
+		boolean[][] field = type.table;
 		int size = field.length;
 		
 		int relI = targetI - unit.i + type.radius;

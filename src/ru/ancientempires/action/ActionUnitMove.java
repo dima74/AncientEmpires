@@ -1,14 +1,11 @@
 package ru.ancientempires.action;
 
-import java.util.ArrayList;
-
 import ru.ancientempires.action.result.ActionResultUnitMove;
+import ru.ancientempires.bonuses.BonusCreate;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
-import ru.ancientempires.tasks.TaskIncreaseUnitAttack;
-import ru.ancientempires.tasks.TaskIncreaseUnitDefence;
 
 public class ActionUnitMove extends ActionFromTo
 {
@@ -48,49 +45,21 @@ public class ActionUnitMove extends ActionFromTo
 		if (!type.canDoTwoActionAfterOne && !(i == targetI && j == targetJ))
 			unit.setTurn();
 			
-		int sign = (int) Math.signum(type.bonusForUnitAfterMovingAttack + type.bonusForUnitAfterMovingDefence);
-		result.sign = sign;
-		if (type.bonusForUnitAfterMovingAttack != 0 || type.bonusForUnitAfterMovingDefence != 0)
-			handleAfterMoveEffect();
+		handleAfterMoveEffect();
 	}
 	
 	private void handleAfterMoveEffect()
 	{
-		final ArrayList<Unit> units = new ArrayList<Unit>();
-		new ActionHelper(game).forUnitsInRange(targetI, targetJ, unit.type.bonusAfterMovingRange, new CheckerUnit()
-		{
-			@Override
-			public boolean check(Unit targetUnit)
-			{
-				if (unit.player == targetUnit.player)
-					units.add(targetUnit);
-				return false;
-			}
-		});
-		
-		for (Unit targetUnit : units)
-		{
-			if (unit.type.bonusForUnitAfterMovingAttack != 0)
-			{
-				targetUnit.attack += unit.type.bonusForUnitAfterMovingAttack;
-				new TaskIncreaseUnitAttack(game)
-						.setUnit(targetUnit)
-						.setValue(-unit.type.bonusForUnitAfterMovingAttack)
-						.setTurn(game.amountPlayers())
-						.register();
-			}
-			if (unit.type.bonusForUnitAfterMovingDefence != 0)
-			{
-				targetUnit.defence += unit.type.bonusForUnitAfterMovingDefence;
-				new TaskIncreaseUnitDefence(game)
-						.setUnit(targetUnit)
-						.setValue(-unit.type.bonusForUnitAfterMovingDefence)
-						.setTurn(game.amountPlayers())
-						.register();
-			}
-		}
-		
-		result.units = units.toArray(new Unit[0]);
+		if (unit.type.creators.length == 0)
+			return;
+		// TODO если у типа есть несколько сreators
+		BonusCreate[] creates = unit.type.creators[0].applyBonusesAfterMove(game, unit);
+		result.sign = 0;
+		for (BonusCreate create : creates)
+			result.sign += create.bonus.getSign();
+		result.units = new Unit[creates.length];
+		for (int i = 0; i < creates.length; i++)
+			result.units[i] = creates[i].unit;
 	}
 	
 	@Override

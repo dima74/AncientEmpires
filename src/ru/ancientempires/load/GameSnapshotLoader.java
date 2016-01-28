@@ -25,6 +25,7 @@ import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.rules.RulesLoader;
 import ru.ancientempires.tasks.Task;
 
 public class GameSnapshotLoader
@@ -77,7 +78,7 @@ public class GameSnapshotLoader
 			for (int iPlayer = 0; iPlayer < game.players.length; iPlayer++)
 			{
 				cellType.buyUnits[iPlayer] = new ArrayList<Unit>();
-				for (UnitType unitType : cellType.buyUnitsDefault)
+				for (UnitType unitType : cellType.buyTypes)
 					cellType.buyUnits[iPlayer].add(new Unit(unitType, game.players[iPlayer], game));
 			}
 		}

@@ -27,7 +27,7 @@ public class ActionUnitRepair extends ActionFrom
 	{
 		Unit unit = game.getUnit(i, j);
 		Cell cell = game.fieldCells[i][j];
-		cell.isDestroying = false;
+		cell.isDestroy = false;
 		unit.isTurn = true;
 	}
 	
