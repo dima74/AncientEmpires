@@ -1,6 +1,6 @@
 AncientEmpires
 ==============
 
-Это игра для android, пошаговая стратегия вдохновленная (на самом деле порт) [этой](https://ru.wikipedia.org/wiki/Ancient_Empires_(мобильная_игра)) игрой.
+Это игра для андроид, пошаговая стратегия вдохновленная (на самом деле порт) [этой](https://ru.wikipedia.org/wiki/Ancient_Empires_(мобильная_игра)) игрой.
 
-Для компиляции необходимо [ядро игры](https://github.com/dima74/AncientEmpires-java).
+Раньше для компиляции было необходимо [ядро игры](https://github.com/dima74/AncientEmpires-java), теперь же это независимый проект.
