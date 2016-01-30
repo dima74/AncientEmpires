@@ -29,14 +29,14 @@ public class ScriptUnitCreate extends Script
 		this.i = i;
 		this.j = j;
 		this.player = campaign.game.players[player];
-		this.unitType = "KING".equals(unitType) ? new UnitHelper(game).getKingType(this.player) : UnitType.getType(unitType);
+		this.unitType = "KING".equals(unitType) ? new UnitHelper(game).getKingType(this.player) : game.rules.getUnitType(unitType);
 	}
 	
 	public ScriptUnitCreate(int i, int j, String unitType, int player)
 	{
 		this.i = new CoordinateInteger(i);
 		this.j = new CoordinateInteger(j);
-		this.unitType = UnitType.getType(unitType);
+		this.unitType = game.rules.getUnitType(unitType);
 		this.player = getGame().players[player];
 	}
 	
@@ -45,7 +45,7 @@ public class ScriptUnitCreate extends Script
 	{
 		i = Coordinate.getNew(reader, "i");
 		j = Coordinate.getNew(reader, "j");
-		unitType = UnitType.getType(JsonHelper.readString(reader, "unitType"));
+		unitType = game.rules.getUnitType(JsonHelper.readString(reader, "unitType"));
 		player = campaign.game.players[JsonHelper.readInt(reader, "player")];
 	}
 	

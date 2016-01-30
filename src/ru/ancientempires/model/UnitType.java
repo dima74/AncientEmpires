@@ -6,10 +6,11 @@ import ru.ancientempires.bonuses.BonusCreator;
 public class UnitType
 {
 	
+	public int ordinal;
+	
 	public UnitType	baseType;
 	public String	name;
 	
-	public int	health;
 	public int	attackMin;
 	public int	attackMax;
 	public int	defence;
@@ -44,16 +45,20 @@ public class UnitType
 	public Bonus[]			bonuses;
 	public BonusCreator[]	creators;
 	
-	public UnitType(String name)
+	// Эти поля используются только для копирования в клеточку
+	public int healthDefault;
+	
+	public UnitType(String name, int ordinal)
 	{
 		this.name = name.intern();
+		this.ordinal = ordinal;
 	}
 	
 	public UnitType setProperties(UnitType type)
 	{
 		baseType = type;
 		
-		health = type.health;
+		healthDefault = type.healthDefault;
 		attackMin = type.attackMin;
 		attackMax = type.attackMax;
 		defence = type.defence;

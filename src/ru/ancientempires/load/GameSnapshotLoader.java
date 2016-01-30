@@ -24,26 +24,27 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.model.UnitType;
-import ru.ancientempires.rules.RulesLoader;
+import ru.ancientempires.rules.Rules;
 import ru.ancientempires.tasks.Task;
 
-public class GameSnapshotLoader
+class GameSnapshotLoader
 {
 	
-	public GamePath		path;
-	public FileLoader	loader;
-	public FileLoader	loaderCampaign;
-	public Game			game	= new Game();
+	GamePath	path;
+	FileLoader	loader;
+	FileLoader	loaderCampaign;
+	Game		game	= new Game();
+	Rules		rules;
 	
-	public GameSnapshotLoader(GamePath path) throws Exception
+	GameSnapshotLoader(GamePath path, Rules rules) throws Exception
 	{
 		this.path = path;
+		this.rules = rules;
 		loaderCampaign = path.getLoader();
 		loader = path.isBaseGame ? loaderCampaign : path.getGameLoader().snapshots();
 	}
 	
-	public Game load() throws Exception
+	Game load() throws Exception
 	{
 		loadPlayers();
 		loadGameInfo();
@@ -72,14 +73,14 @@ public class GameSnapshotLoader
 		}
 		
 		//
-		for (CellType cellType : CellType.types)
+		for (CellType cellType : rules.cellTypes)
 		{
-			cellType.buyUnits = new ArrayList[game.players.length];
+			cellType.buyUnits = new Unit[game.players.length][];
 			for (int iPlayer = 0; iPlayer < game.players.length; iPlayer++)
 			{
-				cellType.buyUnits[iPlayer] = new ArrayList<Unit>();
-				for (UnitType unitType : cellType.buyTypes)
-					cellType.buyUnits[iPlayer].add(new Unit(unitType, game.players[iPlayer], game));
+				cellType.buyUnits[iPlayer] = new Unit[cellType.buyTypes.length];
+				for (int i = 0; i < cellType.buyTypes.length; i++)
+					cellType.buyUnits[iPlayer][i] = new Unit(cellType.buyTypes[i], game.players[iPlayer], game);
 			}
 		}
 		
@@ -93,7 +94,7 @@ public class GameSnapshotLoader
 		return game;
 	}
 	
-	public void loadGameInfo() throws IOException
+	void loadGameInfo() throws IOException
 	{
 		JsonReader reader = loader.getReader("gameInfo.json");
 		reader.beginObject();
@@ -110,7 +111,7 @@ public class GameSnapshotLoader
 		reader.close();
 	}
 	
-	private void loadPlayers() throws IOException
+	public void loadPlayers() throws IOException
 	{
 		JsonReader reader = loader.getReader("players.json");
 		reader.beginObject();
@@ -140,12 +141,12 @@ public class GameSnapshotLoader
 			game.players[player.ordinal] = player;
 	}
 	
-	private static class SimpleColorsTeam
+	public static class SimpleColorsTeam
 	{
-		public MyColor[] players;
+		MyColor[] players;
 	}
 	
-	private void loadTeams() throws IOException
+	public void loadTeams() throws IOException
 	{
 		JsonReader reader = loader.getReader("teams.json");
 		reader.beginObject();
@@ -164,7 +165,7 @@ public class GameSnapshotLoader
 		}
 	}
 	
-	private void loadLastTeams() throws IOException
+	public void loadLastTeams() throws IOException
 	{
 		JsonReader reader = loader.getReader("lastTeams.json");
 		reader.beginObject();
@@ -192,7 +193,7 @@ public class GameSnapshotLoader
 		game.players = players;
 	}
 	
-	private void loadMap() throws NumberFormatException, IOException
+	public void loadMap() throws NumberFormatException, IOException
 	{
 		DataInputStream input = loader.openDIS("map.dat");
 		game.fieldCells = new Cell[game.h][game.w];
@@ -200,33 +201,26 @@ public class GameSnapshotLoader
 			for (int j = 0; j < game.w; j++)
 			{
 				int ordinal = input.readInt();
-				CellType type = CellType.getType(ordinal);
-				game.fieldCells[i][j] = Cell.getNew(type);
+				CellType type = rules.cellTypes[ordinal];
+				game.fieldCells[i][j] = new Cell(type, i, j);
 			}
 		input.close();
 	}
 	
-	private void loadCells() throws IOException
+	public void loadCells() throws IOException
 	{
-		JsonReader reader = loader.getReader("cells.json");
-		reader.beginObject();
-		MyAssert.a("cells", reader.nextName());
-		
-		reader.beginArray();
-		while (reader.peek() == JsonToken.BEGIN_OBJECT)
+		DataInputStream input = loader.openDIS("cells.dat");
+		int numberCells = input.readInt();
+		for (int iCell = 0; iCell < numberCells; iCell++)
 		{
-			Cell cell = RulesLoader.nextCell(reader, game.players);
-			CellType type = game.fieldCells[cell.i][cell.j].type;
-			cell.type = type;
-			game.fieldCells[cell.i][cell.j] = cell;
+			int i = input.readShort();
+			int j = input.readShort();
+			game.fieldCells[i][j].load(input, game);
 		}
-		reader.endArray();
-		
-		reader.endObject();
-		reader.close();
+		input.close();
 	}
 	
-	private void loadUnits() throws IOException
+	public void loadUnits() throws IOException
 	{
 		DataInputStream input = loader.openDIS("units.dat");
 		game.fieldUnits = loadUnitsField(input, true);
@@ -236,11 +230,10 @@ public class GameSnapshotLoader
 		game.unitsStaticDead = new ArrayList[game.players.length];
 		for (int i = 0; i < game.players.length; i++)
 			loadUnits(input, game.unitsStaticDead[i] = new ArrayList<Unit>(), false);
-			
 		input.close();
 	}
 	
-	private Unit[][] loadUnitsField(DataInputStream input, boolean addToPlayer) throws IOException
+	public Unit[][] loadUnitsField(DataInputStream input, boolean addToPlayer) throws IOException
 	{
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		loadUnits(input, units, addToPlayer);
@@ -250,34 +243,23 @@ public class GameSnapshotLoader
 		return field;
 	}
 	
-	private void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
+	public void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
 	{
 		int numberUnits = input.readInt();
 		for (int i = 0; i < numberUnits; i++)
 			units.add(loadUnit(input, addToPlayer));
 	}
 	
-	private Unit loadUnit(DataInputStream input, boolean addToPlayer) throws IOException
+	public Unit loadUnit(DataInputStream input, boolean addToPlayer) throws IOException
 	{
-		UnitType type = UnitType.getType(input.readUTF());
-		Player player = game.players[input.readInt()];
-		Unit unit = new Unit(type, player, game);
-		unit.i = input.readInt();
-		unit.j = input.readInt();
-		unit.health = input.readInt();
-		unit.level = input.readInt();
-		unit.experience = input.readInt();
-		unit.isMove = input.readBoolean();
-		unit.isTurn = input.readBoolean();
-		game.namedUnits.tryLoad(input, unit);
-		game.numberedUnits.tryLoad(input, unit);
-		
+		Unit unit = new Unit(game);
+		unit.load(input, game);
 		if (addToPlayer)
-			player.units.add(unit);
+			unit.player.units.add(unit);
 		return unit;
 	}
 	
-	private void loadTasks() throws Exception
+	public void loadTasks() throws Exception
 	{
 		DataInputStream input = loader.openDIS("tasks.dat");
 		int number = input.readInt();

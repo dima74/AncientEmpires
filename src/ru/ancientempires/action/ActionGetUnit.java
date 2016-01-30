@@ -35,7 +35,7 @@ public class ActionGetUnit extends ActionFrom
 			return;
 			
 		radius = 0;
-		radius = Math.max(radius, unit.moveRadius);
+		radius = Math.max(radius, unit.getMoveRadius());
 		radius = Math.max(radius, unit.type.attackRange.radius);
 		radius = Math.max(radius, unit.type.raiseRange.radius);
 		diameter = radius * 2 + 1;
@@ -113,7 +113,10 @@ public class ActionGetUnit extends ActionFrom
 				Unit nextUnit = game.fieldUnits[nextIAbsolute][nextJAbsolute];
 				if (nextUnit != null && nextUnit.player.team != unit.player.team)
 					continue;
-				int steps = game.getSteps(unit, nextIAbsolute, nextJAbsolute);
+					
+				int currentIAbsolute = unit.i + minDistanceI - radius;
+				int currentJAbsolute = unit.j + minDistanceJ - radius;
+				int steps = unit.getSteps(currentIAbsolute, currentJAbsolute, game.fieldCells[nextIAbsolute][nextJAbsolute]);
 				int nextDistance = distance[minDistanceI][minDistanceJ] + steps;
 				if (nextDistance < distance[nextI][nextJ])
 				{
@@ -151,7 +154,7 @@ public class ActionGetUnit extends ActionFrom
 				Unit targetUnit = game.fieldUnits[targetI][targetJ];
 				Cell targetCell = game.fieldCells[targetI][targetJ];
 				return targetUnit != null && targetUnit.player.team != unit.player.team
-						|| unit.type.destroyingTypes[targetCell.type.ordinal] && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
+						|| unit.canDestroy(targetCell.type) && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
 			}
 		});
 		

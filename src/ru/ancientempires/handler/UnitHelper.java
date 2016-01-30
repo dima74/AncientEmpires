@@ -3,14 +3,10 @@ package ru.ancientempires.handler;
 import java.util.HashMap;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.bonuses.BonusOnCellGroup;
-import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
-import ru.ancientempires.tasks.TaskIncreaseUnitAttack;
-import ru.ancientempires.tasks.TaskIncreaseUnitDefence;
 import ru.ancientempires.tasks.TaskRemoveTombstone;
 
 public class UnitHelper extends GameHandler
@@ -43,33 +39,6 @@ public class UnitHelper extends GameHandler
 		return false;
 	}
 	
-	public int handleAfterAttackEffect(Unit unit, Unit targetUnit)
-	{
-		int bonusSign = (int) Math.signum(unit.type.bonusForUnitAfterAttackAttack + unit.type.bonusForUnitAfterAttackDefence);
-		if (bonusSign != 0)
-		{
-			if (unit.type.bonusForUnitAfterAttackAttack != 0)
-			{
-				targetUnit.attack += unit.type.bonusForUnitAfterAttackAttack;
-				new TaskIncreaseUnitAttack(game)
-						.setUnit(targetUnit)
-						.setValue(-unit.type.bonusForUnitAfterAttackAttack)
-						.setTurn(game.numberPlayers())
-						.register();
-			}
-			if (unit.type.bonusForUnitAfterAttackDefence != 0)
-			{
-				targetUnit.defence += unit.type.bonusForUnitAfterAttackDefence;
-				new TaskIncreaseUnitDefence(game)
-						.setUnit(targetUnit)
-						.setValue(-unit.type.bonusForUnitAfterAttackDefence)
-						.setTurn(game.numberPlayers())
-						.register();
-			}
-		}
-		return bonusSign;
-	}
-	
 	public void checkDied(Unit unit)
 	{
 		if (unit.health > 0)
@@ -94,33 +63,26 @@ public class UnitHelper extends GameHandler
 	
 	public int getDecreaseHealth(Unit unit, Unit targetUnit)
 	{
-		int add = unit.level * 2;
-		for (BonusForUnit bonus : unit.type.bonusForUnitAttack)
-			if (targetUnit.type == bonus.type)
-				add += bonus.value;
-				
-		// float part = game.random.nextFloat() * 2 - 1;
-		float part = 0;
-		return (int) Math.min(unit.health / 100f * Math.max(unit.attack + unit.attackDelta * part + add - getUnitDefence(targetUnit), 0), targetUnit.health);
+		int attackBonus = unit.getBonusAttack(targetUnit);
+		int attack = game.random.nextInt(unit.type.attackMax - unit.type.attackMin) + unit.type.attackMin;
+		// int attack = unit.type.attackMin;
+		return Math.min(unit.health * Math.max(attack + attackBonus - getUnitDefence(targetUnit, unit) / 100, 0), targetUnit.health);
 	}
 	
-	public float getUnitDefence(Unit unit)
+	public int getUnitDefence(Unit unit, Unit fromUnit)
 	{
-		int add = 0;
-		final Cell cell = game.fieldCells[unit.i][unit.j];
-		for (BonusOnCellGroup bonus : unit.type.bonusOnCellDefence)
-			if (cell.type.group == bonus.group)
-				add += bonus.value;
-		return unit.type.defence + add + unit.level * 2;
+		int defenceBonus = unit.getBonusDefence(fromUnit);
+		int defence = unit.type.defence;
+		return defence + defenceBonus;
 	}
 	
 	public UnitType getKingType(Player player)
 	{
 		HashMap<MyColor, UnitType> colorToKing = new HashMap<MyColor, UnitType>();
-		colorToKing.put(MyColor.BLUE, UnitType.getType("KING_GALAMAR"));
-		colorToKing.put(MyColor.GREEN, UnitType.getType("KING_VALADORN"));
-		colorToKing.put(MyColor.RED, UnitType.getType("KING_DEMONLORD"));
-		colorToKing.put(MyColor.BLACK, UnitType.getType("KING_SAETH"));
+		colorToKing.put(MyColor.BLUE, game.rules.getUnitType("KING_GALAMAR"));
+		colorToKing.put(MyColor.GREEN, game.rules.getUnitType("KING_VALADORN"));
+		colorToKing.put(MyColor.RED, game.rules.getUnitType("KING_DEMONLORD"));
+		colorToKing.put(MyColor.BLACK, game.rules.getUnitType("KING_SAETH"));
 		return colorToKing.get(player.color);
 	}
 	

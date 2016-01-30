@@ -15,7 +15,7 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.model.UnitType;
+import ru.ancientempires.rules.Rules;
 
 public class UnitImages extends IImages
 {
@@ -25,11 +25,13 @@ public class UnitImages extends IImages
 		return Client.client.images.unit;
 	}
 	
-	private MyColor[]		colors	= MyColor.values();
+	public Rules rules;
+	
+	public MyColor[]		colors	= MyColor.values();
 	public int[]			playerToColorI;
 	public FewBitmaps[][]	greyUnitsBitmaps;
-	private FewBitmaps[][]	unitsBitmaps;
-	private Bitmap[][]		unitsBitmapsBuy;
+	public FewBitmaps[][]	unitsBitmaps;
+	public Bitmap[][]		unitsBitmapsBuy;
 	
 	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
@@ -50,7 +52,7 @@ public class UnitImages extends IImages
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
 		
-		unitsBitmaps = new FewBitmaps[UnitType.number][5];
+		unitsBitmaps = new FewBitmaps[rules.unitTypes.length][5];
 		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
@@ -58,7 +60,7 @@ public class UnitImages extends IImages
 		while (reader.peek() == JsonToken.BEGIN_OBJECT)
 		{
 			reader.beginObject();
-			int type = UnitType.getType(JsonHelper.readString(reader, "type")).ordinal;
+			int type = rules.getUnitType(JsonHelper.readString(reader, "type")).ordinal;
 			MyAssert.a("images", reader.nextName());
 			String[] imageNames = new Gson().fromJson(reader, String[].class);
 			for (int colorI = 0; colorI < colors.length; colorI++)
@@ -86,9 +88,9 @@ public class UnitImages extends IImages
 				if (player.color == colors[colorI])
 					playerToColorI[player.ordinal] = colorI;
 					
-		unitsBitmapsBuy = new Bitmap[UnitType.number][5];
+		unitsBitmapsBuy = new Bitmap[rules.unitTypes.length][5];
 		for (int colorI = 0; colorI < colors.length; colorI++)
-			for (int typeI = 0; typeI < UnitType.number; typeI++)
+			for (int typeI = 0; typeI < unitsBitmapsBuy.length; typeI++)
 				unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
 	

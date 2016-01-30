@@ -17,6 +17,7 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
+import ru.ancientempires.rules.Rules;
 
 public class CellImages extends IImages
 {
@@ -26,11 +27,13 @@ public class CellImages extends IImages
 		return Client.client.images.cell;
 	}
 	
-	private CellBitmap[]	cellBitmaps;
-	private CellBitmap[]	cellBitmapsDual;
+	public Rules rules;
+	
+	public CellBitmap[]	cellBitmaps;
+	public CellBitmap[]	cellBitmapsDual;
 	
 	public int[]		playerToColorI;
-	private MyColor[]	colors	= new MyColor[]
+	public MyColor[]	colors	= new MyColor[]
 									{
 											MyColor.RED,
 											MyColor.GREEN,
@@ -57,8 +60,8 @@ public class CellImages extends IImages
 	@Override
 	public void preload(ImagesLoader loader) throws IOException
 	{
-		cellBitmaps = new CellBitmap[CellType.number];
-		cellBitmapsDual = new CellBitmap[CellType.number];
+		cellBitmaps = new CellBitmap[rules.cellTypes.length];
+		cellBitmapsDual = new CellBitmap[rules.cellTypes.length];
 		
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
@@ -68,7 +71,7 @@ public class CellImages extends IImages
 		for (int i = 0; reader.peek() == JsonToken.BEGIN_OBJECT; i++)
 		{
 			reader.beginObject();
-			CellType type = CellType.getType(JsonHelper.readString(reader, "type"));
+			CellType type = rules.getCellType(JsonHelper.readString(reader, "type"));
 			MyAssert.a("images", reader.nextName());
 			String[] imageNames = new Gson().fromJson(reader, String[].class);
 			

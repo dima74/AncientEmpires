@@ -10,12 +10,13 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.Rules;
 import ru.ancientempires.save.GameSaver;
 
 public class ClientServer extends Server
 {
 	
-	private Client	client;
+	public Client	client;
 	public Game		game;
 	
 	public ClientServer(Client client)
@@ -29,6 +30,7 @@ public class ClientServer extends Server
 		// Если это не базовая игра, то просто загружаем её
 		// Иначе копируем в games/ANDROID_ID/
 		GamePath path = Client.getGame(gameID);
+		Rules rules = path.getRules();
 		if (path.isBaseGame)
 		{
 			String newID = client.ID + ".save" + client.numberSaves++;
@@ -40,7 +42,7 @@ public class ClientServer extends Server
 					.copyTo(newPath, newID);
 			newGamePath.isBaseGame = false;
 			newGamePath.canChooseTeams = false;
-			game = new GameLoader(path).load();
+			game = new GameLoader(path, rules).load();
 			game.path = newGamePath;
 			game.random = new Random(213237048392331L);
 			
@@ -51,7 +53,7 @@ public class ClientServer extends Server
 		}
 		else
 		{
-			game = new GameLoader(path).load();
+			game = new GameLoader(path, rules).load();
 			game.path = path;
 			game.saver = new GameSaver(game);
 			game.saver.init();
@@ -59,6 +61,7 @@ public class ClientServer extends Server
 		client.images.load(client.imagesLoader, game);
 		
 		game.isMain = true;
+		game.ii.rules = rules;
 		return game;
 	}
 	

@@ -1,11 +1,15 @@
 package ru.ancientempires.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.bonuses.Bonus;
-import ru.ancientempires.bonuses.BonusForUnit;
-import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.IGameHandler;
 
@@ -17,11 +21,11 @@ public class Unit extends IGameHandler
 	
 	public int	i;
 	public int	j;
-	public int	health	= 100;
+	public int	health;
 	public int	level;
 	public int	experience;
 	
-	public Set<Bonus>	bonuses;
+	public Set<Bonus>	bonuses	= new HashSet<Bonus>();
 	public int			cost;
 	
 	public boolean	isMove;
@@ -44,34 +48,145 @@ public class Unit extends IGameHandler
 	 -> свойства из unitType
 	 */
 	
+	// используется при загрузки игры
+	public Unit(Game game)
+	{
+		setGame(game);
+	}
+	
+	// используется при покупки войнов
 	public Unit(UnitType type, Player player, Game game)
 	{
 		setGame(game);
 		this.type = type;
 		this.player = player;
-		setProperties(type);
-	}
-	
-	public Unit setProperties(Unit defaultUnit)
-	{
-		health = defaultUnit.health;
-		level = defaultUnit.level;
-		experience = defaultUnit.experience;
-		
-		isMove = defaultUnit.isMove;
-		isTurn = defaultUnit.isTurn;
-		return this;
-	}
-	
-	public Unit setProperties(UnitType type)
-	{
 		cost = type.cost;
-		return this;
+		initFromType();
+	}
+	
+	public void initFromType()
+	{
+		health = type.healthDefault;
 	}
 	
 	public Cell getCell()
 	{
 		return game.fieldCells[i][j];
+	}
+	
+	public Bonus[] getBonuses()
+	{
+		ArrayList<Bonus> bonuses = new ArrayList<Bonus>(this.bonuses);
+		bonuses.addAll(Arrays.asList(type.bonuses));
+		return bonuses.toArray(new Bonus[0]);
+	}
+	
+	public int getMoveRadius()
+	{
+		int moveRadius = type.moveRadius;
+		for (Bonus bonus : getBonuses())
+			moveRadius += bonus.getBonusMoveStart(game, this);
+		return moveRadius;
+	}
+	
+	// TODO кристаллы не должны мочь ходить на горы
+	public int getSteps(int i, int j, Cell targetCell)
+	{
+		return getSteps(game.fieldCells[i][j], targetCell);
+	}
+	
+	public int getSteps(Cell cell, Cell targetCell)
+	{
+		if (type.isFly)
+			return 1;
+		int steps = targetCell.getSteps();
+		for (Bonus bonus : getBonuses())
+			steps += bonus.getBonusMove(game, this, cell, targetCell);
+		return steps;
+	}
+	
+	public int getBonusAttack(Unit targetUnit)
+	{
+		return getBonusAttack(getCell(), targetUnit);
+	}
+	
+	public int getBonusAttack(int i, int j, Unit targetUnit)
+	{
+		return getBonusAttack(game.fieldCells[i][j], targetUnit);
+	}
+	
+	public int getBonusAttack(Cell cell, Unit targetUnit)
+	{
+		int attackBonus = 0;
+		for (Bonus bonus : getBonuses())
+			attackBonus += bonus.getBonusAttack(game, this, cell, targetUnit);
+		return attackBonus;
+	}
+	
+	public int getBonusDefence(Unit fromUnit)
+	{
+		return getBonusDefence(getCell(), fromUnit);
+	}
+	
+	public int getBonusDefence(int i, int j, Unit fromUnit)
+	{
+		return getBonusDefence(game.fieldCells[i][j], fromUnit);
+	}
+	
+	public int getBonusDefence(Cell cell, Unit fromUnit)
+	{
+		int defenceBonus = cell.type.defense;
+		for (Bonus bonus : getBonuses())
+			defenceBonus += bonus.getBonusDefence(game, this, cell, fromUnit);
+		return defenceBonus;
+	}
+	
+	// Пожалуй, эти две функции - единственное место,
+	// которое делается не за логарифм, хотя можно было бы соптимайзить)))
+	public boolean canCapture(CellType cellType)
+	{
+		return Arrays.asList(type.captureTypes).contains(cellType);
+	}
+	
+	public boolean canRepair(CellType cellType)
+	{
+		return Arrays.asList(type.repairTypes).contains(cellType);
+	}
+	
+	public boolean canDestroy(CellType cellType)
+	{
+		return Arrays.asList(type.destroyingTypes).contains(cellType);
+	}
+	
+	public void save(DataOutputStream output, Game game) throws IOException
+	{
+		output.writeUTF(type.name);
+		output.writeInt(player.ordinal);
+		output.writeInt(i);
+		output.writeInt(j);
+		output.writeInt(health);
+		output.writeInt(level);
+		output.writeInt(experience);
+		output.writeBoolean(isMove);
+		output.writeBoolean(isTurn);
+		game.namedUnits.trySave(output, this);
+		game.numberedUnits.trySave(output, this);
+	}
+	
+	public void load(DataInputStream input, Game game) throws IOException
+	{
+		type = game.rules.getUnitType(input.readUTF());
+		initFromType();
+		player = game.players[input.readInt()];
+		i = input.readInt();
+		j = input.readInt();
+		health = input.readInt();
+		level = input.readInt();
+		experience = input.readInt();
+		isMove = input.readBoolean();
+		isTurn = input.readBoolean();
+		game.namedUnits.tryLoad(input, this);
+		game.numberedUnits.tryLoad(input, this);
 	}
 	
 	@Override
@@ -109,6 +224,7 @@ public class Unit extends IGameHandler
 		return String.format("%s (%d %d) %d %d (%b %b) ", type.name, i, j, player.ordinal, health, isMove, isTurn);
 	}
 	
+	// II
 	public int var_8f7;
 	
 	public int sub_462(Unit targetUnit)
@@ -116,30 +232,14 @@ public class Unit extends IGameHandler
 		return this.sub_462(j, i, targetUnit);
 	}
 	
+	// некоторая характеристика того состояния, которое будет если этот войн сходит на клеточку (i, j) и атакует targetUnit
 	public int sub_462(int j, int i, Unit targetUnit)
 	{
 		// System.out.println(attack * 2 + " " + defence + " " + getOffenceBonusAgainstUnitEx(targetUnit, j, i) + " " + getDefenceBonusAgainstUnitEx(targetUnit, j, i));
-		return (int) ((attack * 2 + defence + getOffenceBonusAgainstUnitEx(targetUnit, j, i) + getDefenceBonusAgainstUnitEx(targetUnit, j, i)) * health / 100);
-	}
-	
-	private int getOffenceBonusAgainstUnitEx(Unit targetUnit, int j, int i)
-	{
-		int add = 0;
-		if (targetUnit != null)
-			for (BonusForUnit bonus : type.bonusForUnitAttack)
-				if (targetUnit.type == bonus.type)
-					add += bonus.value;
-		return level * 2 + add;
-	}
-	
-	private int getDefenceBonusAgainstUnitEx(Unit targetUnit, int j, int i)
-	{
-		int add = 0;
-		Cell cell = game.fieldCells[i][j];
-		for (BonusOnCellGroup bonus : type.bonusOnCellDefence)
-			if (cell.type.group == bonus.group)
-				add += bonus.value;
-		return level * 2 + game.fieldCells[i][j].type.defense + add;
+		// return (type.attackMin + type.attackMax + getOffenceBonusAgainstUnitEx(targetUnit, j, i)
+		// + type.defence + getDefenceBonusAgainstUnitEx(targetUnit, j, i)) * health / 100;
+		return (type.attackMin + type.attackMax + getBonusAttack(i, j, targetUnit)
+				+ type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
 	}
 	
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)

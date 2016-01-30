@@ -9,12 +9,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
+import ru.ancientempires.rules.Rules;
 import ru.ancientempires.save.GameSaver;
 import ru.ancientempires.tasks.NumberedUnits;
 import ru.ancientempires.tasks.Task;
@@ -29,8 +29,10 @@ public class Game
 	public boolean		isSaver;
 	
 	// не сохраняется
-	public int[]			currentEarns;
-	public II				ii				= new II();
+	public int[]	currentEarns;
+	public II		ii	= new II();
+	public Rules	rules;
+	
 	public NamedUnits		namedUnits		= new NamedUnits();
 	public NumberedUnits	numberedUnits	= new NumberedUnits();
 	
@@ -226,31 +228,12 @@ public class Game
 		return null;
 	}
 	
-	public int amountPlayers()
-	{
-		return players.length;
-	}
-	
 	public int numberPlayers()
 	{
 		return players.length;
 	}
 	
-	// TODO кристаллы не должны мочь ходить на горы
-	public int getSteps(Unit unit, int nextI, int nextJ)
-	{
-		if (unit.type.isFly)
-			return 1;
-		Cell cell = fieldCells[nextI][nextJ];
-		int additionalSteps = 0;
-		for (BonusOnCellGroup bonusOnCell : unit.type.bonusOnCellWay)
-			if (cell.type.group == bonusOnCell.group)
-				additionalSteps += bonusOnCell.value;
-		return cell.getSteps() + additionalSteps;
-	}
-	
 	//
-	
 	public String get()
 	{
 		int health = fieldUnits[3][7] == null ? 0 : fieldUnits[3][7].health;

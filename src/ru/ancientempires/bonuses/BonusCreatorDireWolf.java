@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.tasks.TaskRemoveBonus;
 
 public class BonusCreatorDireWolf extends BonusCreator
 {
@@ -29,6 +30,12 @@ public class BonusCreatorDireWolf extends BonusCreator
 	@Override
 	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
 	{
+		targetUnit.bonuses.add(bonus);
+		new TaskRemoveBonus(game)
+				.setUnit(targetUnit)
+				.setBonus(bonus)
+				.setTurn(game.numberPlayers())
+				.register();
 		return new BonusCreate[]
 		{
 				new BonusCreate(targetUnit, bonus)

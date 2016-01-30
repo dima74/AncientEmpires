@@ -108,8 +108,8 @@ public class RulesSaver
 			if (type == defaultType || type.baseType != defaultType.baseType)
 				result.addProperty("baseType", type.baseType.name);
 			result.addProperty("name", type.name);
-			if (type == defaultType || type.health != defaultType.health)
-				result.addProperty("health", type.health);
+			if (type == defaultType || type.healthDefault != defaultType.healthDefault)
+				result.addProperty("health", type.healthDefault);
 			if (type == defaultType || type.attackMin != defaultType.attackMin)
 				result.addProperty("attackMin", type.attackMin);
 			if (type == defaultType || type.attackMax != defaultType.attackMax)
@@ -196,8 +196,6 @@ public class RulesSaver
 				result.addProperty("isDestroying", type.isDestroying);
 			if (type == defaultType || type.isHealing != defaultType.isHealing)
 				result.addProperty("isHeal", type.isHealing);
-			if (type == defaultType || type.isStatic != defaultType.isStatic)
-				result.addProperty("isStatic", type.isStatic);
 			return result;
 		}
 	}

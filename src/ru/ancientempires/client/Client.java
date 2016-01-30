@@ -41,6 +41,7 @@ public class Client
 	public FileLoader	fileLoader;
 	public FileLoader	gamesLoader;
 	public FileLoader	defaultGameLoader;
+	
 	public FileLoader	rulesLoader;
 	public Rules		rules;
 	
@@ -90,6 +91,7 @@ public class Client
 	public void loadPart2() throws Exception
 	{
 		rules = new RulesLoader(rulesLoader).load();
+		images.setRules(rules);
 		images.preload(imagesLoader);
 	}
 	

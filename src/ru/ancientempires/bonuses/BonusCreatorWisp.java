@@ -30,9 +30,9 @@ public class BonusCreatorWisp extends BonusCreator
 	}
 	
 	@Override
-	public BonusCreate[] applyBonusesAfterMove(Game game, Unit unit)
+	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit)
 	{
-		ArrayList<BonusCreate> creates = new ArrayList<BonusCreate>();
+		final ArrayList<BonusCreate> creates = new ArrayList<BonusCreate>();
 		new ActionHelper(game).forUnitsInRange(unit.i, unit.j, range, new CheckerUnit()
 		{
 			@Override
@@ -41,11 +41,12 @@ public class BonusCreatorWisp extends BonusCreator
 				if (unit.player == targetUnit.player)
 					for (Bonus bonus : bonuses)
 					{
-						creates.add(new BonusCreate(unit, bonus));
+						creates.add(new BonusCreate(targetUnit, bonus));
+						targetUnit.bonuses.add(bonus);
 						new TaskRemoveBonus(game)
 								.setUnit(targetUnit)
 								.setBonus(bonus)
-								.setTurn(game.amountPlayers())
+								.setTurn(game.numberPlayers())
 								.register();
 					}
 				return false;

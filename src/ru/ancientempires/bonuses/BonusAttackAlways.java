@@ -2,6 +2,7 @@ package ru.ancientempires.bonuses;
 
 import com.google.gson.JsonObject;
 
+import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
@@ -22,13 +23,13 @@ public class BonusAttackAlways extends Bonus
 	}
 	
 	@Override
-	public int getBonusAttack(Game game, Unit unit, Unit targetUnit)
+	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
 		return bonusAttack;
 	}
 	
 	@Override
-	public int getBonusDefence(Game game, Unit unit, Unit fromUnit)
+	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
 		return bonusDefence;
 	}

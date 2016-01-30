@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.Rules;
 
 public class Images extends IImages
 {
@@ -16,7 +17,15 @@ public class Images extends IImages
 	}
 	
 	// public float baseMulti = 1.0f; // 4.5f / 3.0f;
-	public int bitmapSize = 24;
+	public int		bitmapSize	= 24;
+	public Rules	rules;
+	
+	public void setRules(Rules rules)
+	{
+		this.rules = rules;
+		cell.rules = rules;
+		unit.rules = rules;
+	}
 	
 	public CellImages			cell		= new CellImages();
 	public UnitImages			unit		= new UnitImages();

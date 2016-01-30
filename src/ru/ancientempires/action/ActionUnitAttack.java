@@ -2,6 +2,7 @@ package ru.ancientempires.action;
 
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.action.result.AttackResult;
+import ru.ancientempires.bonuses.BonusCreate;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.model.Cell;
@@ -96,7 +97,19 @@ public class ActionUnitAttack extends ActionFromTo
 		unit.experience += new UnitHelper(game).getQualitySum(targetUnit) * decreaseHealth;
 		boolean isLevelUp = new UnitHelper(game).checkLevelUp(unit);
 		return new AttackResult(unit.i, unit.j, targetUnit.i, targetUnit.j, decreaseHealth,
-				targetUnit.health > 0, isLevelUp, reverse ? 0 : new UnitHelper(game).handleAfterAttackEffect(unit, targetUnit));
+				targetUnit.health > 0, isLevelUp, reverse ? 0 : handleAfterAttackEffect(unit, targetUnit));
+	}
+	
+	private int handleAfterAttackEffect(Unit unit, Unit targetUnit)
+	{
+		if (unit.type.creators.length == 0)
+			return 0;
+		// TODO если у типа есть несколько сreators
+		BonusCreate[] creates = unit.type.creators[0].applyBonusesAfterAttack(game, unit, targetUnit);
+		int sign = 0;
+		for (BonusCreate create : creates)
+			sign += create.bonus.getSign();
+		return sign;
 	}
 	
 }

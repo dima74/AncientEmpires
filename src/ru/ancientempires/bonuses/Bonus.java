@@ -14,6 +14,7 @@ public abstract class Bonus
 {
 	
 	public static List<Class<? extends Bonus>> classes = Arrays.asList(
+			BonusLevel.class,
 			BonusAttackAlways.class,
 			BonusAttackForUnit.class,
 			BonusMoveToCellGroup.class,
@@ -24,17 +25,27 @@ public abstract class Bonus
 		return Bonus.classes.indexOf(getClass());
 	}
 	
-	public int getBonusAttack(Game game, Unit unit, Unit targetUnit)
+	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
 		return 0;
 	}
 	
-	public int getBonusDefence(Game game, Unit unit, Unit fromUnit)
+	public final int getBonusAttack(Game game, Unit unit, Unit targetUnit)
+	{
+		return getBonusAttack(game, unit, unit.getCell(), targetUnit);
+	}
+	
+	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
 		return 0;
 	}
 	
-	public int getBonusMove(Game game, Unit unit, Cell targetCell)
+	public final int getBonusDefence(Game game, Unit unit, Unit fromUnit)
+	{
+		return getBonusDefence(game, unit, unit.getCell(), fromUnit);
+	}
+	
+	public int getBonusMove(Game game, Unit unit, Cell cell, Cell targetCell)
 	{
 		return 0;
 	}

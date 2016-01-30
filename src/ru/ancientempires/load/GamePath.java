@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.rules.Rules;
 import ru.ancientempires.save.GameSaveLoader;
 import ru.ancientempires.save.SaveInfo;
 
@@ -32,6 +33,12 @@ public class GamePath
 	public boolean			canChooseTeams;
 	public int				h;
 	public int				w;
+	public String			rules;
+	
+	public Rules getRules()
+	{
+		return Client.client.rules;
+	}
 	
 	public String	defaultLocalization;
 	public String[]	localizations;

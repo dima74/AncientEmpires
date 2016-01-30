@@ -38,7 +38,6 @@ public class GameSnapshotSaver
 	
 	public void save() throws IOException
 	{
-		game.path.save();
 		if (game.path.canChooseTeams)
 			saveDefaultTeams();
 		else
@@ -49,7 +48,7 @@ public class GameSnapshotSaver
 		saveMap();
 		saveCells();
 		saveUnits();
-		if (!game.campaign.isDefault)
+		if (!game.path.isBaseGame || !game.campaign.isDefault)
 			game.campaign.saveState(loader);
 	}
 	
@@ -140,84 +139,29 @@ public class GameSnapshotSaver
 	
 	public void saveMap() throws IOException
 	{
-		DataOutputStream dos = loader.openDOS("map.dat");
+		DataOutputStream output = loader.openDOS("map.dat");
 		for (int i = 0; i < game.h; i++)
 			for (int j = 0; j < game.w; j++)
-				dos.writeInt(game.fieldCells[i][j].type.ordinal);
-		dos.close();
+				output.writeInt(game.fieldCells[i][j].type.ordinal);
+		output.close();
 	}
 	
 	public void saveCells() throws IOException
 	{
-		JsonWriter writer = loader.getWriter("cells.json");
-		writer.beginObject();
-		
-		writer.name("cells").beginArray();
-		for (int i = 0; i < game.h; i++)
-			for (int j = 0; j < game.w; j++)
-			{
-				Cell cell = game.fieldCells[i][j];
-				if (cell.type.isStatic)
-					continue;
-				writer.beginObject();
-				
-				writer.name("i").value(i);
-				writer.name("j").value(j);
-				if (cell.isCapture != Cell.defaultCell.isCapture)
-				{
-					writer.name("isCapture").value(true);
-					writer.name("player").value(cell.player.ordinal);
-				}
-				if (cell.isDestroy)
-					writer.name("isDestroying").value(true);
-					
-				writer.endObject();
-			}
-		writer.endArray();
-		
-		writer.endObject();
-		writer.close();
-	}
-	
-	public void saveUnits2() throws IOException
-	{
-		JsonWriter writer = loader.getWriter("units.json");
-		writer.beginObject();
-		
-		writer.name("units").beginArray();
-		for (Unit[] line : game.fieldUnits)
-			for (Unit unit : line)
-				if (unit != null)
-					saveUnit(writer, unit);
-		for (Unit unit : game.unitsOutside)
-			saveUnit(writer, unit);
-		writer.endArray();
-		
-		writer.name("unitsDead").beginArray();
-		for (Unit[] line : game.fieldUnitsDead)
-			for (Unit unit : line)
-				if (unit != null)
-					saveUnit(writer, unit);
-		writer.endArray();
-		
-		writer.name("staticUnitsDead").beginArray();
-		for (Player player : game.players)
-			for (Unit unit : game.unitsStaticDead[player.ordinal])
-				saveUnit(writer, unit);
-		writer.endArray();
-		
-		writer.endObject();
-		writer.close();
-	}
-	
-	public void saveUnit(JsonWriter writer, Unit unit) throws IOException
-	{
-		writer.beginObject();
-		writer.name("type").value(unit.type.name);
-		writer.name("player").value(unit.player.ordinal);
-		writer.name("i").value(unit.i);
-		writer.name("j").value(unit.j);
-		writer.endObject();
+		DataOutputStream output = loader.openDOS("cells.dat");
+		ArrayList<Cell> cells = new ArrayList<Cell>();
+		for (Cell[] line : game.fieldCells)
+			for (Cell cell : line)
+				if (cell.needSave())
+					cells.add(cell);
+		output.writeInt(cells.size());
+		for (Cell cell : cells)
+		{
+			output.writeShort(cell.i);
+			output.writeShort(cell.j);
+			cell.save(output, game);
+		}
+		output.close();
 	}
 	
 	public void saveUnits() throws IOException
@@ -245,22 +189,7 @@ public class GameSnapshotSaver
 	{
 		output.writeInt(units.size());
 		for (Unit unit : units)
-			saveUnit(output, unit);
-	}
-	
-	public void saveUnit(DataOutputStream output, Unit unit) throws IOException
-	{
-		output.writeUTF(unit.type.name);
-		output.writeInt(unit.player.ordinal);
-		output.writeInt(unit.i);
-		output.writeInt(unit.j);
-		output.writeInt(unit.health);
-		output.writeInt(unit.level);
-		output.writeInt(unit.experience);
-		output.writeBoolean(unit.isMove);
-		output.writeBoolean(unit.isTurn);
-		game.namedUnits.trySave(output, unit);
-		game.numberedUnits.trySave(output, unit);
+			unit.save(output, game);
 	}
 	
 	public void saveTasks() throws IOException

@@ -49,7 +49,7 @@ public class ConditionCastleNumber extends Condition
 	
 	public int getCastleNumber(Player player)
 	{
-		CellType castle = CellType.getType("CASTLE");
+		CellType castle = game.rules.getCellType("CASTLE");
 		int number = 0;
 		for (Cell[] line : game.fieldCells)
 			for (Cell cell : line)

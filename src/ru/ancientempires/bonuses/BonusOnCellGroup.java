@@ -2,6 +2,7 @@ package ru.ancientempires.bonuses;
 
 import com.google.gson.JsonObject;
 
+import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
@@ -25,20 +26,20 @@ public class BonusOnCellGroup extends Bonus
 	}
 	
 	@Override
-	public int getBonusAttack(Game game, Unit unit, Unit targetUnit)
+	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
-		return checkCell(unit) ? bonusAttack : 0;
+		return checkCell(cell) ? bonusAttack : 0;
 	}
 	
 	@Override
-	public int getBonusDefence(Game game, Unit unit, Unit fromUnit)
+	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
-		return checkCell(unit) ? bonusDefence : 0;
+		return checkCell(cell) ? bonusDefence : 0;
 	}
 	
-	private boolean checkCell(Unit unit)
+	private boolean checkCell(Cell cell)
 	{
-		return group.contains(unit.getCell().type);
+		return group.contains(cell.type);
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public class Rules
 	{
 		unitTypes = new UnitType[names.length];
 		for (int i = 0; i < names.length; i++)
-			unitTypes[i] = new UnitType(names[i]);
+			unitTypes[i] = new UnitType(names[i], i);
 		for (UnitType type : unitTypes)
 			unitTypesMap.put(type.name, type);
 		defaultUnitType = getUnitType("DEFAULT");
@@ -46,7 +46,7 @@ public class Rules
 	{
 		cellTypes = new CellType[names.length];
 		for (int i = 0; i < names.length; i++)
-			cellTypes[i] = new CellType(names[i]);
+			cellTypes[i] = new CellType(names[i], i);
 		for (CellType type : cellTypes)
 			cellTypesMap.put(type.name, type);
 		defaultCellType = getCellType("DEFAULT");
@@ -124,6 +124,16 @@ public class Rules
 		for (int i = 0; i < names.length; i++)
 			names[i] = cellGroups[i].name;
 		return names;
+	}
+	
+	public int numberUnitTypes()
+	{
+		return unitTypes.length;
+	}
+	
+	public int numberCellTypes()
+	{
+		return cellTypes.length;
 	}
 	
 }

@@ -64,7 +64,23 @@ public class RulesLoader
 			rules.preInitUnitTypes(getStrinsArray(object, "allUnitTypes", context));
 			rules.preInitCellTypes(getStrinsArray(object, "allCellTypes", context));
 			rules.preInitCellGroups(getStrinsArray(object, "allCellGroups", context));
-			rules.setRanges(context.deserialize(object.get("ranges"), Range[].class));
+			
+			/*
+				здесь очень забавная ситуация, компилятор Java SE может вычислить, 
+					что используется deserialize c типом Range[], а вот андроидовский не может.
+				SE'шный Вычисляет мне кажется по тому, 
+					что аргумент функции setRanges имеет тип Range[]
+				
+				То есть вот так работает только на Java SE:
+					rules.setRanges(context.deserialize(object.get("ranges"), Range[].class));
+				
+				А вот так везде:
+					Rules rules = context.deserialize(object.get("ranges"), Range[].class);
+					rules.setRanges(rules);
+				
+				Имхо очень прикольно =)
+			*/
+			rules.setRanges(context.<Range[]> deserialize(object.get("ranges"), Range[].class));
 			
 			context.deserialize(object.get("defaultUnitType"), UnitType.class);
 			context.deserialize(object.get("defaultCellType"), CellType.class);
@@ -117,7 +133,7 @@ public class RulesLoader
 			JsonElement element;
 			
 			element = object.get("health");
-			type.health = element == null ? baseType.health : element.getAsInt();
+			type.healthDefault = element == null ? baseType.healthDefault : element.getAsInt();
 			element = object.get("attackMin");
 			type.attackMin = element == null ? baseType.attackMin : element.getAsInt();
 			element = object.get("attackMax");
@@ -156,9 +172,9 @@ public class RulesLoader
 			type.isFly = element == null ? baseType.isFly : element.getAsBoolean();
 			
 			element = object.get("bonuses");
-			type.bonuses = element == null ? baseType.bonuses : context.deserialize(element, Bonus[].class);
+			type.bonuses = element == null ? baseType.bonuses : context.<Bonus[]> deserialize(element, Bonus[].class);
 			element = object.get("creators");
-			type.creators = element == null ? baseType.creators : context.deserialize(element, BonusCreator[].class);
+			type.creators = element == null ? baseType.creators : context.<BonusCreator[]> deserialize(element, BonusCreator[].class);
 			
 			return type;
 		}
@@ -222,8 +238,6 @@ public class RulesLoader
 			type.isDestroying = element == null ? baseType.isDestroying : element.getAsBoolean();
 			element = object.get("isHeal");
 			type.isHealing = element == null ? baseType.isHealing : element.getAsBoolean();
-			element = object.get("isStatic");
-			type.isStatic = element == null ? baseType.isStatic : element.getAsBoolean();
 			return type;
 		}
 	}

@@ -163,7 +163,7 @@ public class GameActivity extends Activity
 		}
 		else if (id == R.id.action_capture_castle)
 		{
-			CellType type = CellType.getType("CASTLE");
+			CellType type = game.rules.getCellType("CASTLE");
 			for (Cell[] line : game.fieldCells)
 				for (Cell cell : line)
 					if (cell.type == type && cell.player != null && cell.player.ordinal == 1)

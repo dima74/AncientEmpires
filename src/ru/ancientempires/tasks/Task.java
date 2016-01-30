@@ -14,8 +14,7 @@ public abstract class Task extends IGameHandler
 	
 	public static List<Class<? extends Task>> classes = Arrays.asList(
 			TaskRemoveTombstone.class,
-			TaskIncreaseUnitAttack.class,
-			TaskIncreaseUnitDefence.class);
+			TaskRemoveBonus.class);
 			
 	public static Task loadNew(DataInputStream input, Game game) throws Exception
 	{

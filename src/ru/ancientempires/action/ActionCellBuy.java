@@ -58,7 +58,7 @@ public class ActionCellBuy extends ActionFrom
 	public void performQuick()
 	{
 		Unit unit = getUnit();
-		unit.health = unit.type.health;
+		unit.health = unit.type.healthDefault;
 		unit.player = game.currentPlayer;
 		unit.player.units.add(unit);
 		

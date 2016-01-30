@@ -19,6 +19,7 @@ import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.action.result.ActionResultGetRandomNumber;
+import ru.ancientempires.bonuses.BonusCreatorWisp;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.GameHandler;
@@ -31,9 +32,12 @@ import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.rules.Rules;
 
 public class II extends GameHandler
 {
+	
+	public Rules rules;
 	
 	ArrayList<Action> actions;
 	
@@ -58,7 +62,7 @@ public class II extends GameHandler
 		try
 		{
 			mainGame.saver.waitSave();
-			setGame(new GameLoader(mainGame.path).load());
+			setGame(new GameLoader(mainGame.path, game.rules).load());
 			MyAssert.a(game.equals(mainGame));
 			mainGame.equals(game);
 		}
@@ -222,7 +226,7 @@ public class II extends GameHandler
 								.setIJ(var5, var4));
 						var1 = fieldUnits[var5][var4];
 					}
-					else if (archerToBuy != null && countUnits(UnitType.getType("ARCHER")) < 2 && canBuyUnit(archerToBuy, var4, var5))
+					else if (archerToBuy != null && countUnits(rules.getUnitType("ARCHER")) < 2 && canBuyUnit(archerToBuy, var4, var5))
 					{
 						// лучников меньше 2, покупаем в {var4, var5}
 						perform(new ActionCellBuy()
@@ -324,7 +328,7 @@ public class II extends GameHandler
 			// if (sub_d5e(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
 			
 			Cell cell = fieldCells[currentSelectedUnit.i][currentSelectedUnit.j];
-			if (currentSelectedUnit.type.captureTypes[cell.type.ordinal] && !cell.isDestroy && cell.getTeam() != var1.player.team)
+			if (currentSelectedUnit.canCapture(cell.type) && !cell.isDestroy && cell.getTeam() != var1.player.team)
 			// может захватить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);
@@ -344,7 +348,7 @@ public class II extends GameHandler
 				// var_12ff = delayCounter;
 			}
 			// else if (sub_d41(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
-			else if (currentSelectedUnit.type.repairTypes[cell.type.ordinal] && cell.isDestroy)
+			else if (currentSelectedUnit.canRepair(cell.type) && cell.isDestroy)
 			// может чинить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);
@@ -454,10 +458,10 @@ public class II extends GameHandler
 		// виспы
 		// лучники
 		// остальные
-		final int[] priority = new int[UnitType.number];
-		priority[UnitType.getType("SOLDIER").ordinal] = 3;
-		priority[UnitType.getType("WISP").ordinal] = 2;
-		priority[UnitType.getType("ARCHER").ordinal] = 1;
+		final int[] priority = new int[rules.numberUnitTypes()];
+		priority[rules.getUnitType("SOLDIER").ordinal] = 3;
+		priority[rules.getUnitType("WISP").ordinal] = 2;
+		priority[rules.getUnitType("ARCHER").ordinal] = 1;
 		
 		var_3aad = new Vector<Unit>(game.currentPlayer.units);
 		Collections.sort(var_3aad, new Comparator<Unit>()
@@ -596,7 +600,7 @@ public class II extends GameHandler
 					if (var_3903[var10] != null && !var14)
 						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, (Unit) null);
 					// else if (var13 == 8 && var15[var16].hasProperty((short) 8) || var13 == 9 && var15[var16].hasProperty((short) 16))
-					else if (var15[var16].type.captureTypes[cell.type.ordinal] || var15[var16].type.repairTypes[cell.type.ordinal])
+					else if (var15[var16].canCapture(cell.type) || var15[var16].canRepair(cell.type))
 						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, (Unit) null);
 						
 				if (var_395f[var2][2] == 0)
@@ -632,7 +636,7 @@ public class II extends GameHandler
 				}
 			}
 			// else if ((this.var_3903[var10] == null || this.var_3903[var10] == var1) && (var13 == 8 && var1.hasProperty((short) 8) || var13 == 9 && var1.hasProperty((short) 16)))
-			else if ((var_3903[var10] == null || var_3903[var10] == var1) && var1.type.captureTypes[cell.type.ordinal])
+			else if ((var_3903[var10] == null || var_3903[var10] == var1) && var1.canCapture(cell.type))
 			{
 				int var26;
 				if ((var26 = Math.abs(var11 - var1.j) + Math.abs(var12 - var1.i)) < var6)
@@ -798,7 +802,7 @@ public class II extends GameHandler
 				{
 					var7 = Math.abs(var_3a15 - var1.j) + Math.abs(var_3a34 - var1.i);
 					var8 = Math.abs(var_3a15 - var2) + Math.abs(var_3a34 - var3);
-					var6 = 0 + 100 * (var7 - var8) / var1.moveRadius;
+					var6 = 0 + 100 * (var7 - var8) / var1.getMoveRadius();
 					// if (II.TERRAIN_STEPS_REQUIRED[getTileType(var2, var3)] <= 1)
 					if (cell.getSteps() <= 1)
 						var6 += 20;
@@ -806,10 +810,10 @@ public class II extends GameHandler
 				
 			if (var4 == null && !sub_e68(var2, var3, var1.player.team))
 				// if (var1.hasProperty((short) 16) && getTileType(var2, var3) == 9)
-				if (cell.type.name == "CASTLE" && var1.type.captureTypes[cell.type.ordinal])
+				if (cell.type.name == "CASTLE" && var1.canCapture(cell.type))
 					var6 += 300;
 				// else if (var1.hasProperty((short) 8) && (getTileType(var2, var3) == 8 || this.mapData[var2][var3] == 27))
-				else if (var1.type.captureTypes[cell.type.ordinal])
+				else if (var1.canCapture(cell.type))
 					var6 += 200;
 		}
 		
@@ -836,12 +840,12 @@ public class II extends GameHandler
 		}
 		//*/
 		
-		if (var1.type.name == "ELEMENTAL" && cell.type.group.name == "WATER")
+		if (var1.type.name == "ELEMENTAL" && rules.getCellGroup("WATER").contains(cell.type))
 			var6 += 25;
 		if (var1.type.name == "SORCERESS" && var5 != null)
 			var6 += 100;
 		if (var1.type.name == "WISP")
-			var6 += 25 * new ActionHelper(game).getUnitsInRange(var3, var2, UnitType.getType("WISP").bonusAfterMovingRange, new CheckerUnit()
+			var6 += 25 * new ActionHelper(game).getUnitsInRange(var3, var2, ((BonusCreatorWisp) rules.getUnitType("WISP").creators[0]).range, new CheckerUnit()
 			{
 				@Override
 				public boolean check(Unit targetUnit)
@@ -886,7 +890,7 @@ public class II extends GameHandler
 		if (var_39e3[var2][var3] > 0)
 		{
 			var8 = var_39e3[var2][var3];
-			var9 = 10 - (var1.moveRadius + 1) / 2;
+			var9 = 10 - (var1.getMoveRadius() + 1) / 2;
 			if (var8 > var9)
 				var8 = var9;
 				
@@ -896,16 +900,16 @@ public class II extends GameHandler
 		{
 			var8 = Math.abs(var_3a15 - var1.j) + Math.abs(var_3a34 - var1.i);
 			var9 = Math.abs(var_3a15 - var2) + Math.abs(var_3a34 - var3);
-			var6 += 50 * (var8 - var9) / var1.moveRadius;
+			var6 += 50 * (var8 - var9) / var1.getMoveRadius();
 		}
 		
 		Unit var10;
-		if (var7 != -1 && (var10 = var_3903[var7]) != null && var10 != var1 && !var10.isMove && var_3947[var7] <= var10.moveRadius)
+		if (var7 != -1 && (var10 = var_3903[var7]) != null && var10 != var1 && !var10.isMove && var_3947[var7] <= var10.getMoveRadius())
 			var6 -= 200;
 			
-		int ret = var6 + 20 * (Math.abs(var2 - var1.j) + Math.abs(var3 - var1.i)) / var1.moveRadius;
+		int ret = var6 + 20 * (Math.abs(var2 - var1.j) + Math.abs(var3 - var1.i)) / var1.getMoveRadius();
 		// System.out.println("(" + var3 + ", " + var2 + "): " + ret + " = " + var6 + " + " + 20 * (Math.abs(var2 - var1.j) + Math.abs(var3 - var1.i)) / var1.moveRadius);
-		return var6 += 20 * (Math.abs(var2 - var1.j) + Math.abs(var3 - var1.i)) / var1.moveRadius;
+		return var6 += 20 * (Math.abs(var2 - var1.j) + Math.abs(var3 - var1.i)) / var1.getMoveRadius();
 	}
 	
 	private boolean canBuyUnit(Unit unit, int x, int y)
@@ -1011,7 +1015,7 @@ public class II extends GameHandler
 		Unit nextUnit = fieldUnits[ny][nx];
 		if (nextUnit != null && nextUnit.player.team != unit.player.team)
 			return;
-		final int cellWeight = game.getSteps(unit, ny, nx);
+		final int cellWeight = unit.getSteps(ny, nx, game.fieldCells[ny][nx]);
 		alphaData[nx][ny] = Math.max(alphaData[nx][ny], alphaData[x][y] - cellWeight);
 	}
 	

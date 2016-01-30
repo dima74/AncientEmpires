@@ -3,6 +3,8 @@ package ru.ancientempires.model;
 public class CellType
 {
 	
+	public int ordinal;
+	
 	public CellType	baseType;
 	public String	name;
 	public boolean	isDefault;
@@ -17,11 +19,15 @@ public class CellType
 	public boolean	isCapturing;
 	public boolean	isDestroying;
 	public boolean	isHealing;
-	public boolean	isStatic;
 	
-	public CellType(String name)
+	// Эти поля используются только для копирования в клеточку
+	public boolean	isCaptureDefault;
+	public boolean	isDestroyDefault;
+	
+	public CellType(String name, int ordinal)
 	{
-		this.name = name;
+		this.name = name.intern();
+		this.ordinal = ordinal;
 	}
 	
 	public CellType setProperties(CellType type)
@@ -34,7 +40,9 @@ public class CellType
 		isCapturing = type.isCapturing;
 		isDestroying = type.isDestroying;
 		isHealing = type.isHealing;
-		isStatic = type.isStatic;
+		
+		isCaptureDefault = type.isCaptureDefault;
+		isDestroyDefault = type.isDestroyDefault;
 		return this;
 	}
 	

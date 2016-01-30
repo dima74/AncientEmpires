@@ -1,25 +1,11 @@
 package ru.ancientempires.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Cell
 {
-	
-	public static Cell		defaultCell;
-	public static Cell[]	staticCells;
-	
-	public static void setStaticCells(CellType[] staticCellsTypes)
-	{
-		Cell.staticCells = new Cell[staticCellsTypes.length];
-		for (int i = 0; i < staticCellsTypes.length; i++)
-			Cell.staticCells[i] = new Cell(Cell.defaultCell, staticCellsTypes[i]);
-	}
-	
-	public static Cell getNew(CellType cellType)
-	{
-		if (cellType.isStatic)
-			return Cell.staticCells[cellType.staticOrdinal];
-		else
-			return new Cell(Cell.defaultCell, cellType);
-	}
 	
 	public CellType	type;
 	public int		i;
@@ -32,15 +18,41 @@ public class Cell
 	// только для разрушаемых клеточек
 	public boolean isDestroy;
 	
-	public Cell(Cell cell, CellType type)
+	public Cell(CellType type, int i, int j)
 	{
 		this.type = type;
-		if (cell == null)
-			return;
-		isCapture = cell.isCapture;
-		isDestroy = cell.isDestroy;
-		i = cell.i;
-		j = cell.j;
+		this.i = i;
+		this.j = j;
+		initFromType();
+	}
+	
+	// Возможно пригодится для редактора карт
+	public void initFromType()
+	{
+		isCapture = type.isCaptureDefault;
+		isDestroy = type.isDestroyDefault;
+	}
+	
+	public boolean needSave()
+	{
+		return isCapture != type.isCaptureDefault
+				|| isDestroy != type.isDestroyDefault;
+	}
+	
+	public void save(DataOutputStream output, Game game) throws IOException
+	{
+		output.writeBoolean(isCapture);
+		if (isCapture)
+			output.write(player.ordinal);
+		output.writeBoolean(isDestroy);
+	}
+	
+	public void load(DataInputStream input, Game game) throws IOException
+	{
+		isCapture = input.readBoolean();
+		if (isCapture)
+			player = game.players[input.read()];
+		isDestroy = input.readBoolean();
 	}
 	
 	public int getSteps()
@@ -82,7 +94,7 @@ public class Cell
 	@Override
 	public String toString()
 	{
-		return "Cell [type=" + type + "]";
+		return type.name;
 	}
 	
 }

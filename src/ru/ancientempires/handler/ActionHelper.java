@@ -49,7 +49,7 @@ public class ActionHelper extends GameHandler
 			@Override
 			public boolean check(Cell targetCell)
 			{
-				return unit.type.destroyingTypes[targetCell.type.ordinal] && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
+				return unit.canDestroy(targetCell.type) && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
 			}
 		});
 	}
@@ -57,13 +57,13 @@ public class ActionHelper extends GameHandler
 	public boolean canUnitRepair(Unit unit)
 	{
 		Cell cell = game.fieldCells[unit.i][unit.j];
-		return unit.type.repairTypes[cell.type.ordinal] && cell.isDestroy;
+		return unit.canRepair(cell.type) && cell.isDestroy;
 	}
 	
 	public boolean canUnitCapture(Unit unit)
 	{
 		Cell cell = game.fieldCells[unit.i][unit.j];
-		return unit.type.captureTypes[cell.type.ordinal] && !cell.isDestroy && cell.getTeam() != unit.player.team;
+		return unit.canCapture(cell.type) && !cell.isDestroy && cell.getTeam() != unit.player.team;
 	}
 	
 	private boolean canUnitRaise(Unit unit)
@@ -182,7 +182,7 @@ public class ActionHelper extends GameHandler
 	
 	public boolean canBuyOnCell(int i, int j)
 	{
-		return game.checkFloating() && !game.fieldCells[i][j].type.buyTypes.isEmpty() && game.fieldCells[i][j].player == game.currentPlayer;
+		return game.checkFloating() && game.fieldCells[i][j].type.buyTypes.length > 0 && game.fieldCells[i][j].player == game.currentPlayer;
 	}
 	
 	public boolean isUnitActive(int i, int j)

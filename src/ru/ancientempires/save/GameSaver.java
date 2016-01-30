@@ -31,7 +31,7 @@ public class GameSaver
 		@Override
 		public void save() throws Exception
 		{
-			game = new GameLoader(mainGame.path).load();
+			game = new GameLoader(mainGame.path, mainGame.rules).load();
 			game.path = mainGame.path;
 			game.isSaver = true;
 		}
