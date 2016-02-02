@@ -1,7 +1,6 @@
 package ru.ancientempires.server;
 
 import java.io.IOException;
-import java.util.Random;
 
 import ru.ancientempires.action.Action;
 import ru.ancientempires.activity.GameActivity;
@@ -42,9 +41,9 @@ public class ClientServer extends Server
 					.copyTo(newPath, newID);
 			newGamePath.isBaseGame = false;
 			newGamePath.canChooseTeams = false;
-			game = new GameLoader(path, rules).load();
+			game = new GameLoader(path, rules).load(true);
 			game.path = newGamePath;
-			game.random = new Random(213237048392331L);
+			// game.random = new Random(213237048392331L);
 			
 			game.saver = new GameSaver(game);
 			game.saver.initFromBase();
@@ -53,7 +52,7 @@ public class ClientServer extends Server
 		}
 		else
 		{
-			game = new GameLoader(path, rules).load();
+			game = new GameLoader(path, rules).load(true);
 			game.path = path;
 			game.saver = new GameSaver(game);
 			game.saver.init();

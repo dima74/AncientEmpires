@@ -202,7 +202,7 @@ public class RulesLoader
 			JsonObject object = json.getAsJsonObject();
 			CellGroup group = rules.getCellGroup(object.get("name").getAsString());
 			group.baseType = context.deserialize(object.get("baseType"), CellType.class);
-			group.types = getCellTypes(object.get("types"), context);
+			group.setTypes(getCellTypes(object.get("types"), context));
 			return group;
 		}
 	}
@@ -258,13 +258,9 @@ public class RulesLoader
 		{
 			try
 			{
-				JsonObject object = json.getAsJsonObject();
-				int ordinal = object.get("type").getAsInt();
-				Bonus bonus = Bonus.classes.get(ordinal).newInstance();
-				bonus.loadJSON(object, rules);
-				return bonus;
+				return Bonus.loadJsonBase(json.getAsJsonObject(), rules);
 			}
-			catch (InstantiationException | IllegalAccessException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 				MyAssert.a(false);

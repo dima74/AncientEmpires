@@ -1,17 +1,19 @@
 package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.client.Client;
+import ru.ancientempires.campaign.CampaignEditorGame;
 import ru.ancientempires.model.Game;
 
 public abstract class Script
 {
+	
+	// Нужен только при сохранении
+	public int index;
 	
 	public ScriptType	type;
 	public Script[]		previous;
@@ -42,14 +44,14 @@ public abstract class Script
 		isStarting = true;
 	}
 	
-	public final void saveGeneral(JsonWriter writer, ArrayList<Script> scripts) throws IOException
+	public final void saveGeneral(JsonWriter writer) throws IOException
 	{
 		writer.beginObject();
 		writer.name("type").value(type.name());
 		
 		writer.name("previous").beginArray();
 		for (Script script : previous)
-			writer.value(scripts.indexOf(script));
+			writer.value(script.index);
 		writer.endArray();
 		
 		save(writer);
@@ -70,7 +72,7 @@ public abstract class Script
 	// Используется только в конструкторах, которые вызываются только в редакторе кампании
 	public Game getGame()
 	{
-		return Client.getGame();
+		return CampaignEditorGame.game;
 	}
 	
 }

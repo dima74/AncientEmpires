@@ -9,23 +9,23 @@ public class GameLoader
 {
 	
 	public GamePath	path;
-	public Game		game	= new Game();
+	public Game		game;
 	public Rules	rules;
 	
 	public GameLoader(GamePath path, Rules rules)
 	{
 		this.path = path;
 		this.rules = rules;
-		game.rules = rules;
+		game = new Game(rules);
 	}
 	
-	public Game load() throws Exception
+	public Game load(boolean loadCampaign) throws Exception
 	{
-		game = new GameSnapshotLoader(path, rules).load();
+		game = new GameSnapshotLoader(path, rules).load(loadCampaign);
 		if (!path.isBaseGame)
 		{
-			GameSaveLoader loader = path.getGameLoader();
-			for (int i = 0; i < loader.saveInfo.numberActionsAfterLastSave; i++)
+			GameSaveLoader loader = path.getGameSaveLoader();
+			for (int i = 0; i < loader.numberActionsAfterLastSave; i++)
 			{
 				Action action = Action.loadNew(loader.actions().openDIS("" + i));
 				action.checkBase(game);

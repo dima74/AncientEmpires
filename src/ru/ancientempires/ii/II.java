@@ -37,9 +37,8 @@ import ru.ancientempires.rules.Rules;
 public class II extends GameHandler
 {
 	
-	public Rules rules;
-	
-	ArrayList<Action> actions;
+	public Rules		rules;
+	ArrayList<Action>	actions;
 	
 	public ActionResult perform(Action action)
 	{
@@ -62,7 +61,7 @@ public class II extends GameHandler
 		try
 		{
 			mainGame.saver.waitSave();
-			setGame(new GameLoader(mainGame.path, game.rules).load());
+			setGame(new GameLoader(mainGame.path, mainGame.rules).load(false));
 			MyAssert.a(game.equals(mainGame));
 			mainGame.equals(game);
 		}
@@ -279,7 +278,7 @@ public class II extends GameHandler
 								if (isAvailable[i])
 								{
 									Unit unit = units[i];
-									if ((countUnits(unit.type) < 1 || unit.cost >= 600) && canBuyUnit(unit, var4, var5))
+									if ((countUnits(unit.type) < 1 || unit.getCost() >= 600) && canBuyUnit(unit, var4, var5))
 										unitsToBuy.add(i);
 								}
 							if (!unitsToBuy.isEmpty())

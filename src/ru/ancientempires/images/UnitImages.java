@@ -56,7 +56,6 @@ public class UnitImages extends IImages
 		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
-		
 		while (reader.peek() == JsonToken.BEGIN_OBJECT)
 		{
 			reader.beginObject();
@@ -72,7 +71,6 @@ public class UnitImages extends IImages
 			}
 			reader.endObject();
 		}
-		
 		reader.endArray();
 		
 		reader.endObject();
@@ -90,7 +88,7 @@ public class UnitImages extends IImages
 					
 		unitsBitmapsBuy = new Bitmap[rules.unitTypes.length][5];
 		for (int colorI = 0; colorI < colors.length; colorI++)
-			for (int typeI = 0; typeI < unitsBitmapsBuy.length; typeI++)
+			for (int typeI = 1; typeI < unitsBitmapsBuy.length; typeI++)
 				unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
 	

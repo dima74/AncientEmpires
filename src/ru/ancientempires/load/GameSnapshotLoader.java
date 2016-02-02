@@ -30,21 +30,22 @@ import ru.ancientempires.tasks.Task;
 class GameSnapshotLoader
 {
 	
-	GamePath	path;
-	FileLoader	loader;
-	FileLoader	loaderCampaign;
-	Game		game	= new Game();
-	Rules		rules;
+	public GamePath		path;
+	public FileLoader	loader;
+	public FileLoader	loaderCampaign;
+	public Game			game;
+	public Rules		rules;
 	
-	GameSnapshotLoader(GamePath path, Rules rules) throws Exception
+	public GameSnapshotLoader(GamePath path, Rules rules) throws Exception
 	{
 		this.path = path;
 		this.rules = rules;
+		game = new Game(rules);
 		loaderCampaign = path.getLoader();
-		loader = path.isBaseGame ? loaderCampaign : path.getGameLoader().snapshots();
+		loader = path.getGameSaveLoader().snapshots();
 	}
 	
-	Game load() throws Exception
+	public Game load(boolean loadCampaign) throws Exception
 	{
 		loadPlayers();
 		loadGameInfo();
@@ -57,19 +58,22 @@ class GameSnapshotLoader
 		loadUnits();
 		loadTasks();
 		
-		Client.client.defaultGameLoader.loadLocalization("strings");
-		if (loaderCampaign.exists("strings.json"))
-			loaderCampaign.loadLocalization("strings");
-			
-		if (loaderCampaign.exists("campaign.json"))
+		if (loadCampaign)
 		{
-			game.campaign.load(loaderCampaign);
-			game.campaign.loadState(loader);
-		}
-		else
-		{
-			game.campaign.load(Client.client.defaultGameLoader);
-			game.campaign.loadState(Client.client.defaultGameLoader);
+			Client.client.defaultGameLoader.loadLocalization();
+			if (loaderCampaign.exists("strings.json"))
+				loaderCampaign.loadLocalization();
+				
+			if (loaderCampaign.exists("campaign.json"))
+			{
+				game.campaign.load(loaderCampaign);
+				game.campaign.loadState(loader);
+			}
+			else
+			{
+				game.campaign.load(Client.client.defaultGameLoader);
+				game.campaign.loadState(Client.client.defaultGameLoader);
+			}
 		}
 		
 		//
@@ -94,7 +98,7 @@ class GameSnapshotLoader
 		return game;
 	}
 	
-	void loadGameInfo() throws IOException
+	public void loadGameInfo() throws IOException
 	{
 		JsonReader reader = loader.getReader("gameInfo.json");
 		reader.beginObject();
@@ -220,7 +224,7 @@ class GameSnapshotLoader
 		input.close();
 	}
 	
-	public void loadUnits() throws IOException
+	public void loadUnits() throws Exception
 	{
 		DataInputStream input = loader.openDIS("units.dat");
 		game.fieldUnits = loadUnitsField(input, true);
@@ -233,7 +237,7 @@ class GameSnapshotLoader
 		input.close();
 	}
 	
-	public Unit[][] loadUnitsField(DataInputStream input, boolean addToPlayer) throws IOException
+	public Unit[][] loadUnitsField(DataInputStream input, boolean addToPlayer) throws Exception
 	{
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		loadUnits(input, units, addToPlayer);
@@ -243,14 +247,14 @@ class GameSnapshotLoader
 		return field;
 	}
 	
-	public void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws IOException
+	public void loadUnits(DataInputStream input, Collection<Unit> units, boolean addToPlayer) throws Exception
 	{
 		int numberUnits = input.readInt();
 		for (int i = 0; i < numberUnits; i++)
 			units.add(loadUnit(input, addToPlayer));
 	}
 	
-	public Unit loadUnit(DataInputStream input, boolean addToPlayer) throws IOException
+	public Unit loadUnit(DataInputStream input, boolean addToPlayer) throws Exception
 	{
 		Unit unit = new Unit(game);
 		unit.load(input, game);

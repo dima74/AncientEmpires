@@ -98,7 +98,7 @@ public class UnitBuyAdapter extends BaseAdapter
 		holder.imageView.setImageBitmap(bitmap);
 		
 		holder.textUnitCost = (TextView) view.findViewById(R.id.textUnitCost);
-		holder.textUnitCost.setText(String.valueOf(unit.cost));
+		holder.textUnitCost.setText(String.valueOf(unit.getCost()));
 		
 		return view;
 	}

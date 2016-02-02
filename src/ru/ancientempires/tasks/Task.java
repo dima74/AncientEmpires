@@ -51,10 +51,8 @@ public abstract class Task extends IGameHandler
 		save(output);
 	}
 	
-	public void load(DataInputStream input) throws IOException
-	{}
+	public abstract void load(DataInputStream input) throws IOException;
 	
-	public void save(DataOutputStream output) throws IOException
-	{}
+	public abstract void save(DataOutputStream output) throws IOException;
 	
 }

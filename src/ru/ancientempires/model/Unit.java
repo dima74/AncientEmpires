@@ -24,12 +24,13 @@ public class Unit extends IGameHandler
 	public int	health;
 	public int	level;
 	public int	experience;
-	
-	public Set<Bonus>	bonuses	= new HashSet<Bonus>();
-	public int			cost;
+	// только для статичных войнов
+	public int	numberBuys;
 	
 	public boolean	isMove;
 	public boolean	isTurn;
+	
+	public Set<Bonus> bonuses = new HashSet<Bonus>();
 	
 	public void setTurn()
 	{
@@ -60,7 +61,6 @@ public class Unit extends IGameHandler
 		setGame(game);
 		this.type = type;
 		this.player = player;
-		cost = type.cost;
 		initFromType();
 	}
 	
@@ -141,6 +141,14 @@ public class Unit extends IGameHandler
 		return defenceBonus;
 	}
 	
+	public int getCost()
+	{
+		int cost = type.cost;
+		for (Bonus bonus : getBonuses())
+			cost += bonus.getBonusCost(game, this);
+		return cost;
+	}
+	
 	// Пожалуй, эти две функции - единственное место,
 	// которое делается не за логарифм, хотя можно было бы соптимайзить)))
 	public boolean canCapture(CellType cellType)
@@ -167,13 +175,23 @@ public class Unit extends IGameHandler
 		output.writeInt(health);
 		output.writeInt(level);
 		output.writeInt(experience);
+		if (type.isStatic)
+			output.writeInt(numberBuys);
 		output.writeBoolean(isMove);
 		output.writeBoolean(isTurn);
+		
+		output.writeInt(bonuses.size());
+		for (Bonus bonus : bonuses)
+		{
+			bonus.saveBase(output);
+			game.numberedBonuses.trySave(output, bonus);
+		}
+		
 		game.namedUnits.trySave(output, this);
 		game.numberedUnits.trySave(output, this);
 	}
 	
-	public void load(DataInputStream input, Game game) throws IOException
+	public void load(DataInputStream input, Game game) throws Exception
 	{
 		type = game.rules.getUnitType(input.readUTF());
 		initFromType();
@@ -183,8 +201,19 @@ public class Unit extends IGameHandler
 		health = input.readInt();
 		level = input.readInt();
 		experience = input.readInt();
+		if (type.isStatic)
+			numberBuys = input.readInt();
 		isMove = input.readBoolean();
 		isTurn = input.readBoolean();
+		
+		int bonusesSize = input.readInt();
+		for (int i = 0; i < bonusesSize; i++)
+		{
+			Bonus bonus = Bonus.loadBase(input, game.rules);
+			bonuses.add(bonus);
+			game.numberedBonuses.tryLoad(input, bonus);
+		}
+		
 		game.namedUnits.tryLoad(input, this);
 		game.numberedUnits.tryLoad(input, this);
 	}
@@ -209,7 +238,7 @@ public class Unit extends IGameHandler
 			return false;
 		if (!bonuses.equals(unit.bonuses))
 			return false;
-		if (cost != unit.cost)
+		if (numberBuys != unit.numberBuys)
 			return false;
 		if (isMove != unit.isMove)
 			return false;

@@ -62,14 +62,14 @@ public class ActionCellBuy extends ActionFrom
 		unit.player = game.currentPlayer;
 		unit.player.units.add(unit);
 		
-		game.currentPlayer.gold -= unit.cost;
+		game.currentPlayer.gold -= unit.getCost();
 		game.setUnit(i, j, unit);
 		
 		if (unit.type.isStatic)
 		{
 			MyAssert.a(game.unitsStaticDead[unit.player.ordinal].contains(unit));
 			game.unitsStaticDead[unit.player.ordinal].remove(unit);
-			unit.cost += 200;
+			unit.numberBuys++;
 		}
 	}
 	

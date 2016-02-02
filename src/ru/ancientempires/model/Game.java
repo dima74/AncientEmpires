@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import ru.ancientempires.MyColor;
+import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.framework.MyAssert;
@@ -16,7 +17,7 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.rules.Rules;
 import ru.ancientempires.save.GameSaver;
-import ru.ancientempires.tasks.NumberedUnits;
+import ru.ancientempires.tasks.Numbered;
 import ru.ancientempires.tasks.Task;
 
 // Этот класс описывает снимок игры, кроме поля path, которое относится к сохранению
@@ -34,9 +35,15 @@ public class Game
 	public Rules	rules;
 	
 	public NamedUnits		namedUnits		= new NamedUnits();
-	public NumberedUnits	numberedUnits	= new NumberedUnits();
+	public Numbered<Unit>	numberedUnits	= new Numbered<>();
+	public Numbered<Bonus>	numberedBonuses	= new Numbered<>();
 	
 	public Random random = new Random();
+	
+	public Game(Rules rules)
+	{
+		this.rules = rules;
+	}
 	
 	public long getSeed()
 	{

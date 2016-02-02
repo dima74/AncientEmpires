@@ -1,5 +1,8 @@
 package ru.ancientempires.bonuses;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,8 +21,25 @@ public abstract class Bonus
 			BonusAttackAlways.class,
 			BonusAttackForUnit.class,
 			BonusMoveToCellGroup.class,
-			BonusOnCellGroup.class);
+			BonusOnCellGroup.class,
+			BonusCost.class);
 			
+	public static Bonus loadJsonBase(JsonObject object, Rules rules) throws Exception
+	{
+		int ordinal = object.get("type").getAsInt();
+		Bonus bonus = Bonus.classes.get(ordinal).newInstance();
+		bonus.loadJson(object, rules);
+		return bonus;
+	}
+	
+	public static Bonus loadBase(DataInputStream input, Rules rules) throws Exception
+	{
+		int ordinal = input.readInt();
+		Bonus bonus = Bonus.classes.get(ordinal).newInstance();
+		bonus.load(input, rules);
+		return bonus;
+	}
+	
 	public int ordinal()
 	{
 		return Bonus.classes.indexOf(getClass());
@@ -55,15 +75,60 @@ public abstract class Bonus
 		return 0;
 	}
 	
+	public int getBonusCost(Game game, Unit unit)
+	{
+		return 0;
+	}
+	
 	public int getSign()
 	{
 		return 0;
 	}
 	
-	public void saveJSON(JsonObject object)
-	{}
+	public final JsonObject saveJsonBase()
+	{
+		JsonObject result = new JsonObject();
+		result.addProperty("type", ordinal());
+		saveJson(result);
+		return result;
+	}
 	
-	public void loadJSON(JsonObject object, Rules rules)
-	{}
+	public abstract void saveJson(JsonObject object);
+	
+	public abstract void loadJson(JsonObject object, Rules rules);
+	
+	public final void saveBase(DataOutputStream output) throws IOException
+	{
+		output.writeInt(ordinal());
+		save(output);
+	}
+	
+	public abstract void save(DataOutputStream output) throws IOException;
+	
+	public abstract void load(DataInputStream input, Rules rules) throws IOException;
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ordinal();
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bonus other = (Bonus) obj;
+		if (ordinal() != other.ordinal())
+			return false;
+		return true;
+	}
 	
 }

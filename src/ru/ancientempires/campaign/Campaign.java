@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.stream.JsonWriter;
+
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.helpers.FileLoader;
@@ -14,6 +17,7 @@ public class Campaign
 	
 	public Game game;
 	
+	@Expose
 	public Script[]			scripts;
 	public IDrawCampaign	iDrawCampaign;
 	public boolean			isDefault	= false;
@@ -21,6 +25,25 @@ public class Campaign
 	public Campaign(Game game)
 	{
 		this.game = game;
+	}
+	
+	public void save(FileLoader loader) throws IOException
+	{
+		// TODO переписать методы во всех скриптах, чтобы принимали JsonObject и добавляли в него свойства
+		/*
+		JsonWriter writer = loader.getWriter("campaign.json");
+		new Gson().toJson(this, Campaign.class, writer);
+		writer.close();
+		*/
+		
+		JsonWriter writer = loader.getWriter("campaign.json");
+		writer.beginObject();
+		writer.name("scripts").beginArray();
+		for (Script script : scripts)
+			script.saveGeneral(writer);
+		writer.endArray();
+		writer.endObject();
+		writer.close();
 	}
 	
 	public void load(FileLoader loader) throws Exception
@@ -59,7 +82,7 @@ public class Campaign
 	public void saveState(FileLoader loader) throws IOException
 	{
 		DataOutputStream output = loader.openDOS("campaignState.dat");
-		for (Script script : game.campaign.scripts)
+		for (Script script : scripts)
 		{
 			output.writeBoolean(script.isStarting);
 			output.writeBoolean(script.isFinishing);
@@ -70,12 +93,24 @@ public class Campaign
 	public void loadState(FileLoader loader) throws IOException
 	{
 		DataInputStream input = loader.openDIS("campaignState.dat");
-		for (Script script : game.campaign.scripts)
+		for (Script script : scripts)
 		{
 			script.isStarting = input.readBoolean();
 			script.isFinishing = input.readBoolean();
 		}
 		input.close();
+	}
+	
+	private class SimpleScript extends Script
+	{}
+	
+	public Campaign createSimpleCopy(Game otherGame)
+	{
+		Campaign campaign = new Campaign(otherGame);
+		campaign.scripts = new Script[scripts.length];
+		for (int i = 0; i < scripts.length; i++)
+			campaign.scripts[i] = new SimpleScript();
+		return campaign;
 	}
 	
 }

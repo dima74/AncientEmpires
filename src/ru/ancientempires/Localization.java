@@ -22,17 +22,23 @@ public class Localization
 	
 	private Map<String, String> map = new HashMap<String, String>();
 	
-	public void load(FileLoader loader, String prefix) throws IOException
+	public void load(FileLoader loader) throws IOException
 	{
-		String lang = Locale.getDefault().toString();
-		String name = prefix + "_" + lang + ".json";
-		String nameDefault = prefix + ".json";
-		JsonReader reader = loader.getReader(loader.exists(name) ? name : nameDefault);
+		JsonReader reader = getReader(loader);
 		reader.beginObject();
 		while (reader.peek() == JsonToken.NAME)
 			map.put(reader.nextName(), reader.nextString());
 		reader.endObject();
 		reader.close();
+	}
+	
+	public JsonReader getReader(FileLoader loader) throws IOException
+	{
+		String prefix = "strings";
+		String lang = Locale.getDefault().toString();
+		String name = prefix + "_" + lang + ".json";
+		String nameDefault = prefix + ".json";
+		return loader.getReader(loader.exists(name) ? name : nameDefault);
 	}
 	
 }

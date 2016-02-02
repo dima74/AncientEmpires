@@ -48,6 +48,7 @@ public class RulesSaver
 				.create();
 		gson.toJson(rules, Rules.class, writer);
 		writer.close();
+		System.exit(0);
 	}
 	
 	public class RulesSerializer implements JsonSerializer<Rules>
@@ -213,10 +214,7 @@ public class RulesSaver
 		@Override
 		public JsonElement serialize(Bonus bonus, Type typeOfSrc, JsonSerializationContext context)
 		{
-			JsonObject result = new JsonObject();
-			result.addProperty("type", bonus.ordinal());
-			bonus.saveJSON(result);
-			return result;
+			return bonus.saveJsonBase();
 		}
 	}
 	

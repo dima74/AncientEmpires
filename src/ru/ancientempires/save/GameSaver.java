@@ -15,13 +15,12 @@ public class GameSaver
 	public GameSaveLoader	loader;
 	public Game				game;
 	public Game				mainGame;
-	public SaveInfo			saveInfo	= new SaveInfo();
 	public GameSaverThread	thread;
 	
 	public GameSaver(Game game)
 	{
 		mainGame = game;
-		loader = new GameSaveLoader(game.path.getLoader(), saveInfo);
+		loader = new GameSaveLoader(game.path.getLoader());
 		thread = new GameSaverThread();
 		thread.start();
 	}
@@ -31,8 +30,10 @@ public class GameSaver
 		@Override
 		public void save() throws Exception
 		{
-			game = new GameLoader(mainGame.path, mainGame.rules).load();
+			game = new GameLoader(mainGame.path, mainGame.rules).load(false);
 			game.path = mainGame.path;
+			game.path.canChooseTeams = false;
+			game.campaign = mainGame.campaign.createSimpleCopy(game);
 			game.isSaver = true;
 		}
 	}
@@ -45,21 +46,28 @@ public class GameSaver
 		for (String lang : mainGame.path.localizations)
 			copier.copy("strings_" + lang + ".json");
 			
-		game = mainGame;
-		new SaveSnapshot().save();
-		game = null;
+		new SaveSnapshot().save(mainGame);
 		add(new LoadFirstSnapshot());
 	}
 	
 	public void init() throws IOException
 	{
-		saveInfo.load();
+		loader.load();
 		add(new LoadFirstSnapshot());
+	}
+	
+	// всё, кроме strings
+	public void saveBaseGame() throws IOException
+	{
+		new SaveSnapshot().save(mainGame);
+		if (!mainGame.campaign.isDefault)
+			mainGame.campaign.save(loader);
+		thread.isRunning = false;
 	}
 	
 	public void checkSaveSnapshot() throws IOException
 	{
-		if (saveInfo.numberActionsAfterLastSave == 100)
+		if (loader.numberActionsAfterLastSave == 100)
 			saveSnapshot();
 	}
 	
@@ -68,13 +76,19 @@ public class GameSaver
 		@Override
 		public void save() throws IOException
 		{
-			++saveInfo.numberSnapshots;
-			loader.snapshots().mkdirs("");
-			loader.actions().mkdirs("");
-			saveInfo.numberActionsAfterLastSave = 0;
-			game.campaign = mainGame.campaign;
+			save(game);
+		}
+		
+		public void save(Game game) throws IOException
+		{
+			++loader.numberSnapshots;
+			loader.snapshots().mkdirs();
+			loader.actions().mkdirs();
+			loader.numberActionsAfterLastSave = 0;
 			new GameSnapshotSaver(game, loader.snapshots()).save();
-			saveInfo.save();
+			// game.lastTime =
+			game.path.save();
+			loader.save();
 		}
 	}
 	
@@ -100,11 +114,11 @@ public class GameSaver
 			action.performQuickBase(game);
 			if (!action.isCampaign())
 			{
-				String relativeNumberAction = "" + saveInfo.numberActionsAfterLastSave++;
+				String relativeNumberAction = "" + loader.numberActionsAfterLastSave++;
 				DataOutputStream dos = loader.actions().openDOS(relativeNumberAction);
 				action.saveBase(dos);
 				dos.close();
-				saveInfo.save();
+				loader.save();
 				checkSaveSnapshot();
 			}
 		}

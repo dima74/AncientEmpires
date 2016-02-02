@@ -116,9 +116,9 @@ public class FileLoader
 		return new ImagesLoader(this);
 	}
 	
-	public void loadLocalization(String prefix) throws IOException
+	public void loadLocalization() throws IOException
 	{
-		Client.client.localization.load(this, prefix);
+		Client.client.localization.load(this);
 	}
 	
 }

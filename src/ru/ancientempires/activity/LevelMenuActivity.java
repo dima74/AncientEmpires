@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import ru.ancientempires.Localization;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
@@ -87,19 +86,10 @@ public class LevelMenuActivity extends ListActivity
 	
 	public void start()
 	{
-		String[] names;
-		if (currentFolder.folders != null)
-		{
-			names = new String[currentFolder.folders.length];
-			for (int i = 0; i < currentFolder.folders.length; i++)
-				names[i] = currentFolder.folders[i].name;
-		}
-		else
-		{
-			names = new String[currentFolder.games.length];
-			for (int i = 0; i < currentFolder.games.length; i++)
-				names[i] = Localization.get(currentFolder.games[i].gameID + ".name");
-		}
+		String[] names = new String[currentFolder.games.length];
+		for (int i = 0; i < currentFolder.games.length; i++)
+			// names[i] = Localization.get(currentFolder.games[i].gameID + ".name");
+			names[i] = currentFolder.games[i].name;
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, names);
 		setListAdapter(adapter);
 		
@@ -113,13 +103,7 @@ public class LevelMenuActivity extends ListActivity
 		if (isStartingGameInProcess)
 			return;
 		isStartingGameInProcess = true;
-		if (currentFolder.folders != null)
-		{
-			currentFolder = currentFolder.folders[position];
-			start();
-		}
-		else
-			GameActivity.startGame(this, currentFolder.games[position].gameID, false);
+		GameActivity.startGame(this, currentFolder.games[position].gameID, false);
 	}
 	
 	@Override

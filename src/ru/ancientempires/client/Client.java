@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import android.app.Activity;
@@ -48,7 +51,7 @@ public class Client
 	public ImagesLoader	imagesLoader;
 	public Images		images	= new Images();
 	
-	public GamesFolder				baseFolder;
+	// public GamesFolder baseFolder;
 	public Map<String, GamesFolder>	allFolders	= new HashMap<String, GamesFolder>();
 	public Map<String, GamePath>	allGames	= new HashMap<String, GamePath>();
 	
@@ -62,6 +65,8 @@ public class Client
 	
 	public Client(Activity activity) throws IOException
 	{
+		MyAssert.a(Client.client == null);
+		Client.client = this;
 		log = new LogWriter();
 		fileLoader = new FileLoader(activity);
 		gamesLoader = fileLoader.getLoader("games/");
@@ -74,14 +79,15 @@ public class Client
 	// То что нужно для показа главного меню
 	public void loadPart0() throws IOException
 	{
-		fileLoader.loadLocalization("strings");
+		fileLoader.loadLocalization();
 	}
 	
 	// То что нужно для показа списка игр
 	public void loadPart1() throws Exception
 	{
-		gamesLoader.loadLocalization("strings");
-		baseFolder = new GamesFolder("", null);
+		// baseFolder = new GamesFolder("", null);
+		allFolders.put("campaign", new GamesFolder("campaign"));
+		allFolders.put("skirmish", new GamesFolder("skirmish"));
 		
 		// ID = ANDROID_ID;
 		load();
@@ -158,24 +164,20 @@ public class Client
 		}
 	}
 	
-	public class SaveInfo
-	{
-		public int numberSaves;
-		
-	}
-	
 	public void load() throws Exception
 	{
-		SaveInfo saveInfo = new Gson().fromJson(fileLoader.getReader("info.json"), SaveInfo.class);
-		numberSaves = saveInfo.numberSaves;
+		JsonReader reader = fileLoader.getReader("info.json");
+		JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
+		numberSaves = object.get("numberSaves").getAsInt();
+		reader.close();
 	}
 	
 	public void save() throws Exception
 	{
-		SaveInfo saveInfo = new SaveInfo();
-		saveInfo.numberSaves = numberSaves;
 		JsonWriter writer = fileLoader.getWriter("info.json");
-		new Gson().toJson(saveInfo, SaveInfo.class, writer);
+		JsonObject object = new JsonObject();
+		object.addProperty("numberSaves", numberSaves);
+		new Gson().toJson(object, writer);
 		writer.close();
 	}
 	

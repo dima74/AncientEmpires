@@ -25,9 +25,6 @@ public class PlayMenuActivity extends ListActivity
 			MenuActions.LOAD
 	};
 	
-	private static int	count;
-	private int			number	= ++PlayMenuActivity.count;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -37,7 +34,7 @@ public class PlayMenuActivity extends ListActivity
 		setContentView(R.layout.main_menu_list_view);
 		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, PlayMenuActivity.actions));
 		
-		start("multiplayer");
+		start("skirmish");
 		// start("campaign");
 	}
 	
@@ -64,7 +61,7 @@ public class PlayMenuActivity extends ListActivity
 				start("campaign");
 				break;
 			case SKIRMISH:
-				start("multiplayer");
+				start("skirmish");
 				break;
 			default:
 				break;

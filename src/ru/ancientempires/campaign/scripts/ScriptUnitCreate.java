@@ -36,7 +36,7 @@ public class ScriptUnitCreate extends Script
 	{
 		this.i = new CoordinateInteger(i);
 		this.j = new CoordinateInteger(j);
-		this.unitType = game.rules.getUnitType(unitType);
+		this.unitType = getGame().rules.getUnitType(unitType);
 		this.player = getGame().players[player];
 	}
 	
