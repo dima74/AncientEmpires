@@ -37,23 +37,23 @@ public class ActionUnitAttack extends ActionFromTo
 	private boolean checkAttackCell()
 	{
 		Cell targetCell = game.fieldCells[targetI][targetJ];
-		return targetCell.type.isDestroying && targetCell.getTeam() != unit.player.team;
+		return !targetCell.isDestroy && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 	}
 	
 	private boolean checkAttackUnit()
 	{
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
-		return targetUnit != null && unit.player != targetUnit.player;
+		return targetUnit != null && unit.player.team != targetUnit.player.team;
 	}
 	
 	@Override
 	public void performQuick()
 	{
 		unit = game.fieldUnits[i][j];
-		if (checkAttackCell())
-			attackCell();
-		else
+		if (checkAttackUnit())
 			attackUnit();
+		else
+			attackCell();
 	}
 	
 	private void attackCell()
@@ -68,7 +68,7 @@ public class ActionUnitAttack extends ActionFromTo
 		targetCell.isCapture = false;
 		targetCell.player = null;
 		
-		unit.isTurn = true;
+		unit.setTurn();
 	}
 	
 	private void attackUnit()
@@ -86,7 +86,9 @@ public class ActionUnitAttack extends ActionFromTo
 			result.attackResultReverse = attackResultReverse;
 			
 		result.unitsToUpdate = new ActionHelper(game).getUnitsChangedStateNearCell(unit.player, targetI, targetJ);
-		unit.isTurn = true;
+		for (Unit unit : result.unitsToUpdate)
+			unit.setTurn();
+		unit.setTurn();
 	}
 	
 	private AttackResult attack(Unit unit, Unit targetUnit, boolean reverse)

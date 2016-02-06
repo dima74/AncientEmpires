@@ -16,7 +16,7 @@ public class GameThread extends Thread
 	private static GameThread	thread;
 	
 	private SurfaceHolder	surfaceHolder;
-	public GameDrawMain		gameDraw;
+	public GameDrawMain		drawMain;
 	public InputMain		inputMain;
 	
 	volatile public boolean isRunning = true;
@@ -32,9 +32,9 @@ public class GameThread extends Thread
 		Debug.create(this);
 		this.surfaceHolder = surfaceHolder;
 		
-		gameDraw = InputBase.gameDraw = new GameDrawMain();
-		gameDraw.inputMain = inputMain = new InputMain();
-		gameDraw.inputPlayer = inputMain.inputPlayer;
+		drawMain = InputBase.gameDraw = new GameDrawMain();
+		drawMain.inputMain = inputMain = new InputMain();
+		drawMain.inputPlayer = inputMain.inputPlayer;
 	}
 	
 	@Override
@@ -66,10 +66,10 @@ public class GameThread extends Thread
 			{
 				synchronized (surfaceHolder)
 				{
-					gameDraw.iFrame++;
+					drawMain.iFrame++;
 					try
 					{
-						gameDraw.draw(canvas);
+						drawMain.draw(canvas);
 					}
 					catch (Exception e)
 					{
@@ -95,7 +95,7 @@ public class GameThread extends Thread
 			if (isTouch)
 				try
 				{
-					gameDraw.touch(touchY, touchX);
+					drawMain.touch(touchY, touchX);
 				}
 				catch (Exception e)
 				{
@@ -106,7 +106,7 @@ public class GameThread extends Thread
 			if (needUpdateCampaign)
 			{
 				needUpdateCampaign = false;
-				GameActivity.activity.game.campaign.update();
+				drawMain.game.campaign.update();
 			}
 			
 			// TODO сделать другой тайминговый механизм: не засыпать тут, а передавать в gameDraw.draw() время, прошедшее с последнего рисования. По нему впринципе можно вычислить iFrame, если не хочется переписывать все draw()

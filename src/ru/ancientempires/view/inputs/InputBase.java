@@ -9,6 +9,10 @@ public abstract class InputBase extends IGameHandler
 	public static GameDrawMain	gameDraw;
 	public InputMain			main;
 	
+	{
+		game = InputBase.gameDraw.game;
+	}
+	
 	public abstract void beginTurn();
 	
 	public abstract void tap(int i, int j);

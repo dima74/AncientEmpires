@@ -33,9 +33,6 @@ public class PlayMenuActivity extends ListActivity
 		
 		setContentView(R.layout.main_menu_list_view);
 		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, PlayMenuActivity.actions));
-		
-		start("skirmish");
-		// start("campaign");
 	}
 	
 	@Override
@@ -43,6 +40,14 @@ public class PlayMenuActivity extends ListActivity
 	{
 		super.onStart();
 		Debug.onStart(this);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// start("campaign");
+		// start("skirmish");
 	}
 	
 	@Override
@@ -62,6 +67,9 @@ public class PlayMenuActivity extends ListActivity
 				break;
 			case SKIRMISH:
 				start("skirmish");
+				break;
+			case LOAD:
+				start("save");
 				break;
 			default:
 				break;
@@ -89,7 +97,10 @@ public class PlayMenuActivity extends ListActivity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings)
+		{
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	

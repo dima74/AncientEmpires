@@ -66,7 +66,7 @@ public class UnitHelper extends GameHandler
 		int attackBonus = unit.getBonusAttack(targetUnit);
 		int attack = game.random.nextInt(unit.type.attackMax - unit.type.attackMin) + unit.type.attackMin;
 		// int attack = unit.type.attackMin;
-		return Math.min(unit.health * Math.max(attack + attackBonus - getUnitDefence(targetUnit, unit) / 100, 0), targetUnit.health);
+		return Math.min(unit.health * Math.max(attack + attackBonus - getUnitDefence(targetUnit, unit), 0) / 100, targetUnit.health);
 	}
 	
 	public int getUnitDefence(Unit unit, Unit fromUnit)

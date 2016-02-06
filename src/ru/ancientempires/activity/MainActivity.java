@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
+import ru.ancientempires.client.AndroidClientHelper;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
@@ -35,8 +36,7 @@ public class MainActivity extends ListActivity
 		if (Client.client == null)
 			try
 			{
-				Client.client = new Client(this);
-				Client.client.loadPart0();
+				Client.client = new Client(new AndroidClientHelper(this));
 				Client.client.startLoadParts12();
 			}
 			catch (IOException e)
@@ -48,8 +48,6 @@ public class MainActivity extends ListActivity
 		
 		setContentView(R.layout.main_menu_list_view);
 		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, MainActivity.actions));
-		
-		startActivity(new Intent(this, PlayMenuActivity.class));
 	}
 	
 	@Override
@@ -70,6 +68,13 @@ public class MainActivity extends ListActivity
 	{
 		super.onStart();
 		Debug.onStart(this);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		startActivity(new Intent(this, PlayMenuActivity.class));
 	}
 	
 	@Override

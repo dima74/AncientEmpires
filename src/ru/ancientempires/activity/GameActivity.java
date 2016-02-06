@@ -12,6 +12,7 @@ import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
@@ -26,8 +27,9 @@ public class GameActivity extends Activity
 	public static final String	EXTRA_USE_LAST_TEAMS	= "EXTRA_USE_LAST_TEAMS";
 	public static GameActivity	activity;
 	public GameView				view;
-	public boolean				isFirst					= true;
 	public Game					game;
+	private String				baseGameID;
+	private String				gameID;
 	
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
@@ -57,13 +59,19 @@ public class GameActivity extends Activity
 		super.onCreate(savedInstanceState);
 		Debug.create(this);
 		GameActivity.activity = this;
-		
+		baseGameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		Debug.onStart(this);
 		final ProgressDialog dialog = new ProgressDialog(GameActivity.activity);
 		dialog.setMessage(getString(R.string.loading));
 		dialog.setCancelable(false);
 		dialog.show();
 		
-		final String gameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
 		new Thread()
 		{
 			@Override
@@ -72,7 +80,8 @@ public class GameActivity extends Activity
 				try
 				{
 					Client.client.finishPart2();
-					game = Client.client.startGame(gameID);
+					game = Client.client.startGame(gameID == null ? baseGameID : gameID);
+					gameID = game.path.gameID;
 				}
 				catch (Exception e)
 				{
@@ -80,7 +89,7 @@ public class GameActivity extends Activity
 					e.printStackTrace();
 				}
 				
-				GameActivity.activity.runOnUiThread(new Runnable()
+				runOnUiThread(new Runnable()
 				{
 					@Override
 					public void run()
@@ -88,29 +97,10 @@ public class GameActivity extends Activity
 						dialog.dismiss();
 						view = new GameView(GameActivity.this);
 						setContentView(view);
-						isFirst = false;
 					}
 				});
 			}
 		}.start();
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		Debug.onStart(this);
-		if (!isFirst)
-		{
-			view = new GameView(GameActivity.this);
-			setContentView(view);
-		}
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		super.onSaveInstanceState(outState);
 	}
 	
 	@Override
@@ -121,6 +111,16 @@ public class GameActivity extends Activity
 		if (view != null)
 			((ViewGroup) view.getParent()).removeView(view);
 		view = null;
+		try
+		{
+			Client.client.stopGame(false);
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+		game = null;
 	}
 	
 	@Override
@@ -129,8 +129,8 @@ public class GameActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		boolean isActiveGame = view != null
 				&& view.thread != null
-				&& view.thread.gameDraw != null
-				&& view.thread.gameDraw.isActiveGame;
+				&& view.thread.drawMain != null
+				&& view.thread.drawMain.isActiveGame;
 		if (isActiveGame)
 			getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
@@ -142,36 +142,40 @@ public class GameActivity extends Activity
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_end_turn)
-			view.thread.inputMain.endTurn(true);
-		else if (id == R.id.action_reset)
-			GameActivity.startGame(this, game.path.baseGameID, true);
-		else if (id == R.id.action_kill_unit)
+		switch (item.getItemId())
 		{
-			while (!game.players[1].units.isEmpty())
-			{
-				Unit unit = game.players[1].units.get(0);
-				unit.health = 0;
-				new UnitHelper(game).checkDied(unit);
-				view.thread.gameDraw.gameDrawUnits.update();
-				view.thread.gameDraw.inputPlayer.tapWithoutAction(unit.i, unit.j);
-				view.thread.gameDraw.focusOnCell(unit.i, unit.j);
-			}
-			view.thread.needUpdateCampaign = true;
-			return true;
-		}
-		else if (id == R.id.action_capture_castle)
-		{
-			CellType type = game.rules.getCellType("CASTLE");
-			for (Cell[] line : game.fieldCells)
-				for (Cell cell : line)
-					if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
-					{
-						cell.player = game.players[0];
-						view.thread.needUpdateCampaign = true;
-					}
-			return true;
+			case android.R.id.home:
+				MyLog.l("GameActivity up");
+				finish();
+				return true;
+			case R.id.action_end_turn:
+				view.thread.inputMain.endTurn(true);
+				return true;
+			case R.id.action_reset:
+				GameActivity.startGame(game.path.baseGameID, true);
+				return true;
+			case R.id.action_kill_unit:
+				while (!game.players[1].units.isEmpty())
+				{
+					Unit unit = game.players[1].units.get(0);
+					unit.health = 0;
+					new UnitHelper(game).checkDied(unit);
+					view.thread.drawMain.gameDrawUnits.update();
+					view.thread.drawMain.inputPlayer.tapWithoutAction(unit.i, unit.j);
+					view.thread.drawMain.focusOnCell(unit.i, unit.j);
+				}
+				view.thread.needUpdateCampaign = true;
+				return true;
+			case R.id.action_capture_castle:
+				CellType type = game.rules.getCellType("CASTLE");
+				for (Cell[] line : game.fieldCells)
+					for (Cell cell : line)
+						if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
+						{
+							cell.player = game.players[0];
+							view.thread.needUpdateCampaign = true;
+						}
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

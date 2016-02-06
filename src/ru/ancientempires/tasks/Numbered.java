@@ -18,7 +18,7 @@ public class Numbered<T>
 	
 	public T get(int i)
 	{
-		return objects.get(i);
+		return i < objects.size() ? objects.get(i) : null;
 	}
 	
 	public void tryLoad(DataInputStream input, T object) throws IOException

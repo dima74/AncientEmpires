@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
@@ -47,13 +46,20 @@ public class Game
 	
 	public long getSeed()
 	{
+		long seed = Game.getSeed(random);
+		MyAssert.a(Game.getSeed(new Random(seed)) == seed);
+		return Game.getSeed(random);
+	}
+	
+	public static long getSeed(Random random)
+	{
 		long seed = 0;
 		try
 		{
 			Field field = Random.class.getDeclaredField("seed");
 			field.setAccessible(true);
-			AtomicLong scrambledSeed = (AtomicLong) field.get(random); // this needs to be XOR'd with 0x5DEECE66DL
-			seed = scrambledSeed.get();
+			Number scrambledSeed = (Number) field.get(random); // this needs to be XOR'd with 0x5DEECE66DL
+			seed = scrambledSeed.longValue();
 		}
 		catch (Exception e)
 		{
@@ -102,9 +108,15 @@ public class Game
 		// System.out.println(game.get());
 		
 		if (!Arrays.deepEquals(teams, game.teams))
+		{
+			Arrays.deepEquals(teams, game.teams);
 			return false;
+		}
 		if (!Arrays.deepEquals(players, game.players))
+		{
+			Arrays.deepEquals(players, game.players);
 			return false;
+		}
 		if (currentPlayer.ordinal != game.currentPlayer.ordinal)
 			return false;
 		if (h != game.h)
@@ -243,10 +255,18 @@ public class Game
 	//
 	public String get()
 	{
-		int health = fieldUnits[3][7] == null ? 0 : fieldUnits[3][7].health;
-		String s = "king health: " + health + "\n";
+		// int health = fieldUnits[3][7] == null ? 0 : fieldUnits[3][7].health;
+		// String s = "king health: " + health + "\n";
+		
+		String s = "   ";
+		for (int i = 0; i < w; i++)
+			s += String.format("%3d", i);
+		s += "\n";
+		
+		int ih = 0;
 		for (Unit[] line : fieldUnits)
 		{
+			s += String.format("%2d ", ih++);
 			for (Unit unit : line)
 			{
 				char c;
@@ -258,7 +278,7 @@ public class Game
 					if (unit.player.ordinal == 0)
 						c = Character.toLowerCase(c);
 				}
-				s += c;
+				s += String.format("%3c", c);
 			}
 			s += "\n";
 		}

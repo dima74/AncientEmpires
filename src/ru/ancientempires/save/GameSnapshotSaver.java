@@ -25,11 +25,6 @@ public class GameSnapshotSaver
 	public Game			game;
 	public FileLoader	loader;
 	
-	public GameSnapshotSaver(Game game)
-	{
-		this(game, game.path.getLoader());
-	}
-	
 	public GameSnapshotSaver(Game game, FileLoader loader)
 	{
 		this.game = game;
@@ -102,7 +97,7 @@ public class GameSnapshotSaver
 			teams[iTeam] = new SimpleTeam(players);
 		}
 		
-		JsonWriter writer = loader.getWriter("defaultTeams.json");
+		JsonWriter writer = game.path.getLoader().getWriter("defaultTeams.json");
 		writer.beginObject();
 		writer.name("teams");
 		new Gson().toJson(teams, SimpleTeam[].class, writer);

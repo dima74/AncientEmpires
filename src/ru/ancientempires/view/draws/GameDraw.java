@@ -15,7 +15,7 @@ import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.UnitImages;
 
-public class GameDraw extends IInput
+public class GameDraw extends IGameDraw
 {
 	
 	public Images Images()
@@ -73,17 +73,16 @@ public class GameDraw extends IInput
 		return Client.client.images.smoke;
 	}
 	
-	public float		mapScale	= 2;
-	public int			A			= Images.get().bitmapSize;
-	public float		fA			= Images.get().bitmapSize * mapScale;
-	public float		a			= A / 24.0f;
-	public int			h			= GameView.h;
-	public int			w			= GameView.w;
-	public GameDrawMain	main		= GameDrawMain.main;
+	public float	mapScale	= 2;
+	public int		A			= Images().bitmapSize;
+	public float	fA			= Images().bitmapSize * mapScale;
+	public float	a			= A / 24.0f;
+	public int		h			= GameView.h;
+	public int		w			= GameView.w;
 	
 	public int iFrame()
 	{
-		return GameDrawMain.main.iFrame;
+		return main.iFrame;
 	}
 	
 	public void update()

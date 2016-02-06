@@ -1,6 +1,7 @@
 package ru.ancientempires.action;
 
 import ru.ancientempires.action.result.ActionResultGetUnit;
+import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Range;
@@ -28,12 +29,16 @@ public class ActionGetUnit extends ActionFrom
 	}
 	
 	@Override
+	public boolean check()
+	{
+		return super.check() && new ActionHelper(game).isUnitActive(i, j);
+	}
+	
+	@Override
 	public void performQuick()
 	{
 		unit = game.fieldUnits[i][j];
-		if (unit == null || unit.player != game.currentPlayer || unit.isTurn)
-			return;
-			
+		
 		radius = 0;
 		radius = Math.max(radius, unit.getMoveRadius());
 		radius = Math.max(radius, unit.type.attackRange.radius);
@@ -49,7 +54,7 @@ public class ActionGetUnit extends ActionFrom
 		result.fieldAttackReal = new boolean[diameter][diameter];
 		result.fieldRaise = new boolean[diameter][diameter];
 		result.fieldRaiseReal = new boolean[diameter][diameter];
-		if (game.checkFloating(unit))
+		if (game.checkFloating())
 		{
 			createAttack(result.fieldAttack, result.fieldAttackReal);
 			createRaise(result.fieldRaise, result.fieldRaiseReal);
@@ -124,24 +129,15 @@ public class ActionGetUnit extends ActionFrom
 					previousMoveI[nextI][nextJ] = minDistanceI;
 					previousMoveJ[nextI][nextJ] = minDistanceJ;
 					fieldMoveReal[nextI][nextJ] = nextUnit == null;
+					result.canMove |= fieldMoveReal[nextI][nextJ];
 				}
 			}
 		}
 		fieldMove[radius][radius] = false;
 		fieldMoveReal[radius][radius] = false;
 		
-		result.fieldMove = fieldMove;
-		result.fieldMoveReal = fieldMoveReal;
 		result.previousMoveI = previousMoveI;
 		result.previousMoveJ = previousMoveJ;
-		
-		for (int i = 0; i < diameter; i++)
-			for (int j = 0; j < diameter; j++)
-				if (fieldMoveReal[i][j])
-				{
-					result.canMove = true;
-					return;
-				}
 	}
 	
 	private void createAttack(boolean[][] fieldAttack, boolean[][] fieldAttackReal)
@@ -153,20 +149,12 @@ public class ActionGetUnit extends ActionFrom
 			{
 				Unit targetUnit = game.fieldUnits[targetI][targetJ];
 				Cell targetCell = game.fieldCells[targetI][targetJ];
-				return targetUnit != null && targetUnit.player.team != unit.player.team
-						|| unit.canDestroy(targetCell.type) && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
+				boolean can = targetUnit != null && targetUnit.player.team != unit.player.team
+						|| targetUnit == null && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+				result.canAttack |= can;
+				return can;
 			}
 		});
-		
-		result.fieldAttack = fieldAttack;
-		result.fieldAttackReal = fieldAttackReal;
-		for (int i = 0; i < diameter; i++)
-			for (int j = 0; j < diameter; j++)
-				if (fieldAttackReal[i][j])
-				{
-					result.canAttack = true;
-					return;
-				}
 	}
 	
 	private void createRaise(boolean[][] fieldRaise, boolean[][] fieldRaiseReal)
@@ -176,21 +164,14 @@ public class ActionGetUnit extends ActionFrom
 			@Override
 			public boolean check(int targetI, int targetJ)
 			{
-				return game.fieldUnitsDead[targetI][targetJ] != null;
+				boolean can = game.fieldUnitsDead[targetI][targetJ] != null;
+				result.canRaise |= can;
+				return can;
 			}
 		});
-		
-		result.fieldRaise = fieldRaise;
-		result.fieldRaiseReal = fieldRaiseReal;
-		for (int i = 0; i < diameter; i++)
-			for (int j = 0; j < diameter; j++)
-				if (fieldRaise[i][j])
-				{
-					result.canRaise = true;
-					return;
-				}
 	}
 	
+	// то же самое, что и в ACtionHelper
 	private void create(Range range, boolean[][] field, boolean[][] fieldReal, CheckerCoordinates checker)
 	{
 		int startRelativeI = Math.max(-unit.i, -range.radius);

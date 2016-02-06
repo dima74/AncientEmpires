@@ -34,10 +34,13 @@ public class Player
 			return false;
 		if (gold != player.gold)
 			return false;
+		// ActionPlayerChangeCursorPosition
+		/*
 		if (cursorI != player.cursorI)
 			return false;
 		if (cursorJ != player.cursorJ)
 			return false;
+		*/
 		return true;
 	}
 	

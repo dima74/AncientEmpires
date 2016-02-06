@@ -3,11 +3,9 @@ package ru.ancientempires.load;
 import java.io.IOException;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.rules.Rules;
 import ru.ancientempires.save.GameSaveLoader;
@@ -66,11 +64,7 @@ public class GamePath
 	
 	private void loadName() throws IOException
 	{
-		JsonReader reader = Client.client.localization.getReader(getLoader());
-		reader.beginObject();
-		MyAssert.a("name".equals(reader.nextName()));
-		name = reader.nextString();
-		reader.close();
+		name = Client.client.localization.loadName(getLoader());
 	}
 	
 	public GamePath copyTo(String newPath, String newID) throws IOException
@@ -88,6 +82,11 @@ public class GamePath
 		JsonWriter writer = getLoader().getWriter("info.json");
 		new Gson().toJson(this, GamePath.class, writer);
 		writer.close();
+	}
+	
+	public GamesFolder getFolder()
+	{
+		return Client.client.allFolders.get(gameID.subSequence(0, gameID.lastIndexOf('.')));
 	}
 	
 }

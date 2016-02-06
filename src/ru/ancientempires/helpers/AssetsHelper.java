@@ -3,7 +3,6 @@ package ru.ancientempires.helpers;
 import java.io.IOException;
 import java.io.InputStream;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 
 public class AssetsHelper
@@ -11,9 +10,9 @@ public class AssetsHelper
 	
 	private AssetManager assets;
 	
-	public AssetsHelper(Activity activity)
+	public AssetsHelper(AssetManager assets)
 	{
-		assets = activity.getAssets();
+		this.assets = assets;
 	}
 	
 	public InputStream openIS(String name) throws IOException

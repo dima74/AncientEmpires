@@ -28,7 +28,7 @@ public class MyAssert
 				{
 					e.printStackTrace();
 				}
-			MyLog.l(new Exception().getStackTrace());
+			// MyLog.l(new Exception().getStackTrace());
 		}
 	}
 	

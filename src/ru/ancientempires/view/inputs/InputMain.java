@@ -2,10 +2,10 @@ package ru.ancientempires.view.inputs;
 
 import ru.ancientempires.action.ActionGameEndTurn;
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
-import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.view.draws.GameDraw;
+import ru.ancientempires.view.draws.IGameDraw;
 
-public class InputMain extends IGameHandler
+public class InputMain extends IGameDraw
 {
 	
 	public InputPlayer		inputPlayer;

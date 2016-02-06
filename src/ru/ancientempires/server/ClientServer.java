@@ -32,7 +32,7 @@ public class ClientServer extends Server
 		Rules rules = path.getRules();
 		if (path.isBaseGame)
 		{
-			String newID = client.ID + ".save" + client.numberSaves++;
+			String newID = "save." + client.numberSaves();
 			String newPath = newID.replace('.', '/') + "/";
 			client.gamesLoader.getLoader(newPath).mkdirs();
 			
@@ -43,12 +43,12 @@ public class ClientServer extends Server
 			newGamePath.canChooseTeams = false;
 			game = new GameLoader(path, rules).load(true);
 			game.path = newGamePath;
-			// game.random = new Random(213237048392331L);
+			// game.random = new Random(274755610533487L);
+			
+			game.path.getFolder().add(game.path);
 			
 			game.saver = new GameSaver(game);
 			game.saver.initFromBase();
-			
-			client.save();
 		}
 		else
 		{
@@ -65,17 +65,18 @@ public class ClientServer extends Server
 	}
 	
 	@Override
-	public void stopGame() throws Exception
+	public void stopGame(boolean startNext) throws Exception
 	{
 		game.saver.finishSave();
-		if (game.path.nextGameID != null)
+		if (startNext && game.path.nextGameID != null)
 			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
 	public void commit(Action action) throws IOException
 	{
 		// action.saveBase(MyAssert.output);
-		MyAssert.outputText.println(action);
+		if (MyAssert.outputText != null)
+			MyAssert.outputText.println(action);
 		try
 		{
 			// Вот здесь у него поменялось знасение поля Game!

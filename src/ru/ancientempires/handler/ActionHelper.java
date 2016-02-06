@@ -1,7 +1,9 @@
 package ru.ancientempires.handler;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ru.ancientempires.action.Checker;
 import ru.ancientempires.action.CheckerCell;
 import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.client.Client;
@@ -10,9 +12,8 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.model.UnitType;
 
-public class ActionHelper extends GameHandler
+public class ActionHelper extends IGameHandler
 {
 	
 	public ActionHelper(Game game)
@@ -20,139 +21,125 @@ public class ActionHelper extends GameHandler
 		setGame(game);
 	}
 	
+	private boolean isUnitActive(Unit unit)
+	{
+		return unit != null && !unit.isTurn && unit.player == game.currentPlayer && game.checkFloating(unit);
+	}
+	
 	public boolean canUnitAction(Unit unit)
 	{
-		return unit != null && !unit.isTurn && unit.player == game.currentPlayer
-				&& (canUnitMove(unit)
-						|| canUnitAttack(unit)
+		return isUnitActive(unit)
+				&& (canUnitMove(unit) || game.checkFloating() && (canUnitAttack(unit)
 						|| canUnitRepair(unit)
 						|| canUnitCapture(unit)
-						|| canUnitRaise(unit));
+						|| canUnitRaise(unit)));
 	}
 	
 	public boolean canUnitMove(Unit unit)
 	{
-		return !unit.isMove && isEmptyCells(unit.i, unit.j, unit.type);
+		return !unit.isMove && isEmptyCells(unit.i, unit.j, unit);
 	}
 	
 	public boolean canUnitAttack(final Unit unit)
 	{
-		return forUnitsInRange(unit.i, unit.j, unit.type.attackRange, new CheckerUnit()
-		{
-			@Override
-			public boolean check(Unit targetUnit)
-			{
-				return targetUnit.player.team != unit.player.team;
-			}
-		}) || forCellsInRange(unit.i, unit.j, unit.type.attackRange, new CheckerCell()
+		return forCellInRange(unit.i, unit.j, unit.type.attackRange, new CheckerCell()
 		{
 			@Override
 			public boolean check(Cell targetCell)
 			{
-				return unit.canDestroy(targetCell.type) && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team;
+				Unit targetUnit = game.fieldUnits[targetCell.i][targetCell.j];
+				return targetUnit != null && targetUnit.player.team != unit.player.team
+						|| targetUnit == null && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 			}
 		});
 	}
 	
 	public boolean canUnitRepair(Unit unit)
 	{
-		Cell cell = game.fieldCells[unit.i][unit.j];
+		Cell cell = unit.getCell();
 		return unit.canRepair(cell.type) && cell.isDestroy;
 	}
 	
 	public boolean canUnitCapture(Unit unit)
 	{
-		Cell cell = game.fieldCells[unit.i][unit.j];
+		Cell cell = unit.getCell();
 		return unit.canCapture(cell.type) && !cell.isDestroy && cell.getTeam() != unit.player.team;
+	}
+	
+	private <T> boolean forEachInRange(T[][] field, int i, int j, Range range, Checker<T> checker)
+	{
+		int minRelativeI = Math.max(-i, -range.radius);
+		int minRelativeJ = Math.max(-j, -range.radius);
+		int maxRelativeI = Math.min(game.h - i - 1, range.radius);
+		int maxRelativeJ = Math.min(game.w - j - 1, range.radius);
+		for (int relativeI = minRelativeI; relativeI <= maxRelativeI; relativeI++)
+			for (int relativeJ = minRelativeJ; relativeJ <= maxRelativeJ; relativeJ++)
+				if (range.table[range.radius + relativeI][range.radius + relativeJ]
+						&& checker.check(field[i + relativeI][j + relativeJ]))
+					return true;
+		return false;
+	}
+	
+	public <T> List<T> getInRange(T[][] field, int i, int j, Range range, final Checker<T> checker)
+	{
+		final ArrayList<T> list = new ArrayList<T>();
+		forEachInRange(field, i, j, range, new Checker<T>()
+		{
+			@Override
+			public boolean check(T target)
+			{
+				if (checker.check(target))
+					list.add(target);
+				return false;
+			}
+		});
+		return list;
+	}
+	
+	public boolean forUnitInRange(Unit[][] field, int i, int j, Range range, CheckerUnit checker)
+	{
+		return forEachInRange(field, i, j, range, checker);
+	}
+	
+	public boolean forUnitInRange(int i, int j, Range range, CheckerUnit checker)
+	{
+		return forEachInRange(game.fieldUnits, i, j, range, checker);
+	}
+	
+	public boolean forCellInRange(int i, int j, Range range, CheckerCell checker)
+	{
+		return forEachInRange(game.fieldCells, i, j, range, checker);
 	}
 	
 	private boolean canUnitRaise(Unit unit)
 	{
-		return forUnitsInRange(game.fieldUnitsDead, unit.i, unit.j, unit.type.raiseRange, new CheckerUnit()
+		return forUnitInRange(game.fieldUnitsDead, unit.i, unit.j, unit.type.raiseRange, new CheckerUnit()
 		{
 			@Override
-			public boolean check(Unit targetUnit)
+			public boolean check(Unit target)
 			{
-				return true;
+				return target != null;
 			}
 		});
 	}
 	
-	public boolean forUnitsInRange(int i, int j, Range rangeType, CheckerUnit checker)
+	public boolean isEmptyCells(int i, int j, Unit unit)
 	{
-		return forUnitsInRange(game.fieldUnits, i, j, rangeType, checker);
+		return dfs(i, j, unit, unit.getMoveRadius());
 	}
 	
-	public boolean forUnitsInRange(Unit[][] field, int i, int j, Range rangeType, CheckerUnit checker)
+	private boolean dfs(int i, int j, Unit unit, int moveRadius)
 	{
-		boolean[][] rangeField = rangeType.table;
-		int size = rangeField.length;
-		for (int relI = 0; relI < size; relI++)
-			for (int relJ = 0; relJ < size; relJ++)
-			{
-				if (!rangeField[relI][relJ])
-					continue;
-				int targetI = i + relI - rangeType.radius;
-				int targetJ = j + relJ - rangeType.radius;
-				if (!game.checkCoordinates(targetI, targetJ))
-					continue;
-				Unit unit = field[targetI][targetJ];
-				if (unit != null && checker.check(unit))
-					return true;
-			}
-		return false;
+		return moveRadius >= 0 && (game.fieldUnits[i][j] == null
+				|| tryDfs(i, j, i - 1, j, unit, moveRadius)
+				|| tryDfs(i, j, i, j - 1, unit, moveRadius)
+				|| tryDfs(i, j, i, j + 1, unit, moveRadius)
+				|| tryDfs(i, j, i + 1, j, unit, moveRadius));
 	}
 	
-	public Unit[] getUnitsInRange(int i, int j, Range rangeType, CheckerUnit checker)
+	private boolean tryDfs(int i, int j, int targetI, int targetJ, Unit unit, int moveRadius)
 	{
-		return getUnitsInRange(game.fieldUnits, i, j, rangeType, checker);
-	}
-	
-	public Unit[] getUnitsInRange(Unit[][] field, int i, int j, Range rangeType, CheckerUnit checker)
-	{
-		ArrayList<Unit> units = new ArrayList<Unit>();
-		
-		boolean[][] rangeField = rangeType.table;
-		int size = rangeField.length;
-		for (int relI = 0; relI < size; relI++)
-			for (int relJ = 0; relJ < size; relJ++)
-			{
-				if (!rangeField[relI][relJ])
-					continue;
-				int targetI = i + relI - rangeType.radius;
-				int targetJ = j + relJ - rangeType.radius;
-				if (!game.checkCoordinates(targetI, targetJ))
-					continue;
-				Unit unit = field[targetI][targetJ];
-				if (unit != null && checker.check(unit))
-					units.add(unit);
-			}
-		return units.toArray(new Unit[0]);
-	}
-	
-	public boolean forCellsInRange(int i, int j, Range rangeType, CheckerCell checker)
-	{
-		boolean[][] rangeField = rangeType.table;
-		int size = rangeField.length;
-		for (int relI = 0; relI < size; relI++)
-			for (int relJ = 0; relJ < size; relJ++)
-			{
-				if (!rangeField[relI][relJ])
-					continue;
-				int targetI = i + relI - rangeType.radius;
-				int targetJ = j + relJ - rangeType.radius;
-				if (!game.checkCoordinates(targetI, targetJ))
-					continue;
-				Cell cell = game.fieldCells[targetI][targetJ];
-				if (cell != null && checker.check(cell))
-					return true;
-			}
-		return false;
-	}
-	
-	public boolean isEmptyCells(int i, int j, UnitType type)
-	{
-		return true;
+		return game.checkCoordinates(targetI, targetJ) && dfs(targetI, targetJ, unit, moveRadius - unit.getSteps(i, j, targetI, targetJ));
 	}
 	
 	public void clearUnitState(Unit unit)
@@ -163,23 +150,17 @@ public class ActionHelper extends GameHandler
 	
 	public Unit[] getUnitsChangedStateNearCell(final Player player, final int targetI, final int targetJ)
 	{
-		return getUnitsInRange(targetI, targetJ, Client.client.rules.rangeMax, new CheckerUnit()
+		return getInRange(game.fieldUnits, targetI, targetJ, Client.client.rules.rangeMax, new Checker<Unit>()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
 			{
-				if (targetUnit.player == player && !targetUnit.isTurn && !canUnitAction(targetUnit))
-				{
-					targetUnit.setTurn();
-					return true;
-				}
-				return false;
+				return targetUnit != null && !targetUnit.isTurn && targetUnit.player == game.currentPlayer && !canUnitAction(targetUnit);
 			}
-		});
+		}).toArray(new Unit[0]);
 	}
 	
 	// Для вызывания из gameDraw
-	
 	public boolean canBuyOnCell(int i, int j)
 	{
 		return game.checkFloating() && game.fieldCells[i][j].type.buyTypes.length > 0 && game.fieldCells[i][j].player == game.currentPlayer;
@@ -187,18 +168,17 @@ public class ActionHelper extends GameHandler
 	
 	public boolean isUnitActive(int i, int j)
 	{
-		Unit unit = game.fieldUnits[i][j];
-		return unit != null && !unit.isTurn && unit.player == game.currentPlayer && game.checkFloating(unit);
+		return isUnitActive(game.fieldUnits[i][j]);
 	}
 	
 	public boolean canUnitRepair(int i, int j)
 	{
-		return isUnitActive(i, j) && canUnitRepair(game.fieldUnits[i][j]);
+		return isUnitActive(i, j) && game.checkFloating() && canUnitRepair(game.fieldUnits[i][j]);
 	}
 	
 	public boolean canUnitCapture(int i, int j)
 	{
-		return isUnitActive(i, j) && canUnitCapture(game.fieldUnits[i][j]);
+		return isUnitActive(i, j) && game.checkFloating() && canUnitCapture(game.fieldUnits[i][j]);
 	}
 	
 }

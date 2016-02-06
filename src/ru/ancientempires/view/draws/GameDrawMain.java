@@ -6,6 +6,7 @@ import java.util.Random;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.view.draws.onframes.GameDrawBlackScreen;
@@ -22,6 +23,7 @@ public class GameDrawMain extends GameDraw
 	
 	{
 		GameDrawMain.main = this;
+		game = GameActivity.activity.game;
 	}
 	
 	public InputMain	inputMain;

@@ -32,7 +32,7 @@ public class ActionUnitCapture extends ActionFrom
 			
 		cell.isCapture = true;
 		cell.player = unit.player;
-		unit.isTurn = true;
+		unit.setTurn();
 		game.currentEarns[unit.player.ordinal] += cell.type.earn;
 	}
 	

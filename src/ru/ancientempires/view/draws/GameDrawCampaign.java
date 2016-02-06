@@ -410,7 +410,7 @@ public class GameDrawCampaign extends GameDraw implements IDrawCampaign
 	@Override
 	public void closeMission() throws Exception
 	{
-		Client.client.stopGame();
+		Client.client.stopGame(true);
 	}
 	
 	@Override

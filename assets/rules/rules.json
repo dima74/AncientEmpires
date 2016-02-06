@@ -208,6 +208,7 @@
 				"CASTLE"
 			],
 			"isStatic": true,
+			"hasTombstone": false,
 			"bonuses": [
 				{
 					"type": 5,

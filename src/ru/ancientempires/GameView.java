@@ -26,13 +26,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			@Override
 			public boolean onDown(MotionEvent e)
 			{
-				return thread.gameDraw.isActiveGame;
+				return thread.drawMain.isActiveGame;
 			}
 			
 			@Override
 			public boolean onSingleTapUp(MotionEvent event)
 			{
-				if (!thread.gameDraw.isActiveGame)
+				if (!thread.drawMain.isActiveGame)
 					return false;
 				synchronized (thread)
 				{
@@ -46,9 +46,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
 			{
-				if (!thread.gameDraw.isActiveGame)
+				if (!thread.drawMain.isActiveGame)
 					return false;
-				thread.gameDraw.onScroll(distanceY, distanceX);
+				thread.drawMain.onScroll(distanceY, distanceX);
 				return true;
 			}
 		});

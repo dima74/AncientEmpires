@@ -9,6 +9,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 
 public class Localization
@@ -39,6 +40,16 @@ public class Localization
 		String name = prefix + "_" + lang + ".json";
 		String nameDefault = prefix + ".json";
 		return loader.getReader(loader.exists(name) ? name : nameDefault);
+	}
+	
+	public String loadName(FileLoader loader) throws IOException
+	{
+		JsonReader reader = Client.client.localization.getReader(loader);
+		reader.beginObject();
+		MyAssert.a("name".equals(reader.nextName()));
+		String name = reader.nextString();
+		reader.close();
+		return name;
 	}
 	
 }

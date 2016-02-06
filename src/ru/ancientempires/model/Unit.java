@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import ru.ancientempires.action.CheckerUnit;
+import ru.ancientempires.action.Checker;
 import ru.ancientempires.bonuses.Bonus;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.IGameHandler;
 
@@ -90,6 +91,11 @@ public class Unit extends IGameHandler
 	}
 	
 	// TODO кристаллы не должны мочь ходить на горы
+	public int getSteps(int i, int j, int targetI, int targetJ)
+	{
+		return getSteps(game.fieldCells[i][j], game.fieldCells[targetI][targetJ]);
+	}
+	
 	public int getSteps(int i, int j, Cell targetCell)
 	{
 		return getSteps(game.fieldCells[i][j], targetCell);
@@ -206,6 +212,8 @@ public class Unit extends IGameHandler
 		isMove = input.readBoolean();
 		isTurn = input.readBoolean();
 		
+		MyAssert.a(!isTurn || isMove);
+		
 		int bonusesSize = input.readInt();
 		for (int i = 0; i < bonusesSize; i++)
 		{
@@ -274,38 +282,38 @@ public class Unit extends IGameHandler
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)
 	{
 		Range type = new Range(null, minRange, maxRange);
-		return new ActionHelper(game).getUnitsInRange(y, x, type, new CheckerUnit()
+		return new ActionHelper(game).getInRange(game.fieldUnits, y, x, type, new Checker<Unit>()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
 			{
-				return player.team != targetUnit.player.team;
+				return targetUnit != null && player.team != targetUnit.player.team;
 			}
-		});
+		}).toArray(new Unit[0]);
 	}
 	
 	public Unit[] getUnitsToAttack(int x, int y)
 	{
-		return new ActionHelper(game).getUnitsInRange(y, x, type.attackRange, new CheckerUnit()
+		return new ActionHelper(game).getInRange(game.fieldUnits, y, x, type.attackRange, new Checker<Unit>()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
 			{
-				return player.team != targetUnit.player.team;
+				return targetUnit != null && player.team != targetUnit.player.team;
 			}
-		});
+		}).toArray(new Unit[0]);
 	}
 	
 	public Unit[] getUnitsToRaise(int x, int y)
 	{
-		return new ActionHelper(game).getUnitsInRange(game.fieldUnitsDead, y, x, type.raiseRange, new CheckerUnit()
+		return new ActionHelper(game).getInRange(game.fieldUnitsDead, y, x, type.raiseRange, new Checker<Unit>()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
 			{
 				return true;
 			}
-		});
+		}).toArray(new Unit[0]);
 	}
 	
 }

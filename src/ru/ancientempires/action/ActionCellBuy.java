@@ -35,7 +35,7 @@ public class ActionCellBuy extends ActionFrom
 		if (!(super.check() && checkPlayer()))
 			return false;
 		Unit unit = getUnit();
-		return new ActionHelper(game).isEmptyCells(i, j, unit.type);
+		return new ActionHelper(game).isEmptyCells(i, j, unit);
 	}
 	
 	private boolean checkPlayer()

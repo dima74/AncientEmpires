@@ -7,6 +7,6 @@ public interface IServer
 	
 	public Game startGame(String gameID) throws Exception;
 	
-	public void stopGame() throws Exception;
+	public void stopGame(boolean startNext) throws Exception;
 	
 }

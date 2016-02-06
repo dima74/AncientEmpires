@@ -2,9 +2,10 @@ package ru.ancientempires.action;
 
 import ru.ancientempires.model.Cell;
 
-public interface CheckerCell
+public interface CheckerCell extends Checker<Cell>
 {
 	
-	public boolean check(Cell targetCell);
+	@Override
+	public boolean check(Cell target);
 	
 }

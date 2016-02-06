@@ -2,6 +2,7 @@ package ru.ancientempires;
 
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
 
 public class GameInit
 {
@@ -22,6 +23,7 @@ public class GameInit
 	
 	public void init()
 	{
+		MyLog.l("GameInit.init()");
 		foldersInitThread = new Thread()
 		{
 			@Override

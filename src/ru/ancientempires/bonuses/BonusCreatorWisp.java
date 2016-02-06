@@ -33,12 +33,12 @@ public class BonusCreatorWisp extends BonusCreator
 	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit)
 	{
 		final ArrayList<BonusCreate> creates = new ArrayList<BonusCreate>();
-		new ActionHelper(game).forUnitsInRange(unit.i, unit.j, range, new CheckerUnit()
+		new ActionHelper(game).forUnitInRange(unit.i, unit.j, range, new CheckerUnit()
 		{
 			@Override
 			public boolean check(Unit targetUnit)
 			{
-				if (unit.player == targetUnit.player)
+				if (targetUnit != null && unit.player == targetUnit.player)
 					for (Bonus bonus : bonuses)
 					{
 						creates.add(new BonusCreate(targetUnit, bonus));

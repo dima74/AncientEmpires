@@ -15,7 +15,7 @@ import ru.ancientempires.action.ActionUnitCapture;
 import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.ActionUnitRaise;
 import ru.ancientempires.action.ActionUnitRepair;
-import ru.ancientempires.action.CheckerUnit;
+import ru.ancientempires.action.Checker;
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.action.result.ActionResultGetRandomNumber;
@@ -42,6 +42,12 @@ public class II extends GameHandler
 	
 	public ActionResult perform(Action action)
 	{
+		/*
+		action.game = game;
+		System.out.println(game.fieldUnits[5][7] == null ? "" : game.fieldUnits[5][7].isMove + " " + action);
+		action.game = null;
+		// */
+		
 		ActionResult result = action.perform(game);
 		action.game = null;
 		actions.add(action);
@@ -64,6 +70,12 @@ public class II extends GameHandler
 			setGame(new GameLoader(mainGame.path, mainGame.rules).load(false));
 			MyAssert.a(game.equals(mainGame));
 			mainGame.equals(game);
+			
+			/*
+			System.out.println();
+			System.out.println();
+			System.out.println(game.get());
+			*/
 		}
 		catch (Exception e)
 		{
@@ -75,6 +87,8 @@ public class II extends GameHandler
 		initTurn();
 		
 		ArrayList<Unit> allUnits = new ArrayList<Unit>(var_3aad);
+		for (Unit unit : allUnits)
+			MyAssert.a(!unit.isMove && !unit.isTurn);
 		while (!var_3aad.isEmpty())
 		{
 			Unit var1 = var_381f;
@@ -844,14 +858,14 @@ public class II extends GameHandler
 		if (var1.type.name == "SORCERESS" && var5 != null)
 			var6 += 100;
 		if (var1.type.name == "WISP")
-			var6 += 25 * new ActionHelper(game).getUnitsInRange(var3, var2, ((BonusCreatorWisp) rules.getUnitType("WISP").creators[0]).range, new CheckerUnit()
+			var6 += 25 * new ActionHelper(game).getInRange(game.fieldUnits, var3, var2, ((BonusCreatorWisp) rules.getUnitType("WISP").creators[0]).range, new Checker<Unit>()
 			{
 				@Override
 				public boolean check(Unit targetUnit)
 				{
-					return var1.player.team == targetUnit.player.team;
+					return targetUnit != null && var1.player.team == targetUnit.player.team;
 				}
-			}).length;
+			}).size();
 			
 		// if (var4 != null && var2 == 8 && var3 == 13)
 		// System.out.println();

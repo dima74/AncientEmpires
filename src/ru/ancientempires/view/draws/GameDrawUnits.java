@@ -16,6 +16,14 @@ public class GameDrawUnits extends GameDraw
 	public HashSet<UnitBitmap> moveUnits = new HashSet<UnitBitmap>();
 	
 	@Override
+	public void update()
+	{
+		for (int i = 0; i < game.h; i++)
+			for (int j = 0; j < game.w; j++)
+				updateUnit(i, j);
+	}
+	
+	@Override
 	public void draw(Canvas canvas)
 	{
 		Unit floatingUnit = game.floatingUnit;

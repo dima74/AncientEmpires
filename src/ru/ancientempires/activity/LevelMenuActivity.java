@@ -19,6 +19,7 @@ public class LevelMenuActivity extends ListActivity
 	
 	public GamesFolder	currentFolder;
 	private boolean		isStartingGameInProcess;
+	private String		folderID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -27,12 +28,15 @@ public class LevelMenuActivity extends ListActivity
 		Debug.create(this);
 		setContentView(R.layout.level_menu_list_view);
 		
-		currentFolder = Client.client.allFolders.get(getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER));
-		setTitle(currentFolder.name);
+		if (savedInstanceState == null)
+			folderID = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
+		else
+			folderID = savedInstanceState.getString("folderID");
+		MyAssert.a(folderID != null);
 		
 		if (Client.client.isFinishPart1())
 		{
-			start();
+			showFolders();
 			return;
 		}
 		
@@ -61,12 +65,19 @@ public class LevelMenuActivity extends ListActivity
 					public void run()
 					{
 						dialog.dismiss();
-						start();
+						showFolders();
 					}
 					
 				});
 			}
 		}.start();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putString("folderID", folderID);
 	}
 	
 	@Override
@@ -84,17 +95,20 @@ public class LevelMenuActivity extends ListActivity
 		Debug.onStop(this);
 	}
 	
-	public void start()
+	public void showFolders()
 	{
-		String[] names = new String[currentFolder.games.length];
-		for (int i = 0; i < currentFolder.games.length; i++)
+		currentFolder = Client.client.allFolders.get(folderID);
+		setTitle(currentFolder.name);
+		
+		String[] names = new String[currentFolder.games.size()];
+		for (int i = 0; i < currentFolder.games.size(); i++)
 			// names[i] = Localization.get(currentFolder.games[i].gameID + ".name");
-			names[i] = currentFolder.games[i].name;
+			names[i] = currentFolder.getName(i, currentFolder.games.get(i));
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, names);
 		setListAdapter(adapter);
 		
 		int i = "campaign".equals(getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER)) ? 0 : 5;
-		GameActivity.startGame(this, currentFolder.games[i].gameID, false);
+		// GameActivity.startGame(this, currentFolder.games[i].gameID, false);
 	}
 	
 	@Override
@@ -103,7 +117,7 @@ public class LevelMenuActivity extends ListActivity
 		if (isStartingGameInProcess)
 			return;
 		isStartingGameInProcess = true;
-		GameActivity.startGame(this, currentFolder.games[position].gameID, false);
+		GameActivity.startGame(this, currentFolder.games.get(position).gameID, false);
 	}
 	
 	@Override

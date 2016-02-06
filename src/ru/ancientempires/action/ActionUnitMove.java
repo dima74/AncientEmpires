@@ -27,6 +27,7 @@ public class ActionUnitMove extends ActionFromTo
 			return false;
 		Unit unit = game.fieldUnits[i][j];
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
+		// TODO ещё можно было бы проверять, что существует корректный путь
 		return new ActionHelper(game).isUnitActive(i, j) && (targetUnit == null || targetUnit == unit) && !unit.isMove;
 	}
 	

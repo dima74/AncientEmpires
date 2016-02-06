@@ -4,13 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
-import android.app.Activity;
 import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Action;
@@ -44,6 +37,7 @@ public class Client
 	public FileLoader	fileLoader;
 	public FileLoader	gamesLoader;
 	public FileLoader	defaultGameLoader;
+	public FileLoader	savesLoader;
 	
 	public FileLoader	rulesLoader;
 	public Rules		rules;
@@ -51,33 +45,42 @@ public class Client
 	public ImagesLoader	imagesLoader;
 	public Images		images	= new Images();
 	
-	// public GamesFolder baseFolder;
 	public Map<String, GamesFolder>	allFolders	= new HashMap<String, GamesFolder>();
+	public GamesFolder				campaign;
+	public GamesFolder				skirmish;
+	public GamesFolder				save;
 	public Map<String, GamePath>	allGames	= new HashMap<String, GamePath>();
 	
 	public Localization localization = new Localization();
 	
-	public String	ID;
-	public int		numberSaves;
+	// public String ID;
+	public int numberSaves()
+	{
+		return save.numberGames;
+	}
 	
 	public ClientServer	clientServer;
 	private Server[]	servers	= new Server[0];
 	
-	public Client(Activity activity) throws IOException
+	public Client(IClientHelper helper) throws IOException
 	{
 		MyAssert.a(Client.client == null);
 		Client.client = this;
 		log = new LogWriter();
-		fileLoader = new FileLoader(activity);
+		fileLoader = new FileLoader(helper);
 		gamesLoader = fileLoader.getLoader("games/");
 		rulesLoader = fileLoader.getLoader("rules/");
 		defaultGameLoader = gamesLoader.getLoader("defaultGame/");
 		imagesLoader = fileLoader.getLoader("images/").getImagesLoader();
 		clientServer = new ClientServer(this);
+		// ID = helper.getID();
+		savesLoader = gamesLoader.getLoader("save/" + "/");
+		
+		loadPart0();
 	}
 	
 	// То что нужно для показа главного меню
-	public void loadPart0() throws IOException
+	private void loadPart0() throws IOException
 	{
 		fileLoader.loadLocalization();
 	}
@@ -85,12 +88,12 @@ public class Client
 	// То что нужно для показа списка игр
 	public void loadPart1() throws Exception
 	{
-		// baseFolder = new GamesFolder("", null);
-		allFolders.put("campaign", new GamesFolder("campaign"));
-		allFolders.put("skirmish", new GamesFolder("skirmish"));
-		
-		// ID = ANDROID_ID;
-		load();
+		campaign = new GamesFolder("campaign");
+		skirmish = new GamesFolder("skirmish");
+		save = new GamesFolder("save");
+		allFolders.put(campaign.folderID, campaign);
+		allFolders.put(skirmish.folderID, skirmish);
+		allFolders.put(save.folderID, save);
 	}
 	
 	// То что нужно для непосредственно игры
@@ -138,9 +141,9 @@ public class Client
 		return clientServer.startGame(gameID);
 	}
 	
-	public void stopGame() throws Exception
+	public void stopGame(boolean startNext) throws Exception
 	{
-		clientServer.stopGame();
+		clientServer.stopGame(startNext);
 	}
 	
 	public static void commit(Action action)
@@ -162,23 +165,6 @@ public class Client
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void load() throws Exception
-	{
-		JsonReader reader = fileLoader.getReader("info.json");
-		JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
-		numberSaves = object.get("numberSaves").getAsInt();
-		reader.close();
-	}
-	
-	public void save() throws Exception
-	{
-		JsonWriter writer = fileLoader.getWriter("info.json");
-		JsonObject object = new JsonObject();
-		object.addProperty("numberSaves", numberSaves);
-		new Gson().toJson(object, writer);
-		writer.close();
 	}
 	
 }

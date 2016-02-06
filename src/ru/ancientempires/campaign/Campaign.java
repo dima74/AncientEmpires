@@ -101,15 +101,21 @@ public class Campaign
 		input.close();
 	}
 	
-	private class SimpleScript extends Script
-	{}
+	private static class SimpleScript extends Script
+	{
+		public SimpleScript(Script script)
+		{
+			isStarting = script.isStarting;
+			isFinishing = script.isFinishing;
+		}
+	}
 	
 	public Campaign createSimpleCopy(Game otherGame)
 	{
 		Campaign campaign = new Campaign(otherGame);
 		campaign.scripts = new Script[scripts.length];
 		for (int i = 0; i < scripts.length; i++)
-			campaign.scripts[i] = new SimpleScript();
+			campaign.scripts[i] = new SimpleScript(scripts[i]);
 		return campaign;
 	}
 	

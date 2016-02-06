@@ -15,8 +15,8 @@ import java.io.OutputStreamWriter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import android.app.Activity;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.client.IClientHelper;
 import ru.ancientempires.images.ImagesLoader;
 
 public class FileLoader
@@ -26,10 +26,10 @@ public class FileLoader
 	public File			baseDirectory;
 	public String		prefix;
 	
-	public FileLoader(Activity activity)
+	public FileLoader(IClientHelper helper)
 	{
-		baseDirectory = activity.getExternalFilesDir(null);
-		assets = new AssetsHelper(activity);
+		baseDirectory = helper.getFilesDir();
+		assets = helper.getAssets();
 		prefix = "";
 	}
 	
@@ -45,7 +45,7 @@ public class FileLoader
 		this.prefix = loader.prefix + prefix;
 	}
 	
-	private File getFile(String name)
+	public File getFile(String name)
 	{
 		return new File(baseDirectory, prefix + name);
 	}

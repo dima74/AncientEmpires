@@ -24,6 +24,7 @@ public class ActionGameEndTurn extends Action
 	@Override
 	public void performQuick()
 	{
+		// System.out.printf("%d/%d %d\n", game.players[0].units.size(), game.h * game.w, System.currentTimeMillis());
 		// if (game.currentTurn == 9)
 		// System.out.println(game.isMain + " " + game.tasks.size());
 		

@@ -13,12 +13,13 @@ import ru.ancientempires.action.result.ActionResultGetUnit;
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.view.draws.GameDrawRangeAll;
-import ru.ancientempires.view.draws.IInput;
+import ru.ancientempires.view.draws.IGameDraw;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitAttackMain;
 import ru.ancientempires.view.draws.onframes.GameDrawUnitMove;
 
-public class InputUnit extends IInput
+public class InputUnit extends IGameDraw
 {
 	
 	public InputPlayer inputMain;
@@ -49,6 +50,8 @@ public class InputUnit extends IInput
 	
 	public boolean start(int i, int j)
 	{
+		if (!new ActionHelper(game).isUnitActive(i, j))
+			return false;
 		ActionResultGetUnit result = (ActionResultGetUnit) new ActionGetUnit()
 				.setIJ(i, j)
 				.perform(game);

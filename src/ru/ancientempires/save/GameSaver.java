@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.action.Action;
+import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.load.GameLoader;
@@ -33,7 +34,7 @@ public class GameSaver
 			game = new GameLoader(mainGame.path, mainGame.rules).load(false);
 			game.path = mainGame.path;
 			game.path.canChooseTeams = false;
-			game.campaign = mainGame.campaign.createSimpleCopy(game);
+			// game.campaign = mainGame.campaign.createSimpleCopy(game);
 			game.isSaver = true;
 		}
 	}
@@ -73,6 +74,16 @@ public class GameSaver
 	
 	public class SaveSnapshot implements Save
 	{
+		private Campaign campaign;
+		
+		public SaveSnapshot()
+		{}
+		
+		public SaveSnapshot(Campaign campaign)
+		{
+			this.campaign = campaign;
+		}
+		
 		@Override
 		public void save() throws IOException
 		{
@@ -85,6 +96,8 @@ public class GameSaver
 			loader.snapshots().mkdirs();
 			loader.actions().mkdirs();
 			loader.numberActionsAfterLastSave = 0;
+			if (campaign != null)
+				game.campaign = campaign;
 			new GameSnapshotSaver(game, loader.snapshots()).save();
 			// game.lastTime =
 			game.path.save();
@@ -94,7 +107,7 @@ public class GameSaver
 	
 	public void saveSnapshot() throws IOException
 	{
-		add(new SaveSnapshot());
+		add(new SaveSnapshot(mainGame.campaign.createSimpleCopy(game)));
 	}
 	
 	public class SaveAction implements Save

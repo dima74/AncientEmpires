@@ -64,16 +64,19 @@ class GameSnapshotLoader
 			if (loaderCampaign.exists("strings.json"))
 				loaderCampaign.loadLocalization();
 				
-			if (loaderCampaign.exists("campaign.json"))
-			{
-				game.campaign.load(loaderCampaign);
-				game.campaign.loadState(loader);
-			}
-			else
+			boolean defaultCampaign = !loaderCampaign.exists("campaign.json");
+			if (defaultCampaign)
 			{
 				game.campaign.load(Client.client.defaultGameLoader);
-				game.campaign.loadState(Client.client.defaultGameLoader);
+				game.campaign.isDefault = true;
 			}
+			else
+				game.campaign.load(loaderCampaign);
+				
+			if (path.isBaseGame && game.campaign.isDefault)
+				game.campaign.loadState(Client.client.defaultGameLoader);
+			else
+				game.campaign.loadState(loader);
 		}
 		
 		//
@@ -171,7 +174,7 @@ class GameSnapshotLoader
 	
 	public void loadLastTeams() throws IOException
 	{
-		JsonReader reader = loader.getReader("lastTeams.json");
+		JsonReader reader = path.getLoader().getReader("lastTeams.json");
 		reader.beginObject();
 		MyAssert.a("teams", reader.nextName());
 		SimpleTeam[] teams = new Gson().fromJson(reader, SimpleTeam[].class);

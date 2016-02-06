@@ -27,6 +27,10 @@ public class UnitType
 	public Range	raiseRange;
 	public UnitType	raiseUnit;
 	
+	// Войн не может быть (в текущей реализации) одновременно статичным и с надгробием,
+	// иначе при сохранении игры этот войн будет записан в units.dat два раза -
+	// как unitsStaticDead и как fieldUnitsDead, соответственно при загрузке
+	// возникнут два разных экземпляра одного и того же война, которые будут конфликтовать.
 	public boolean	isStatic;
 	public boolean	hasTombstone;
 	public boolean	canDoTwoActionAfterOne;

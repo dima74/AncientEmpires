@@ -35,7 +35,7 @@ public class ActionUnitRaise extends ActionFromTo
 		raisedUnit.i = targetI;
 		raisedUnit.j = targetJ;
 		raisedUnit.player.units.add(raisedUnit);
-		raisedUnit.isTurn = true;
+		raisedUnit.setTurn();
 		game.setUnit(targetI, targetJ, raisedUnit);
 		game.fieldUnitsDead[targetI][targetJ] = null;
 	}

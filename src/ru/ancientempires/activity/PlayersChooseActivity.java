@@ -183,7 +183,7 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		button.setText(Strings.FIGHT.toString());
 		button.setOnClickListener(this);
 		
-		// onClick(null);
+		onClick(null);
 	}
 	
 	@Override

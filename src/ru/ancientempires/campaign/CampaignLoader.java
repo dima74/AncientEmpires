@@ -65,6 +65,7 @@ public class CampaignLoader
 		script.load(reader);
 		reader.endObject();
 		
+		script.index = scripts.size();
 		scripts.add(script);
 		scriptsPrevious.add(previous);
 	}

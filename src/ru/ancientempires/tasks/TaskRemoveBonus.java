@@ -39,7 +39,8 @@ public class TaskRemoveBonus extends Task
 	@Override
 	public void run()
 	{
-		unit.bonuses.remove(bonus);
+		if (unit != null)
+			unit.bonuses.remove(bonus);
 	}
 	
 	@Override
