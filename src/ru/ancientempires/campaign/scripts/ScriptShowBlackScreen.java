@@ -6,7 +6,6 @@ public class ScriptShowBlackScreen extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showBlackScreen(this);
 	}
 	

@@ -46,8 +46,9 @@ public class PlayMenuActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		// start("campaign");
+		start("campaign");
 		// start("skirmish");
+		// start("test");
 	}
 	
 	@Override

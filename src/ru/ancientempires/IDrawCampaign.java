@@ -25,6 +25,7 @@ import ru.ancientempires.campaign.scripts.ScriptSparkDefault;
 import ru.ancientempires.campaign.scripts.ScriptUnitAttack;
 import ru.ancientempires.campaign.scripts.ScriptUnitChangePosition;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
+import ru.ancientempires.campaign.scripts.ScriptUnitCreateAndMove;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.campaign.scripts.ScriptUnitMoveExtended;
 import ru.ancientempires.model.Player;
@@ -99,5 +100,10 @@ public interface IDrawCampaign
 	public void closeMission() throws Exception;
 	
 	public void updateCampaign();
+	
+	public void hideInfoImmediately(Script script);
+	
+	//
+	public void unitCreateAndMove(ScriptUnitCreateAndMove script);
 	
 }

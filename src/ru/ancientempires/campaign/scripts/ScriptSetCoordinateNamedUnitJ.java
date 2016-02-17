@@ -6,7 +6,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.campaign.NamedCoordinates;
-import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetCoordinateNamedUnitJ extends Script
@@ -34,9 +33,7 @@ public class ScriptSetCoordinateNamedUnitJ extends Script
 	@Override
 	public void start()
 	{
-		super.start();
-		NamedCoordinates.set(name, NamedUnits.get(unit).j);
-		campaign.finish(this);
+		NamedCoordinates.set(name, game.namedUnits.get(unit).j);
 	}
 	
 	@Override

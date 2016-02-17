@@ -1,12 +1,14 @@
 package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.CampaignEditorGame;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 
 public abstract class Script
@@ -22,6 +24,11 @@ public abstract class Script
 	
 	public Campaign	campaign;
 	public Game		game;
+	
+	public void load(JsonReader reader, ArrayList<Script> scripts) throws IOException
+	{
+		load(reader);
+	}
 	
 	public void load(JsonReader reader) throws IOException
 	{}
@@ -40,9 +47,7 @@ public abstract class Script
 	}
 	
 	public void start()
-	{
-		isStarting = true;
-	}
+	{}
 	
 	public final void saveGeneral(JsonWriter writer) throws IOException
 	{
@@ -63,6 +68,7 @@ public abstract class Script
 	
 	public void finish()
 	{
+		MyAssert.a(!type.isSimple);
 		campaign.finish(this);
 	}
 	
@@ -73,6 +79,12 @@ public abstract class Script
 	public Game getGame()
 	{
 		return CampaignEditorGame.game;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("%d%d %s", isStarting ? 1 : 0, isFinishing ? 1 : 0, getClass().getSimpleName());
 	}
 	
 }

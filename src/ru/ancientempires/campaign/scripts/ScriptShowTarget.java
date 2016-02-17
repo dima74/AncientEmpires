@@ -26,22 +26,21 @@ public class ScriptShowTarget extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		textTitle = Localization.get(JsonHelper.readString(reader, "text_title"));
-		textTarget = Localization.get(JsonHelper.readString(reader, "text_target"));
+		textTitle = Localization.get(JsonHelper.readString(reader, "textTitle"));
+		textTarget = Localization.get(JsonHelper.readString(reader, "textTarget"));
 	}
 	
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showTarget(textTitle, textTarget, this);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("text_title").value(textTitle);
-		writer.name("text_target").value(textTarget);
+		writer.name("textTitle").value(textTitle);
+		writer.name("textTarget").value(textTarget);
 	}
 	
 }

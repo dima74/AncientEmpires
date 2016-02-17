@@ -19,17 +19,17 @@ public class NamedUnits
 		return Client.getGame().namedUnits;
 	}
 	
-	public static Unit get(String name)
+	public Unit get(String name)
 	{
-		return NamedUnits.get().units.get(name);
+		return units.get(name);
 	}
 	
-	public static void set(String name, Unit unit)
+	public void set(String name, Unit unit)
 	{
-		NamedUnits.get().units.put(name, unit);
+		units.put(name, unit);
 	}
 	
-	private Map<String, Unit> units = new HashMap<String, Unit>();
+	public Map<String, Unit> units = new HashMap<String, Unit>();
 	
 	public void tryLoad(DataInputStream input, Unit unit) throws IOException
 	{
@@ -47,6 +47,7 @@ public class NamedUnits
 		for (Entry<String, Unit> entry : units.entrySet())
 			if (entry.getValue() == unit)
 				names.add(entry.getKey());
+				
 		output.writeInt(names.size());
 		for (String name : names)
 			output.writeUTF(name);

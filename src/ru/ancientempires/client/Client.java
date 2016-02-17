@@ -88,12 +88,15 @@ public class Client
 	// То что нужно для показа списка игр
 	public void loadPart1() throws Exception
 	{
-		campaign = new GamesFolder("campaign");
-		skirmish = new GamesFolder("skirmish");
-		save = new GamesFolder("save");
-		allFolders.put(campaign.folderID, campaign);
-		allFolders.put(skirmish.folderID, skirmish);
-		allFolders.put(save.folderID, save);
+		GamesFolder[] folders = new GamesFolder[]
+		{
+				campaign = new GamesFolder("campaign"),
+				skirmish = new GamesFolder("skirmish"),
+				save = new GamesFolder("save"),
+				new GamesFolder("test")
+		};
+		for (GamesFolder folder : folders)
+			allFolders.put(folder.folderID, folder);
 	}
 	
 	// То что нужно для непосредственно игры

@@ -39,7 +39,6 @@ public class ScriptCameraMove extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.cameraMove(i.get(), j.get(), this);
 	}
 	

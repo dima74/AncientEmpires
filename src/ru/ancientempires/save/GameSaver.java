@@ -6,6 +6,7 @@ import java.io.IOException;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.load.GameLoader;
 import ru.ancientempires.model.Game;
@@ -63,7 +64,7 @@ public class GameSaver
 		new SaveSnapshot().save(mainGame);
 		if (!mainGame.campaign.isDefault)
 			mainGame.campaign.save(loader);
-		thread.isRunning = false;
+		thread.stopRunning();
 	}
 	
 	public void checkSaveSnapshot() throws IOException
@@ -122,7 +123,6 @@ public class GameSaver
 		@Override
 		public void save() throws IOException
 		{
-			// System.out.println("\t\t" + action);
 			action.checkBase(game);
 			action.performQuickBase(game);
 			if (!action.isCampaign())
@@ -144,13 +144,14 @@ public class GameSaver
 	
 	public void waitSave() throws InterruptedException
 	{
+		MyAssert.a(thread.isAlive());
 		while (!thread.queue.isEmpty())
 			Thread.yield();
 	}
 	
 	public void finishSave() throws InterruptedException
 	{
-		thread.isRunning = false;
+		thread.stopRunning();
 		thread.join();
 	}
 	

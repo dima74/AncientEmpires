@@ -2,6 +2,8 @@ package ru.ancientempires.model;
 
 import java.util.ArrayList;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.PlayerType;
 
@@ -11,7 +13,7 @@ public class Player
 	public MyColor	color;
 	public int		ordinal;
 	
-	public PlayerType		type;
+	public PlayerType		type	= PlayerType.PLAYER;
 	public Team				team	= new Team(new Player[]
 										{
 												this
@@ -21,6 +23,37 @@ public class Player
 	
 	public int	cursorI;
 	public int	cursorJ;
+	
+	public Player()
+	{}
+	
+	public Player(int ordinal)
+	{
+		this.ordinal = ordinal;
+		color = MyColor.playersColors()[ordinal];
+	}
+	
+	public Player(JsonObject object)
+	{
+		color = MyColor.valueOf(object.get("color").getAsString());
+		ordinal = object.get("ordinal").getAsInt();
+		type = PlayerType.valueOf(object.get("type").getAsString());
+		gold = object.get("gold").getAsInt();
+		cursorI = object.get("cursorI").getAsInt();
+		cursorJ = object.get("cursorJ").getAsInt();
+	}
+	
+	public JsonObject json()
+	{
+		JsonObject object = new JsonObject();
+		object.addProperty("color", color.name());
+		object.addProperty("ordinal", ordinal);
+		object.addProperty("type", type.name());
+		object.addProperty("gold", gold);
+		object.addProperty("cursorI", cursorI);
+		object.addProperty("cursorJ", cursorJ);
+		return object;
+	}
 	
 	@Override
 	public boolean equals(Object o)

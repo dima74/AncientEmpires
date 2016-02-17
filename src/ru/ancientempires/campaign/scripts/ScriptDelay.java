@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptDelay extends Script
@@ -30,7 +29,6 @@ public class ScriptDelay extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.delay(milliseconds, this);
 	}
 	

@@ -2,11 +2,11 @@ package ru.ancientempires.campaign.scripts;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.NamedCoordinates;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.campaign.NamedCoordinates;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetCoordinateFromOther extends Script
 {
@@ -28,24 +28,23 @@ public class ScriptSetCoordinateFromOther extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.otherName = JsonHelper.readString(reader, "otherName");
-		this.name = JsonHelper.readString(reader, "name");
-		this.delta = JsonHelper.readInt(reader, "delta");
+		otherName = JsonHelper.readString(reader, "otherName");
+		name = JsonHelper.readString(reader, "name");
+		delta = JsonHelper.readInt(reader, "delta");
 	}
 	
 	@Override
 	public void start()
 	{
-		super.start();
-		NamedCoordinates.set(this.name, NamedCoordinates.get(this.otherName) + this.delta);
+		NamedCoordinates.set(name, NamedCoordinates.get(otherName) + delta);
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("otherName").value(this.otherName);
-		writer.name("name").value(this.name);
-		writer.name("delta").value(this.delta);
+		writer.name("otherName").value(otherName);
+		writer.name("name").value(name);
+		writer.name("delta").value(delta);
 	}
 	
 }

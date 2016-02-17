@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -44,6 +45,38 @@ public class Game
 		this.rules = rules;
 	}
 	
+	public Game setSize(int h, int w)
+	{
+		this.h = h;
+		this.w = w;
+		fieldUnits = new Unit[h][w];
+		fieldUnitsDead = new Unit[h][w];
+		
+		CellType type = rules.getCellType("WAY_LEFT_RIGHT_DOWN_UP");
+		fieldCells = new Cell[h][w];
+		for (int i = 0; i < h; i++)
+			for (int j = 0; j < w; j++)
+				fieldCells[i][j] = new Cell(type, i, j);
+		return this;
+	}
+	
+	public Game setNumberPlayers(int number)
+	{
+		players = new Player[number];
+		for (int i = 0; i < players.length; i++)
+			players[i] = new Player(i);
+		currentPlayer = players[0];
+		
+		teams = new Team[number];
+		for (int i = 0; i < players.length; i++)
+			teams[i] = players[i].team;
+			
+		unitsStaticDead = new ArrayList[number];
+		for (int i = 0; i < unitsStaticDead.length; i++)
+			unitsStaticDead[i] = new ArrayList<Unit>();
+		return this;
+	}
+	
 	public long getSeed()
 	{
 		long seed = Game.getSeed(random);
@@ -72,13 +105,13 @@ public class Game
 	public Player[]	players;
 	public Player	currentPlayer;
 	
-	public Campaign				campaign	= new Campaign(this);
+	public Campaign				campaign		= new Campaign(this);
 	public int					h;
 	public int					w;
 	public int					unitsLimit;
 	public Cell[][]				fieldCells;
 	public Unit[][]				fieldUnits;
-	public Set<Unit>			unitsOutside;
+	public Set<Unit>			unitsOutside	= new HashSet<Unit>();
 	public Unit[][]				fieldUnitsDead;
 	public ArrayList<Unit>[]	unitsStaticDead;
 	

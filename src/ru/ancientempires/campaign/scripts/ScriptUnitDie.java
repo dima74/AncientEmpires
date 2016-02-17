@@ -33,7 +33,6 @@ public class ScriptUnitDie extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.unitDie(i, j, this);
 	}
 	

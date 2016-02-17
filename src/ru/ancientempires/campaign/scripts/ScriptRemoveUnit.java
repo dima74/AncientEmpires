@@ -40,7 +40,6 @@ public class ScriptRemoveUnit extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.removeUnit(i.get(), j.get(), this);
 	}
 	

@@ -35,7 +35,6 @@ public class ScriptUnitMoveExtended extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.unitMove(keyPoints, this);
 	}
 	

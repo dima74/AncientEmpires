@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Unit;
 
@@ -31,7 +30,7 @@ public class ConditionNamedUnitDead extends Condition
 	@Override
 	public boolean check()
 	{
-		Unit unit = NamedUnits.get(name);
+		Unit unit = game.namedUnits.get(name);
 		return game.getUnit(unit.i, unit.j) != unit;
 	}
 	

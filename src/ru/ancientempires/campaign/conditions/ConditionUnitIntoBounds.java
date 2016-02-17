@@ -22,7 +22,7 @@ public class ConditionUnitIntoBounds extends Condition
 	
 	public ConditionUnitIntoBounds(int player, Bounds... bounds)
 	{
-		this.player = game.players[player];
+		this.player = getGame().players[player];
 		this.bounds = bounds;
 	}
 	

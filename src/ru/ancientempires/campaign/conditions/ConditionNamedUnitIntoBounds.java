@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.campaign.NamedUnits;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Unit;
@@ -37,7 +36,7 @@ public class ConditionNamedUnitIntoBounds extends Condition
 	@Override
 	public boolean check()
 	{
-		Unit unit = NamedUnits.get(name);
+		Unit unit = game.namedUnits.get(name);
 		for (Bounds bounds : this.bounds)
 			if (bounds.iMin <= unit.i && unit.i <= bounds.iMax && bounds.jMin <= unit.j && unit.j <= bounds.jMax)
 				return true;

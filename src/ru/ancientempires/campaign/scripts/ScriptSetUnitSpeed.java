@@ -29,7 +29,6 @@ public class ScriptSetUnitSpeed extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.setUnitSpeed(framesForCell, this);
 	}
 	

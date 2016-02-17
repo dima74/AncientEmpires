@@ -1,1 +1,1 @@
-{"players":[{"color":"BLUE","ordinal":0,"type":"PLAYER","gold":2000,"cursorI":8,"cursorJ":2},{"color":"RED","ordinal":1,"type":"COMPUTER","gold":2000,"cursorI":2,"cursorJ":8}]}
+[{"color":"BLUE","ordinal":0,"type":"PLAYER","gold":2000,"cursorI":8,"cursorJ":2},{"color":"RED","ordinal":1,"type":"COMPUTER","gold":2000,"cursorI":2,"cursorJ":8}]

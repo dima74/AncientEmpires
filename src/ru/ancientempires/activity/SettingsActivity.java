@@ -1,5 +1,7 @@
 package ru.ancientempires.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -31,6 +33,19 @@ public class SettingsActivity extends PreferenceActivity
 			public boolean onPreferenceClick(Preference preference)
 			{
 				deleteSavesAsync();
+				return true;
+			}
+		});
+		
+		Preference appInfo = findPreference("appInfo");
+		appInfo.setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+				intent.setData(Uri.parse("package:ru.ancientempires"));
+				startActivity(intent);
 				return true;
 			}
 		});

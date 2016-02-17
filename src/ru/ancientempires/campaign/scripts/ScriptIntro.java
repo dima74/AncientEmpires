@@ -37,7 +37,6 @@ public class ScriptIntro extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showIntro(image, text, this);
 	}
 	

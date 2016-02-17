@@ -13,8 +13,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static int	h;
 	public static int	w;
 	
-	private GestureDetector	detector;
 	public GameThread		thread;
+	public GestureDetector	detector;
 	
 	public GameView(Context context)
 	{

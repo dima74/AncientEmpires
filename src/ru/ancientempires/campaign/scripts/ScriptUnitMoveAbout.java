@@ -39,7 +39,6 @@ public class ScriptUnitMoveAbout extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		find();
 		campaign.iDrawCampaign.unitMove(i, j, targetI, targetJ, this);
 	}

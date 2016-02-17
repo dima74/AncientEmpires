@@ -8,6 +8,8 @@ public abstract class MyLog
 	public static void l(Object... args)
 	{
 		MyAssert.a(args != null);
+		MyAssert.a(Client.client != null);
+		MyAssert.a(Client.client.log != null);
 		Client.client.log.write(MyLog.getString(args));
 	}
 	

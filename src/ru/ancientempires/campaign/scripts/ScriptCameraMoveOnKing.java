@@ -26,13 +26,12 @@ public class ScriptCameraMoveOnKing extends Script
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		player = campaign.game.players[JsonHelper.readInt(reader, "player")];
+		player = game.players[JsonHelper.readInt(reader, "player")];
 	}
 	
 	@Override
 	public void start()
 	{
-		super.start();
 		Unit king = new UnitHelper(game).getKing(player);
 		campaign.iDrawCampaign.cameraMove(king.i, king.j, this);
 	}

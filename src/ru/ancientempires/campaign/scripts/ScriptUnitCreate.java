@@ -28,8 +28,8 @@ public class ScriptUnitCreate extends Script
 	{
 		this.i = i;
 		this.j = j;
-		this.player = campaign.game.players[player];
-		this.unitType = "KING".equals(unitType) ? new UnitHelper(game).getKingType(this.player) : game.rules.getUnitType(unitType);
+		this.player = getGame().players[player];
+		this.unitType = "KING".equals(unitType) ? new UnitHelper(getGame()).getKingType(this.player) : getGame().rules.getUnitType(unitType);
 	}
 	
 	public ScriptUnitCreate(int i, int j, String unitType, int player)
@@ -46,13 +46,12 @@ public class ScriptUnitCreate extends Script
 		i = Coordinate.getNew(reader, "i");
 		j = Coordinate.getNew(reader, "j");
 		unitType = game.rules.getUnitType(JsonHelper.readString(reader, "unitType"));
-		player = campaign.game.players[JsonHelper.readInt(reader, "player")];
+		player = game.players[JsonHelper.readInt(reader, "player")];
 	}
 	
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.unitCreate(i.get(), j.get(), unitType, player, this);
 	}
 	
@@ -70,7 +69,7 @@ public class ScriptUnitCreate extends Script
 	{
 		new AcionCampaignUnitCreate()
 				.setType(unitType)
-				.setPlayer(player)
+				.setPlayer(player.ordinal)
 				.setIJ(i.get(), j.get())
 				.perform(game);
 	}

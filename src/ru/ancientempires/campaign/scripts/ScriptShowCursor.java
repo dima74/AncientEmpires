@@ -6,7 +6,6 @@ public class ScriptShowCursor extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showCursor(this);
 	}
 	

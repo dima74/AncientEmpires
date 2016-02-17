@@ -48,7 +48,6 @@ public class ScriptUnitMove extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.unitMove(i.get(), j.get(), targetI.get(), targetJ.get(), this);
 	}
 	
@@ -64,7 +63,6 @@ public class ScriptUnitMove extends Script
 	@Override
 	public void performAction()
 	{
-		System.out.println("ScriptUnitMove.performAction() " + hashCode());
 		new ActionCampaignUnitMove()
 				.setIJ(i.get(), j.get())
 				.setTargetIJ(targetI.get(), targetJ.get())

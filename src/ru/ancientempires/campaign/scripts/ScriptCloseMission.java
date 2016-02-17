@@ -8,8 +8,7 @@ public class ScriptCloseMission extends Script
 	@Override
 	public void start()
 	{
-		super.start();
-		if (campaign.game.path.nextGameID != null)
+		if (game.path.nextGameID != null)
 			try
 			{
 				campaign.iDrawCampaign.closeMission();

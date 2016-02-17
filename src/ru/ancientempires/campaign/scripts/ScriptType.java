@@ -1,11 +1,14 @@
 package ru.ancientempires.campaign.scripts;
 
+import java.util.HashMap;
+
 import ru.ancientempires.campaign.conditions.ConditionCastleNumber;
 import ru.ancientempires.campaign.conditions.ConditionNamedUnitDead;
 import ru.ancientempires.campaign.conditions.ConditionNamedUnitIntoBounds;
 import ru.ancientempires.campaign.conditions.ConditionTurn;
 import ru.ancientempires.campaign.conditions.ConditionUnitIntoBounds;
 import ru.ancientempires.campaign.conditions.ConditionUnitNumber;
+import ru.ancientempires.framework.MyAssert;
 
 public enum ScriptType
 {
@@ -28,10 +31,9 @@ public enum ScriptType
 	SHOW_BLACK_SCREEN(ScriptShowBlackScreen.class),
 	HIDE_BLACK_SCREEN(ScriptHideBlackScreen.class),
 	BLACK_SCREEN(true, ScriptBlackScreen.class),
-	// HIDE_INFO_BAR(ScriptHideInfoBar.class),
-	// SHOW_INFO_BAR(ScriptShowInfoBar.class),
 	ENABLE_ACTIVE_GAME(true, ScriptEnableActiveGame.class),
 	DISABLE_ACTIVE_GAME(true, ScriptDisableActiveGame.class),
+	HIDE_INFO_IMMEDIATELY(true, ScriptHideInfoImmediately.class),
 	GAME_OVER(ScriptGameOver.class),
 	SET_NAMED_UNIT(true, ScriptSetNamedUnit.class),
 	SET_UNIT_SPEED(true, ScriptSetUnitSpeed.class),
@@ -53,7 +55,11 @@ public enum ScriptType
 	CONDITION_NAMED_UNIT_DEAD(true, ConditionNamedUnitDead.class),
 	CONDITION_UNIT_INTO_BOUNDS(true, ConditionUnitIntoBounds.class),
 	CONDITION_NAMED_UNIT_INTO_BOUNDS(true, ConditionNamedUnitIntoBounds.class),
-	CONDITION_PLAYER_TURN(true, ConditionTurn.class);
+	CONDITION_PLAYER_TURN(true, ConditionTurn.class),
+	CONDITION_AND(true, ConditionAnd.class),
+	
+	UNIT_CREATE_MOVE(ScriptUnitCreateAndMove.class),
+	UNIT_HANDLER_POINT(true, ScriptUnitMoveHandlerPoint.class);
 	
 	public boolean isSimple;
 	public Class<? extends Script> scriptClass;
@@ -67,6 +73,23 @@ public enum ScriptType
 	{
 		this.isSimple = isSimple;
 		this.scriptClass = scriptClass;
+	}
+	
+	private static HashMap<Class<? extends Script>, ScriptType> map = ScriptType.createMap();
+	
+	private static HashMap createMap()
+	{
+		HashMap map = new HashMap();
+		for (ScriptType type : ScriptType.values())
+			map.put(type.scriptClass, type);
+		return map;
+	}
+	
+	public static ScriptType getType(Script script)
+	{
+		ScriptType type = ScriptType.map.get(script.getClass());
+		MyAssert.a(type != null);
+		return type;
 	}
 	
 }

@@ -4,20 +4,19 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.campaign.scripts.Script;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.Game;
 
 public class Campaign
 {
 	
-	public Game game;
+	private Game game;
 	
-	@Expose
 	public Script[]			scripts;
 	public IDrawCampaign	iDrawCampaign;
 	public boolean			isDefault	= false;
@@ -40,7 +39,10 @@ public class Campaign
 		writer.beginObject();
 		writer.name("scripts").beginArray();
 		for (Script script : scripts)
+		{
+			script.campaign = this;
 			script.saveGeneral(writer);
+		}
 		writer.endArray();
 		writer.endObject();
 		writer.close();
@@ -56,8 +58,14 @@ public class Campaign
 		update();
 	}
 	
+	public boolean	isUpdate;
+	public boolean	needSaveSnapshot;
+	
 	public void update()
 	{
+		if (isUpdate)
+			return;
+		isUpdate = true;
 		boolean change = true;
 		while (change)
 		{
@@ -66,10 +74,25 @@ public class Campaign
 				if (!script.isStarting && script.checkGeneral())
 				{
 					change = true;
+					script.isStarting = true;
 					script.start();
 					if (script.type.isSimple)
 						script.isFinishing = true;
 				}
+		}
+		isUpdate = false;
+		if (needSaveSnapshot)
+		{
+			try
+			{
+				game.saver.saveSnapshot();
+			}
+			catch (IOException e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
+			needSaveSnapshot = false;
 		}
 	}
 	

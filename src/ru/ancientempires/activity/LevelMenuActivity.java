@@ -98,6 +98,7 @@ public class LevelMenuActivity extends ListActivity
 	public void showFolders()
 	{
 		currentFolder = Client.client.allFolders.get(folderID);
+		MyAssert.a(currentFolder.name != null);
 		setTitle(currentFolder.name);
 		
 		String[] names = new String[currentFolder.games.size()];
@@ -107,8 +108,9 @@ public class LevelMenuActivity extends ListActivity
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, names);
 		setListAdapter(adapter);
 		
-		int i = "campaign".equals(getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER)) ? 0 : 5;
-		// GameActivity.startGame(this, currentFolder.games[i].gameID, false);
+		String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
+		int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
+		GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);
 	}
 	
 	@Override

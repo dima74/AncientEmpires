@@ -50,20 +50,32 @@ public abstract class Action extends IGameHandler
 		return false;
 	}
 	
-	public abstract ActionResult perform(Game game);
+	public ActionResult perform(Game game)
+	{
+		performBase(game);
+		return null;
+	}
 	
 	public final void performBase(Game game)
 	{
-		checkBase(game);
-		performQuick();
-		if (game.isMain)
-			Client.commit(this);
+		try
+		{
+			checkBase(game);
+			performQuick();
+			if (game.isMain)
+				Client.commit(this);
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 	}
 	
 	public void checkBase(Game game)
 	{
 		setGame(game);
-		boolean successfully = check();
+		boolean successfully = isCampaign() || check();
 		MyAssert.a(successfully);
 		if (!successfully)
 			check();

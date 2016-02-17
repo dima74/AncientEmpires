@@ -32,7 +32,6 @@ public class ScriptSetMapPosition extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.setMapPosition(i, j, this);
 	}
 	

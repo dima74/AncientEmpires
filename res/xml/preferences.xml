@@ -4,5 +4,8 @@
     <Preference
         android:key="deleteSaves"
         android:title="Удалить все сохранения" />
+    <Preference
+        android:key="appInfo"
+        android:title="Информация о приложении" />
 
 </PreferenceScreen>

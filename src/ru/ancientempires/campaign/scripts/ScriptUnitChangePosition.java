@@ -39,7 +39,6 @@ public class ScriptUnitChangePosition extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.unitChangePosition(i, j, targetI, targetJ, this);
 	}
 	

@@ -30,7 +30,6 @@ public class ScriptDialogWithoutImage extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showDialog(text, this);
 	}
 	

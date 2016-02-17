@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.Random;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.PlayerType;
 import ru.ancientempires.SimpleTeam;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
@@ -121,31 +121,15 @@ class GameSnapshotLoader
 	public void loadPlayers() throws IOException
 	{
 		JsonReader reader = loader.getReader("players.json");
-		reader.beginObject();
-		MyAssert.a("players", reader.nextName());
-		
-		reader.beginArray();
-		ArrayList<Player> players = new ArrayList<Player>();
-		while (reader.peek() == JsonToken.BEGIN_OBJECT)
-		{
-			reader.beginObject();
-			Player player = new Player();
-			player.color = MyColor.valueOf(JsonHelper.readString(reader, "color"));
-			player.ordinal = JsonHelper.readInt(reader, "ordinal");
-			player.type = PlayerType.valueOf(JsonHelper.readString(reader, "type"));
-			player.gold = JsonHelper.readInt(reader, "gold");
-			player.cursorI = JsonHelper.readInt(reader, "cursorI");
-			player.cursorJ = JsonHelper.readInt(reader, "cursorJ");
-			players.add(player);
-			reader.endObject();
-		}
-		reader.endArray();
-		reader.endObject();
+		JsonArray players = new JsonParser().parse(reader).getAsJsonArray();
 		reader.close();
 		
 		game.players = new Player[players.size()];
-		for (Player player : players)
+		for (int i = 0; i < players.size(); i++)
+		{
+			Player player = new Player(players.get(i).getAsJsonObject());
 			game.players[player.ordinal] = player;
+		}
 	}
 	
 	public static class SimpleColorsTeam

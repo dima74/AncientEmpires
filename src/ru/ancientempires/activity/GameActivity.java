@@ -1,19 +1,21 @@
 package ru.ancientempires.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import ru.ancientempires.GameView;
 import ru.ancientempires.R;
+import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
@@ -30,6 +32,7 @@ public class GameActivity extends Activity
 	public Game					game;
 	private String				baseGameID;
 	private String				gameID;
+	public AlertDialog			dialog;
 	
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
@@ -58,7 +61,6 @@ public class GameActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		Debug.create(this);
-		GameActivity.activity = this;
 		baseGameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
 	}
 	
@@ -67,40 +69,48 @@ public class GameActivity extends Activity
 	{
 		super.onStart();
 		Debug.onStart(this);
-		final ProgressDialog dialog = new ProgressDialog(GameActivity.activity);
-		dialog.setMessage(getString(R.string.loading));
-		dialog.setCancelable(false);
-		dialog.show();
 		
-		new Thread()
+		new AsyncTask<Void, Void, Void>()
 		{
+			private ProgressDialog dialog;
+			
 			@Override
-			public void run()
+			protected void onPreExecute()
+			{
+				dialog = new ProgressDialog(GameActivity.this);
+				dialog.setMessage(getString(R.string.loading));
+				dialog.setCancelable(false);
+				dialog.show();
+			};
+			
+			@Override
+			protected Void doInBackground(Void... params)
 			{
 				try
 				{
 					Client.client.finishPart2();
 					game = Client.client.startGame(gameID == null ? baseGameID : gameID);
 					gameID = game.path.gameID;
+					if (GameActivity.activity != null)
+						GameActivity.activity.view.thread.join();
 				}
 				catch (Exception e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
-				
-				runOnUiThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						dialog.dismiss();
-						view = new GameView(GameActivity.this);
-						setContentView(view);
-					}
-				});
+				return null;
 			}
-		}.start();
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				dialog.dismiss();
+				GameActivity.activity = GameActivity.this;
+				view = new GameView(GameActivity.this);
+				setContentView(view);
+			};
+		}.execute();
 	}
 	
 	@Override
@@ -108,9 +118,14 @@ public class GameActivity extends Activity
 	{
 		super.onStop();
 		Debug.onStop(this);
+		view.thread.isRunning = false;
 		if (view != null)
 			((ViewGroup) view.getParent()).removeView(view);
-		view = null;
+		if (dialog != null)
+		{
+			dialog.dismiss();
+			dialog = null;
+		}
 		try
 		{
 			Client.client.stopGame(false);
@@ -142,42 +157,52 @@ public class GameActivity extends Activity
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId())
+		final int itemId = item.getItemId();
+		Runnable runnable = new Runnable()
 		{
-			case android.R.id.home:
-				MyLog.l("GameActivity up");
-				finish();
-				return true;
-			case R.id.action_end_turn:
-				view.thread.inputMain.endTurn(true);
-				return true;
-			case R.id.action_reset:
-				GameActivity.startGame(game.path.baseGameID, true);
-				return true;
-			case R.id.action_kill_unit:
-				while (!game.players[1].units.isEmpty())
+			@Override
+			public void run()
+			{
+				switch (itemId)
 				{
-					Unit unit = game.players[1].units.get(0);
-					unit.health = 0;
-					new UnitHelper(game).checkDied(unit);
-					view.thread.drawMain.gameDrawUnits.update();
-					view.thread.drawMain.inputPlayer.tapWithoutAction(unit.i, unit.j);
-					view.thread.drawMain.focusOnCell(unit.i, unit.j);
-				}
-				view.thread.needUpdateCampaign = true;
-				return true;
-			case R.id.action_capture_castle:
-				CellType type = game.rules.getCellType("CASTLE");
-				for (Cell[] line : game.fieldCells)
-					for (Cell cell : line)
-						if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
+					case android.R.id.home:
+						MyLog.l("GameActivity up");
+						finish();
+						break;
+					case R.id.action_end_turn:
+						view.thread.inputMain.endTurn(true);
+						break;
+					case R.id.action_reset:
+						GameActivity.startGame(game.path.baseGameID, true);
+						break;
+					case R.id.action_kill_unit:
+						while (!game.players[1].units.isEmpty())
 						{
-							cell.player = game.players[0];
-							view.thread.needUpdateCampaign = true;
+							Unit unit = game.players[1].units.get(0);
+							new ActionCampaignRemoveUnit().setIJ(unit.i, unit.j).perform(game);
 						}
-				return true;
+						view.thread.drawMain.units.update();
+						game.campaign.needSaveSnapshot = true;
+						view.thread.needUpdateCampaign = true;
+						break;
+					case R.id.action_capture_castle:
+						CellType type = game.rules.getCellType("CASTLE");
+						for (Cell[] line : game.fieldCells)
+							for (Cell cell : line)
+								if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
+								{
+									cell.player = game.players[0];
+									view.thread.needUpdateCampaign = true;
+								}
+						break;
+				}
+			}
+		};
+		synchronized (view.thread)
+		{
+			view.thread.runOnGameThread(runnable);
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 	
 }

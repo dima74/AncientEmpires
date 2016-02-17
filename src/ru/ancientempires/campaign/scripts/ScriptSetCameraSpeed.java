@@ -29,7 +29,6 @@ public class ScriptSetCameraSpeed extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.setCameraSpeed(delta, this);
 	}
 	

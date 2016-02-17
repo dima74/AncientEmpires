@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonWriter;
 
 import ru.ancientempires.MyColor;
@@ -63,23 +64,12 @@ public class GameSnapshotSaver
 	
 	public void savePlayers() throws IOException
 	{
-		JsonWriter writer = loader.getWriter("players.json");
-		writer.beginObject();
-		writer.name("players").beginArray();
+		JsonArray players = new JsonArray();
 		for (Player player : game.players)
-		{
-			writer.beginObject();
-			writer.name("color").value(player.color.name());
-			writer.name("ordinal").value(player.ordinal);
-			writer.name("type").value(player.type.name());
-			writer.name("gold").value(player.gold);
-			writer.name("cursorI").value(player.cursorI);
-			writer.name("cursorJ").value(player.cursorJ);
-			writer.endObject();
-		}
-		writer.endArray();
-		
-		writer.endObject();
+			players.add(player.json());
+			
+		JsonWriter writer = loader.getWriter("players.json");
+		new Gson().toJson(players, writer);
 		writer.close();
 	}
 	

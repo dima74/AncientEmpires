@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import ru.ancientempires.campaign.NamedUnits;
+import ru.ancientempires.action.campaign.ActionCampaignSetNamedUnit;
 import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptSetNamedUnit extends Script
@@ -36,9 +36,9 @@ public class ScriptSetNamedUnit extends Script
 	@Override
 	public void start()
 	{
-		super.start();
-		NamedUnits.set(name, game.getUnit(i, j));
-		campaign.finish(this);
+		new ActionCampaignSetNamedUnit(name)
+				.setIJ(i, j)
+				.perform(game);
 	}
 	
 	@Override

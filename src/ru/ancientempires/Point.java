@@ -3,9 +3,9 @@ package ru.ancientempires;
 public class Point
 {
 	
-	public static final Object	NULL_POINT	= new Point(-1, -1);
+	public static final Point NULL_POINT = new Point(-1, -1);
 	
-	public int					i, j;
+	public int i, j;
 	
 	public Point(int i, int j)
 	{
@@ -13,11 +13,16 @@ public class Point
 		this.j = j;
 	}
 	
+	public Point(float i, float j)
+	{
+		this(Math.round(i), Math.round(j));
+	}
+	
 	@Override
 	public boolean equals(Object o)
 	{
 		Point p = (Point) o;
-		return p.i == this.i && p.j == this.j;
+		return p.i == i && p.j == j;
 	}
 	
 	@Override
@@ -25,15 +30,15 @@ public class Point
 	{
 		final int prime = 777;
 		int result = 1;
-		result = prime * result + this.i;
-		result = prime * result + this.j;
+		result = prime * result + i;
+		result = prime * result + j;
 		return result;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "{" + this.i + ", " + this.j + "}";
+		return "{" + i + ", " + j + "}";
 	}
 	
 }

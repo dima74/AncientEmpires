@@ -3,20 +3,19 @@ package ru.ancientempires;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.draws.DrawMain;
+import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.view.draws.GameDrawMain;
-import ru.ancientempires.view.inputs.InputBase;
-import ru.ancientempires.view.inputs.InputMain;
 
 public class GameThread extends Thread
 {
 	
 	public static final long	MILLISECONDS_BETWEEN_FRAMES	= 1000 / 30;
-	private static GameThread	thread;
+	public static GameThread	thread;
 	
 	private SurfaceHolder	surfaceHolder;
-	public GameDrawMain		drawMain;
+	public DrawMain			drawMain;
 	public InputMain		inputMain;
 	
 	volatile public boolean isRunning = true;
@@ -32,30 +31,27 @@ public class GameThread extends Thread
 		Debug.create(this);
 		this.surfaceHolder = surfaceHolder;
 		
-		drawMain = InputBase.gameDraw = new GameDrawMain();
-		drawMain.inputMain = inputMain = new InputMain();
-		drawMain.inputPlayer = inputMain.inputPlayer;
+		MyAssert.a(GameThread.thread == null || !GameThread.thread.isAlive());
+		GameThread.thread = this;
+		
+		drawMain = new DrawMain();
+		inputMain = new InputMain(drawMain);
+		drawMain.setInputMain(inputMain);
+	}
+	
+	private Runnable runnable;
+	
+	public void runOnGameThread(Runnable runnable)
+	{
+		MyAssert.a(this.runnable == null);
+		this.runnable = runnable;
 	}
 	
 	@Override
 	public void run()
 	{
 		Debug.onStart(this);
-		if (GameThread.thread != null)
-		{
-			MyAssert.a(!GameThread.thread.isRunning);
-			try
-			{
-				GameThread.thread.join();
-			}
-			catch (InterruptedException e)
-			{
-				MyAssert.a(false);
-				e.printStackTrace();
-			}
-		}
-		GameThread.thread = this;
-		
+		GameActivity.activity.invalidateOptionsMenu();
 		GameActivity.activity.game.campaign.start();
 		
 		while (isRunning)
@@ -102,13 +98,18 @@ public class GameThread extends Thread
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
-				
 			if (needUpdateCampaign)
 			{
 				needUpdateCampaign = false;
 				drawMain.game.campaign.update();
 			}
-			
+			if (runnable != null)
+				synchronized (this)
+				{
+					runnable.run();
+					runnable = null;
+				}
+				
 			// TODO сделать другой тайминговый механизм: не засыпать тут, а передавать в gameDraw.draw() время, прошедшее с последнего рисования. По нему впринципе можно вычислить iFrame, если не хочется переписывать все draw()
 			long timeElapsed = System.currentTimeMillis() - timeStart;
 			long timeToSleep = GameThread.MILLISECONDS_BETWEEN_FRAMES - timeElapsed;

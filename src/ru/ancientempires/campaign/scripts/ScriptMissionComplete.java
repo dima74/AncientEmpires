@@ -30,7 +30,6 @@ public class ScriptMissionComplete extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.showTitle(text, this);
 	}
 	

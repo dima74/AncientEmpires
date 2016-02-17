@@ -8,7 +8,7 @@ public class GameSaverThread extends Thread
 {
 	
 	ConcurrentLinkedQueue<Save>	queue		= new ConcurrentLinkedQueue<Save>();
-	volatile public boolean		isRunning	= true;
+	volatile private boolean	isRunning	= true;
 	
 	@Override
 	public void run()

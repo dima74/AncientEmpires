@@ -35,9 +35,10 @@ public class GamesFolder
 	}
 	
 	// для AllGamesConverter
-	public GamesFolder(String path, int numberGames)
+	public GamesFolder(String folderID, int numberGames)
 	{
-		this.path = path;
+		this.folderID = folderID;
+		path = folderID.replace('.', '/') + "/";
 		this.numberGames = numberGames;
 	}
 	
@@ -79,6 +80,7 @@ public class GamesFolder
 	public void add(GamePath game) throws IOException
 	{
 		games.add(game);
+		numberGames++;
 		save();
 	}
 	

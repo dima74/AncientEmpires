@@ -2,16 +2,16 @@ package ru.ancientempires.campaign.coordinate;
 
 import java.io.IOException;
 
-import ru.ancientempires.campaign.NamedUnits;
-import ru.ancientempires.helpers.JsonHelper;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import ru.ancientempires.campaign.NamedUnits;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class CoordinateNamedUnitJ extends Coordinate
 {
 	
-	private String	name;
+	private String name;
 	
 	public CoordinateNamedUnitJ()
 	{}
@@ -24,19 +24,19 @@ public class CoordinateNamedUnitJ extends Coordinate
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
-		this.name = JsonHelper.readString(reader, "name");
+		name = JsonHelper.readString(reader, "name");
 	}
 	
 	@Override
 	public int get()
 	{
-		return NamedUnits.get(this.name).j;
+		return NamedUnits.get().get(name).j;
 	}
 	
 	@Override
 	public void save(JsonWriter writer) throws IOException
 	{
-		writer.name("name").value(this.name);
+		writer.name("name").value(name);
 	}
 	
 }

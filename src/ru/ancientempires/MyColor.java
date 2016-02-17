@@ -10,6 +10,14 @@ public enum MyColor
 	BLUE(0xFF0000FF),
 	BLACK(0xFF007696);
 	
+	public static MyColor[] playersColors()
+	{
+		return new MyColor[]
+		{
+				BLUE, RED, GREEN, BLACK
+		};
+	}
+	
 	public int showColor;
 	
 	MyColor(int showColor)

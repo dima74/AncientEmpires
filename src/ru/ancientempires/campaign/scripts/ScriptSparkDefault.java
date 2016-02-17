@@ -32,7 +32,6 @@ public class ScriptSparkDefault extends Script
 	@Override
 	public void start()
 	{
-		super.start();
 		campaign.iDrawCampaign.sparksDefault(i, j, this);
 	}
 	

@@ -62,7 +62,7 @@ public class CampaignLoader
 		script.game = game;
 		script.campaign = campaign;
 		int[] previous = new Gson().fromJson(reader, int[].class);
-		script.load(reader);
+		script.load(reader, scripts);
 		reader.endObject();
 		
 		script.index = scripts.size();

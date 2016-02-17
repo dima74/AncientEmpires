@@ -1,47 +1,30 @@
 package ru.ancientempires.campaign.scripts;
 
-import java.io.IOException;
+import ru.ancientempires.action.campaign.ActionCampaignCellAttack;
 
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.helpers.JsonHelper;
-
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
-public class ScriptCellAttackPartTwo extends Script
+public class ScriptCellAttackPartTwo extends ScriptFrom
 {
-	
-	private int	i;
-	private int	j;
 	
 	public ScriptCellAttackPartTwo()
 	{}
 	
 	public ScriptCellAttackPartTwo(int i, int j)
 	{
-		this.i = i;
-		this.j = j;
-	}
-	
-	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		this.i = JsonHelper.readInt(reader, "i");
-		this.j = JsonHelper.readInt(reader, "j");
+		super(i, j);
 	}
 	
 	@Override
 	public void start()
 	{
-		super.start();
-		campaign.iDrawCampaign.cellAttackPartTwo(this.i, this.j, this);
+		campaign.iDrawCampaign.cellAttackPartTwo(i, j, this);
 	}
 	
 	@Override
-	public void save(JsonWriter writer) throws IOException
+	public void performAction()
 	{
-		writer.name("i").value(this.i);
-		writer.name("j").value(this.j);
+		new ActionCampaignCellAttack()
+				.setIJ(i, j)
+				.perform(game);
 	}
 	
 }
