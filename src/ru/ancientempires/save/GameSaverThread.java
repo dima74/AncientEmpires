@@ -9,7 +9,7 @@ public class GameSaverThread extends Thread
 	
 	ConcurrentLinkedQueue<Save>	queue		= new ConcurrentLinkedQueue<Save>();
 	volatile private boolean	isRunning	= true;
-	
+											
 	@Override
 	public void run()
 	{
@@ -31,6 +31,11 @@ public class GameSaverThread extends Thread
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
+	}
+	
+	public void stopRunning()
+	{
+		isRunning = false;
 	}
 	
 }

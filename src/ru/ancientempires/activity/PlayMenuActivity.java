@@ -15,16 +15,16 @@ import ru.ancientempires.framework.Debug;
 public class PlayMenuActivity extends ListActivity
 {
 	
-	public static final String EXTRA_FOLDER = "ru.ancientempires.folder";
-	
-	private static MenuActions[] actions = new MenuActions[]
-	{
-			MenuActions.CAMPAIGN,
-			MenuActions.SKIRMISH,
-			MenuActions.USER_MAPS,
-			MenuActions.LOAD
-	};
-	
+	public static final String		EXTRA_FOLDER	= "ru.ancientempires.folder";
+													
+	private static MenuActions[]	actions			= new MenuActions[]
+														{
+																MenuActions.CAMPAIGN,
+																MenuActions.SKIRMISH,
+																MenuActions.USER_MAPS,
+																MenuActions.LOAD
+														};
+														
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -37,7 +37,7 @@ public class PlayMenuActivity extends ListActivity
 	
 	@Override
 	protected void onStart()
-	{
+	{m
 		super.onStart();
 		Debug.onStart(this);
 	}
@@ -46,8 +46,8 @@ public class PlayMenuActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		start("campaign");
-		// start("skirmish");
+		// start("campaign");
+		start("skirmish");
 		// start("test");
 	}
 	

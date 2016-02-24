@@ -17,7 +17,7 @@ public class ClientServer extends Server
 	
 	public Client	client;
 	public Game		game;
-	
+					
 	public ClientServer(Client client)
 	{
 		this.client = client;

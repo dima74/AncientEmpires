@@ -1,5 +1,6 @@
 package ru.ancientempires.rules;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
@@ -25,7 +26,7 @@ public class RulesSaver
 	
 	public FileLoader	loader;
 	public Rules		rules;
-	
+						
 	public RulesSaver(FileLoader loader, Rules rules)
 	{
 		this.loader = loader;
@@ -34,6 +35,7 @@ public class RulesSaver
 	
 	public void save(String name) throws IOException
 	{
+		new File("assets/rules/").mkdir();
 		JsonWriter writer = loader.getWriter(name);
 		writer.setIndent("\t");
 		Gson gson = new GsonBuilder()

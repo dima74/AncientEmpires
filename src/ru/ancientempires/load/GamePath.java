@@ -1,6 +1,7 @@
 package ru.ancientempires.load;
 
 import java.io.IOException;
+import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
@@ -32,10 +33,11 @@ public class GamePath
 	public boolean			canChooseTeams;
 	public int				h;
 	public int				w;
-	
+							
 	public GamePath()
 	{}
 	
+	// только для AllGamesConverter
 	public GamePath(Game game, String gameID)
 	{
 		this.gameID = gameID;
@@ -49,6 +51,7 @@ public class GamePath
 				"ru_RU"
 		};
 		game.path = this;
+		game.random = new Random(gameID.hashCode());
 	}
 	
 	public Rules getRules()
@@ -59,7 +62,7 @@ public class GamePath
 	public String			defaultLocalization;
 	public String[]			localizations;
 	transient public String	name;
-	
+							
 	public FileLoader getLoader()
 	{
 		return Client.client.gamesLoader.getLoader(path);

@@ -18,7 +18,7 @@ public class GameSaver
 	public Game				game;
 	public Game				mainGame;
 	public GameSaverThread	thread;
-	
+							
 	public GameSaver(Game game)
 	{
 		mainGame = game;

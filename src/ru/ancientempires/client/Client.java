@@ -30,29 +30,29 @@ public class Client
 		return Client.client.allGames.get(gameID);
 	}
 	
-	public GameInit init;
-	
-	public LogWriter log;
-	
-	public FileLoader	fileLoader;
-	public FileLoader	gamesLoader;
-	public FileLoader	defaultGameLoader;
-	public FileLoader	savesLoader;
-	
-	public FileLoader	rulesLoader;
-	public Rules		rules;
-	
-	public ImagesLoader	imagesLoader;
-	public Images		images	= new Images();
-	
-	public Map<String, GamesFolder>	allFolders	= new HashMap<String, GamesFolder>();
+	public GameInit					init;
+									
+	public LogWriter				log;
+									
+	public FileLoader				fileLoader;
+	public FileLoader				gamesLoader;
+	public FileLoader				defaultGameLoader;
+	public FileLoader				savesLoader;
+									
+	public FileLoader				rulesLoader;
+	public Rules					rules;
+									
+	public ImagesLoader				imagesLoader;
+	public Images					images			= new Images();
+													
+	public Map<String, GamesFolder>	allFolders		= new HashMap<String, GamesFolder>();
 	public GamesFolder				campaign;
 	public GamesFolder				skirmish;
 	public GamesFolder				save;
-	public Map<String, GamePath>	allGames	= new HashMap<String, GamePath>();
-	
-	public Localization localization = new Localization();
-	
+	public Map<String, GamePath>	allGames		= new HashMap<String, GamePath>();
+													
+	public Localization				localization	= new Localization();
+													
 	// public String ID;
 	public int numberSaves()
 	{
@@ -61,7 +61,7 @@ public class Client
 	
 	public ClientServer	clientServer;
 	private Server[]	servers	= new Server[0];
-	
+								
 	public Client(IClientHelper helper) throws IOException
 	{
 		MyAssert.a(Client.client == null);
@@ -76,7 +76,7 @@ public class Client
 		// ID = helper.getID();
 		savesLoader = gamesLoader.getLoader("save/" + "/");
 		
-		loadPart0();
+		// loadPart0();
 	}
 	
 	// То что нужно для показа главного меню
