@@ -443,8 +443,6 @@
 				"steps": 3
 			},
 			"types": [
-				"WATER_WAY_HORIZONTAL",
-				"WATER_WAY_VERTICAL",
 				"WATER_LEFT_DOWNLEFT_DOWN_DOWNRIGHT",
 				"WATER_LEFT_DOWNLEFT_DOWN",
 				"WATER_LEFT_RIGHT_DOWNLEFT_DOWN_DOWNRIGHT",
@@ -578,11 +576,11 @@
 			"name": "WAY_RIGHT_UP"
 		},
 		{
-			"baseType": "WATER_GROUP",
+			"baseType": "WATER_WAY_GROUP",
 			"name": "WATER_WAY_HORIZONTAL"
 		},
 		{
-			"baseType": "WATER_GROUP",
+			"baseType": "WATER_WAY_GROUP",
 			"name": "WATER_WAY_VERTICAL"
 		},
 		{

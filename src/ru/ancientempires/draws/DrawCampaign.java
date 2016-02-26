@@ -61,7 +61,7 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 	{
 		public DrawOnFrames	draw;
 		public Script		script;
-		
+							
 		public SimpleDraw(DrawOnFrames draw, Script script)
 		{
 			this.draw = draw;
@@ -408,7 +408,9 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 	@Override
 	public void closeMission() throws Exception
 	{
-		Client.client.stopGame(true);
+		Client.client.stopGame();
+		if (game.path.nextGameID != null)
+			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
 	@Override

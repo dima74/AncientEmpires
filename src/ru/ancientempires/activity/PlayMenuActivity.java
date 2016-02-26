@@ -37,7 +37,7 @@ public class PlayMenuActivity extends ListActivity
 	
 	@Override
 	protected void onStart()
-	{m
+	{
 		super.onStart();
 		Debug.onStart(this);
 	}
@@ -47,7 +47,7 @@ public class PlayMenuActivity extends ListActivity
 	{
 		super.onResume();
 		// start("campaign");
-		start("skirmish");
+		// start("skirmish");
 		// start("test");
 	}
 	

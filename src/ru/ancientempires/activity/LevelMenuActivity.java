@@ -20,7 +20,7 @@ public class LevelMenuActivity extends ListActivity
 	public GamesFolder	currentFolder;
 	private boolean		isStartingGameInProcess;
 	private String		folderID;
-	
+						
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -109,8 +109,8 @@ public class LevelMenuActivity extends ListActivity
 		setListAdapter(adapter);
 		
 		String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
-		int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
-		GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);
+		// int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
+		// GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);
 	}
 	
 	@Override

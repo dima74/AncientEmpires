@@ -33,13 +33,13 @@ public class GameActivity extends Activity
 	private String				baseGameID;
 	private String				gameID;
 	public AlertDialog			dialog;
-	
+								
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
 		GameActivity.startGame(GameActivity.activity, gameID, useLastTeams);
 	}
 	
-	public static void startGame(final Activity activity, String gameID, boolean useLastTeams)
+	public static void startGame(Activity activity, String gameID, boolean useLastTeams)
 	{
 		if (GameActivity.activity != null)
 			GameActivity.activity.finish();
@@ -89,10 +89,10 @@ public class GameActivity extends Activity
 				try
 				{
 					Client.client.finishPart2();
-					game = Client.client.startGame(gameID == null ? baseGameID : gameID);
-					gameID = game.path.gameID;
 					if (GameActivity.activity != null)
 						GameActivity.activity.view.thread.join();
+					game = Client.client.startGame(gameID == null ? baseGameID : gameID);
+					gameID = game.path.gameID;
 				}
 				catch (Exception e)
 				{
@@ -128,9 +128,9 @@ public class GameActivity extends Activity
 		}
 		try
 		{
-			Client.client.stopGame(false);
+			view.thread.join();
 		}
-		catch (Exception e)
+		catch (InterruptedException e)
 		{
 			MyAssert.a(false);
 			e.printStackTrace();

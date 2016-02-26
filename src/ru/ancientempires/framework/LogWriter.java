@@ -7,7 +7,7 @@ public class LogWriter
 	
 	public void write(String string)
 	{
-		Log.wtf("ae", string);
+		Log.wtf("ru.ae", string);
 	}
 	
 }

@@ -3,6 +3,7 @@ package ru.ancientempires;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.Debug;
@@ -13,19 +14,19 @@ public class GameThread extends Thread
 	
 	public static final long	MILLISECONDS_BETWEEN_FRAMES	= 1000 / 30;
 	public static GameThread	thread;
-	
-	private SurfaceHolder	surfaceHolder;
-	public DrawMain			drawMain;
-	public InputMain		inputMain;
-	
-	volatile public boolean isRunning = true;
-	
-	public float	touchY;
-	public float	touchX;
-	public boolean	isTouch;
-	
-	volatile public boolean needUpdateCampaign = false;
-	
+								
+	private SurfaceHolder		surfaceHolder;
+	public DrawMain				drawMain;
+	public InputMain			inputMain;
+								
+	volatile public boolean		isRunning					= true;
+															
+	public float				touchY;
+	public float				touchX;
+	public boolean				isTouch;
+								
+	volatile public boolean		needUpdateCampaign			= false;
+															
 	public GameThread(SurfaceHolder surfaceHolder)
 	{
 		Debug.create(this);
@@ -124,6 +125,17 @@ public class GameThread extends Thread
 					e.printStackTrace();
 				}
 		}
+		
+		try
+		{
+			Client.client.stopGame();
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+		
 		Debug.onStop(this);
 	}
 	

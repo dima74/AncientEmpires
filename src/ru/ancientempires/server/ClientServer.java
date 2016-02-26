@@ -3,7 +3,6 @@ package ru.ancientempires.server;
 import java.io.IOException;
 
 import ru.ancientempires.action.Action;
-import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GameLoader;
@@ -65,11 +64,9 @@ public class ClientServer extends Server
 	}
 	
 	@Override
-	public void stopGame(boolean startNext) throws Exception
+	public void stopGame() throws Exception
 	{
 		game.saver.finishSave();
-		if (startNext && game.path.nextGameID != null)
-			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
 	public void commit(Action action) throws IOException

@@ -76,7 +76,7 @@ public class Client
 		// ID = helper.getID();
 		savesLoader = gamesLoader.getLoader("save/" + "/");
 		
-		// loadPart0();
+		loadPart0();
 	}
 	
 	// То что нужно для показа главного меню
@@ -144,9 +144,9 @@ public class Client
 		return clientServer.startGame(gameID);
 	}
 	
-	public void stopGame(boolean startNext) throws Exception
+	public void stopGame() throws Exception
 	{
-		clientServer.stopGame(startNext);
+		clientServer.stopGame();
 	}
 	
 	public static void commit(Action action)

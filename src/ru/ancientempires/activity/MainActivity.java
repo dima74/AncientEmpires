@@ -74,7 +74,7 @@ public class MainActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		startActivity(new Intent(this, PlayMenuActivity.class));
+		// startActivity(new Intent(this, PlayMenuActivity.class));
 	}
 	
 	@Override
