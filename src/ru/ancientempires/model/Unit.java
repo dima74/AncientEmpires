@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import ru.ancientempires.Localization;
 import ru.ancientempires.action.Checker;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
@@ -17,31 +18,98 @@ import ru.ancientempires.handler.IGameHandler;
 public class Unit extends IGameHandler
 {
 	
-	public UnitType	type;
-	public Player	player;
-	
-	public int	i;
-	public int	j;
-	public int	health;
-	public int	level;
-	public int	experience;
+	public UnitType		type;
+	public Player		player;
+						
+	public int			i;
+	public int			j;
+	public int			health;
+	public int			level;
+	public int			experience;
 	// только для статичных войнов
-	public int	numberBuys;
-	
-	public boolean	isMove;
-	public boolean	isTurn;
-	
-	public Set<Bonus> bonuses = new HashSet<Bonus>();
-	
+	public int			numberBuys;
+						
+	public boolean		isMove;
+	public boolean		isTurn;
+						
+	public Set<Bonus>	bonuses	= new HashSet<Bonus>();
+								
+	// Локализованное, с учётом уровня
+	public String		name;
+						
 	public void setTurn()
 	{
 		isMove = true;
 		isTurn = true;
 	}
 	
+	public int getQualitySum()
+	{
+		return type.attackMin + type.attackMax + type.defence;
+	}
+	
+	public final int getNextRankExperience()
+	{
+		return getQualitySum() * 100 * 2 / 3;
+	}
+	
+	public boolean isLevelUp()
+	{
+		int nextLevelExperience = getNextRankExperience();
+		return experience >= nextLevelExperience;
+	}
+	
+	public boolean levelUp()
+	{
+		level++;
+		return updateName();
+	}
+	
+	public boolean updateName()
+	{
+		boolean result = updateName(this, type, level);
+		MyAssert.a(name != null);
+		return result;
+	}
+	
+	public static boolean updateName(Unit unit, UnitType type, int level)
+	{
+		for (int levelCopy = level; levelCopy >= 0; levelCopy--)
+		{
+			String possibleName = Localization.get(type.name + "." + levelCopy);
+			if (possibleName != null)
+			{
+				boolean result = !possibleName.equals(unit.name);
+				unit.name = possibleName;
+				return result;
+			}
+		}
+		if (type.baseType == null || type.baseType == type)
+			return false;
+		return updateName(unit, type.baseType, level);
+	}
+	
+	public String getDescription()
+	{
+		return getDescription(type);
+	}
+	
+	public static String getDescription(UnitType type)
+	{
+		String description = Localization.get(type.name + ".description");
+		if (description != null)
+			return description;
+		if (type.baseType == null || type.baseType == type)
+		{
+			MyAssert.a(false);
+			return null;
+		}
+		return getDescription(type.baseType);
+	}
+	
 	/* Два варианта создания нового объекта
-	 1. При загрузке игры: 
-	 	экземпляр 
+	 1. При загрузке игры:
+	 	экземпляр
 	 -> свойства из unitType
 	 -> загружаем оставшиеся свойства
 	 
@@ -60,9 +128,15 @@ public class Unit extends IGameHandler
 	public Unit(UnitType type, Player player, Game game)
 	{
 		setGame(game);
-		this.type = type;
+		setType(type);
 		this.player = player;
 		initFromType();
+	}
+	
+	public void setType(UnitType type)
+	{
+		this.type = type;
+		// updateName();
 	}
 	
 	public void initFromType()
@@ -199,7 +273,7 @@ public class Unit extends IGameHandler
 	
 	public void load(DataInputStream input, Game game) throws Exception
 	{
-		type = game.rules.getUnitType(input.readUTF());
+		setType(game.rules.getUnitType(input.readUTF()));
 		initFromType();
 		player = game.players[input.readInt()];
 		i = input.readInt();

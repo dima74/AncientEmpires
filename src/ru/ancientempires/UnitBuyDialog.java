@@ -56,7 +56,7 @@ public class UnitBuyDialog
 	
 	private static final int	BLACK	= Color.BLACK;
 	private static final int	GREY	= 0xFFAAAAAA;
-	
+										
 	private View getView(Unit unit, int i, boolean available)
 	{
 		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
@@ -64,7 +64,8 @@ public class UnitBuyDialog
 		
 		TextView textUnitName = (TextView) view.findViewById(R.id.textUnitName);
 		TextView textUnitCost = (TextView) view.findViewById(R.id.textUnitCost);
-		textUnitName.setText(unit.type.name);
+		unit.updateName();
+		textUnitName.setText(unit.name);
 		textUnitCost.setText("" + unit.getCost());
 		
 		int color = available ? UnitBuyDialog.BLACK : UnitBuyDialog.GREY;

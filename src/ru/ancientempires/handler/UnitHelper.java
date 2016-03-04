@@ -33,7 +33,7 @@ public class UnitHelper extends GameHandler
 		if (unit.experience >= nextLevelExperience)
 		{
 			unit.experience -= nextLevelExperience;
-			unit.level++;
+			unit.levelUp();
 			return true;
 		}
 		return false;

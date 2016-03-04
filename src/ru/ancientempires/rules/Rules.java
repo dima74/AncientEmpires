@@ -12,26 +12,26 @@ import ru.ancientempires.model.UnitType;
 public class Rules
 {
 	
-	public String	name;
-	public String	version;
-	public String	author;
-	
-	public Unit		defaultUnit;
-	public UnitType	defaultUnitType;
-	public CellType	defaultCellType;
-	
-	public Range[]					ranges;
-	public HashMap<String, Range>	rangesMap;
-	public Range					rangeMax;
-	
+	public String						name;
+	public String						version;
+	public String						author;
+										
+	public Unit							defaultUnit;
+	public UnitType						defaultUnitType;
+	public CellType						defaultCellType;
+										
+	public Range[]						ranges;
+	public HashMap<String, Range>		rangesMap;
+	public Range						rangeMax;
+										
 	public UnitType[]					unitTypes;
 	public HashMap<String, UnitType>	unitTypesMap	= new HashMap<String, UnitType>();
-	
+														
 	public CellGroup[]					cellGroups;
 	public HashMap<String, CellGroup>	cellGroupsMap	= new HashMap<String, CellGroup>();
 	public CellType[]					cellTypes;
 	public HashMap<String, CellType>	cellTypesMap	= new HashMap<String, CellType>();
-	
+														
 	public void preInitUnitTypes(String[] names)
 	{
 		unitTypes = new UnitType[names.length];

@@ -26,7 +26,7 @@ public class RulesLoader
 	
 	private FileLoader	loader;
 	private Rules		rules;
-	
+						
 	public RulesLoader(FileLoader loader)
 	{
 		this.loader = loader;
@@ -66,9 +66,9 @@ public class RulesLoader
 			rules.preInitCellGroups(getStrinsArray(object, "allCellGroups", context));
 			
 			/*
-				здесь очень забавная ситуация, компилятор Java SE может вычислить, 
+				здесь очень забавная ситуация, компилятор Java SE может вычислить,
 					что используется deserialize c типом Range[], а вот андроидовский не может.
-				SE'шный Вычисляет мне кажется по тому, 
+				SE'шный Вычисляет мне кажется по тому,
 					что аргумент функции setRanges имеет тип Range[]
 				
 				То есть вот так работает только на Java SE:

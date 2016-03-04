@@ -103,6 +103,7 @@ public class Client
 	public void loadPart2() throws Exception
 	{
 		rules = new RulesLoader(rulesLoader).load();
+		localization.load(rulesLoader);
 		images.setRules(rules);
 		images.preload(imagesLoader);
 	}

@@ -14,7 +14,7 @@ public class ActionUnitAttack extends ActionFromTo
 	
 	private ActionResultUnitAttack	result	= new ActionResultUnitAttack();
 	private Unit					unit;
-	
+									
 	@Override
 	public ActionResultUnitAttack perform(Game game)
 	{
@@ -98,8 +98,24 @@ public class ActionUnitAttack extends ActionFromTo
 		new UnitHelper(game).checkDied(targetUnit);
 		unit.experience += new UnitHelper(game).getQualitySum(targetUnit) * decreaseHealth;
 		boolean isLevelUp = new UnitHelper(game).checkLevelUp(unit);
-		return new AttackResult(unit.i, unit.j, targetUnit.i, targetUnit.j, decreaseHealth,
-				targetUnit.health > 0, isLevelUp, reverse ? 0 : handleAfterAttackEffect(unit, targetUnit));
+		
+		// new AttackResult(unit.i, unit.j, targetUnit.i, targetUnit.j, decreaseHealth,
+		// targetUnit.health > 0, isLevelUp, reverse ? 0 : handleAfterAttackEffect(unit, targetUnit));
+		
+		AttackResult result = new AttackResult();
+		result.i = unit.i;
+		result.j = unit.j;
+		result.targetI = targetUnit.i;
+		result.targetJ = targetUnit.j;
+		result.decreaseHealth = decreaseHealth;
+		result.isTargetLive = targetUnit.health > 0;
+		if (unit.isLevelUp())
+		{
+			result.isLevelUp = isLevelUp;
+			result.isPromotion = unit.levelUp();
+		}
+		result.effectSign = reverse ? 0 : handleAfterAttackEffect(unit, targetUnit);
+		return result;
 	}
 	
 	private int handleAfterAttackEffect(Unit unit, Unit targetUnit)
