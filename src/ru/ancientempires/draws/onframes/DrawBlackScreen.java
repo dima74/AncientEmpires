@@ -23,7 +23,7 @@ public class DrawBlackScreen extends DrawOnFramesWithRangeValues
 	}
 	
 	@Override
-	public void onEndDraw()
+	public void onEnd()
 	{
 		if (end == 255)
 			main.isBlackScreen = true;

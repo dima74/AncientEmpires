@@ -12,7 +12,7 @@ public abstract class DrawOnFrames extends Draw
 	public int		frameStart;
 	public int		frameEnd;
 	public boolean	isEndDrawing;
-	
+					
 	public DrawOnFrames animate(int frameCount)
 	{
 		frameStart = iFrame() + 1;
@@ -30,6 +30,13 @@ public abstract class DrawOnFrames extends Draw
 		return this;
 	}
 	
+	public DrawOnFrames setFrameStart(int frameStart)
+	{
+		this.frameStart = frameStart;
+		frameEnd = frameStart + frameCount;
+		return this;
+	}
+	
 	@Override
 	public boolean isEnd()
 	{
@@ -41,19 +48,24 @@ public abstract class DrawOnFrames extends Draw
 	{
 		if (frameLeft == 0 || iFrame() < frameStart)
 			return;
+		if (iFrame() == frameStart)
+			onStart();
 		frameLeft--;
 		drawOnFrames(canvas);
 		if (frameLeft == 0)
 		{
-			onEndDraw();
+			onEnd();
 			isEndDrawing = true;
 		}
 		framePass++;
 	}
 	
+	public void onStart()
+	{}
+	
 	public abstract void drawOnFrames(Canvas canvas);
 	
-	public void onEndDraw()
+	public void onEnd()
 	{}
 	
 	public void reAnimate()

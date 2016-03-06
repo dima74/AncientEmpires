@@ -108,9 +108,12 @@ public class LevelMenuActivity extends ListActivity
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.main_menu_list_item, R.id.text_view, names);
 		setListAdapter(adapter);
 		
-		String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
-		// int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
-		// GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);
+		if (MainActivity.gameToStart != "")
+		{
+			String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
+			int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
+			GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);
+		}
 	}
 	
 	@Override

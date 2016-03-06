@@ -46,7 +46,7 @@ public class DrawCellAttack extends DrawOnFramesGroup
 	}
 	
 	@Override
-	public void onEndDraw()
+	public void onEnd()
 	{
 		GameThread.thread.needUpdateCampaign = true;
 	}

@@ -1,1 +1,0 @@
-{"scripts":[{"type":"TITLE","previous":[],"text":"title"},{"type":"UNIT_HANDLER_POINT","previous":[0],"i":2,"j":2},{"type":"UNIT_CREATE","previous":[1],"i":1,"j":2,"unitType":"DRAGON","player":1},{"type":"UNIT_CREATE_MOVE","previous":[0],"unitType":"WISP","player":0,"keyPoints":[{"i":2,"j":1},{"i":2,"j":3}],"handlers":[1]}]}

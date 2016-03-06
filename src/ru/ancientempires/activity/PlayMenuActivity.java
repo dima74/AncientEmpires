@@ -46,6 +46,8 @@ public class PlayMenuActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
+		if (MainActivity.gameToStart != "")
+			start(MainActivity.gameToStart);
 		// start("campaign");
 		// start("skirmish");
 		// start("test");

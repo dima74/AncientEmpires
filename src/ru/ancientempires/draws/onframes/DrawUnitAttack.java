@@ -1,20 +1,22 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+import android.widget.Toast;
+import ru.ancientempires.Strings;
 import ru.ancientempires.action.result.AttackResult;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
 	
-	public AttackResult result;
-	
-	private int	y;
-	private int	x;
-	
-	private int frameStartSmoke;
-	
-	private boolean isDirect = false;
-	
+	public AttackResult	result;
+						
+	private int			y;
+	private int			x;
+						
+	private int			frameStartSmoke;
+						
+	private boolean		isDirect	= false;
+									
 	public DrawUnitAttack setDirect()
 	{
 		isDirect = true;
@@ -54,10 +56,16 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		}
 		
 		if (result.isLevelUp)
-			add(new DrawLevelUp()
+		{
+			DrawOnFrames levelUp = new DrawLevelUp()
 					.animate(result.i * A, result.j * A)
-					.increaseFrameStart(framesBeforePartTwo + 4));
-					
+					.increaseFrameStart(framesBeforePartTwo + 4);
+			add(levelUp);
+			if (result.isPromotion)
+				add(new DrawToast(String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name), Toast.LENGTH_SHORT)
+						.setFrameStart(levelUp.frameEnd + 1));
+		}
+		
 		main.units.field[result.targetI][result.targetJ].canUpdateHealth = false;
 		if (!result.isTargetLive)
 		{

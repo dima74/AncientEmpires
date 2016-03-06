@@ -83,7 +83,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	}
 	
 	@Override
-	public void onEndDraw()
+	public void onEnd()
 	{
 		if (game.checkCoordinates(targetI, targetJ))
 		{

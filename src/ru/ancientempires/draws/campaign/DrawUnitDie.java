@@ -31,9 +31,9 @@ public class DrawUnitDie extends DrawOnFramesGroup
 	}
 	
 	@Override
-	public void onEndDraw()
+	public void onEnd()
 	{
-		super.onEndDraw();
+		super.onEnd();
 		main.units.updateUnit(i, j);
 	}
 	

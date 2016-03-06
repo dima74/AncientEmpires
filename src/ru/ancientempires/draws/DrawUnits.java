@@ -11,7 +11,7 @@ public class DrawUnits extends Draw
 	public UnitBitmap[][]	field	= new UnitBitmap[game.h][game.w];
 	public boolean[][]		keep	= new boolean[game.h][game.w];
 	public boolean[][]		move	= new boolean[game.h][game.w];
-	
+									
 	public void update()
 	{
 		for (int i = 0; i < game.h; i++)

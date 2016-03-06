@@ -5,7 +5,8 @@ public enum Strings
 	TEAM,
 	GOLD,
 	UNITS_LIMIT,
-	FIGHT;
+	FIGHT,
+	PROMOTION;
 	
 	@Override
 	public String toString()

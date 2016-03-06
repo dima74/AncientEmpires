@@ -15,12 +15,12 @@ import ru.ancientempires.model.Game;
 public class Campaign
 {
 	
-	private Game game;
-	
+	private Game			game;
+							
 	public Script[]			scripts;
 	public IDrawCampaign	iDrawCampaign;
 	public boolean			isDefault	= false;
-	
+										
 	public Campaign(Game game)
 	{
 		this.game = game;
@@ -60,7 +60,7 @@ public class Campaign
 	
 	public boolean	isUpdate;
 	public boolean	needSaveSnapshot;
-	
+					
 	public void update()
 	{
 		if (isUpdate)

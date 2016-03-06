@@ -61,6 +61,7 @@ public class Unit extends IGameHandler
 	
 	public boolean levelUp()
 	{
+		experience -= getNextRankExperience();
 		level++;
 		return updateName();
 	}
@@ -142,6 +143,19 @@ public class Unit extends IGameHandler
 	public void initFromType()
 	{
 		health = type.healthDefault;
+	}
+	
+	public Unit setIJ(int i, int j)
+	{
+		this.i = i;
+		this.j = j;
+		return this;
+	}
+	
+	public Unit addToField()
+	{
+		game.setUnit(i, j, this);
+		return this;
 	}
 	
 	public Cell getCell()

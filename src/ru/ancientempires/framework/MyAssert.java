@@ -8,11 +8,11 @@ public class MyAssert
 	
 	public static DataOutputStream	output;
 	public static PrintWriter		outputText;
-	
+									
 	public static void a(boolean booleanTrue)
 	{
 		if (!booleanTrue)
-			MyAssert.method();
+			method();
 		/*
 		if (false)
 			try
