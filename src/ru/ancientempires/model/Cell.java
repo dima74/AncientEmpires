@@ -10,10 +10,15 @@ public class Cell
 	public CellType	type;
 	public int		i;
 	public int		j;
-	
+					
 	// только для захватываемых клеточек
-	public boolean	isCapture;
+	// public boolean isCapture;
 	public Player	player;
+					
+	public boolean isCapture()
+	{
+		return player != null;
+	}
 	
 	// только для разрушаемых клеточек
 	public boolean isDestroy;
@@ -29,27 +34,25 @@ public class Cell
 	// Возможно пригодится для редактора карт
 	public void initFromType()
 	{
-		isCapture = type.isCaptureDefault;
 		isDestroy = type.isDestroyDefault;
 	}
 	
 	public boolean needSave()
 	{
-		return isCapture != type.isCaptureDefault
-				|| isDestroy != type.isDestroyDefault;
+		return isCapture() || isDestroy != type.isDestroyDefault;
 	}
 	
 	public void save(DataOutputStream output, Game game) throws IOException
 	{
-		output.writeBoolean(isCapture);
-		if (isCapture)
+		output.writeBoolean(isCapture());
+		if (isCapture())
 			output.write(player.ordinal);
 		output.writeBoolean(isDestroy);
 	}
 	
 	public void load(DataInputStream input, Game game) throws IOException
 	{
-		isCapture = input.readBoolean();
+		boolean isCapture = input.readBoolean();
 		if (isCapture)
 			player = game.players[input.read()];
 		isDestroy = input.readBoolean();
@@ -77,7 +80,7 @@ public class Cell
 			return false;
 		if (j != cell.j)
 			return false;
-		if (isCapture != cell.isCapture)
+		if (isCapture() != cell.isCapture())
 			return false;
 		if (isDestroy != cell.isDestroy)
 			return false;

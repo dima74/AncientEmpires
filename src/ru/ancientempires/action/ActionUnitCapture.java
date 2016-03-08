@@ -30,7 +30,6 @@ public class ActionUnitCapture extends ActionFrom
 		if (cell.player != null)
 			game.currentEarns[cell.player.ordinal] -= cell.type.earn;
 			
-		cell.isCapture = true;
 		cell.player = unit.player;
 		unit.setTurn();
 		game.currentEarns[unit.player.ordinal] += cell.type.earn;

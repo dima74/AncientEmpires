@@ -8,13 +8,13 @@ import ru.ancientempires.model.CellType;
 public class CellBitmap
 {
 	
-	public boolean	isDual		= false;
-	public boolean	isSmokes	= false;
-	
+	public boolean		isDual		= false;
+	public boolean		isSmokes	= false;
+									
 	public FewBitmaps	defaultBitmap;
 	public FewBitmaps	destroyingBitmap;
 	public FewBitmaps[]	colorBitmaps;
-	
+						
 	public Bitmap getBitmap(Cell cell)
 	{
 		return getFewBitmaps(cell).getBitmap();
@@ -25,7 +25,7 @@ public class CellBitmap
 		CellType type = cell.type;
 		if (type.isDestroying && cell.isDestroy)
 			return destroyingBitmap;
-		else if (type.isCapturing && cell.isCapture)
+		else if (type.isCapturing && cell.isCapture())
 			return colorBitmaps[CellImages.get().playerToColorI[cell.player.ordinal]];
 		else
 			return defaultBitmap;

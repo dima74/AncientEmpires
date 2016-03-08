@@ -26,55 +26,54 @@ public class DrawMain extends Draw
 	public GameView		view;
 	public InputMain	inputMain;
 	public InputPlayer	inputPlayer;
-	
+						
 	public void setInputMain(InputMain inputMain)
 	{
 		this.inputMain = inputMain;
 		inputPlayer = inputMain.inputPlayer;
 	}
 	
-	public Random rnd = new Random();
-	
-	public int	mapH;
-	public int	mapW;
-	public int	visibleMapH;
-	public int	visibleMapW;
-	public int	iFrame;
-	
-	volatile public float	nextOffsetY;
-	volatile public float	nextOffsetX;
-	public float			offsetY;
-	public float			offsetX;
-	
-	private int				actionY;
-	public DrawAction		action			= new DrawAction();
-	public DrawInfoNull		infoNull		= new DrawInfoNull();
-	public DrawInfo			info			= new DrawInfo();
-	public DrawInfoMove		infoMove		= new DrawInfoMove();
-	public int				infoY			= 0;
-	volatile public boolean	isActiveGame	= true;
-	
-	public DrawCells			cells			= new DrawCells();
-	public DrawCells			cellsDual		= new DrawCells().setDual();
-	public DrawUnitsDead		unitsDead		= new DrawUnitsDead();
-	public DrawUnits			units			= new DrawUnits();
-	public DrawBuildingSmokes	buildingSmokes	= new DrawBuildingSmokes();
-	public DrawUnitsHeal		unitsHeal		= new DrawUnitsHeal();
-	
-	public Draw				campaign	= new DrawCampaign();
-	public DrawBlackScreen	blackScreen	= new DrawBlackScreen();
-	
-	public boolean		isDrawCursor	= false;
-	public DrawCursor	cursorDefault	= new DrawCursor().setCursor(CursorImages().cursor);
-	
-	public LinkedHashSet<Draw>[] draws = new LinkedHashSet[DrawLevel.values().length];
-	
-	public float	maxOffsetY;
-	public float	maxOffsetX;
-	public float	minOffsetY;
-	public float	minOffsetX;
-	public boolean	isBlackScreen	= false;
-	
+	public Random					rnd				= new Random();
+													
+	public int						mapH;
+	public int						mapW;
+	public int						visibleMapH;
+	public int						visibleMapW;
+	public int						iFrame;
+									
+	volatile public float			nextOffsetY;
+	volatile public float			nextOffsetX;
+	public float					offsetY;
+	public float					offsetX;
+									
+	private int						actionY;
+	public DrawAction				action			= new DrawAction();
+	public DrawInfoNull				infoNull		= new DrawInfoNull();
+	public DrawInfo					info			= new DrawInfo();
+	public DrawInfoMove				infoMove		= new DrawInfoMove();
+	public int						infoY			= 0;
+	volatile public boolean			isActiveGame	= true;
+													
+	public DrawCells				cells			= new DrawCells();
+	public DrawCells				cellsDual		= new DrawCells().setDual();
+	public DrawUnitsDead			unitsDead		= new DrawUnitsDead();
+	public DrawUnits				units			= new DrawUnits();
+	public DrawBuildingSmokes		buildingSmokes	= new DrawBuildingSmokes();
+													
+	public Draw						campaign		= new DrawCampaign();
+	public DrawBlackScreen			blackScreen		= new DrawBlackScreen();
+													
+	public boolean					isDrawCursor	= false;
+	public DrawCursor				cursorDefault	= new DrawCursor().setCursor(CursorImages().cursor);
+													
+	public LinkedHashSet<Draw>[]	draws			= new LinkedHashSet[DrawLevel.values().length];
+													
+	public float					maxOffsetY;
+	public float					maxOffsetX;
+	public float					minOffsetY;
+	public float					minOffsetX;
+	public boolean					isBlackScreen	= false;
+													
 	/*
 	 * Порядок рисования:
 	 * 
@@ -135,7 +134,6 @@ public class DrawMain extends Draw
 			draws[level.ordinal()] = new LinkedHashSet<>();
 			
 		add(campaign);
-		add(unitsHeal);
 	}
 	
 	@Override
@@ -211,6 +209,8 @@ public class DrawMain extends Draw
 	
 	public void touch(float touchY, float touchX)
 	{
+		// проверка по иксу немного странная ---
+		// ведь GameView (пока что) всегда имеет ширину равный ширине экрана
 		if (!isActiveGame || touchY < 0 || touchX < 0 || touchY > h - info.h || touchX > w)
 			return;
 		if (action.isActive())
@@ -219,17 +219,18 @@ public class DrawMain extends Draw
 			return;
 		}
 		
-		int i = (int) ((touchY / mapScale - offsetY) / A);
-		int j = (int) ((touchX / mapScale - offsetX) / A);
-		try
-		{
-			inputMain.tap(i, j);
-		}
-		catch (Exception e)
-		{
-			MyAssert.a(false);
-			e.printStackTrace();
-		}
+		int i = Math.round((touchY / mapScale - offsetY) / A - 0.5f);
+		int j = Math.round((touchX / mapScale - offsetX) / A - 0.5f);
+		if (0 <= i && i < game.h && 0 <= j && j < game.w)
+			try
+			{
+				inputMain.tap(i, j);
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 	}
 	
 	public void updateCursors()

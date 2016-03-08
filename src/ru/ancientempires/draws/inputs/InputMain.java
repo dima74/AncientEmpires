@@ -3,16 +3,17 @@ package ru.ancientempires.draws.inputs;
 import ru.ancientempires.action.ActionGameEndTurn;
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
 import ru.ancientempires.draws.DrawMain;
+import ru.ancientempires.draws.DrawUnitsHeal;
 
 public class InputMain extends AbstractInput
 {
 	
-	public static InputMain main;
-	
+	public static InputMain		main;
+								
 	public InputPlayer			inputPlayer;
 	public InputComputer		inputComputer;
 	public AbstractPlayerInput	currentInput;
-	
+								
 	public InputMain(DrawMain drawMain)
 	{
 		InputMain.main = this;
@@ -74,7 +75,7 @@ public class InputMain extends AbstractInput
 	public void performEndTurn(ActionGameEndTurn action)
 	{
 		ActionResultGameEndTurn result = action.perform(game);
-		drawMain.unitsHeal.start(result);
+		drawMain.add(new DrawUnitsHeal().start(result));
 	}
 	
 }

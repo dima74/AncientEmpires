@@ -27,18 +27,18 @@ public class CellImages extends IImages
 		return Client.client.images.cell;
 	}
 	
-	public Rules rules;
-	
+	public Rules		rules;
+						
 	public CellBitmap[]	cellBitmaps;
 	public CellBitmap[]	cellBitmapsDual;
-	
+						
 	public int[]		playerToColorI;
 	public MyColor[]	colors	= new MyColor[]
 									{
-											MyColor.RED,
-											MyColor.GREEN,
-											MyColor.BLUE,
-											MyColor.BLACK
+										MyColor.RED,
+										MyColor.GREEN,
+										MyColor.BLUE,
+										MyColor.BLACK
 									};
 									
 	public Bitmap getCellBitmap(Cell cell, boolean dual)
@@ -54,7 +54,7 @@ public class CellImages extends IImages
 	
 	public boolean isCellSmokes(Cell cell)
 	{
-		return cell.isCapture && cellBitmaps[cell.type.ordinal].isSmokes;
+		return cell.isCapture() && cellBitmaps[cell.type.ordinal].isSmokes;
 	}
 	
 	@Override

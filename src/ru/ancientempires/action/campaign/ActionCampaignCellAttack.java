@@ -19,7 +19,6 @@ public class ActionCampaignCellAttack extends ActionFrom
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 		targetCell.isDestroy = true;
-		targetCell.isCapture = false;
 		targetCell.player = null;
 	}
 	

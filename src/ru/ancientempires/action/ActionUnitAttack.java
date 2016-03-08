@@ -65,7 +65,6 @@ public class ActionUnitAttack extends ActionFromTo
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 			
 		targetCell.isDestroy = true;
-		targetCell.isCapture = false;
 		targetCell.player = null;
 		
 		unit.setTurn();
@@ -105,6 +104,7 @@ public class ActionUnitAttack extends ActionFromTo
 		result.targetJ = targetUnit.j;
 		result.decreaseHealth = decreaseHealth;
 		result.isTargetLive = targetUnit.health > 0;
+		unit.updateName();
 		if (unit.isLevelUp())
 		{
 			result.isLevelUp = true;
