@@ -97,10 +97,6 @@ public class ActionUnitAttack extends ActionFromTo
 		targetUnit.health -= decreaseHealth;
 		new UnitHelper(game).checkDied(targetUnit);
 		unit.experience += new UnitHelper(game).getQualitySum(targetUnit) * decreaseHealth;
-		// boolean isLevelUp = new UnitHelper(game).checkLevelUp(unit);
-		
-		// new AttackResult(unit.i, unit.j, targetUnit.i, targetUnit.j, decreaseHealth,
-		// targetUnit.health > 0, isLevelUp, reverse ? 0 : handleAfterAttackEffect(unit, targetUnit));
 		
 		AttackResult result = new AttackResult();
 		result.i = unit.i;

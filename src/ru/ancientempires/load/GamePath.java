@@ -48,7 +48,7 @@ public class GamePath
 		defaultLocalization = "en_US";
 		localizations = new String[]
 		{
-				"ru_RU"
+			"ru_RU"
 		};
 		game.path = this;
 		game.random = new Random(gameID.hashCode());

@@ -14,7 +14,7 @@ public class ActionGetUnit extends ActionFrom
 	private Unit				unit;
 	private int					diameter;
 	private int					radius;
-	
+								
 	@Override
 	public boolean changesGame()
 	{
@@ -63,17 +63,17 @@ public class ActionGetUnit extends ActionFrom
 	
 	private static final int[]	addI	=
 	{
-			-1,
-			0,
-			0,
-			+1
+		-1,
+		0,
+		0,
+		+1
 	};
 	private static final int[]	addJ	=
 	{
-			0,
-			-1,
-			+1,
-			0
+		0,
+		-1,
+		+1,
+		0
 	};
 	
 	public void createWay(boolean[][] fieldMove, boolean[][] fieldMoveReal)
@@ -81,16 +81,17 @@ public class ActionGetUnit extends ActionFrom
 		int[][] distance = new int[diameter][diameter];
 		int[][] previousMoveI = new int[diameter][diameter];
 		int[][] previousMoveJ = new int[diameter][diameter];
+		int moveRadius = unit.getMoveRadius();
 		for (int i = 0; i < diameter; i++)
 			for (int j = 0; j < diameter; j++)
-				distance[i][j] = radius + 1;
+				distance[i][j] = moveRadius + 1;
 		distance[radius][radius] = 0;
 		previousMoveI[radius][radius] = -1;
 		previousMoveJ[radius][radius] = -1;
 		
 		while (true)
 		{
-			int minDistance = radius + 1;
+			int minDistance = moveRadius + 1;
 			int minDistanceI = -1, minDistanceJ = -1;
 			for (int i = 0; i < diameter; i++)
 				for (int j = 0; j < diameter; j++)

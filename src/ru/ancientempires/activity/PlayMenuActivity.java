@@ -19,10 +19,10 @@ public class PlayMenuActivity extends ListActivity
 													
 	private static MenuActions[]	actions			= new MenuActions[]
 														{
-																MenuActions.CAMPAIGN,
-																MenuActions.SKIRMISH,
-																MenuActions.USER_MAPS,
-																MenuActions.LOAD
+															MenuActions.CAMPAIGN,
+															MenuActions.SKIRMISH,
+															MenuActions.USER_MAPS,
+															MenuActions.LOAD
 														};
 														
 	@Override
@@ -46,7 +46,7 @@ public class PlayMenuActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		if (MainActivity.gameToStart != "")
+		if (MainActivity.gameToStart != "" && MainActivity.firstStart)
 			start(MainActivity.gameToStart);
 		// start("campaign");
 		// start("skirmish");

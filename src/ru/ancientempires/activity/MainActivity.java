@@ -19,17 +19,18 @@ public class MainActivity extends ListActivity
 {
 	
 	public static String			gameToStart	= "test";
-															
-	private static MenuActions[]	actions					= new MenuActions[]
-																{
-																		MenuActions.PLAY,
-																		MenuActions.ONLINE,
-																		MenuActions.SETTINGS,
-																		MenuActions.MAP_EDITOR,
-																		MenuActions.INSTRUCTIONS,
-																		MenuActions.AUTHORS
-																};
-																
+	public static boolean			firstStart	= true;
+												
+	private static MenuActions[]	actions		= new MenuActions[]
+													{
+														MenuActions.PLAY,
+														MenuActions.ONLINE,
+														MenuActions.SETTINGS,
+														MenuActions.MAP_EDITOR,
+														MenuActions.INSTRUCTIONS,
+														MenuActions.AUTHORS
+													};
+													
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -76,7 +77,7 @@ public class MainActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		if (gameToStart != "")
+		if (gameToStart != "" && firstStart)
 			startActivity(new Intent(this, PlayMenuActivity.class));
 	}
 	
