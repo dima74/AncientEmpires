@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
+import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
@@ -37,8 +38,9 @@ public class ActionGetCellBuy extends ActionFrom
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
 		boolean[] isAvailable = new boolean[units.size()];
 		for (int k = 0; k < isAvailable.length; k++)
-			isAvailable[k] = game.currentPlayer.gold >= units.get(k).getCost();
-			
+			isAvailable[k] = game.currentPlayer.gold >= units.get(k).getCost()
+					&& new ActionHelper(game).isEmptyCells(i, j, units.get(k));
+					
 		result = new ActionResultGetCellBuy(units, isAvailable);
 	}
 	

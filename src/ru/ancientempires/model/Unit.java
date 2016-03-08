@@ -152,9 +152,10 @@ public class Unit extends IGameHandler
 		return this;
 	}
 	
-	public Unit addToField()
+	public Unit addToGame()
 	{
 		game.setUnit(i, j, this);
+		player.units.add(this);
 		return this;
 	}
 	
