@@ -36,13 +36,18 @@ public class ActionGetCellBuy extends ActionFrom
 		
 		ArrayList<Unit> units = new ArrayList<Unit>(Arrays.asList(cellType.buyUnits[cell.player.ordinal]));
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
-		boolean[] isAvailable = new boolean[units.size()];
-		for (int k = 0; k < isAvailable.length; k++)
-			isAvailable[k] = cell.player.numberUnits() < game.unitsLimit
-					&& game.currentPlayer.gold >= units.get(k).getCost()
-					&& new ActionHelper(game).isEmptyCells(i, j, units.get(k));
-					
-		result = new ActionResultGetCellBuy(units, isAvailable);
+		result = new ActionResultGetCellBuy(units);
+		
+		BuyStatus[] status = result.statuses;
+		for (int k = 0; k < status.length; k++)
+			if (cell.player.numberUnits() >= game.unitsLimit)
+				status[k] = BuyStatus.UNIT_LIMIT_REACHED;
+			else if (game.currentPlayer.gold < units.get(k).getCost())
+				status[k] = BuyStatus.NO_GOLD;
+			else if (!new ActionHelper(game).isEmptyCells(i, j, units.get(k)))
+				status[k] = BuyStatus.NO_PLACE;
+			else
+				status[k] = BuyStatus.SUCCESS;
 	}
 	
 }

@@ -15,6 +15,7 @@ import ru.ancientempires.action.ActionUnitCapture;
 import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.ActionUnitRaise;
 import ru.ancientempires.action.ActionUnitRepair;
+import ru.ancientempires.action.BuyStatus;
 import ru.ancientempires.action.Checker;
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
@@ -185,7 +186,7 @@ public class II extends GameHandler
 						.setIJ(var5, var4)
 						.perform(game);
 				Unit[] units = result.units;
-				boolean[] isAvailable = result.isAvailable;
+				BuyStatus[] statuses = result.statuses;
 				Unit kingToBuy = null;
 				Unit soldierToBuy = null;
 				Unit archerToBuy = null;
@@ -193,7 +194,7 @@ public class II extends GameHandler
 				int iSoldier = -1;
 				int iArcher = -1;
 				for (int i = 0; i < units.length; i++)
-					if (isAvailable[i])
+					if (statuses[i] == BuyStatus.SUCCESS)
 					{
 						Unit unit = units[i];
 						if (unit.type.isStatic)
@@ -289,7 +290,7 @@ public class II extends GameHandler
 							
 							ArrayList<Integer> unitsToBuy = new ArrayList<Integer>();
 							for (int i = 0; i < units.length; i++)
-								if (isAvailable[i])
+								if (statuses[i] == BuyStatus.SUCCESS)
 								{
 									Unit unit = units[i];
 									if ((countUnits(unit.type) < 1 || unit.getCost() >= 600) && canBuyUnit(unit, var4, var5))

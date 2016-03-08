@@ -9,7 +9,6 @@ import ru.ancientempires.action.ActionUnitCapture;
 import ru.ancientempires.action.ActionUnitRepair;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.handler.ActionHelper;
-import ru.ancientempires.model.Unit;
 
 public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 {
@@ -115,9 +114,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
 				.setIJ(i, j)
 				.perform(game);
-		Unit[] units = result.units;
-		boolean[] isAvailable = result.isAvailable;
-		new UnitBuyDialog().showDialog(this, units, isAvailable);
+		new UnitBuyDialog().showDialog(this, result);
 		return true;
 	}
 	
