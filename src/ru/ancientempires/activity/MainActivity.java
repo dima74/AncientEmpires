@@ -18,7 +18,7 @@ import ru.ancientempires.framework.MyAssert;
 public class MainActivity extends ListActivity
 {
 	
-	public static String			gameToStart	= "test";
+	public static String			gameToStart	= "skirmish";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]

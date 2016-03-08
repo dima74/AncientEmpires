@@ -14,11 +14,11 @@ import ru.ancientempires.model.Unit;
 public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 {
 	
-	public int	lastTapI;
-	public int	lastTapJ;
-	
-	public InputUnit inputUnit = new InputUnit(this);
-	
+	public int			lastTapI;
+	public int			lastTapJ;
+						
+	public InputUnit	inputUnit	= new InputUnit(this);
+									
 	@Override
 	public void beginTurn()
 	{
@@ -34,36 +34,51 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	 	Поле активно:
 	 		тап на ту же клетку:
 	 			захватываем/чиним если можем
-	 			если можем что-нибудь купить, то вызываем диалог. 
-	 			(завершить ход виспом стоя на месте в крепости можно будет из контекстного меню) 
+	 			если можем что-нибудь купить, то вызываем диалог.
+	 			(завершить ход виспом стоя на месте в крепости можно будет из контекстного меню)
 	 		на другую: атакуем/ходим/воскрешаем если можем и то и другое, то вызываем диалог
 	 Конец хода будет в контекстном меню.
 	 */
 	@Override
 	public void tap(int i, int j)
 	{
-		boolean sameTap = i == lastTapI && j == lastTapJ && drawMain.isDrawCursor;
 		tapWithoutAction(i, j);
 		drawMain.isDrawCursor = true;
-		if (sameTap)
+		
+		if (!inputUnit.isActive)
 		{
-			if (inputUnit.isActive)
-				inputUnit.tap(i, j); // сам станет неактивным
-			if (new ActionHelper(game).canUnitRepair(i, j))
-				tryRepair(i, j);
-			else if (new ActionHelper(game).canUnitCapture(i, j))
-				tryCapture(i, j);
-			else if (new ActionHelper(game).canBuyOnCell(i, j))
-				tryBuy(i, j);
+			boolean start = inputUnit.start(i, j);
+			if (!start)
+				tryCellActions(i, j);
 		}
 		else
 		{
-			boolean isMove = false;
-			if (inputUnit.isActive)
-				isMove = inputUnit.tap(i, j);
-			if (!inputUnit.start(i, j) && !isMove && new ActionHelper(game).canBuyOnCell(i, j))
-				tryBuy(i, j);
+			boolean isUnitAction = inputUnit.tap(i, j); // сам станет неактивным
+			if (isUnitAction)
+				inputUnit.start(i, j);
+			else
+			{
+				boolean isSameTap = inputUnit.isSameTap(i, j);
+				if (isSameTap)
+					tryCellActions(i, j);
+				else
+				{
+					boolean start = inputUnit.start(i, j);
+					if (!start)
+						tryCellActions(i, j);
+				}
+			}
 		}
+	}
+	
+	private void tryCellActions(int i, int j)
+	{
+		if (new ActionHelper(game).canUnitRepair(i, j))
+			tryRepair(i, j);
+		else if (new ActionHelper(game).canUnitCapture(i, j))
+			tryCapture(i, j);
+		else if (new ActionHelper(game).canBuyOnCell(i, j))
+			tryBuy(i, j);
 	}
 	
 	public void tapWithoutAction(int i, int j)

@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 
 import ru.ancientempires.MyColor;
+import ru.ancientempires.action.Action;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.NamedUnits;
@@ -24,22 +25,25 @@ import ru.ancientempires.tasks.Task;
 public class Game
 {
 	
-	public GamePath		path;
-	public GameSaver	saver;
-	public boolean		isMain;
-	public boolean		isSaver;
-	
+	// для отладки в ИИ
+	public ArrayList<Action>	allActions		= new ArrayList<Action>();
+												
+	public GamePath				path;
+	public GameSaver			saver;
+	public boolean				isMain;
+	public boolean				isSaver;
+								
 	// не сохраняется
-	public int[]	currentEarns;
-	public II		ii	= new II();
-	public Rules	rules;
-	
-	public NamedUnits		namedUnits		= new NamedUnits();
-	public Numbered<Unit>	numberedUnits	= new Numbered<>();
-	public Numbered<Bonus>	numberedBonuses	= new Numbered<>();
-	
-	public Random random = new Random();
-	
+	public int[]				currentEarns;
+	public II					ii				= new II();
+	public Rules				rules;
+								
+	public NamedUnits			namedUnits		= new NamedUnits();
+	public Numbered<Unit>		numberedUnits	= new Numbered<>();
+	public Numbered<Bonus>		numberedBonuses	= new Numbered<>();
+												
+	public Random				random			= new Random();
+												
 	public Game(Rules rules)
 	{
 		this.rules = rules;
@@ -101,10 +105,10 @@ public class Game
 		return seed ^ 0x5DEECE66DL;
 	}
 	
-	public Team[]	teams;
-	public Player[]	players;
-	public Player	currentPlayer;
-	
+	public Team[]				teams;
+	public Player[]				players;
+	public Player				currentPlayer;
+								
 	public Campaign				campaign		= new Campaign(this);
 	public int					h;
 	public int					w;
@@ -114,10 +118,10 @@ public class Game
 	public Set<Unit>			unitsOutside	= new HashSet<Unit>();
 	public Unit[][]				fieldUnitsDead;
 	public ArrayList<Unit>[]	unitsStaticDead;
-	
+								
 	// если на одной клетке стоят два война, то это задний
-	public Unit floatingUnit;
-	
+	public Unit					floatingUnit;
+								
 	public boolean checkFloating()
 	{
 		return floatingUnit == null;
@@ -130,7 +134,7 @@ public class Game
 	
 	public int									currentTurn;
 	public HashMap<Integer, ArrayList<Task>>	tasks	= new HashMap<Integer, ArrayList<Task>>();
-	
+														
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -167,6 +171,7 @@ public class Game
 				{
 					Unit unit = fieldUnits[i][j];
 					Unit unit2 = game.fieldUnits[i][j];
+					
 					if (unit == null && unit2 != null || unit != null && !unit.equals(unit2))
 						MyAssert.a(false);
 				}

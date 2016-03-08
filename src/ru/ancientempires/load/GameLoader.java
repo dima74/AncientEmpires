@@ -11,7 +11,7 @@ public class GameLoader
 	public GamePath	path;
 	public Game		game;
 	public Rules	rules;
-	
+					
 	public GameLoader(GamePath path, Rules rules)
 	{
 		this.path = path;

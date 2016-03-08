@@ -39,7 +39,7 @@ public class II extends GameHandler
 	
 	public Rules		rules;
 	ArrayList<Action>	actions;
-	
+						
 	public ActionResult perform(Action action)
 	{
 		/*
@@ -430,37 +430,37 @@ public class II extends GameHandler
 	}
 	
 	// private byte[][] buildingData; // new byte[buildingCount][3] {x, y, номер игрока, -1 разрушенный, 0 ничейный, 1 синий, 2 красный, 3 зеленый, 4 черный}
-	private int[][] mapAlphaData; // new byte[mapWidth][mapHeight]
-	
-	private int	var_3733;	// 0
-	private int	var_3781;	// 0
-	
-	private Unit	var_37c2;	// null
-	private Unit	var_37e4;	// null
-	private Unit	var_381f;	// null
-	
-	public Unit[]	var_38d5;
-	private Unit[]	var_3903;	// new Unit[buildings.length];
-	private byte[]	var_3947;	// new byte[buildings.length];
-	private int[][]	var_395f;	// local
-	
-	private int[]	var_399e;	// new int[buildingCount] каждый ход обнуляется
-	public int		var_39d0;	// local
-	private int[][]	var_39e3;	// new byte[mapWidth][mapHeight];
-	
-	private int var_36e4; // 0-выбор юнита, 3-ход, 4-в конце хода что делать дальше, 5-атака
-	
-	private int	var_3a15;
-	private int	var_3a34;
-	public int	var_3a41;
-	private int	var_3a5c;
-	
+	private int[][]			mapAlphaData;		// new byte[mapWidth][mapHeight]
+							
+	private int				var_3733;			// 0
+	private int				var_3781;			// 0
+							
+	private Unit			var_37c2;			// null
+	private Unit			var_37e4;			// null
+	private Unit			var_381f;			// null
+							
+	public Unit[]			var_38d5;
+	private Unit[]			var_3903;			// new Unit[buildings.length];
+	private byte[]			var_3947;			// new byte[buildings.length];
+	private int[][]			var_395f;			// local
+							
+	private int[]			var_399e;			// new int[buildingCount] каждый ход обнуляется
+	public int				var_39d0;			// local
+	private int[][]			var_39e3;			// new byte[mapWidth][mapHeight];
+							
+	private int				var_36e4;			// 0-выбор юнита, 3-ход, 4-в конце хода что делать дальше, 5-атака
+							
+	private int				var_3a15;
+	private int				var_3a34;
+	public int				var_3a41;
+	private int				var_3a5c;
+							
 	private Unit			currentSelectedUnit;
 	private Vector<Unit>	var_3aad;
-	
-	private boolean[]	isKingsLive;
-	private boolean		isKingLive;
-	
+							
+	private boolean[]		isKingsLive;
+	private boolean			isKingLive;
+							
 	public void initTurn()
 	{
 		for (Player player : game.players)

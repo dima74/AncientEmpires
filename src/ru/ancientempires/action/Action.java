@@ -91,6 +91,7 @@ public abstract class Action extends IGameHandler
 	public final void performQuickBase(Game game)
 	{
 		setGame(game);
+		game.allActions.add(this);
 		performQuick();
 	}
 	
