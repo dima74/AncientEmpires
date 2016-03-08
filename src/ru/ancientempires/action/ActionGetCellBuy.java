@@ -38,7 +38,8 @@ public class ActionGetCellBuy extends ActionFrom
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
 		boolean[] isAvailable = new boolean[units.size()];
 		for (int k = 0; k < isAvailable.length; k++)
-			isAvailable[k] = game.currentPlayer.gold >= units.get(k).getCost()
+			isAvailable[k] = cell.player.numberUnits() < game.unitsLimit
+					&& game.currentPlayer.gold >= units.get(k).getCost()
 					&& new ActionHelper(game).isEmptyCells(i, j, units.get(k));
 					
 		result = new ActionResultGetCellBuy(units, isAvailable);

@@ -9,6 +9,7 @@ import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 
 public class ActionCellBuy extends ActionFrom
@@ -40,7 +41,8 @@ public class ActionCellBuy extends ActionFrom
 	
 	private boolean checkPlayer()
 	{
-		return game.fieldCells[i][j].player == game.currentPlayer;
+		Player player = game.fieldCells[i][j].player;
+		return player == game.currentPlayer && player.numberUnits() < game.unitsLimit;
 	}
 	
 	private Unit getUnit()

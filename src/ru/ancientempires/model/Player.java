@@ -10,20 +10,20 @@ import ru.ancientempires.PlayerType;
 public class Player
 {
 	
-	public MyColor	color;
-	public int		ordinal;
-	
+	public MyColor			color;
+	public int				ordinal;
+							
 	public PlayerType		type	= PlayerType.PLAYER;
 	public Team				team	= new Team(new Player[]
 										{
-												this
+											this
 										});
 	public ArrayList<Unit>	units	= new ArrayList<Unit>();
 	public int				gold;
-	
-	public int	cursorI;
-	public int	cursorJ;
-	
+							
+	public int				cursorI;
+	public int				cursorJ;
+							
 	public Player()
 	{}
 	
@@ -53,6 +53,11 @@ public class Player
 		object.addProperty("cursorI", cursorI);
 		object.addProperty("cursorJ", cursorJ);
 		return object;
+	}
+	
+	public int numberUnits()
+	{
+		return units.size();
 	}
 	
 	@Override
