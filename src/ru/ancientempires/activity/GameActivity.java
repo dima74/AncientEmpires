@@ -11,11 +11,13 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import ru.ancientempires.GameView;
 import ru.ancientempires.R;
+import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
+import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
@@ -152,6 +154,15 @@ public class GameActivity extends Activity
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		MenuItem item = menu.findItem(R.id.action_wisp);
+		if (item != null && game != null && game.currentPlayer != null)
+			item.setVisible(new ActionHelper(game).isUnitActive(game.currentPlayer.cursorI, game.currentPlayer.cursorJ) && game.checkFloating());
+		return true;
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		// Handle action bar item clicks here. The action bar will
@@ -174,6 +185,18 @@ public class GameActivity extends Activity
 						break;
 					case R.id.action_reset:
 						GameActivity.startGame(game.path.baseGameID, true);
+						break;
+					case R.id.action_wisp:
+						int i = game.currentPlayer.cursorI;
+						int j = game.currentPlayer.cursorJ;
+						new ActionUnitMove()
+								.setIJ(i, j)
+								.setTargetIJ(i, j)
+								.perform(game);
+						view.thread.drawMain.units.update();
+						if (view.thread.inputMain.inputPlayer.inputUnit.isActive)
+							view.thread.inputMain.inputPlayer.inputUnit.tap(i, j);
+						view.thread.inputMain.inputPlayer.inputUnit.start(i, j);
 						break;
 					case R.id.action_kill_unit:
 						while (!game.players[1].units.isEmpty())
