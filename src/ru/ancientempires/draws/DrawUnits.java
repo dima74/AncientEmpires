@@ -2,6 +2,7 @@ package ru.ancientempires.draws;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.model.Unit;
 
@@ -50,7 +51,23 @@ public class DrawUnits extends Draw
 		canvas.drawBitmap(unitBitmap.getBaseBitmap(), unitBitmap.x, unitBitmap.y, null);
 		Bitmap healthBitmap = unitBitmap.getHealthBitmap();
 		if (healthBitmap != null)
-			canvas.drawBitmap(unitBitmap.getHealthBitmap(), unitBitmap.x, unitBitmap.y + A - SmallNumberImages().h, null);
+			canvas.drawBitmap(healthBitmap, unitBitmap.x, unitBitmap.y + A - healthBitmap.getHeight(), null);
+		if (unitBitmap.unit.level != 0)
+		{
+			Bitmap levelBitmap = unitBitmap.getLevelBitmap();
+			canvas.drawBitmap(levelBitmap, unitBitmap.x + A - levelBitmap.getWidth(), unitBitmap.y + A - levelBitmap.getHeight(), null);
+		}
+		
+		if (unitBitmap.hasPositiveBonus())
+		{
+			Bitmap bonusBitmap = StatusesImages.get().aura;
+			canvas.drawBitmap(bonusBitmap, unitBitmap.x, unitBitmap.y, null);
+		}
+		if (unitBitmap.hasNegativeBonus())
+		{
+			Bitmap bonusBitmap = StatusesImages.get().poison;
+			canvas.drawBitmap(bonusBitmap, unitBitmap.x + A - bonusBitmap.getWidth(), unitBitmap.y, null);
+		}
 	}
 	
 }

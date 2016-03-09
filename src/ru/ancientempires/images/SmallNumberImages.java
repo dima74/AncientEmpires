@@ -13,13 +13,15 @@ public class SmallNumberImages extends NumberImages
 		return Client.client.images.smallNumber;
 	}
 	
-	public Bitmap defenceBitmap;
-	
+	public Bitmap	asterisk;
+	public Bitmap	defenceBitmap;
+					
 	@Override
 	public void preload(ImagesLoader loader) throws IOException
 	{
 		preloadBase(loader);
 		defenceBitmap = loader.loadImage("defence.png");
+		asterisk = loader.loadImage("asterisk.png");
 	}
 	
 }

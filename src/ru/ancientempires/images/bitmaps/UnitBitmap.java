@@ -10,15 +10,15 @@ import ru.ancientempires.model.Unit;
 public class UnitBitmap
 {
 	
-	public float	y;
-	public float	x;
-	
+	public float					y;
+	public float					x;
+									
 	public Unit						unit;
 	public int						health;
 	public boolean					canUpdateHealth	= true;
 	public boolean					keepTurn		= false;
 	public ScriptUnitMoveHandler[]	hanlers;
-	
+									
 	public UnitBitmap(Unit unit)
 	{
 		this(unit, unit.i, unit.j);
@@ -42,6 +42,32 @@ public class UnitBitmap
 		if (canUpdateHealth)
 			health = unit.health;
 		return health == 100 ? null : SmallNumberImages.get().getBitmap(health);
+	}
+	
+	public Bitmap getLevelBitmap()
+	{
+		return unit.level < 10
+				? SmallNumberImages.get().getBitmap(unit.level)
+				: SmallNumberImages.get().asterisk;
+	}
+	
+	public boolean	canUpdatePositiveBonus	= true;
+	public boolean	canUpdateNegativeBonus	= true;
+	private boolean	hasPositiveBonus;
+	private boolean	hasNegativeBonus;
+					
+	public boolean hasPositiveBonus()
+	{
+		if (canUpdatePositiveBonus)
+			hasPositiveBonus = unit.hasPositiveBonus();
+		return hasPositiveBonus;
+	}
+	
+	public boolean hasNegativeBonus()
+	{
+		if (canUpdateNegativeBonus)
+			hasNegativeBonus = unit.hasNegativeBonus();
+		return hasNegativeBonus;
 	}
 	
 	public Point getIJ()

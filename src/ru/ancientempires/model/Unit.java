@@ -159,6 +159,12 @@ public class Unit extends IGameHandler
 		return this;
 	}
 	
+	public Unit setLevel(int level)
+	{
+		this.level = level;
+		return this;
+	}
+	
 	public Cell getCell()
 	{
 		return game.fieldCells[i][j];
@@ -242,6 +248,22 @@ public class Unit extends IGameHandler
 		for (Bonus bonus : getBonuses())
 			cost += bonus.getBonusCost(game, this);
 		return cost;
+	}
+	
+	public boolean hasPositiveBonus()
+	{
+		for (Bonus bonus : bonuses)
+			if (bonus.getSign() > 0)
+				return true;
+		return false;
+	}
+	
+	public boolean hasNegativeBonus()
+	{
+		for (Bonus bonus : bonuses)
+			if (bonus.getSign() < 0)
+				return true;
+		return false;
 	}
 	
 	// Пожалуй, эти две функции - единственное место,

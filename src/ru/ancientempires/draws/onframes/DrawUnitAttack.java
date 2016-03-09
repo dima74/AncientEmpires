@@ -14,6 +14,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 	private int			x;
 						
 	private int			frameStartSmoke;
+	private int			frameUpdateBonus;
 						
 	private boolean		isDirect	= false;
 									
@@ -50,9 +51,12 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 					
 			int offsetY = (int) (y - 22 * a);
 			int offsetX = x + (A - StatusesImages().w) / 2;
-			add(new DrawBitmapSinus()
+			DrawOnFrames draw = new DrawBitmapSinus()
 					.animate(offsetY, offsetX, StatusesImages().poison, 2)
-					.increaseFrameStart(framesBeforePartTwo));
+					.increaseFrameStart(framesBeforePartTwo);
+			add(draw);
+			main.units.field[result.targetI][result.targetJ].canUpdateNegativeBonus = false;
+			frameUpdateBonus = draw.frameEnd;
 		}
 		
 		if (result.isLevelUp)
@@ -110,6 +114,8 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			main.units.keep[result.targetI][result.targetJ] = false;
 			main.info.update();
 		}
+		if (iFrame() == frameUpdateBonus)
+			main.units.field[result.targetI][result.targetJ].canUpdateNegativeBonus = true;
 	}
 	
 }
