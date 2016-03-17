@@ -1,18 +1,15 @@
 package ru.ancientempires.activity;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
-import ru.ancientempires.framework.Debug;
 
-public class PlayMenuActivity extends ListActivity
+public class PlayMenuActivity extends BaseListActivity
 {
 	
 	public static final String		EXTRA_FOLDER	= "ru.ancientempires.folder";
@@ -28,18 +25,7 @@ public class PlayMenuActivity extends ListActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		Debug.create(this);
-		
-		setContentView(R.layout.main_menu_list_view);
-		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, PlayMenuActivity.actions));
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		Debug.onStart(this);
+		super.onCreate(savedInstanceState, actions);
 	}
 	
 	@Override
@@ -48,22 +34,12 @@ public class PlayMenuActivity extends ListActivity
 		super.onResume();
 		if (MainActivity.gameToStart != "" && MainActivity.firstStart)
 			start(MainActivity.gameToStart);
-		// start("campaign");
-		// start("skirmish");
-		// start("test");
-	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		Debug.onStop(this);
 	}
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		switch (PlayMenuActivity.actions[position])
+		switch (actions[position])
 		{
 			case CAMPAIGN:
 				start("campaign");

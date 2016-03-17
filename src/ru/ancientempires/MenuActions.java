@@ -3,6 +3,7 @@ package ru.ancientempires;
 public enum MenuActions
 {
 	
+	// MainActivity
 	PLAY,
 	ONLINE,
 	SETTINGS,
@@ -10,10 +11,15 @@ public enum MenuActions
 	INSTRUCTIONS,
 	AUTHORS,
 	
+	// PlayMenuActivity
 	CAMPAIGN,
 	SKIRMISH,
 	USER_MAPS,
-	LOAD;
+	LOAD,
+	
+	// MapEditorActivity
+	CREATE_GAME,
+	EDIT_GAME;
 	
 	@Override
 	public String toString()

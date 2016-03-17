@@ -6,64 +6,63 @@ import java.util.HashSet;
 public class Debug
 {
 	
-	public static boolean writeFirstLaunch = false;
-	
-	public static HashMap<Class<?>, Integer>	counts			= new HashMap();
-	public static HashMap<Object, Integer>		numbers			= new HashMap();
-	public static HashMap<Object, String>		numberSpaces	= new HashMap();
-	public static HashSet<Object>				afterOnStart	= new HashSet();
-	
-	public static void create(Object activity)
+	public static boolean					writeFirstLaunch	= false;
+																
+	public static HashMap<Object, Integer>	indexes				= new HashMap();
+	public static HashSet<Object>			running				= new HashSet();
+																
+	private static void checkFirstLaunch()
 	{
-		if (!Debug.writeFirstLaunch)
+		checkTime();
+		if (!writeFirstLaunch)
 		{
-			Debug.writeFirstLaunch = true;
+			writeFirstLaunch = true;
 			MyLog.l("");
 			MyLog.l("");
 			MyLog.l("------------------------------------------------");
-			Debug.lastTime = System.currentTimeMillis();
+			lastTime = System.currentTimeMillis();
 		}
-		
-		if (!Debug.counts.containsKey(activity.getClass()))
-			Debug.counts.put(activity.getClass(), 0);
-		Debug.numbers.put(activity, Debug.counts.get(activity.getClass()));
-		
-		String spaces = "";
-		for (int i = 0; i < Debug.afterOnStart.size(); i++)
-			spaces += " ";
-		Debug.numberSpaces.put(activity, spaces);
+	}
+	
+	public static void create(Object activity)
+	{
+		checkFirstLaunch();
+		checkCreate(activity);
+	}
+	
+	private static void checkCreate(Object activity)
+	{
+		if (!indexes.containsKey(activity))
+			indexes.put(activity, indexes.size());
 	}
 	
 	public static void onStart(Object activity)
 	{
-		Debug.checkTime();
-		MyLog.l(Debug.getSpaces(activity) + "start " + Debug.getName(activity));
-		Debug.afterOnStart.add(activity);
+		checkFirstLaunch();
+		checkCreate(activity);
+		MyLog.l("start " + getName(activity));
+		running.add(activity);
 	}
 	
 	public static void onStop(Object activity)
 	{
-		MyLog.l(Debug.getSpaces(activity) + "stop " + Debug.getName(activity));
-		Debug.afterOnStart.remove(activity);
+		checkCreate(activity);
+		MyLog.l("stop  " + getName(activity));
+		running.remove(activity);
 	}
 	
 	private static long lastTime = 0;
 	
 	private static void checkTime()
 	{
-		if (System.currentTimeMillis() - Debug.lastTime > 500)
+		if (System.currentTimeMillis() - lastTime > 1000)
 			MyLog.l("");
-		Debug.lastTime = System.currentTimeMillis();
-	}
-	
-	private static String getSpaces(Object activity)
-	{
-		return Debug.numberSpaces.get(activity);
+		lastTime = System.currentTimeMillis();
 	}
 	
 	private static String getName(Object activity)
 	{
-		return activity.getClass().getSimpleName().replace("Activity", "");
+		return String.format("%2d %s", indexes.get(activity), activity.getClass().getSimpleName().replace("Activity", ""));
 	}
 	
 }

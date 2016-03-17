@@ -15,6 +15,7 @@
 	<string name="title_activity_play_menu">Играть</string>
 	<string name="title_activity_level_menu">Выбрать уровень</string>
 	<string name="title_activity_game">Игра</string>
+	<string name="title_activity_map_editor">Редактор карт</string>
 
 	<!-- other -->
 	<string name="loading">Загрузка</string>

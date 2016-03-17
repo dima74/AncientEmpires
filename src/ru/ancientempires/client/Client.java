@@ -7,7 +7,6 @@ import java.util.Map;
 import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Action;
-import ru.ancientempires.framework.LogWriter;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.Images;
@@ -31,8 +30,6 @@ public class Client
 	}
 	
 	public GameInit					init;
-									
-	public LogWriter				log;
 									
 	public FileLoader				fileLoader;
 	public FileLoader				gamesLoader;
@@ -66,7 +63,6 @@ public class Client
 	{
 		MyAssert.a(Client.client == null);
 		Client.client = this;
-		log = new LogWriter();
 		fileLoader = new FileLoader(helper);
 		gamesLoader = fileLoader.getLoader("games/");
 		rulesLoader = fileLoader.getLoader("rules/");
@@ -90,10 +86,10 @@ public class Client
 	{
 		GamesFolder[] folders = new GamesFolder[]
 		{
-				campaign = new GamesFolder("campaign"),
-				skirmish = new GamesFolder("skirmish"),
-				save = new GamesFolder("save"),
-				new GamesFolder("test")
+			campaign = new GamesFolder("campaign"),
+			skirmish = new GamesFolder("skirmish"),
+			save = new GamesFolder("save"),
+			new GamesFolder("test")
 		};
 		for (GamesFolder folder : folders)
 			allFolders.put(folder.folderID, folder);

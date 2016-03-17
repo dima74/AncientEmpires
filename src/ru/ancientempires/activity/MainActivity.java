@@ -2,24 +2,20 @@ package ru.ancientempires.activity;
 
 import java.io.IOException;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
-import ru.ancientempires.R;
 import ru.ancientempires.client.AndroidClientHelper;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 
-public class MainActivity extends ListActivity
+public class MainActivity extends BaseListActivity
 {
 	
 	public static String			gameToStart	= "test";
-	public static boolean			firstStart	= true;
+	public static boolean			firstStart	= false;
 												
 	private static MenuActions[]	actions		= new MenuActions[]
 													{
@@ -34,8 +30,6 @@ public class MainActivity extends ListActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		
 		if (Client.client == null)
 			try
 			{
@@ -47,30 +41,23 @@ public class MainActivity extends ListActivity
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
-		Debug.create(this);
-		
-		setContentView(R.layout.main_menu_list_view);
-		setListAdapter(new ArrayAdapter<MenuActions>(this, R.layout.main_menu_list_item, R.id.text_view, MainActivity.actions));
+		super.onCreate(savedInstanceState, actions);
 	}
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		switch (MainActivity.actions[position])
+		switch (actions[position])
 		{
 			case PLAY:
 				startActivity(new Intent(this, PlayMenuActivity.class));
 				break;
+			case MAP_EDITOR:
+				startActivity(new Intent(this, MapEditorActivity.class));
+				break;
 			default:
 				break;
 		}
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		Debug.onStart(this);
 	}
 	
 	@Override
@@ -79,13 +66,6 @@ public class MainActivity extends ListActivity
 		super.onResume();
 		if (gameToStart != "" && firstStart)
 			startActivity(new Intent(this, PlayMenuActivity.class));
-	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		Debug.onStop(this);
 	}
 	
 }

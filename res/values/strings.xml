@@ -24,5 +24,6 @@
 	<string name="textview_title_attack">Attack</string>
 	<string name="textview_title_defence">Defence</string>
 	<string name="textview_title_way">Way</string>
+	<string name="title_activity_map_editor">Map Editor</string>
 
 </resources>

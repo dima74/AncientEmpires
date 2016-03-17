@@ -47,6 +47,10 @@
 			android:name=".activity.SettingsActivity"
 			android:label="@string/title_activity_settings" >
 		</activity>
+		<activity
+			android:name=".activity.MapEditorActivity"
+			android:label="@string/title_activity_map_editor" >
+		</activity>
 	</application>
 
 </manifest>
