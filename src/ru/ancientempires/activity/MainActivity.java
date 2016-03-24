@@ -1,21 +1,15 @@
 package ru.ancientempires.activity;
 
-import java.io.IOException;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
-import ru.ancientempires.client.AndroidClientHelper;
-import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
 
 public class MainActivity extends BaseListActivity
 {
 	
-	public static String			gameToStart	= "test";
-	public static boolean			firstStart	= false;
+	public static String			gameToStart	= "editor";
+	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]
 													{
@@ -30,17 +24,6 @@ public class MainActivity extends BaseListActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		if (Client.client == null)
-			try
-			{
-				Client.client = new Client(new AndroidClientHelper(this));
-				Client.client.startLoadParts12();
-			}
-			catch (IOException e)
-			{
-				MyAssert.a(false);
-				e.printStackTrace();
-			}
 		super.onCreate(savedInstanceState, actions);
 	}
 	
@@ -50,10 +33,10 @@ public class MainActivity extends BaseListActivity
 		switch (actions[position])
 		{
 			case PLAY:
-				startActivity(new Intent(this, PlayMenuActivity.class));
+				moveTo(PlayMenuActivity.class);
 				break;
 			case MAP_EDITOR:
-				startActivity(new Intent(this, MapEditorActivity.class));
+				moveTo(EditorBaseActivity.class);
 				break;
 			default:
 				break;
@@ -64,8 +47,10 @@ public class MainActivity extends BaseListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		if (gameToStart != "" && firstStart)
-			startActivity(new Intent(this, PlayMenuActivity.class));
+		if (firstStart && "editor".equals(gameToStart))
+			moveTo(EditorBaseActivity.class);
+		else if (firstStart && gameToStart != "")
+			moveTo(PlayMenuActivity.class);
 	}
 	
 }

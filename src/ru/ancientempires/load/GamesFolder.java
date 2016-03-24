@@ -21,11 +21,11 @@ public class GamesFolder
 	public String				folderID;
 	public String				name;
 	public String				path;
-	
-	public int		numberGames;
-	public boolean	isCampaign;
-	public boolean	isSave;
-	
+								
+	public int					numberGames;
+	public boolean				isCampaign;
+	public boolean				isSave;
+								
 	public String getName(int i, GamePath game)
 	{
 		String name = game.name;
@@ -49,6 +49,11 @@ public class GamesFolder
 		name = Client.client.localization.loadName(Client.client.gamesLoader.getLoader(path));
 		
 		load();
+		if ("user".equals(folderID))
+		{
+			numberGames = 0;
+			save();
+		}
 		games = new ArrayList<GamePath>();
 		for (int i = 0; i < numberGames; i++)
 			games.add(GamePath.get(path + i + "/", true));

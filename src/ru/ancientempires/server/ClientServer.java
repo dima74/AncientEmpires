@@ -52,7 +52,6 @@ public class ClientServer extends Server
 		else
 		{
 			game = new GameLoader(path, rules).load(true);
-			game.path = path;
 			game.saver = new GameSaver(game);
 			game.saver.init();
 		}

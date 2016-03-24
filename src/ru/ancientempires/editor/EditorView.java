@@ -1,12 +1,13 @@
-package ru.ancientempires;
+package ru.ancientempires.editor;
 
 import android.content.Context;
 import android.view.SurfaceHolder;
+import ru.ancientempires.BaseView;
 
-public class GameView extends BaseView implements SurfaceHolder.Callback
+public class EditorView extends BaseView
 {
 	
-	public GameView(Context context)
+	public EditorView(Context context)
 	{
 		super(context);
 	}
@@ -15,7 +16,7 @@ public class GameView extends BaseView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		super.surfaceCreated(holder);
-		thread = new GameThread(getHolder());
+		thread = new EditorThread(getHolder());
 		thread.start();
 	}
 	

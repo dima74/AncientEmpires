@@ -1,7 +1,12 @@
 package ru.ancientempires.framework;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import android.app.Activity;
+import ru.ancientempires.client.AndroidClientHelper;
+import ru.ancientempires.client.Client;
 
 public class Debug
 {
@@ -24,10 +29,21 @@ public class Debug
 		}
 	}
 	
-	public static void create(Object activity)
+	public static void onCreate(Object activity)
 	{
 		checkFirstLaunch();
 		checkCreate(activity);
+		if (Client.client == null)
+			try
+			{
+				Client.client = new Client(new AndroidClientHelper((Activity) activity));
+				Client.client.startLoadParts12();
+			}
+			catch (IOException e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 	}
 	
 	private static void checkCreate(Object activity)
@@ -49,6 +65,8 @@ public class Debug
 		checkCreate(activity);
 		MyLog.l("stop  " + getName(activity));
 		running.remove(activity);
+		if (running.isEmpty())
+			Client.client = null;
 	}
 	
 	private static long lastTime = 0;

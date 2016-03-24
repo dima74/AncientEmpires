@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 
-public class MapEditorActivity extends BaseListActivity
+public class EditorBaseActivity extends BaseListActivity
 {
 	
 	private static MenuActions[] actions = new MenuActions[]
@@ -21,10 +21,20 @@ public class MapEditorActivity extends BaseListActivity
 	}
 	
 	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		moveTo(EditorChooseActivity.class);
+	}
+	
+	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
 		switch (actions[position])
 		{
+			case CREATE_GAME:
+				moveTo(EditorChooseActivity.class);
+				break;
 			default:
 				break;
 		}

@@ -27,7 +27,7 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 import ru.ancientempires.tasks.Task;
 
-class GameSnapshotLoader
+public class GameSnapshotLoader
 {
 	
 	public GamePath		path;
@@ -35,7 +35,7 @@ class GameSnapshotLoader
 	public FileLoader	loaderCampaign;
 	public Game			game;
 	public Rules		rules;
-	
+						
 	public GameSnapshotLoader(GamePath path, Rules rules) throws Exception
 	{
 		this.path = path;
@@ -52,6 +52,7 @@ class GameSnapshotLoader
 		if (loader.exists("teams.json"))
 			loadTeams();
 		else
+			// нету ни teams.json ни lastTeams.json, есть только defaultTeams.json
 			loadLastTeams();
 		loadMap();
 		loadCells();
@@ -98,6 +99,7 @@ class GameSnapshotLoader
 				if (cell.player != null)
 					game.currentEarns[cell.player.ordinal] += cell.type.earn;
 					
+		game.path = path;
 		return game;
 	}
 	
@@ -158,7 +160,10 @@ class GameSnapshotLoader
 	
 	public void loadLastTeams() throws IOException
 	{
-		JsonReader reader = path.getLoader().getReader("lastTeams.json");
+		
+		JsonReader reader = path.getLoader().exists("defaultTeams.json")
+				? path.getLoader().getReader("defaultTeams.json")
+				: path.getLoader().getReader("lastTeams.json");
 		reader.beginObject();
 		MyAssert.a("teams", reader.nextName());
 		SimpleTeam[] teams = new Gson().fromJson(reader, SimpleTeam[].class);

@@ -7,18 +7,18 @@ import ru.ancientempires.model.Cell;
 public class DrawCells extends Draw
 {
 	
-	private final int	h	= game.h;
-	private final int	w	= game.w;
-	private final int	availableY;
-	private final int	availableX;
+	private final int	h		= game.h;
+	private final int	w		= game.w;
+	// private final int availableY;
+	// private final int availableX;
 	
 	public Bitmap[][]	bitmaps	= new Bitmap[h][w];
 	private boolean		isDual	= false;
-	
+								
 	public DrawCells()
 	{
-		availableY = h - main.info.h;
-		availableX = w;
+		// availableY = h - main.info.h;
+		// availableX = w;
 	}
 	
 	public DrawCells setDual()

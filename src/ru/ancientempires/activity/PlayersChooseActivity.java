@@ -7,11 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -27,12 +24,11 @@ import ru.ancientempires.SimplePlayer;
 import ru.ancientempires.SimpleTeam;
 import ru.ancientempires.Strings;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.load.GamePath;
 
-public class PlayersChooseActivity extends Activity implements OnClickListener
+public class PlayersChooseActivity extends BaseActivity implements OnClickListener
 {
 	
 	/*
@@ -48,30 +44,30 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		типы игроков
 		strings.json
 		campaign.json
-	Но, возможно, типы игроков всё-таки будут меняться, 
-		например играют по сети три игрока, у одного оборвалась связь, 
+	Но, возможно, типы игроков всё-таки будут меняться,
+		например играют по сети три игрока, у одного оборвалась связь,
 		а два других хотят заменить его на бота и продолжить игру.
 	Поэтому для простоты неизменным будем счтитаь только strings.json и campaign.json
 	
 	Старт новой игры:
 		Мы не можем менять содержимое папки откуда взяли игру, поэтому нужно создать новую папку.
 		В ней должна быть информация о игре из которой она была создана (базовой игре)
-			Зачем? Чтобы можно было начать игру заново. 
-			Соответственно нужно как-то запомнить команды, 
+			Зачем? Чтобы можно было начать игру заново.
+			Соответственно нужно как-то запомнить команды,
 				чтобы предложить их в качестве стандартных при рестарте.
 	Сохранение игры:
 		Новое сохранение появляется только при старте новой игры.
 		Сохранение должно быть инкрементальным, то есть надо записывать каждое действие.
-		Так же раз в ~100 действий должен быть записан снимок игры, 
+		Так же раз в ~100 действий должен быть записан снимок игры,
 			чтобы можно было быстро отменять действия,
 			ну и чтобы при загрузке игры не приходилось выполнять заново не более 100 действий.
-			Почему нельзя сохранить последний снимок игры? Потому что это может занимать длительное времяЮ и он может не сохраниться (юзер играет, играет, потом резко нажимает кнопку все приложения и завершает наше) 
-		Соответственно при старте игры базовая игра должна быть скопирована в папку сохранения, 
+			Почему нельзя сохранить последний снимок игры? Потому что это может занимать длительное времяЮ и он может не сохраниться (юзер играет, играет, потом резко нажимает кнопку все приложения и завершает наше)
+		Соответственно при старте игры базовая игра должна быть скопирована в папку сохранения,
 			она станет первым снимком сохранения.
 	Загрузка игры:
 		Должен быть список всех сохранений. Просто отображаем его.
 	Редактор карт:
-		Должна быть возможность выбрать из всех снимков 
+		Должна быть возможность выбрать из всех снимков
 			кампаний/мультиплеера/последних снимков сохранений.
 		Вместе со снимком должны быть загружены campaign.json и strings.json
 		В результате редактирования получается базовая игра: снимок + campaign & strings
@@ -82,13 +78,13 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		Нужно уметь получать снимок игры по последнему подходящему снимку и переходам.
 	
 	Старт новой игры:
-		1. Если надо - выбрать тимы (основываясь на defaultTeams.json), 
+		1. Если надо - выбрать тимы (основываясь на defaultTeams.json),
 			сохранить их в базовую папку игры (lastTeams.json)
-		2. Создать папку куда будем сохранять этот экземпляр игры, 
-			загрузить игру из базовой папки,  
-			сохранить игру в свою папку, 
-			в папке сохранения - добавить в info.json информацию о 
-				базовой папке и дате последнего изменения + ещё что-то вроде e-mail'а автора. 
+		2. Создать папку куда будем сохранять этот экземпляр игры,
+			загрузить игру из базовой папки,
+			сохранить игру в свою папку,
+			в папке сохранения - добавить в info.json информацию о
+				базовой папке и дате последнего изменения + ещё что-то вроде e-mail'а автора.
 			настроить инкрементальное сохранение.
 	 
 	 defaultTeams & lastTeams:
@@ -96,43 +92,16 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 	 	teams.json - это просто инфа о командах, всё остальное в players.json
 	 */
 	
-	private static class MyTextWatcher implements TextWatcher
-	{
-		private int maxValue;
-		
-		public MyTextWatcher(int maxValue)
-		{
-			this.maxValue = maxValue;
-		}
-		
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count)
-		{}
-		
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after)
-		{}
-		
-		@Override
-		public void afterTextChanged(Editable s)
-		{
-			int value = s.length() == 0 ? 0 : Integer.valueOf(s.toString());
-			if (value > maxValue)
-				s.replace(0, s.length(), String.valueOf(maxValue));
-		}
-	}
-	
 	private GamePath		path;
 	private SimpleTeam[]	teams;
 	private SimplePlayer[]	players;
 	private View[]			views;
 	private int				defaultGold;
-	
+							
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Debug.create(this);
 		setContentView(R.layout.choose_view);
 		
 		final String gameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
@@ -176,28 +145,14 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		TextView textUnitsLimit = (TextView) findViewById(R.id.textUnitsLimit);
 		textUnitsLimit.setText(Strings.UNITS_LIMIT.toString());
 		EditText textUnitsLimitEdit = (EditText) findViewById(R.id.textUnitsLimitEdit);
-		textUnitsLimitEdit.setHint(String.valueOf(unitsLimit));
-		textUnitsLimitEdit.addTextChangedListener(new MyTextWatcher(100));
+		new MyTextWatcher(100).addTo(textUnitsLimitEdit, unitsLimit);
 		
 		Button button = (Button) findViewById(R.id.button);
 		button.setText(Strings.FIGHT.toString());
 		button.setOnClickListener(this);
 		
-		onClick(null);
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		Debug.onStart(this);
-	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		Debug.onStop(this);
+		if (MainActivity.firstStart)
+			onClick(null);
 	}
 	
 	private View getView(SimplePlayer player, int team)
@@ -226,18 +181,11 @@ public class PlayersChooseActivity extends Activity implements OnClickListener
 		return view;
 	}
 	
-	private int getValue(int id)
-	{
-		EditText editText = (EditText) findViewById(id);
-		String text = editText.getText().toString();
-		return Integer.valueOf(text.isEmpty() ? editText.getHint().toString() : text);
-	}
-	
 	@Override
 	public void onClick(View v)
 	{
-		int gold = getValue(R.id.textGoldEdit);
-		int unitsLimit = getValue(R.id.textUnitsLimitEdit);
+		int gold = getIntValue(R.id.textGoldEdit);
+		int unitsLimit = getIntValue(R.id.textUnitsLimitEdit);
 		
 		ArrayList<SimplePlayer>[] teamsList = new ArrayList[teams.length];
 		for (int i = 0; i < teamsList.length; i++)

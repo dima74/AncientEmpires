@@ -10,15 +10,18 @@
 	<string name="action_reset">Заново</string>
 	<string name="action_wisp">Сделать ход</string>
 
-	<!-- activities titles -->
-	<string name="title_activity_test">Ancient Empires</string>
-	<string name="title_activity_play_menu">Играть</string>
-	<string name="title_activity_level_menu">Выбрать уровень</string>
-	<string name="title_activity_game">Игра</string>
-	<string name="title_activity_map_editor">Редактор карт</string>
-
 	<!-- other -->
 	<string name="loading">Загрузка</string>
 	<string name="buy">Купить</string>
+
+	<!-- buttons -->
+	<string name="button_fight">Играть!</string>
+	<string name="button_create">Создать</string>
+
+	<!-- activities titles -->
+	<string name="title_activity_play_menu">Играть</string>
+	<string name="title_activity_game">Игра</string>
+	<string name="title_activity_editor_base">Редактор карт</string>
+	<string name="title_activity_editor_choose">Настройте параметры</string>
 
 </resources>

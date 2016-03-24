@@ -23,12 +23,24 @@ public class Cell
 	// только для разрушаемых клеточек
 	public boolean isDestroy;
 	
-	public Cell(CellType type, int i, int j)
+	// Для редактора карт
+	public Cell(CellType type)
 	{
 		this.type = type;
+		initFromType();
+	}
+	
+	// тоже
+	public Cell(Cell cell)
+	{
+		this(cell.type);
+	}
+	
+	public Cell(CellType type, int i, int j)
+	{
+		this(type);
 		this.i = i;
 		this.j = j;
-		initFromType();
 	}
 	
 	// Возможно пригодится для редактора карт

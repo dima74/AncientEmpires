@@ -1,20 +1,18 @@
 package ru.ancientempires.activity;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GamesFolder;
 
-public class LevelMenuActivity extends ListActivity
+public class LevelMenuActivity extends BaseListActivity
 {
 	
 	public GamesFolder	currentFolder;
@@ -25,7 +23,6 @@ public class LevelMenuActivity extends ListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Debug.create(this);
 		setContentView(R.layout.level_menu_list_view);
 		
 		if (savedInstanceState == null)
@@ -40,35 +37,18 @@ public class LevelMenuActivity extends ListActivity
 			return;
 		}
 		
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage(getString(R.string.loading));
-		dialog.setCancelable(false);
-		dialog.show();
-		
-		new Thread()
+		new MyAsyncTask(this)
 		{
 			@Override
-			public void run()
+			public void doInBackground() throws Exception
 			{
-				try
-				{
-					Client.client.finishPart1();
-				}
-				catch (InterruptedException e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
-				runOnUiThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						dialog.dismiss();
-						showFolders();
-					}
-					
-				});
+				Client.client.finishPart1();
+			};
+			
+			@Override
+			public void onPostExecute()
+			{
+				showFolders();
 			}
 		}.start();
 	}
@@ -84,15 +64,7 @@ public class LevelMenuActivity extends ListActivity
 	protected void onStart()
 	{
 		super.onStart();
-		Debug.onStart(this);
 		isStartingGameInProcess = false;
-	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		Debug.onStop(this);
 	}
 	
 	public void showFolders()

@@ -2,19 +2,20 @@ package ru.ancientempires.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import ru.ancientempires.GameThread;
 import ru.ancientempires.GameView;
+import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.R;
 import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.Debug;
+import ru.ancientempires.draws.DrawMain;
+import ru.ancientempires.draws.IDraw;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.handler.ActionHelper;
@@ -24,13 +25,14 @@ import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 
-public class GameActivity extends Activity
+public class GameActivity extends BaseActivity
 {
 	
 	public static final String	EXTRA_GAME_ID			= "EXTRA_GAME_ID";
 	public static final String	EXTRA_USE_LAST_TEAMS	= "EXTRA_USE_LAST_TEAMS";
 	public static GameActivity	activity;
 	public GameView				view;
+	public GameThread			thread;
 	public Game					game;
 	private String				baseGameID;
 	private String				gameID;
@@ -62,7 +64,6 @@ public class GameActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Debug.create(this);
 		baseGameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
 	}
 	
@@ -70,57 +71,35 @@ public class GameActivity extends Activity
 	protected void onStart()
 	{
 		super.onStart();
-		Debug.onStart(this);
-		
-		new AsyncTask<Void, Void, Void>()
+		new MyAsyncTask(this)
 		{
-			private ProgressDialog dialog;
-			
 			@Override
-			protected void onPreExecute()
+			public void doInBackground() throws Exception
 			{
-				dialog = new ProgressDialog(GameActivity.this);
-				dialog.setMessage(getString(R.string.loading));
-				dialog.setCancelable(false);
-				dialog.show();
-			};
-			
-			@Override
-			protected Void doInBackground(Void... params)
-			{
-				try
-				{
-					Client.client.finishPart2();
-					if (GameActivity.activity != null)
-						GameActivity.activity.view.thread.join();
-					game = Client.client.startGame(gameID == null ? baseGameID : gameID);
-					gameID = game.path.gameID;
-				}
-				catch (Exception e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
-				return null;
+				Client.client.finishPart2();
+				if (GameActivity.activity != null)
+					GameActivity.activity.view.thread.join();
+				game = Client.client.startGame(gameID == null ? baseGameID : gameID);
+				IDraw.gameStatic = game;
+				gameID = game.path.gameID;
 			}
 			
 			@Override
-			protected void onPostExecute(Void result)
+			public void onPostExecute()
 			{
-				dialog.dismiss();
 				GameActivity.activity = GameActivity.this;
 				view = new GameView(GameActivity.this);
+				thread = (GameThread) view.thread;
 				setContentView(view);
 			};
-		}.execute();
+		}.start();
 	}
 	
 	@Override
 	protected void onStop()
 	{
 		super.onStop();
-		Debug.onStop(this);
-		view.thread.isRunning = false;
+		thread.isRunning = false;
 		if (view != null)
 			((ViewGroup) view.getParent()).removeView(view);
 		if (dialog != null)
@@ -130,7 +109,7 @@ public class GameActivity extends Activity
 		}
 		try
 		{
-			view.thread.join();
+			thread.join();
 		}
 		catch (InterruptedException e)
 		{
@@ -138,16 +117,16 @@ public class GameActivity extends Activity
 			e.printStackTrace();
 		}
 		game = null;
+		IDraw.gameStatic = null;
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		boolean isActiveGame = view != null
-				&& view.thread != null
-				&& view.thread.drawMain != null
-				&& view.thread.drawMain.isActiveGame;
+		boolean isActiveGame = thread != null
+				&& thread.drawMain != null
+				&& thread.drawMain.isActiveGame();
 		if (isActiveGame)
 			getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
@@ -181,7 +160,7 @@ public class GameActivity extends Activity
 						finish();
 						break;
 					case R.id.action_end_turn:
-						view.thread.inputMain.endTurn(true);
+						((GameThread) view.thread).inputMain.endTurn(true);
 						break;
 					case R.id.action_reset:
 						GameActivity.startGame(game.path.baseGameID, true);
@@ -193,10 +172,10 @@ public class GameActivity extends Activity
 								.setIJ(i, j)
 								.setTargetIJ(i, j)
 								.perform(game);
-						view.thread.drawMain.units.update();
-						if (view.thread.inputMain.inputPlayer.inputUnit.isActive)
-							view.thread.inputMain.inputPlayer.inputUnit.tap(i, j);
-						view.thread.inputMain.inputPlayer.inputUnit.start(i, j);
+						((DrawMain) thread.drawMain).units.update();
+						if (thread.inputMain.inputPlayer.inputUnit.isActive)
+							thread.inputMain.inputPlayer.inputUnit.tap(i, j);
+						thread.inputMain.inputPlayer.inputUnit.start(i, j);
 						break;
 					case R.id.action_kill_unit:
 						while (!game.players[1].units.isEmpty())
@@ -204,9 +183,9 @@ public class GameActivity extends Activity
 							Unit unit = game.players[1].units.get(0);
 							new ActionCampaignRemoveUnit().setIJ(unit.i, unit.j).perform(game);
 						}
-						view.thread.drawMain.units.update();
+						((DrawMain) thread.drawMain).units.update();
 						game.campaign.needSaveSnapshot = true;
-						view.thread.needUpdateCampaign = true;
+						thread.needUpdateCampaign = true;
 						break;
 					case R.id.action_capture_castle:
 						CellType type = game.rules.getCellType("CASTLE");
@@ -215,7 +194,7 @@ public class GameActivity extends Activity
 								if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
 								{
 									cell.player = game.players[0];
-									view.thread.needUpdateCampaign = true;
+									thread.needUpdateCampaign = true;
 								}
 						break;
 				}

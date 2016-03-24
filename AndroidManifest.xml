@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="ru.ancientempires"
 	android:versionCode="1"
@@ -30,7 +31,6 @@
 		</activity>
 		<activity
 			android:name=".activity.LevelMenuActivity"
-			android:label="@string/title_activity_level_menu"
 			android:parentActivityName=".activity.PlayMenuActivity" >
 		</activity>
 		<activity
@@ -40,16 +40,25 @@
 		</activity>
 		<activity
 			android:name=".activity.PlayersChooseActivity"
-			android:parentActivityName=".activity.MainActivity"
-			android:windowSoftInputMode="stateHidden" >
+			android:parentActivityName=".activity.MainActivity" >
 		</activity>
 		<activity
 			android:name=".activity.SettingsActivity"
 			android:label="@string/title_activity_settings" >
 		</activity>
 		<activity
-			android:name=".activity.MapEditorActivity"
-			android:label="@string/title_activity_map_editor" >
+			android:name=".activity.EditorBaseActivity"
+			android:label="@string/title_activity_editor_base"
+			android:parentActivityName=".activity.MainActivity" >
+		</activity>
+		<activity
+			android:name=".activity.EditorChooseActivity"
+			android:label="@string/title_activity_editor_choose" >
+		</activity>
+		<activity
+			android:name=".activity.EditorActivity"
+			android:label="@string/title_activity_editor"
+			android:parentActivityName=".activity.MainActivity" >
 		</activity>
 	</application>
 

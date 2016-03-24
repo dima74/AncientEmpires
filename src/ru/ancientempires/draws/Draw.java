@@ -1,7 +1,7 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
-import ru.ancientempires.GameView;
+import ru.ancientempires.BaseView;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.ArrowsImages;
@@ -77,9 +77,9 @@ public class Draw extends IDraw
 	public int		A			= Images().bitmapSize;
 	public float	fA			= Images().bitmapSize * mapScale;
 	public float	a			= A / 24.0f;
-	public int		h			= GameView.h;
-	public int		w			= GameView.w;
-	
+	public int		h			= BaseView.h;
+	public int		w			= BaseView.w;
+								
 	public int iFrame()
 	{
 		return main.iFrame;

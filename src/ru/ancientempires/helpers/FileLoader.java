@@ -25,7 +25,7 @@ public class FileLoader
 	public AssetsHelper	assets;
 	public File			baseDirectory;
 	public String		prefix;
-	
+						
 	public FileLoader(IClientHelper helper)
 	{
 		baseDirectory = helper.getFilesDir();
@@ -103,6 +103,7 @@ public class FileLoader
 	
 	public JsonWriter getWriter(String name) throws IOException
 	{
+		getFile(name).getParentFile().mkdirs();
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(getFile(name))));
 	}
 	
@@ -118,7 +119,13 @@ public class FileLoader
 	
 	public void loadLocalization() throws IOException
 	{
-		Client.client.localization.load(this);
+		Client.client.localization.loadFull(this);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return prefix;
 	}
 	
 }

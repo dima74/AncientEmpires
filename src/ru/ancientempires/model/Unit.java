@@ -134,6 +134,11 @@ public class Unit extends IGameHandler
 		initFromType();
 	}
 	
+	public Unit(Unit unit)
+	{
+		this(unit.type, unit.player, unit.game);
+	}
+	
 	public void setType(UnitType type)
 	{
 		this.type = type;

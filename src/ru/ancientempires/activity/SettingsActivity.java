@@ -6,13 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.widget.Toast;
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity extends BasePreferenceActivity
 {
 	
 	@Override

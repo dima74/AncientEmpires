@@ -49,6 +49,14 @@ public class Game
 		this.rules = rules;
 	}
 	
+	private CellType[] getTypes(String... names)
+	{
+		CellType[] types = new CellType[names.length];
+		for (int i = 0; i < names.length; i++)
+			types[i] = rules.getCellType(names[i]);
+		return types;
+	}
+	
 	public Game setSize(int h, int w)
 	{
 		this.h = h;
@@ -56,11 +64,12 @@ public class Game
 		fieldUnits = new Unit[h][w];
 		fieldUnitsDead = new Unit[h][w];
 		
-		CellType type = rules.getCellType("WAY_LEFT_RIGHT_DOWN_UP");
+		CellType[] types = getTypes("HILL", "TWO_TREES", "THREE_TREES");
+		Random random = new Random();
 		fieldCells = new Cell[h][w];
 		for (int i = 0; i < h; i++)
 			for (int j = 0; j < w; j++)
-				fieldCells[i][j] = new Cell(type, i, j);
+				fieldCells[i][j] = new Cell(types[random.nextInt(types.length)], i, j);
 		return this;
 	}
 	

@@ -21,11 +21,16 @@ public class Localization
 		return Client.client.localization.map.get(stringID);
 	}
 	
-	private Map<String, String> map = new HashMap<String, String>();
+	public Map<String, String> map = new HashMap<String, String>();
 	
-	public void load(FileLoader loader) throws IOException
+	public void loadFull(FileLoader loader) throws IOException
 	{
-		JsonReader reader = getReader(loader);
+		load(loader.getReader("strings.json"));
+		load(getReader(loader));
+	}
+	
+	private void load(JsonReader reader) throws IOException
+	{
 		reader.beginObject();
 		while (reader.peek() == JsonToken.NAME)
 			map.put(reader.nextName(), reader.nextString());
@@ -44,7 +49,7 @@ public class Localization
 	
 	public String loadName(FileLoader loader) throws IOException
 	{
-		JsonReader reader = Client.client.localization.getReader(loader);
+		JsonReader reader = getReader(loader);
 		reader.beginObject();
 		MyAssert.a("name".equals(reader.nextName()));
 		String name = reader.nextString();

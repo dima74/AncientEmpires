@@ -1,0 +1,50 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+		android:orientation="vertical"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin" >
+
+		<TextView
+			android:id="@+id/textName"
+			style="@style/Text"
+			android:labelFor="@+id/textNameEdit" />
+
+		<EditText
+			android:id="@+id/textNameEdit"
+			style="@style/EditText" />
+
+		<TextView
+			android:id="@+id/textHeight"
+			style="@style/Text"
+			android:labelFor="@+id/textHeightEdit" />
+
+		<EditText
+			android:id="@+id/textHeightEdit"
+			style="@style/EditTextNumber" />
+
+		<TextView
+			android:id="@+id/textWidth"
+			style="@style/Text"
+			android:labelFor="@+id/textWidthEdit" />
+
+		<EditText
+			android:id="@+id/textWidthEdit"
+			style="@style/EditTextNumber" />
+
+		<Button
+			android:id="@+id/button"
+			style="@style/Button"
+			android:text="@string/button_create" />
+	</LinearLayout>
+
+</ScrollView>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
+import ru.ancientempires.Strings;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
@@ -37,7 +38,7 @@ public class Client
 	public FileLoader				savesLoader;
 									
 	public FileLoader				rulesLoader;
-	public Rules					rules;
+	volatile public Rules			rules;
 									
 	public ImagesLoader				imagesLoader;
 	public Images					images			= new Images();
@@ -46,6 +47,7 @@ public class Client
 	public GamesFolder				campaign;
 	public GamesFolder				skirmish;
 	public GamesFolder				save;
+	public GamesFolder				user;
 	public Map<String, GamePath>	allGames		= new HashMap<String, GamePath>();
 													
 	public Localization				localization	= new Localization();
@@ -54,6 +56,11 @@ public class Client
 	public int numberSaves()
 	{
 		return save.numberGames;
+	}
+	
+	public String getNameForNewGame()
+	{
+		return String.format(Strings.EDITOR_GAME_NAME_TEMPLATE.toString(), user.numberGames + 1);
 	}
 	
 	public ClientServer	clientServer;
@@ -86,6 +93,7 @@ public class Client
 	{
 		GamesFolder[] folders = new GamesFolder[]
 		{
+			user = new GamesFolder("user"),
 			campaign = new GamesFolder("campaign"),
 			skirmish = new GamesFolder("skirmish"),
 			save = new GamesFolder("save"),
@@ -95,11 +103,11 @@ public class Client
 			allFolders.put(folder.folderID, folder);
 	}
 	
-	// То что нужно для непосредственно игры
+	// То что нужно непосредственно для игры
 	public void loadPart2() throws Exception
 	{
 		rules = new RulesLoader(rulesLoader).load();
-		localization.load(rulesLoader);
+		localization.loadFull(rulesLoader);
 		images.setRules(rules);
 		images.preload(imagesLoader);
 	}
