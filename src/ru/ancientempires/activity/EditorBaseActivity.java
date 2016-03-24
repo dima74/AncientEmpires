@@ -24,7 +24,7 @@ public class EditorBaseActivity extends BaseListActivity
 	protected void onStart()
 	{
 		super.onStart();
-		moveTo(EditorChooseActivity.class);
+		moveTo(EditorConfigureActivity.class);
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class EditorBaseActivity extends BaseListActivity
 		switch (actions[position])
 		{
 			case CREATE_GAME:
-				moveTo(EditorChooseActivity.class);
+				moveTo(EditorConfigureActivity.class);
 				break;
 			default:
 				break;

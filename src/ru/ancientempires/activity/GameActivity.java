@@ -54,7 +54,7 @@ public class GameActivity extends BaseActivity
 		if (!path.canChooseTeams)
 			intent.setClass(activity, GameActivity.class);
 		else
-			intent.setClass(activity, PlayersChooseActivity.class)
+			intent.setClass(activity, PlayersConfigureActivity.class)
 					.putExtra(GameActivity.EXTRA_USE_LAST_TEAMS, useLastTeams);
 		intent.putExtra(GameActivity.EXTRA_GAME_ID, gameID);
 		activity.startActivity(intent);

@@ -9,6 +9,7 @@ import ru.ancientempires.Localization;
 import ru.ancientempires.Strings;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.images.ImagesLoader;
@@ -91,6 +92,7 @@ public class Client
 	// То что нужно для показа списка игр
 	public void loadPart1() throws Exception
 	{
+		MyLog.l("loadPart1");
 		GamesFolder[] folders = new GamesFolder[]
 		{
 			user = new GamesFolder("user"),
@@ -101,15 +103,18 @@ public class Client
 		};
 		for (GamesFolder folder : folders)
 			allFolders.put(folder.folderID, folder);
+		MyLog.l("done loadPart1");
 	}
 	
 	// То что нужно непосредственно для игры
 	public void loadPart2() throws Exception
 	{
+		MyLog.l("loadPart2");
 		rules = new RulesLoader(rulesLoader).load();
 		localization.loadFull(rulesLoader);
 		images.setRules(rules);
 		images.preload(imagesLoader);
+		MyLog.l("done loadPart2");
 	}
 	
 	// Начинает загружать 1 и 2 части

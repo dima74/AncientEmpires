@@ -2,77 +2,89 @@ package ru.ancientempires.editor;
 
 import java.util.ArrayList;
 
+import ru.ancientempires.MyColor;
 import ru.ancientempires.activity.EditorActivity;
-import ru.ancientempires.images.CellImages;
-import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
 
-public class EditorInputMain
+public class EditorInputMain implements Callback
 {
 	
-	public Game				game	= EditorActivity.activity.game;
+	public Game				game			= EditorActivity.activity.game;
 	public EditorDrawMain	drawMain;
-	public Unit				unit;
-	public Cell[]			cells;
-	public Cell[][]			groups	= new Cell[2][];
-									
+							
+	public EditorStruct[]	structsCurrent	= new EditorStruct[3];
+	public EditorStruct[][]	structs			= new EditorStruct[3][];
+											
 	public EditorInputMain(EditorDrawMain drawMain)
 	{
 		this.drawMain = drawMain;
-		createCellGroups();
+		createStructs();
 		update();
 	}
 	
-	private void createCellGroups()
+	private void createStructs()
 	{
 		Rules rules = game.rules;
-		// for (UnitType type : rules.unitTypes)
-		// if (!type.isHidden)
-		// unit = new Unit(type, game.players[0], game);
-		unit = new Unit(rules.unitTypes[2], game.players[0], game);
-		
-		ArrayList<Cell>[] groupsList = new ArrayList[2];
-		groupsList[0] = new ArrayList<Cell>();
-		groupsList[1] = new ArrayList<Cell>();
+		ArrayList<EditorStruct>[] structsList = new ArrayList[3];
+		for (int i = 0; i < 3; i++)
+			structsList[i] = new ArrayList<>();
+			
+		// units
+		for (UnitType type : rules.unitTypes)
+			if (!"DEFAULT".equals(type.name) && !"KING".equals(type.name))
+				structsList[0].add(new EditorStructUnit(game, new Unit(type, game.players[0], game)));
+				
+		// cells
 		for (CellType type : rules.cellTypes)
-			groupsList[type.isHealing ? 0 : 1].add(new Cell(type));
-		groups[0] = groupsList[0].toArray(new Cell[0]);
-		groups[1] = groupsList[1].toArray(new Cell[0]);
-		
-		cells = new Cell[2];
-		cells[0] = groups[0][0];
-		cells[1] = groups[1][1];
+			if (!type.name.contains("DEFAULT") && !type.name.contains("GROUP"))
+				structsList[type.isHealing ? 1 : 2].add(new EditorStructCell(game, new Cell(type)));
+				
+		for (int i = 0; i < 3; i++)
+			structs[i] = structsList[i].toArray(new EditorStruct[0]);
 	}
 	
-	private void update()
+	public void update()
 	{
-		drawMain.choose.setBitmap(0, UnitImages.get().getUnitBitmap(unit, false).getBitmap());
-		drawMain.choose.setBitmap(1, CellImages.get().getCellBitmap(cells[0], false));
-		drawMain.choose.setBitmap(2, CellImages.get().getCellBitmap(cells[1], false));
+		for (int i = 0; i < 3; i++)
+			structsCurrent[i] = structs[i][0];
+		drawMain.choose.create(structsCurrent, this);
+	}
+	
+	@Override
+	public void tapChoose(int i)
+	{
+		if (i == drawMain.choose.selectedBitmap)
+		{
+			MyColor[] colors = null;
+			if (i == 0)
+				colors = MyColor.playersColors();
+			if (i == 1)
+				colors = MyColor.values();
+			if (i == 2)
+				colors = new MyColor[0];
+			new EditorChooseDialog().show(structs[i], colors);
+		}
 	}
 	
 	public void tap(int i, int j)
 	{
 		int selected = drawMain.choose.selectedBitmap;
+		EditorStruct struct = structsCurrent[selected];
 		if (selected == 0)
 		{
-			game.setUnit(i, j, new Unit(unit));
+			game.setUnit(i, j, new Unit(((EditorStructUnit) struct).unit));
 			drawMain.units.update();
 		}
 		else
 		{
-			game.fieldCells[i][j] = new Cell(cells[selected - 1]);
+			game.fieldCells[i][j] = new Cell(((EditorStructCell) struct).cell);
 			drawMain.cells.update();
 		}
-	}
-	
-	public void choose(int i)
-	{
-	
 	}
 	
 }

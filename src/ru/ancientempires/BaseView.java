@@ -13,7 +13,7 @@ public class BaseView extends SurfaceView implements SurfaceHolder.Callback
 	public static int		h;
 	public static int		w;
 							
-	public BaseThread	thread;
+	public BaseThread		thread;
 	public GestureDetector	detector;
 							
 	public BaseView(Context context)

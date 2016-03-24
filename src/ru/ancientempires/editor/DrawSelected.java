@@ -1,32 +1,27 @@
 package ru.ancientempires.editor;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import ru.ancientempires.Paints;
 import ru.ancientempires.draws.Draw;
 
 public class DrawSelected extends Draw
 {
 	
-	private DrawChoose	choose;
-	private int			h		= 2;
-	private int			y;
-	public int			x		= 0;			// координата центра полоски
-	private Paint		paint	= new Paint();
-								
-	public DrawSelected(DrawChoose choose)
+	public static int	h	= 2;
+	public int			y;
+	public int			x;		// координата центра полоски
+	public int			targetX;
+						
+	public DrawSelected(int y)
 	{
-		paint.setColor(Color.RED);
-		this.choose = choose;
-		y = choose.hBeforeBitmap - h * 2;
+		this.y = y;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		int targetX = (int) choose.getCurrentBitmapLeftX();
 		x += (targetX - x) / 2;
-		canvas.drawRect(x, y, x + DrawChoose.mA, y + h, paint);
+		canvas.drawRect(x, y, x + DrawChoose.mA, y + h, Paints.RED);
 	}
 	
 }

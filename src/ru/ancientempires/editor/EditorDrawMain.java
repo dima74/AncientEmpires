@@ -38,6 +38,8 @@ public class EditorDrawMain extends BaseDrawMain
 	{
 		super.draw(canvas);
 		canvas.restore();
+		
+		canvas.translate(0, h - choose.h);
 		choose.draw(canvas);
 	}
 	

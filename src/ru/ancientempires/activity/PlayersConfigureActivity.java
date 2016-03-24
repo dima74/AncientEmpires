@@ -28,7 +28,7 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.load.GamePath;
 
-public class PlayersChooseActivity extends BaseActivity implements OnClickListener
+public class PlayersConfigureActivity extends BaseActivity implements OnClickListener
 {
 	
 	/*

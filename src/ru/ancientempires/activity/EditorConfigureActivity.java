@@ -24,7 +24,7 @@ import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.save.GameSaver;
 
-public class EditorChooseActivity extends BaseActivity implements OnClickListener
+public class EditorConfigureActivity extends BaseActivity implements OnClickListener
 {
 	
 	private static final int	MAX_MAP_SIZE	= 50;
@@ -37,6 +37,7 @@ public class EditorChooseActivity extends BaseActivity implements OnClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_editor_choose);
 		
+		MyAssert.a(Client.client.user != null);
 		setText(R.id.textName, Strings.EDITOR_GAME_NAME);
 		setHint(R.id.textNameEdit, Client.client.getNameForNewGame());
 		

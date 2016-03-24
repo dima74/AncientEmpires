@@ -39,7 +39,7 @@
 			android:parentActivityName=".activity.LevelMenuActivity" >
 		</activity>
 		<activity
-			android:name=".activity.PlayersChooseActivity"
+			android:name=".activity.PlayersConfigureActivity"
 			android:parentActivityName=".activity.MainActivity" >
 		</activity>
 		<activity
@@ -52,7 +52,7 @@
 			android:parentActivityName=".activity.MainActivity" >
 		</activity>
 		<activity
-			android:name=".activity.EditorChooseActivity"
+			android:name=".activity.EditorConfigureActivity"
 			android:label="@string/title_activity_editor_choose" >
 		</activity>
 		<activity

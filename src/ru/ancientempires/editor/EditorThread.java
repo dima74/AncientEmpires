@@ -6,8 +6,11 @@ import ru.ancientempires.BaseThread;
 public class EditorThread extends BaseThread
 {
 	
-	public EditorInputMain inputMain;
-	
+	public static EditorThread	thread;
+								
+	public EditorInputMain		inputMain;
+	public EditorChooseView		view;
+								
 	public EditorThread(SurfaceHolder surfaceHolder)
 	{
 		super(surfaceHolder);
@@ -20,6 +23,25 @@ public class EditorThread extends BaseThread
 		drawMain.cellsDual.update();
 		drawMain.units.update();
 		drawMain.buildingSmokes.update();
+	}
+	
+	@Override
+	public void beforeRun()
+	{
+		thread = this;
+	}
+	
+	@Override
+	public void onRun()
+	{
+		if (view != null)
+			view.postInvalidate();
+	}
+	
+	@Override
+	public void afterRun()
+	{
+		thread = null;
 	}
 	
 }

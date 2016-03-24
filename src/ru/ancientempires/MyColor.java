@@ -14,7 +14,7 @@ public enum MyColor
 	{
 		return new MyColor[]
 		{
-				BLUE, RED, GREEN, BLACK
+			BLUE, RED, GREEN, BLACK
 		};
 	}
 	
