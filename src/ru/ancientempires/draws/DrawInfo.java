@@ -18,7 +18,7 @@ public class DrawInfo extends Draw
 	public static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	public static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
 	public static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	
+										
 	static
 	{
 		DrawInfo.color1.setColor(0xFFAFB7AB);
@@ -35,17 +35,17 @@ public class DrawInfo extends Draw
 		DrawInfo.color5.setStrokeWidth(2);
 	}
 	
-	private Bitmap backgroundBitmap;
-	
-	public int	a	= 2;
-	public int	h	= DrawInfo.mA + 8 * 2;
-	public int	w	= super.w;
-	private int	mW	= w - a * 7 - DrawInfo.mA;
-	private int	color;
-	
+	private Bitmap	backgroundBitmap;
+					
+	public int		a	= 2;
+	public int		h	= DrawInfo.mA + 8 * 2;
+	public int		w	= super.w;
+	private int		mW	= w - a * 7 - DrawInfo.mA;
+	private int		color;
+					
 	private Bitmap	goldBitmap;
 	private Bitmap	amountBitmap;
-	
+					
 	public DrawInfo()
 	{
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
@@ -115,7 +115,7 @@ public class DrawInfo extends Draw
 			int bitmapY = a * 4;
 			int bitmapX = mW + a * 3;
 			canvas.scale(DrawInfo.mScale, DrawInfo.mScale, bitmapX, bitmapY);
-			canvas.drawBitmap(CellImages().getCellBitmap(cell, false), bitmapX, bitmapY, null);
+			canvas.drawBitmap(CellImages().getCellBitmap(cell, false).getBitmap(), bitmapX, bitmapY, null);
 			
 			// и ее защиты
 			Bitmap defenceNumberBitmap = SmallNumberImages().getBitmap(cell.type.defense);

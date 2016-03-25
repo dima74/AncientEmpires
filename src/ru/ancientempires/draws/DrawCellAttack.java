@@ -12,7 +12,7 @@ public class DrawCellAttack extends DrawOnFramesGroup
 	private int	targetI;
 	private int	targetJ;
 	private int	frameUpdateTargetCell	= -1;
-	
+										
 	public DrawCellAttack(ActionResultUnitAttack result, int targetI, int targetJ)
 	{
 		this.targetI = targetI;
@@ -32,6 +32,9 @@ public class DrawCellAttack extends DrawOnFramesGroup
 				.setFramesForBitmap(4)
 				.animateRepeat(1)
 				.increaseFrameStart(frameCount));
+				
+		main.cells.keep[targetI][targetJ] = true;
+		main.cellsDual.keep[targetI][targetJ] = true;
 	}
 	
 	@Override
@@ -40,8 +43,8 @@ public class DrawCellAttack extends DrawOnFramesGroup
 		super.drawOnFrames(canvas);
 		if (iFrame() == frameUpdateTargetCell)
 		{
-			main.cells.updateOneCell(targetI, targetJ);
-			main.cellsDual.updateOneCell(targetI, targetJ);
+			main.cells.keep[targetI][targetJ] = false;
+			main.cellsDual.keep[targetI][targetJ] = false;
 		}
 	}
 	

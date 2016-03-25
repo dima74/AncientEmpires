@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.images.CellImages;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 
@@ -27,12 +28,21 @@ public class EditorStructCell extends EditorStruct
 	@Override
 	public void drawBitmap(Canvas canvas)
 	{
-		Bitmap bitmap = CellImages.get().getCellBitmap(cell, false);
-		drawBitmap(canvas, bitmap);
+		FewBitmaps fewBitmap = CellImages.get().getCellBitmap(cell, false);
+		drawBitmap(canvas, fewBitmap.getBitmap());
 		
-		Bitmap bitmapDual = CellImages.get().getCellBitmap(cell, true);
-		if (bitmapDual != null)
+		FewBitmaps fewBitmapDual = CellImages.get().getCellBitmap(cell, true);
+		if (fewBitmapDual != null)
+		{
+			Bitmap bitmapDual = fewBitmapDual.getBitmap();
 			drawBitmap(canvas, bitmapDual, x, y - bitmapDual.getHeight());
+		}
+	}
+	
+	@Override
+	public EditorStruct createCopy()
+	{
+		return new EditorStructCell(game, new Cell(cell)).setYX(y, x);
 	}
 	
 }

@@ -47,6 +47,9 @@ public class PlayMenuActivity extends BaseListActivity
 			case SKIRMISH:
 				start("skirmish");
 				break;
+			case USER_MAPS:
+				start("user");
+				break;
 			case LOAD:
 				start("save");
 				break;

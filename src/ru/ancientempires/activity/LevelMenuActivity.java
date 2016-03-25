@@ -82,7 +82,7 @@ public class LevelMenuActivity extends BaseListActivity
 		
 		if (MainActivity.gameToStart != "" && MainActivity.firstStart)
 		{
-			MainActivity.firstStart = false;
+			// MainActivity.firstStart = false;
 			String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
 			int i = "campaign".equals(folder) ? 0 : "skirmish".equals(folder) ? 5 : 0;
 			GameActivity.startGame(this, currentFolder.games.get(i).gameID, false);

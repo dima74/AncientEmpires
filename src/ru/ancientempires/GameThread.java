@@ -18,7 +18,8 @@ public class GameThread extends BaseThread
 	public GameThread(SurfaceHolder surfaceHolder)
 	{
 		super(surfaceHolder);
-		MyAssert.a(GameThread.thread == null || !GameThread.thread.isAlive());
+		// MyAssert.a(GameThread.thread == null || !GameThread.thread.isAlive());
+		MyAssert.a(GameThread.thread == null);
 		GameThread.thread = this;
 		
 		drawMain = new DrawMain();
@@ -46,6 +47,7 @@ public class GameThread extends BaseThread
 	@Override
 	public void afterRun()
 	{
+		thread = null;
 		try
 		{
 			Client.client.stopGame();

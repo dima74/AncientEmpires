@@ -16,6 +16,8 @@ public class DrawMain extends BaseDrawMain
 	
 	public static DrawMain main;
 	
+	@Override
+	public void setupStatic()
 	{
 		main = this;
 	}

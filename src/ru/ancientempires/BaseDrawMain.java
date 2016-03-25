@@ -13,6 +13,13 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 public abstract class BaseDrawMain extends Draw
 {
 	
+	{
+		setupStatic();
+	}
+	
+	public void setupStatic()
+	{}
+	
 	public GameView				view;
 								
 	public int					mapH;

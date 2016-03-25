@@ -363,8 +363,6 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 		script.performAction();
 		main.buildingSmokes.update();
 		
-		main.cells.updateOneCell(i, j);
-		main.cellsDual.updateOneCell(i, j);
 		DrawOnFrames draw = new DrawBitmaps()
 				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsDefault).setFramesForBitmap(4)

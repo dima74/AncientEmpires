@@ -3,6 +3,7 @@ package ru.ancientempires.editor;
 import android.content.Context;
 import android.view.SurfaceHolder;
 import ru.ancientempires.BaseView;
+import ru.ancientempires.activity.EditorActivity;
 
 public class EditorView extends BaseView
 {
@@ -16,7 +17,7 @@ public class EditorView extends BaseView
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		super.surfaceCreated(holder);
-		thread = new EditorThread(getHolder());
+		thread = EditorActivity.activity.thread = new EditorThread(getHolder());
 		thread.start();
 	}
 	

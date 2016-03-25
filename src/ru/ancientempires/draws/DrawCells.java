@@ -1,20 +1,20 @@
 package ru.ancientempires.draws;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.model.Cell;
+import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class DrawCells extends Draw
 {
 	
-	private final int	h		= game.h;
-	private final int	w		= game.w;
+	// private final int h = game.h;
+	// private final int w = game.w;
 	// private final int availableY;
 	// private final int availableX;
 	
-	public Bitmap[][]	bitmaps	= new Bitmap[h][w];
-	private boolean		isDual	= false;
-								
+	private boolean			isDual	= false;
+	public FewBitmaps[][]	field	= new FewBitmaps[game.h][game.w];
+	public boolean[][]		keep	= new boolean[game.h][game.w];
+									
 	public DrawCells()
 	{
 		// availableY = h - main.info.h;
@@ -29,18 +29,15 @@ public class DrawCells extends Draw
 	
 	public void update()
 	{
-		for (int i = h - 1 - (isDual ? 1 : 0); i >= 0; i--)
-			for (int j = w - 1; j >= 0; j--)
-			{
-				Cell cell = game.fieldCells[i + (isDual ? 1 : 0)][j];
-				bitmaps[i][j] = CellImages().getCellBitmap(cell, isDual);
-			}
+		for (int i = 0; i < game.h; i++)
+			for (int j = 0; j < game.w; j++)
+				updateCell(i, j);
 	}
 	
-	public void updateOneCell(int i, int j)
+	public void updateCell(int i, int j)
 	{
-		Cell cell = game.fieldCells[i + (isDual ? 1 : 0)][j];
-		bitmaps[i][j] = CellImages().getCellBitmap(cell, isDual);
+		if (!keep[i][j])
+			field[i][j] = CellImages().getCellBitmap(game.fieldCells[i][j], isDual);
 	}
 	
 	@Override
@@ -54,17 +51,18 @@ public class DrawCells extends Draw
 		*/
 		int minI = 0;
 		int minJ = 0;
-		int maxI = h;
-		int maxJ = w;
+		int maxI = game.h;
+		int maxJ = game.w;
 		for (int i = minI; i < maxI; i++)
 			for (int j = minJ; j < maxJ; j++)
 			{
-				final Bitmap bitmapCell = bitmaps[i][j];
-				if (bitmapCell == null)
+				updateCell(i, j);
+				FewBitmaps bitmap = field[i][j];
+				if (bitmap == null)
 					continue;
-				final int y = A * i;
+				final int y = A * i - (isDual ? A : 0);
 				final int x = A * j;
-				canvas.drawBitmap(bitmapCell, x, y, null);
+				canvas.drawBitmap(bitmap.getBitmap(), x, y, null);
 			}
 	}
 	

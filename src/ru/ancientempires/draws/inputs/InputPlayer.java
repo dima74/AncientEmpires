@@ -94,7 +94,6 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		new ActionUnitRepair()
 				.setIJ(i, j)
 				.perform(game);
-		drawMain.cells.updateOneCell(i, j);
 		GameThread.thread.needUpdateCampaign = true;
 		return true;
 	}
@@ -104,7 +103,6 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		new ActionUnitCapture()
 				.setIJ(i, j)
 				.perform(game);
-		drawMain.cells.updateOneCell(i, j);
 		GameThread.thread.needUpdateCampaign = true;
 		return true;
 	}

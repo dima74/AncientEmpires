@@ -36,6 +36,13 @@ public abstract class EditorStruct
 		this.game = game;
 	}
 	
+	public EditorStruct setYX(float y, float x)
+	{
+		this.y = y;
+		this.x = x;
+		return this;
+	}
+	
 	public Player getPlayer(MyColor color)
 	{
 		for (Player player : game.players)
@@ -57,5 +64,7 @@ public abstract class EditorStruct
 	{
 		canvas.drawBitmap(bitmap, x - bitmap.getWidth() / 2, y - bitmap.getHeight() / 2, Paints.ANTI_ALIAS_FLAG);
 	}
+	
+	public abstract EditorStruct createCopy();
 	
 }

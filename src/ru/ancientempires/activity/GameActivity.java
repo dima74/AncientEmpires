@@ -31,12 +31,14 @@ public class GameActivity extends BaseActivity
 	public static final String	EXTRA_GAME_ID			= "EXTRA_GAME_ID";
 	public static final String	EXTRA_USE_LAST_TEAMS	= "EXTRA_USE_LAST_TEAMS";
 	public static GameActivity	activity;
+								
 	public GameView				view;
 	public GameThread			thread;
-	public Game					game;
-	private String				baseGameID;
-	private String				gameID;
 	public AlertDialog			dialog;
+								
+	public Game					game;
+	public String				baseGameID;
+	public String				gameID;
 								
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
@@ -65,6 +67,15 @@ public class GameActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		baseGameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
+		if (savedInstanceState != null)
+			gameID = savedInstanceState.getString("gameID");
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putString("gameID", gameID);
 	}
 	
 	@Override

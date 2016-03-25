@@ -41,7 +41,7 @@ public class CellImages extends IImages
 										MyColor.BLACK
 									};
 									
-	public Bitmap getCellBitmap(Cell cell, boolean dual)
+	public FewBitmaps getCellBitmap(Cell cell, boolean dual)
 	{
 		if (dual)
 		{
@@ -50,6 +50,11 @@ public class CellImages extends IImages
 		}
 		else
 			return cellBitmaps[cell.type.ordinal].getBitmap(cell);
+	}
+	
+	public boolean containsBitmap(CellType type)
+	{
+		return cellBitmaps[type.ordinal] != null;
 	}
 	
 	public boolean isCellSmokes(Cell cell)

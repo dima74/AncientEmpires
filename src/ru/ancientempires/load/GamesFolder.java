@@ -49,7 +49,7 @@ public class GamesFolder
 		name = Client.client.localization.loadName(Client.client.gamesLoader.getLoader(path));
 		
 		load();
-		if ("user".equals(folderID))
+		if ("user".equals(folderID) && false)
 		{
 			numberGames = 0;
 			save();

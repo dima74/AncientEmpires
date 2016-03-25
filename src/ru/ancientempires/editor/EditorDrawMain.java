@@ -8,6 +8,8 @@ public class EditorDrawMain extends BaseDrawMain
 	
 	public static EditorDrawMain main;
 	
+	@Override
+	public void setupStatic()
 	{
 		main = this;
 	}
@@ -54,7 +56,7 @@ public class EditorDrawMain extends BaseDrawMain
 	@Override
 	public void tap(int i, int j)
 	{
-		inputMain.tap(i, j);
+		inputMain.tapMap(i, j);
 	}
 	
 }

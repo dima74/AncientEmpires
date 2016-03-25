@@ -15,6 +15,7 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
 
 public class UnitImages extends IImages
@@ -25,20 +26,25 @@ public class UnitImages extends IImages
 		return Client.client.images.unit;
 	}
 	
-	public Rules rules;
-	
+	public Rules			rules;
+							
 	public MyColor[]		colors	= MyColor.values();
 	public int[]			playerToColorI;
 	public FewBitmaps[][]	greyUnitsBitmaps;
 	public FewBitmaps[][]	unitsBitmaps;
 	public Bitmap[][]		unitsBitmapsBuy;
-	
+							
 	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
 		if (unit.isTurn && !keepTurn)
 			return unitsBitmaps[unit.type.ordinal][0];
 		else
 			return unitsBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
+	}
+	
+	public boolean containsBitmap(UnitType type)
+	{
+		return unitsBitmaps[type.ordinal][0] != null;
 	}
 	
 	public Bitmap getUnitBitmapBuy(Unit unit)

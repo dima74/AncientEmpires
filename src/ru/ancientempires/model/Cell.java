@@ -34,6 +34,7 @@ public class Cell
 	public Cell(Cell cell)
 	{
 		this(cell.type);
+		player = cell.player;
 	}
 	
 	public Cell(CellType type, int i, int j)

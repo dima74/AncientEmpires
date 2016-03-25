@@ -18,25 +18,37 @@ public class DrawChoose extends Draw
 											
 	public Callback			callback;
 	public EditorStruct[]	structs;
-	public int				selectedBitmap	= 0;
+	public int				selected		= 0;
 	public DrawSelected		selectedDraw	= new DrawSelected(hBeforeBitmap - DrawSelected.h * 2);
 											
+	public void create(int n, Callback callback)
+	{
+		structs = new EditorStruct[n];
+		this.callback = callback;
+	}
+	
 	public void create(EditorStruct[] structs, Callback callback)
 	{
-		this.callback = callback;
-		this.structs = structs;
+		create(structs.length, callback);
 		for (int i = 0; i < structs.length; i++)
+			setStruct(i, structs[i]);
+	}
+	
+	public void setStruct(int i, EditorStruct struct)
+	{
+		structs[i] = struct.createCopy();
+		structs[i].y = (hBeforeBitmap + mA / 2) / mScale;
+		structs[i].x = w * (i + 1) / (structs.length + 1) / mScale;
+		if (i == selected)
 		{
-			structs[i].y = (hBeforeBitmap + mA / 2) / mScale;
-			structs[i].x = w * (i + 1) / (structs.length + 1) / mScale;
+			updateSelectedDraw();
+			selectedDraw.x = selectedDraw.targetX;
 		}
-		updateSelectedDraw();
-		selectedDraw.x = selectedDraw.targetX;
 	}
 	
 	private void updateSelectedDraw()
 	{
-		selectedDraw.targetX = (int) (structs[selectedBitmap].x * mScale - mA / 2);
+		selectedDraw.targetX = (int) (structs[selected].x * mScale - mA / 2);
 	}
 	
 	@Override
@@ -56,9 +68,9 @@ public class DrawChoose extends Draw
 		if (touchY < 0 || touchX < 0 || touchY > h || touchX > w)
 			return false;
 		int nearestI = EditorStruct.getNearest(structs, touchY / mScale, touchX / mScale);
-		if (selectedBitmap == nearestI)
-			callback.tapChoose(selectedBitmap);
-		selectedBitmap = nearestI;
+		if (selected == nearestI)
+			callback.tapChoose(selected);
+		selected = nearestI;
 		updateSelectedDraw();
 		return true;
 	}

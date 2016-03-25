@@ -1,5 +1,11 @@
 package ru.ancientempires.editor;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.view.MotionEvent;
+import android.view.View;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.draws.DrawInfo;
 import ru.ancientempires.images.Images;
@@ -16,6 +22,7 @@ public class EditorChooseView extends View implements Callback
 							
 	private MyColor[]		myColors;
 	private DrawChoose		choose;
+	private int				selectedStart;
 	private EditorStruct[]	structs;
 							
 	private float			hDivider		= 2 / mScale;
@@ -23,11 +30,15 @@ public class EditorChooseView extends View implements Callback
 	private int				xDivider		= 10;
 	private Paint			paintDivider	= new Paint();
 											
-	public EditorChooseView(Context context, EditorStruct[] structs, MyColor[] myColors)
+	public EditorChooseView(Context context, EditorStruct[] structs, MyColor[] myColors, int selected)
 	{
 		super(context);
 		this.myColors = myColors;
 		this.structs = structs;
+		selectedStart = selected;
+		if (myColors.length > 0)
+			for (EditorStruct struct : structs)
+				struct.setColor(myColors[selectedStart]);
 		paintDivider.setColor(Color.GRAY);
 	}
 	
@@ -44,6 +55,7 @@ public class EditorChooseView extends View implements Callback
 			for (int i = 0; i < myColors.length; i++)
 				colors[i] = new EditorStructColor(A, myColors[i]);
 			choose.w = w;
+			choose.selected = selectedStart;
 			choose.create(colors, this);
 		}
 		
@@ -68,12 +80,17 @@ public class EditorChooseView extends View implements Callback
 	{
 		if (choose != null && choose.touch(event.getY(), event.getX()))
 			return true;
-		EditorDrawMain.main.inputMain.update();
-		return true;
+		if (event.getAction() == MotionEvent.ACTION_DOWN)
+		{
+			int i = EditorStruct.getNearest(structs, event.getY() / mScale, event.getX() / mScale);
+			EditorDrawMain.main.inputMain.setStruct(i, choose == null ? 0 : choose.selected);
+			EditorChooseDialog.dialog.dismiss();
+			EditorChooseDialog.dialog = null;
+			return true;
+		}
+		return false;
 	}
 	
-	@Override
-	@Override
 	@Override
 	public void tapChoose(int i)
 	{

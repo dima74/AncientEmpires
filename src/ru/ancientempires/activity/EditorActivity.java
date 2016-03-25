@@ -1,12 +1,14 @@
 package ru.ancientempires.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import ru.ancientempires.Extras;
 import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.IDraw;
+import ru.ancientempires.editor.EditorChooseDialog;
+import ru.ancientempires.editor.EditorThread;
 import ru.ancientempires.editor.EditorView;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GameSnapshotLoader;
 import ru.ancientempires.model.Game;
@@ -17,15 +19,18 @@ public class EditorActivity extends BaseActivity
 	
 	public static EditorActivity	activity;
 									
+	public EditorView				view;
+	public EditorThread				thread;
+									
 	public String					gameID;
 	public Game						game;
-	public View						view;
 									
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		gameID = getIntent().getStringExtra(Extras.GAME_ID);
+		MainActivity.firstStart = false;
 	}
 	
 	@Override
@@ -42,6 +47,7 @@ public class EditorActivity extends BaseActivity
 				Rules rules = path.getRules();
 				game = new GameSnapshotLoader(path, rules).load(false);
 				Client.client.images.load(Client.client.imagesLoader, game);
+				game.campaign.isDefault = true;
 				IDraw.gameStatic = game;
 			}
 			
@@ -50,6 +56,7 @@ public class EditorActivity extends BaseActivity
 			{
 				activity = EditorActivity.this;
 				view = new EditorView(EditorActivity.this);
+				thread = (EditorThread) view.thread;
 				setContentView(view);
 			};
 		}.start();
@@ -59,6 +66,21 @@ public class EditorActivity extends BaseActivity
 	protected void onStop()
 	{
 		super.onStop();
+		thread.isRunning = false;
+		if (EditorChooseDialog.dialog != null)
+		{
+			EditorChooseDialog.dialog.dismiss();
+			EditorChooseDialog.dialog = null;
+		}
+		try
+		{
+			thread.join();
+		}
+		catch (InterruptedException e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 		activity = null;
 		game = null;
 		IDraw.gameStatic = null;

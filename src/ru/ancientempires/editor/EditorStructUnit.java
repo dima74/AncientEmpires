@@ -31,4 +31,10 @@ public class EditorStructUnit extends EditorStruct
 		drawBitmap(canvas, bitmap);
 	}
 	
+	@Override
+	public EditorStruct createCopy()
+	{
+		return new EditorStructUnit(game, new Unit(unit)).setYX(y, x);
+	}
+	
 }

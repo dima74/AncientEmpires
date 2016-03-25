@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.activity.EditorActivity;
+import ru.ancientempires.images.CellImages;
+import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
@@ -17,14 +19,13 @@ public class EditorInputMain implements Callback
 	public Game				game			= EditorActivity.activity.game;
 	public EditorDrawMain	drawMain;
 							
-	public EditorStruct[]	structsCurrent	= new EditorStruct[3];
+	public int[]			colorsSelected	= new int[3];
 	public EditorStruct[][]	structs			= new EditorStruct[3][];
 											
 	public EditorInputMain(EditorDrawMain drawMain)
 	{
 		this.drawMain = drawMain;
 		createStructs();
-		update();
 	}
 	
 	private void createStructs()
@@ -34,31 +35,25 @@ public class EditorInputMain implements Callback
 		for (int i = 0; i < 3; i++)
 			structsList[i] = new ArrayList<>();
 			
-		// units
 		for (UnitType type : rules.unitTypes)
-			if (!"DEFAULT".equals(type.name) && !"KING".equals(type.name))
+			if (UnitImages.get().containsBitmap(type))
 				structsList[0].add(new EditorStructUnit(game, new Unit(type, game.players[0], game)));
-				
-		// cells
 		for (CellType type : rules.cellTypes)
-			if (!type.name.contains("DEFAULT") && !type.name.contains("GROUP"))
+			if (CellImages.get().containsBitmap(type))
 				structsList[type.isHealing ? 1 : 2].add(new EditorStructCell(game, new Cell(type)));
 				
 		for (int i = 0; i < 3; i++)
 			structs[i] = structsList[i].toArray(new EditorStruct[0]);
-	}
-	
-	public void update()
-	{
+		drawMain.choose.create(3, this);
 		for (int i = 0; i < 3; i++)
-			structsCurrent[i] = structs[i][0];
-		drawMain.choose.create(structsCurrent, this);
+			drawMain.choose.setStruct(i, structs[i][0]);
 	}
 	
 	@Override
 	public void tapChoose(int i)
 	{
-		if (i == drawMain.choose.selectedBitmap)
+		int selected = drawMain.choose.selected;
+		if (i == selected)
 		{
 			MyColor[] colors = null;
 			if (i == 0)
@@ -67,24 +62,30 @@ public class EditorInputMain implements Callback
 				colors = MyColor.values();
 			if (i == 2)
 				colors = new MyColor[0];
-			new EditorChooseDialog().show(structs[i], colors);
+			new EditorChooseDialog().show(structs[i], colors, colorsSelected[selected]);
 		}
 	}
 	
-	public void tap(int i, int j)
+	public void tapMap(int i, int j)
 	{
-		int selected = drawMain.choose.selectedBitmap;
-		EditorStruct struct = structsCurrent[selected];
+		int selected = drawMain.choose.selected;
+		EditorStruct struct = drawMain.choose.structs[selected];
 		if (selected == 0)
 		{
-			game.setUnit(i, j, new Unit(((EditorStructUnit) struct).unit));
-			drawMain.units.update();
+			if (game.fieldUnits[i][j] != null)
+				game.fieldUnits[i][j] = null;
+			else
+				game.setUnit(i, j, new Unit(((EditorStructUnit) struct).unit));
 		}
 		else
-		{
 			game.fieldCells[i][j] = new Cell(((EditorStructCell) struct).cell);
-			drawMain.cells.update();
-		}
+	}
+	
+	public void setStruct(int i, int color)
+	{
+		int selected = drawMain.choose.selected;
+		drawMain.choose.setStruct(selected, structs[selected][i]);
+		colorsSelected[selected] = color;
 	}
 	
 }

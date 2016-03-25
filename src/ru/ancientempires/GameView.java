@@ -2,6 +2,7 @@ package ru.ancientempires;
 
 import android.content.Context;
 import android.view.SurfaceHolder;
+import ru.ancientempires.activity.GameActivity;
 
 public class GameView extends BaseView implements SurfaceHolder.Callback
 {
@@ -15,7 +16,7 @@ public class GameView extends BaseView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		super.surfaceCreated(holder);
-		thread = new GameThread(getHolder());
+		thread = GameActivity.activity.thread = new GameThread(getHolder());
 		thread.start();
 	}
 	
