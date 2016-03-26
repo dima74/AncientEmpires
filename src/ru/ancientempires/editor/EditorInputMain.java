@@ -36,8 +36,8 @@ public class EditorInputMain implements Callback
 			structsList[i] = new ArrayList<>();
 			
 		for (UnitType type : rules.unitTypes)
-			if (UnitImages.get().containsBitmap(type))
-				structsList[0].add(new EditorStructUnit(game, new Unit(type, game.players[0], game)));
+			if (UnitImages.get().containsBitmap(type) && type.templateType == null)
+				structsList[0].add(new EditorStructUnit(game, new Unit(game, type, game.players[0])));
 		for (CellType type : rules.cellTypes)
 			if (CellImages.get().containsBitmap(type))
 				structsList[type.isHealing ? 1 : 2].add(new EditorStructCell(game, new Cell(type)));

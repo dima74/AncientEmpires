@@ -52,7 +52,7 @@ public class ActionCellBuy extends ActionFrom
 		ActionResultGetCellBuy result = actionGet.perform(game);
 		Unit unit = result.units[iUnit];
 		if (!unit.type.isStatic)
-			unit = new Unit(unit.type, unit.player, game);
+			unit = new Unit(game, unit.type, unit.player);
 		return unit;
 	}
 	

@@ -26,7 +26,6 @@ public class EditorChooseView extends View implements Callback
 	private EditorStruct[]	structs;
 							
 	private float			hDivider		= 2 / mScale;
-	// private int yDivider = choose.h;
 	private int				xDivider		= 10;
 	private Paint			paintDivider	= new Paint();
 											

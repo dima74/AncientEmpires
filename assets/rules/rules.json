@@ -196,6 +196,12 @@
 		},
 		{
 			"name": "KING",
+			"specializations": {
+				"RED": "KING_DEMONLORD",
+				"GREEN": "KING_VALADORN",
+				"BLACK": "KING_SAETH",
+				"BLUE": "KING_GALAMAR"
+			},
 			"attackMin": 55,
 			"attackMax": 65,
 			"defence": 20,
@@ -349,19 +355,23 @@
 		},
 		{
 			"baseType": "KING",
-			"name": "KING_GALAMAR"
+			"name": "KING_GALAMAR",
+			"templateType": "KING"
 		},
 		{
 			"baseType": "KING",
-			"name": "KING_VALADORN"
+			"name": "KING_VALADORN",
+			"templateType": "KING"
 		},
 		{
 			"baseType": "KING",
-			"name": "KING_DEMONLORD"
+			"name": "KING_DEMONLORD",
+			"templateType": "KING"
 		},
 		{
 			"baseType": "KING",
-			"name": "KING_SAETH"
+			"name": "KING_SAETH",
+			"templateType": "KING"
 		}
 	],
 	"cellGroups": [

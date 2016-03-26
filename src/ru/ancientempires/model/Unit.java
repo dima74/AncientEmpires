@@ -126,27 +126,22 @@ public class Unit extends IGameHandler
 	}
 	
 	// используется при покупки войнов
-	public Unit(UnitType type, Player player, Game game)
+	public Unit(Game game, UnitType type, Player player)
 	{
 		setGame(game);
-		setType(type);
+		this.type = type;
 		this.player = player;
 		initFromType();
 	}
 	
 	public Unit(Unit unit)
 	{
-		this(unit.type, unit.player, unit.game);
-	}
-	
-	public void setType(UnitType type)
-	{
-		this.type = type;
-		// updateName();
+		this(unit.game, unit.type, unit.player);
 	}
 	
 	public void initFromType()
 	{
+		type = type.trySpecialize(player);
 		health = type.healthDefault;
 	}
 	
@@ -315,9 +310,9 @@ public class Unit extends IGameHandler
 	
 	public void load(DataInputStream input, Game game) throws Exception
 	{
-		setType(game.rules.getUnitType(input.readUTF()));
-		initFromType();
+		type = game.rules.getUnitType(input.readUTF());
 		player = game.players[input.readInt()];
+		initFromType();
 		i = input.readInt();
 		j = input.readInt();
 		health = input.readInt();

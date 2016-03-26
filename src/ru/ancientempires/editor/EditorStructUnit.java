@@ -6,6 +6,7 @@ import ru.ancientempires.MyColor;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.model.UnitType;
 
 public class EditorStructUnit extends EditorStruct
 {
@@ -21,7 +22,8 @@ public class EditorStructUnit extends EditorStruct
 	@Override
 	public void setColor(MyColor color)
 	{
-		unit.player = getPlayer(color);
+		UnitType type = unit.type.templateType == null ? unit.type : unit.type.templateType;
+		unit = new Unit(game, type, getPlayer(color));
 	}
 	
 	@Override

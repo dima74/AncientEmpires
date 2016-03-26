@@ -30,26 +30,26 @@ public class UnitImages extends IImages
 							
 	public MyColor[]		colors	= MyColor.values();
 	public int[]			playerToColorI;
-	public FewBitmaps[][]	greyUnitsBitmaps;
-	public FewBitmaps[][]	unitsBitmaps;
-	public Bitmap[][]		unitsBitmapsBuy;
+	public FewBitmaps[][]	greyUnitBitmaps;
+	public FewBitmaps[][]	unitBitmaps;
+	public Bitmap[][]		unitBitmapsBuy;
 							
 	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
 		if (unit.isTurn && !keepTurn)
-			return unitsBitmaps[unit.type.ordinal][0];
+			return unitBitmaps[unit.type.ordinal][0];
 		else
-			return unitsBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
+			return unitBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 	
 	public boolean containsBitmap(UnitType type)
 	{
-		return unitsBitmaps[type.ordinal][0] != null;
+		return unitBitmaps[type.ordinal][0] != null;
 	}
 	
 	public Bitmap getUnitBitmapBuy(Unit unit)
 	{
-		return unitsBitmapsBuy[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
+		return unitBitmapsBuy[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 	
 	@Override
@@ -58,7 +58,7 @@ public class UnitImages extends IImages
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
 		
-		unitsBitmaps = new FewBitmaps[rules.unitTypes.length][5];
+		unitBitmaps = new FewBitmaps[rules.unitTypes.length][5];
 		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
@@ -73,7 +73,7 @@ public class UnitImages extends IImages
 				Bitmap[] bitmaps = new Bitmap[imageNames.length];
 				for (int j = 0; j < bitmaps.length; j++)
 					bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
-				unitsBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
+				unitBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
 			}
 			reader.endObject();
 		}
@@ -92,10 +92,10 @@ public class UnitImages extends IImages
 				if (player.color == colors[colorI])
 					playerToColorI[player.ordinal] = colorI;
 					
-		unitsBitmapsBuy = new Bitmap[rules.unitTypes.length][5];
+		unitBitmapsBuy = new Bitmap[rules.unitTypes.length][5];
 		for (int colorI = 0; colorI < colors.length; colorI++)
-			for (int typeI = 1; typeI < unitsBitmapsBuy.length; typeI++)
-				unitsBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitsBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
+			for (int typeI = 1; typeI < unitBitmapsBuy.length; typeI++)
+				unitBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
 	
 }

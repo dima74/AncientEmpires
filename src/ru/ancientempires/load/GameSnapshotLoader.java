@@ -88,7 +88,7 @@ public class GameSnapshotLoader
 			{
 				cellType.buyUnits[iPlayer] = new Unit[cellType.buyTypes.length];
 				for (int i = 0; i < cellType.buyTypes.length; i++)
-					cellType.buyUnits[iPlayer][i] = new Unit(cellType.buyTypes[i], game.players[iPlayer], game);
+					cellType.buyUnits[iPlayer][i] = new Unit(game, cellType.buyTypes[i], game.players[iPlayer]);
 			}
 		}
 		

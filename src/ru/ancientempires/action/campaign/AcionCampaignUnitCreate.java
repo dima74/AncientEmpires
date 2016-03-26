@@ -16,7 +16,7 @@ public class AcionCampaignUnitCreate extends ActionFrom
 	
 	public UnitType	type;
 	public int		player;
-	
+					
 	public AcionCampaignUnitCreate setType(UnitType type)
 	{
 		this.type = type;
@@ -33,7 +33,7 @@ public class AcionCampaignUnitCreate extends ActionFrom
 	public void performQuick()
 	{
 		Player player = game.players[this.player];
-		Unit unit = new Unit(type, player, game);
+		Unit unit = new Unit(game, type, player);
 		player.units.add(unit);
 		game.setUnit(i, j, unit);
 	}

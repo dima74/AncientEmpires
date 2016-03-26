@@ -2,6 +2,8 @@ package ru.ancientempires.rules;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 
+import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusCreator;
 import ru.ancientempires.framework.MyAssert;
@@ -132,8 +135,18 @@ public class RulesLoader
 				
 			JsonElement element;
 			
-			element = object.get("health");
-			type.healthDefault = element == null ? baseType.healthDefault : element.getAsInt();
+			if ((element = object.get("specializations")) != null)
+			{
+				JsonObject specializations = element.getAsJsonObject();
+				type.specializations = new HashMap<>();
+				for (Entry<String, JsonElement> entry : specializations.entrySet())
+					type.specializations.put(MyColor.valueOf(entry.getKey()), rules.getUnitType(entry.getValue().getAsString()));
+			}
+			if ((element = object.get("templateType")) != null)
+				type.templateType = rules.getUnitType(element.getAsString());
+				
+			if ((element = object.get("health")) != null)
+				type.healthDefault = element.getAsInt();
 			element = object.get("attackMin");
 			type.attackMin = element == null ? baseType.attackMin : element.getAsInt();
 			element = object.get("attackMax");
