@@ -29,13 +29,12 @@ public class Debug
 		}
 	}
 	
-	public static void onCreate(Object activity)
+	private static void checkClient(Object activity)
 	{
-		checkFirstLaunch();
-		checkCreate(activity);
 		if (Client.client == null)
 			try
 			{
+				MyAssert.a(activity instanceof Activity);
 				Client.client = new Client(new AndroidClientHelper((Activity) activity));
 				Client.client.startLoadParts12();
 			}
@@ -44,6 +43,13 @@ public class Debug
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
+	}
+	
+	public static void onCreate(Object activity)
+	{
+		checkFirstLaunch();
+		checkCreate(activity);
+		checkClient(activity);
 	}
 	
 	private static void checkCreate(Object activity)
@@ -56,6 +62,7 @@ public class Debug
 	{
 		checkFirstLaunch();
 		checkCreate(activity);
+		checkClient(activity);
 		MyLog.l("start " + getName(activity));
 		running.add(activity);
 	}

@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Cell
+import ru.ancientempires.handler.IGameHandler;
+
+public class Cell extends IGameHandler
 {
 	
 	public CellType	type;
@@ -20,39 +22,41 @@ public class Cell
 		return player != null;
 	}
 	
-	// только для разрушаемых клеточек
-	public boolean isDestroy;
-	
 	// Для редактора карт
-	public Cell(CellType type)
+	public Cell(Game game, CellType type)
 	{
+		setGame(game);
 		this.type = type;
-		initFromType();
 	}
 	
 	// тоже
 	public Cell(Cell cell)
 	{
-		this(cell.type);
+		this(cell.game, cell.type);
 		player = cell.player;
 	}
 	
-	public Cell(CellType type, int i, int j)
+	// в принципе можно прямо тут обновлять fieldCell
+	public Cell(Game game, CellType type, int i, int j)
 	{
-		this(type);
+		this(game, type);
 		this.i = i;
 		this.j = j;
 	}
 	
-	// Возможно пригодится для редактора карт
-	public void initFromType()
+	public void destroy()
 	{
-		isDestroy = type.isDestroyDefault;
+		game.fieldCells[i][j] = new Cell(game, type.destroyingType, i, j);
+	}
+	
+	public void repair()
+	{
+		game.fieldCells[i][j] = new Cell(game, type.repairType, i, j);
 	}
 	
 	public boolean needSave()
 	{
-		return isCapture() || isDestroy != type.isDestroyDefault;
+		return isCapture();
 	}
 	
 	public void save(DataOutputStream output, Game game) throws IOException
@@ -60,7 +64,6 @@ public class Cell
 		output.writeBoolean(isCapture());
 		if (isCapture())
 			output.write(player.ordinal);
-		output.writeBoolean(isDestroy);
 	}
 	
 	public void load(DataInputStream input, Game game) throws IOException
@@ -68,7 +71,6 @@ public class Cell
 		boolean isCapture = input.readBoolean();
 		if (isCapture)
 			player = game.players[input.read()];
-		isDestroy = input.readBoolean();
 	}
 	
 	public int getSteps()
@@ -94,8 +96,6 @@ public class Cell
 		if (j != cell.j)
 			return false;
 		if (isCapture() != cell.isCapture())
-			return false;
-		if (isDestroy != cell.isDestroy)
 			return false;
 		if (player == null)
 		{

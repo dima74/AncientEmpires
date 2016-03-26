@@ -40,7 +40,7 @@ public class EditorInputMain implements Callback
 				structsList[0].add(new EditorStructUnit(game, new Unit(game, type, game.players[0])));
 		for (CellType type : rules.cellTypes)
 			if (CellImages.get().containsBitmap(type))
-				structsList[type.isHealing ? 1 : 2].add(new EditorStructCell(game, new Cell(type)));
+				structsList[type.isHealing ? 1 : 2].add(new EditorStructCell(game, new Cell(game, type)));
 				
 		for (int i = 0; i < 3; i++)
 			structs[i] = structsList[i].toArray(new EditorStruct[0]);

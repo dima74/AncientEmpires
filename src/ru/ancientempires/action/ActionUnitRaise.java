@@ -31,7 +31,7 @@ public class ActionUnitRaise extends ActionFromTo
 		Unit unit = game.fieldUnits[i][j];
 		unit.setTurn();
 		
-		Unit raisedUnit = new Unit(game, unit.type.raiseUnit, unit.player);
+		Unit raisedUnit = new Unit(game, unit.type.raiseType, unit.player);
 		raisedUnit.i = targetI;
 		raisedUnit.j = targetJ;
 		raisedUnit.player.units.add(raisedUnit);

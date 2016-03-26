@@ -148,8 +148,8 @@ public class RulesSaver
 				result.addProperty("attackRangeReverse", type.attackRangeReverse.name);
 			if (type == defaultType || type.raiseRange != defaultType.raiseRange)
 				result.addProperty("raiseRange", type.raiseRange.name);
-			if (type == defaultType || type.raiseUnit != defaultType.raiseUnit)
-				result.addProperty("raiseUnit", type.raiseUnit == null ? null : type.raiseUnit.name);
+			if (type.raiseType != null && (type == defaultType || type.raiseType != defaultType.raiseType))
+				result.addProperty("raiseType", type.raiseType.name);
 			if (type == defaultType || type.isStatic != defaultType.isStatic)
 				result.addProperty("isStatic", type.isStatic);
 			if (type == defaultType || type.hasTombstone != defaultType.hasTombstone)
@@ -208,8 +208,10 @@ public class RulesSaver
 				result.add("buyTypes", toArrray(type.buyTypes));
 			if (type == defaultType || type.isCapturing != defaultType.isCapturing)
 				result.addProperty("isCapturing", type.isCapturing);
-			if (type == defaultType || type.isDestroying != defaultType.isDestroying)
-				result.addProperty("isDestroying", type.isDestroying);
+			if (type.destroyingType != null && (type == defaultType || type.destroyingType != defaultType.destroyingType))
+				result.addProperty("destroyingType", type.destroyingType.name);
+			if (type.repairType != null && (type == defaultType || type.repairType != defaultType.repairType))
+				result.addProperty("repairType", type.repairType.name);
 			if (type == defaultType || type.isHealing != defaultType.isHealing)
 				result.addProperty("isHeal", type.isHealing);
 			return result;

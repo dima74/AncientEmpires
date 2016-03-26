@@ -20,7 +20,6 @@
 
 	<!-- activities titles -->
 	<string name="title_activity_play_menu">Играть</string>
-	<string name="title_activity_game">Игра</string>
 	<string name="title_activity_editor_base">Редактор карт</string>
 	<string name="title_activity_editor_choose">Настройте параметры</string>
 

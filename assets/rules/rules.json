@@ -32,6 +32,7 @@
 		"CITADEL_RIGHT",
 		"CITADEL_UP",
 		"BUILDING",
+		"BUILDING_DESTROYING",
 		"CASTLE",
 		"CAMP",
 		"TEMPLE",
@@ -162,7 +163,6 @@
 		"defense": 0,
 		"buyTypes": [],
 		"isCapturing": false,
-		"isDestroying": false,
 		"isHeal": false
 	},
 	"unitTypes": [
@@ -207,7 +207,7 @@
 			"defence": 20,
 			"cost": 400,
 			"repairTypes": [
-				"BUILDING"
+				"BUILDING_DESTROYING"
 			],
 			"captureTypes": [
 				"BUILDING",
@@ -226,7 +226,7 @@
 			"name": "SOLDIER",
 			"cost": 150,
 			"repairTypes": [
-				"BUILDING"
+				"BUILDING_DESTROYING"
 			],
 			"captureTypes": [
 				"BUILDING"
@@ -269,7 +269,7 @@
 			"attackMax": 45,
 			"cost": 400,
 			"raiseRange": "DEFAULT",
-			"raiseUnit": "SKELETON"
+			"raiseType": "SKELETON"
 		},
 		{
 			"name": "WISP",
@@ -388,7 +388,8 @@
 				"PLAIN",
 				"CITADEL_LEFT",
 				"CITADEL_RIGHT",
-				"CITADEL_UP"
+				"CITADEL_UP",
+				"BUILDING_DESTROYING"
 			]
 		},
 		{
@@ -414,8 +415,8 @@
 				"isCapturing": true
 			},
 			"types": [
-				"BUILDING",
-				"CASTLE"
+				"CASTLE",
+				"BUILDING"
 			]
 		},
 		{
@@ -491,7 +492,6 @@
 			"defense": 0,
 			"buyTypes": [],
 			"isCapturing": false,
-			"isDestroying": false,
 			"isHeal": false
 		},
 		{
@@ -534,7 +534,12 @@
 			"baseType": "BUILDINGS_GROUP",
 			"name": "BUILDING",
 			"earn": 30,
-			"isDestroying": true
+			"destroyingType": "BUILDING_DESTROYING"
+		},
+		{
+			"name": "BUILDING_DESTROYING",
+			"defense": 15,
+			"repairType": "BUILDING"
 		},
 		{
 			"baseType": "BUILDINGS_GROUP",

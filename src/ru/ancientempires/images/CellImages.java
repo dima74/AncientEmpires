@@ -104,16 +104,6 @@ public class CellImages extends IImages
 			while (reader.peek() == JsonToken.NAME)
 			{
 				String name = reader.nextName().intern();
-				// destroying
-				if (name == "imagesDestroying")
-				{
-					String[] imageNamesDestroying = new Gson().fromJson(reader, String[].class);
-					Bitmap[] bitmaps = new Bitmap[imageNamesDestroying.length];
-					for (int j = 0; j < bitmaps.length; j++)
-						bitmaps[j] = loader.loadImage("destroying/" + imageNamesDestroying[j]);
-					cellBitmap.destroyingBitmap = new FewBitmaps().setBitmaps(bitmaps);
-				}
-				
 				// dual
 				if (name == "isDual")
 					cellBitmap.isDual = reader.nextBoolean();

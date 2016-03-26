@@ -49,7 +49,7 @@ public class ActionHelper extends IGameHandler
 			{
 				Unit targetUnit = game.fieldUnits[targetCell.i][targetCell.j];
 				return targetUnit != null && targetUnit.player.team != unit.player.team
-						|| targetUnit == null && !targetCell.isDestroy && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+						|| targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 			}
 		});
 	}
@@ -57,13 +57,13 @@ public class ActionHelper extends IGameHandler
 	public boolean canUnitRepair(Unit unit)
 	{
 		Cell cell = unit.getCell();
-		return unit.canRepair(cell.type) && cell.isDestroy;
+		return unit.canRepair(cell.type);
 	}
 	
 	public boolean canUnitCapture(Unit unit)
 	{
 		Cell cell = unit.getCell();
-		return unit.canCapture(cell.type) && !cell.isDestroy && cell.getTeam() != unit.player.team;
+		return unit.canCapture(cell.type) && cell.getTeam() != unit.player.team;
 	}
 	
 	private <T> boolean forEachInRange(T[][] field, int i, int j, Range range, Checker<T> checker)

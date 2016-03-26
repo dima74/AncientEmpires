@@ -51,7 +51,7 @@ public class UnitType
 	public Range			attackRangeReverse;
 							
 	public Range			raiseRange;
-	public UnitType			raiseUnit;
+	public UnitType			raiseType;
 							
 	// Войн не может быть (в текущей реализации) одновременно статичным и с надгробием,
 	// иначе при сохранении игры этот войн будет записан в units.dat два раза ---
@@ -102,7 +102,7 @@ public class UnitType
 		attackRange = type.attackRange;
 		attackRangeReverse = type.attackRangeReverse;
 		raiseRange = type.raiseRange;
-		raiseUnit = type.raiseUnit;
+		raiseType = type.raiseType;
 		
 		isStatic = type.isStatic;
 		hasTombstone = type.hasTombstone;

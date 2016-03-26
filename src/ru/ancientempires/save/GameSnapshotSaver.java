@@ -25,7 +25,7 @@ public class GameSnapshotSaver
 	
 	public Game			game;
 	public FileLoader	loader;
-	
+						
 	public GameSnapshotSaver(Game game, FileLoader loader)
 	{
 		this.game = game;

@@ -9,7 +9,7 @@ public class MainActivity extends BaseListActivity
 {
 	
 	public static String			gameToStart	= "editor";
-	public static boolean			firstStart	= true;
+	public static boolean			firstStart	= false;
 												
 	private static MenuActions[]	actions		= new MenuActions[]
 													{

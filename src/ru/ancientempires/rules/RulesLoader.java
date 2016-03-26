@@ -172,8 +172,8 @@ public class RulesLoader
 			
 			element = object.get("raiseRange");
 			type.raiseRange = element == null ? baseType.raiseRange : getRange(element);
-			element = object.get("raiseUnit");
-			type.raiseUnit = element == null ? baseType.raiseUnit : rules.getUnitType(element.getAsString());
+			element = object.get("raiseType");
+			type.raiseType = element == null ? baseType.raiseType : rules.getUnitType(element.getAsString());
 			
 			element = object.get("isStatic");
 			type.isStatic = element == null ? baseType.isStatic : element.getAsBoolean();
@@ -247,8 +247,10 @@ public class RulesLoader
 			type.buyTypes = element == null ? baseType.buyTypes : getUnitTypes(element, context);
 			element = object.get("isCapturing");
 			type.isCapturing = element == null ? baseType.isCapturing : element.getAsBoolean();
-			element = object.get("isDestroying");
-			type.isDestroying = element == null ? baseType.isDestroying : element.getAsBoolean();
+			if ((element = object.get("destroyingType")) != null)
+				type.destroyingType = rules.getCellType(element.getAsString());
+			if ((element = object.get("repairType")) != null)
+				type.repairType = rules.getCellType(element.getAsString());
 			element = object.get("isHeal");
 			type.isHealing = element == null ? baseType.isHealing : element.getAsBoolean();
 			return type;

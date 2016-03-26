@@ -33,9 +33,20 @@ public class BaseListActivity extends ListActivity
 		Debug.onStop(this);
 	}
 	
+	@Override
+	public void onBackPressed()
+	{
+		moveTo(MainActivity.class);
+	}
+	
 	public void moveTo(Class<? extends Activity> activity)
 	{
-		startActivity(new Intent(this, activity));
+		moveTo(activity, new Intent());
+	}
+	
+	public void moveTo(Class<? extends Activity> activity, Intent extra)
+	{
+		startActivity(new Intent(this, activity).putExtras(extra));
 		finish();
 	}
 	

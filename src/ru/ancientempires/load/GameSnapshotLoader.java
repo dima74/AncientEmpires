@@ -198,7 +198,7 @@ public class GameSnapshotLoader
 			{
 				int ordinal = input.readInt();
 				CellType type = rules.cellTypes[ordinal];
-				game.fieldCells[i][j] = new Cell(type, i, j);
+				game.fieldCells[i][j] = new Cell(game, type, i, j);
 			}
 		input.close();
 	}

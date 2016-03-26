@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import ru.ancientempires.Extras;
 import ru.ancientempires.GameThread;
 import ru.ancientempires.GameView;
 import ru.ancientempires.MyAsyncTask;
@@ -28,8 +29,6 @@ import ru.ancientempires.model.Unit;
 public class GameActivity extends BaseActivity
 {
 	
-	public static final String	EXTRA_GAME_ID			= "EXTRA_GAME_ID";
-	public static final String	EXTRA_USE_LAST_TEAMS	= "EXTRA_USE_LAST_TEAMS";
 	public static GameActivity	activity;
 								
 	public GameView				view;
@@ -57,8 +56,8 @@ public class GameActivity extends BaseActivity
 			intent.setClass(activity, GameActivity.class);
 		else
 			intent.setClass(activity, PlayersConfigureActivity.class)
-					.putExtra(GameActivity.EXTRA_USE_LAST_TEAMS, useLastTeams);
-		intent.putExtra(GameActivity.EXTRA_GAME_ID, gameID);
+					.putExtra(Extras.USE_LAST_TEAMS, useLastTeams);
+		intent.putExtra(Extras.GAME_ID, gameID);
 		activity.startActivity(intent);
 	}
 	
@@ -66,7 +65,7 @@ public class GameActivity extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		baseGameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
+		baseGameID = getIntent().getStringExtra(Extras.GAME_ID);
 		if (savedInstanceState != null)
 			gameID = savedInstanceState.getString("gameID");
 	}
@@ -98,6 +97,7 @@ public class GameActivity extends BaseActivity
 			@Override
 			public void onPostExecute()
 			{
+				setTitle(game.path.name);
 				GameActivity.activity = GameActivity.this;
 				view = new GameView(GameActivity.this);
 				thread = (GameThread) view.thread;

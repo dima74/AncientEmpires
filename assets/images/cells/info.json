@@ -72,12 +72,15 @@
 				"building.png"
 			],
 
-			"imagesDestroying": 
-			[
-				"building.png"
-			],
-
 			"isSmokes": true
+		},
+
+		{
+			"type": "BUILDING_DESTROYING",
+			"images": 
+			[
+				"building_destroying.png"
+			]
 		},
 
 		{

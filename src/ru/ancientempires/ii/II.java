@@ -342,7 +342,7 @@ public class II extends GameHandler
 			// if (sub_d5e(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
 			
 			Cell cell = fieldCells[currentSelectedUnit.i][currentSelectedUnit.j];
-			if (currentSelectedUnit.canCapture(cell.type) && !cell.isDestroy && cell.getTeam() != var1.player.team)
+			if (currentSelectedUnit.canCapture(cell.type) && cell.getTeam() != var1.player.team)
 			// может захватить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);
@@ -362,7 +362,7 @@ public class II extends GameHandler
 				// var_12ff = delayCounter;
 			}
 			// else if (sub_d41(this.currentSelectedcurrentMapPosX, this.currentSelectedcurrentMapPosY, this.currentSelectedUnit))
-			else if (currentSelectedUnit.canRepair(cell.type) && cell.isDestroy)
+			else if (currentSelectedUnit.canRepair(cell.type))
 			// может чинить
 			{
 				var18 = sub_110d(currentSelectedUnit.j, currentSelectedUnit.i);

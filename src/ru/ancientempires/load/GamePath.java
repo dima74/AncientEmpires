@@ -34,6 +34,11 @@ public class GamePath
 	public int				h;
 	public int				w;
 							
+	public String getFolderID()
+	{
+		return gameID.substring(0, gameID.lastIndexOf('.'));
+	}
+	
 	public GamePath()
 	{}
 	

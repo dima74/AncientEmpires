@@ -69,7 +69,7 @@ public class Game
 		fieldCells = new Cell[h][w];
 		for (int i = 0; i < h; i++)
 			for (int j = 0; j < w; j++)
-				fieldCells[i][j] = new Cell(types[random.nextInt(types.length)], i, j);
+				fieldCells[i][j] = new Cell(this, types[random.nextInt(types.length)], i, j);
 		return this;
 	}
 	

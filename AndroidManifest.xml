@@ -26,30 +26,17 @@
 		</activity>
 		<activity
 			android:name=".activity.PlayMenuActivity"
-			android:label="@string/title_activity_play_menu"
-			android:parentActivityName=".activity.MainActivity" >
-		</activity>
-		<activity
-			android:name=".activity.LevelMenuActivity"
-			android:parentActivityName=".activity.PlayMenuActivity" >
-		</activity>
-		<activity
-			android:name=".activity.GameActivity"
-			android:label="@string/title_activity_game"
-			android:parentActivityName=".activity.LevelMenuActivity" >
-		</activity>
-		<activity
-			android:name=".activity.PlayersConfigureActivity"
-			android:parentActivityName=".activity.MainActivity" >
-		</activity>
+			android:label="@string/title_activity_play_menu" />
+		<activity android:name=".activity.LevelMenuActivity" /> <!-- label = название игры -->
+		<activity android:name=".activity.PlayersConfigureActivity" /> <!-- label = название игры -->
+		<activity android:name=".activity.GameActivity" /> <!-- label = название игры -->
 		<activity
 			android:name=".activity.SettingsActivity"
 			android:label="@string/title_activity_settings" >
 		</activity>
 		<activity
 			android:name=".activity.EditorBaseActivity"
-			android:label="@string/title_activity_editor_base"
-			android:parentActivityName=".activity.MainActivity" >
+			android:label="@string/title_activity_editor_base" >
 		</activity>
 		<activity
 			android:name=".activity.EditorConfigureActivity"
@@ -57,8 +44,7 @@
 		</activity>
 		<activity
 			android:name=".activity.EditorActivity"
-			android:label="@string/title_activity_editor"
-			android:parentActivityName=".activity.MainActivity" >
+			android:label="@string/title_activity_editor" >
 		</activity>
 	</application>
 

@@ -86,7 +86,6 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		int h = getIntValue(R.id.textHeightEdit);
 		int w = getIntValue(R.id.textWidthEdit);
 		
-		long time = System.nanoTime();
 		MyAssert.a(Client.client.rules != null);
 		Game game = new Game(Client.client.rules)
 				.setSize(h, w)
@@ -100,12 +99,12 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		path.canChooseTeams = true;
 		path.getLoader().mkdirs();
 		path.getFolder().add(path);
+		path.name = name;
 		Client.client.allGames.put(gameID, path);
 		new GameSaver(game).saveBaseGame();
 		
 		HashMap<String, String> strings = new HashMap<>();
 		strings.put("name", name);
-		
 		JsonWriter writer = path.getLoader().getWriter("strings.json");
 		new Gson().toJson(strings, Map.class, writer);
 		writer.close();

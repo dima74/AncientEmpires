@@ -6,22 +6,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import ru.ancientempires.Extras;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
 
 public class PlayMenuActivity extends BaseListActivity
 {
 	
-	public static final String		EXTRA_FOLDER	= "ru.ancientempires.folder";
-													
-	private static MenuActions[]	actions			= new MenuActions[]
-														{
-															MenuActions.CAMPAIGN,
-															MenuActions.SKIRMISH,
-															MenuActions.USER_MAPS,
-															MenuActions.LOAD
-														};
-														
+	private static MenuActions[] actions = new MenuActions[]
+	{
+		MenuActions.CAMPAIGN,
+		MenuActions.SKIRMISH,
+		MenuActions.USER_MAPS,
+		MenuActions.LOAD
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -60,7 +59,7 @@ public class PlayMenuActivity extends BaseListActivity
 	
 	private void start(String folderID)
 	{
-		startActivity(new Intent(this, LevelMenuActivity.class).putExtra(PlayMenuActivity.EXTRA_FOLDER, folderID));
+		moveTo(LevelMenuActivity.class, new Intent().putExtra(Extras.FOLDER_ID, folderID));
 	}
 	
 	@Override

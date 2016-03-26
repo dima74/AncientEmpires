@@ -37,7 +37,7 @@ public class ActionUnitAttack extends ActionFromTo
 	private boolean checkAttackCell()
 	{
 		Cell targetCell = game.fieldCells[targetI][targetJ];
-		return !targetCell.isDestroy && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+		return targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 	}
 	
 	private boolean checkAttackUnit()
@@ -63,10 +63,7 @@ public class ActionUnitAttack extends ActionFromTo
 		Cell targetCell = game.fieldCells[targetI][targetJ];
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
-			
-		targetCell.isDestroy = true;
-		targetCell.player = null;
-		
+		targetCell.destroy();
 		unit.setTurn();
 	}
 	

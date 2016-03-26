@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import ru.ancientempires.Extras;
 import ru.ancientempires.Localization;
 import ru.ancientempires.PlayerType;
 import ru.ancientempires.R;
@@ -104,9 +105,10 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choose_view);
 		
-		final String gameID = getIntent().getStringExtra(GameActivity.EXTRA_GAME_ID);
-		boolean useLastTeams = getIntent().getBooleanExtra(GameActivity.EXTRA_USE_LAST_TEAMS, false);
+		final String gameID = getIntent().getStringExtra(Extras.GAME_ID);
+		boolean useLastTeams = getIntent().getBooleanExtra(Extras.USE_LAST_TEAMS, false);
 		path = Client.getGame(gameID);
+		setTitle(path.name);
 		
 		int unitsLimit = -1;
 		try
@@ -222,8 +224,15 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-		startActivity(new Intent(this, GameActivity.class)
-				.putExtra(GameActivity.EXTRA_GAME_ID, path.gameID));
+		moveTo(GameActivity.class, new Intent().putExtra(Extras.GAME_ID, path.gameID));
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		moveTo(LevelMenuActivity.class, new Intent()
+				.putExtra(Extras.FOLDER_ID, path.getFolderID())
+				.putExtra(Extras.FOCUS_ON, path.gameID));
 	}
 	
 }
