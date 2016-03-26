@@ -16,10 +16,12 @@ public class CellType
 	public UnitType[]	buyTypes;
 	public Unit[][]		buyUnits;
 						
-	public boolean		isCapturing;
 	public boolean		isHealing;
+	public boolean		isCapturing;
 	public CellType		destroyingType;
 	public CellType		repairType;
+						
+	public CellTemplate	template;
 						
 	// Эти поля используются только для копирования в клеточку
 	public boolean		isCaptureDefault;

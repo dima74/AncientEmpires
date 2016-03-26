@@ -66,6 +66,7 @@ public class EditorActivity extends BaseActivity
 	protected void onStop()
 	{
 		super.onStop();
+		setContentView(null);
 		thread.isRunning = false;
 		if (EditorChooseDialog.dialog != null)
 		{

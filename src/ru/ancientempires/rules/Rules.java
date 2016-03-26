@@ -69,11 +69,13 @@ public class Rules
 	
 	public CellType getCellType(String name)
 	{
+		MyAssert.a(cellTypesMap.containsKey(name));
 		return cellTypesMap.get(name);
 	}
 	
 	public CellGroup getCellGroup(String name)
 	{
+		MyAssert.a(cellGroupsMap.containsKey(name));
 		return cellGroupsMap.get(name);
 	}
 	

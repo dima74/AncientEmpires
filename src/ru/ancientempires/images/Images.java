@@ -19,7 +19,7 @@ public class Images extends IImages
 	// public float baseMulti = 1.0f; // 4.5f / 3.0f;
 	public int		bitmapSize	= 24;
 	public Rules	rules;
-	
+					
 	public void setRules(Rules rules)
 	{
 		this.rules = rules;
@@ -37,37 +37,37 @@ public class Images extends IImages
 	public ArrowsImages			arrows		= new ArrowsImages();
 	public StatusesImages		statuses	= new StatusesImages();
 	public SmokeImages			smoke		= new SmokeImages();
-	
-	public Bitmap		amountGold;
-	public Bitmap		amountUnits;
-	public Bitmap		attack;
-	public Bitmap		defence;
-	public Bitmap		levelIncrease;
-	public Bitmap		levelUp;
-	public FewBitmaps	tombstone;
-	public Bitmap		gameover;
-	
-	public int	amountGoldH;
-	public int	amountGoldW;
-	public int	amountUnitsH;
-	public int	amountUnitsW;
-	
-	public int	levelUpH;
-	public int	levelUpW;
-	
+											
+	public Bitmap				amountGold;
+	public Bitmap				amountUnits;
+	public Bitmap				attack;
+	public Bitmap				defence;
+	public Bitmap				levelIncrease;
+	public Bitmap				levelUp;
+	public FewBitmaps			tombstone;
+	public Bitmap				gameover;
+								
+	public int					amountGoldH;
+	public int					amountGoldW;
+	public int					amountUnitsH;
+	public int					amountUnitsW;
+								
+	public int					levelUpH;
+	public int					levelUpW;
+								
 	@Override
 	public void preload(ImagesLoader loader) throws IOException
 	{
-		cell.preload(loader.getImagesLoader("cells/"));
-		unit.preload(loader.getImagesLoader("units/"));
-		action.preload(loader.getImagesLoader("actions/"));
-		smallNumber.preload(loader.getImagesLoader("numbers/"));
-		bigNumber.preload(loader.getImagesLoader("bigNumbers/"));
-		sparks.preload(loader.getImagesLoader("sparks/"));
-		cursor.preload(loader.getImagesLoader("cursors/"));
-		arrows.preload(loader.getImagesLoader("arrows/"));
-		statuses.preload(loader.getImagesLoader("statuses/"));
-		smoke.preload(loader.getImagesLoader("smoke/"));
+		cell.preload(loader.getImagesLoader("cells"));
+		unit.preload(loader.getImagesLoader("units"));
+		action.preload(loader.getImagesLoader("actions"));
+		smallNumber.preload(loader.getImagesLoader("numbers"));
+		bigNumber.preload(loader.getImagesLoader("bigNumbers"));
+		sparks.preload(loader.getImagesLoader("sparks"));
+		cursor.preload(loader.getImagesLoader("cursors"));
+		arrows.preload(loader.getImagesLoader("arrows"));
+		statuses.preload(loader.getImagesLoader("statuses"));
+		smoke.preload(loader.getImagesLoader("smoke"));
 		
 		// self
 		amountGold = loader.loadImage("amountGold.png");
@@ -77,7 +77,7 @@ public class Images extends IImages
 		levelIncrease = loader.loadImage("levelIncrease.png");
 		levelUp = loader.loadImage("levelUp.png");
 		
-		tombstone = new FewBitmaps().setBitmaps(loader, "tombstone.png");
+		tombstone = new FewBitmaps(loader, "tombstone.png");
 		attack = loader.loadImage("gameover.png");
 		
 		amountGoldH = amountGold.getHeight();

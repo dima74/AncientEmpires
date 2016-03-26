@@ -20,6 +20,7 @@ import ru.ancientempires.bonuses.BonusCreator;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.CellGroup;
+import ru.ancientempires.model.CellTemplate;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.UnitType;
@@ -27,9 +28,10 @@ import ru.ancientempires.model.UnitType;
 public class RulesLoader
 {
 	
-	private FileLoader	loader;
-	private Rules		rules;
-						
+	private FileLoader					loader;
+	public Rules						rules;
+	public JsonDeserializationContext	context;
+										
 	public RulesLoader(FileLoader loader)
 	{
 		this.loader = loader;
@@ -57,6 +59,7 @@ public class RulesLoader
 		@Override
 		public Rules deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
+			RulesLoader.this.context = context;
 			JsonObject object = json.getAsJsonObject();
 			
 			rules = new Rules();
@@ -78,8 +81,8 @@ public class RulesLoader
 					rules.setRanges(context.deserialize(object.get("ranges"), Range[].class));
 				
 				А вот так везде:
-					Rules rules = context.deserialize(object.get("ranges"), Range[].class);
-					rules.setRanges(rules);
+					Range[] ranges = context.deserialize(object.get("ranges"), Range[].class);
+					rules.setRanges(ranges);
 				
 				Имхо очень прикольно =)
 			*/
@@ -159,11 +162,11 @@ public class RulesLoader
 			type.cost = element == null ? baseType.cost : element.getAsInt();
 			
 			element = object.get("repairTypes");
-			type.repairTypes = element == null ? baseType.repairTypes : getCellTypes(element, context);
+			type.repairTypes = element == null ? baseType.repairTypes : getCellTypes(element);
 			element = object.get("captureTypes");
-			type.captureTypes = element == null ? baseType.captureTypes : getCellTypes(element, context);
+			type.captureTypes = element == null ? baseType.captureTypes : getCellTypes(element);
 			element = object.get("destroyingTypes");
-			type.destroyingTypes = element == null ? baseType.destroyingTypes : getCellTypes(element, context);
+			type.destroyingTypes = element == null ? baseType.destroyingTypes : getCellTypes(element);
 			
 			element = object.get("attackRange");
 			type.attackRange = element == null ? baseType.attackRange : getRange(element);
@@ -193,7 +196,7 @@ public class RulesLoader
 		}
 	}
 	
-	public CellType[] getCellTypes(JsonElement element, JsonDeserializationContext context)
+	public CellType[] getCellTypes(JsonElement element)
 	{
 		String[] names = context.deserialize(element, String[].class);
 		CellType[] types = new CellType[names.length];
@@ -215,7 +218,7 @@ public class RulesLoader
 			JsonObject object = json.getAsJsonObject();
 			CellGroup group = rules.getCellGroup(object.get("name").getAsString());
 			group.baseType = context.deserialize(object.get("baseType"), CellType.class);
-			group.setTypes(getCellTypes(object.get("types"), context));
+			group.setTypes(getCellTypes(object.get("types")));
 			return group;
 		}
 	}
@@ -237,27 +240,29 @@ public class RulesLoader
 				
 			JsonElement element;
 			
-			element = object.get("steps");
-			type.steps = element == null ? baseType.steps : element.getAsInt();
-			element = object.get("earn");
-			type.earn = element == null ? baseType.earn : element.getAsInt();
-			element = object.get("defense");
-			type.defense = element == null ? baseType.defense : element.getAsInt();
-			element = object.get("buyTypes");
-			type.buyTypes = element == null ? baseType.buyTypes : getUnitTypes(element, context);
-			element = object.get("isCapturing");
-			type.isCapturing = element == null ? baseType.isCapturing : element.getAsBoolean();
+			if ((element = object.get("steps")) != null)
+				type.steps = element.getAsInt();
+			if ((element = object.get("earn")) != null)
+				type.earn = element.getAsInt();
+			if ((element = object.get("defense")) != null)
+				type.defense = element.getAsInt();
+			if ((element = object.get("buyTypes")) != null)
+				type.buyTypes = getUnitTypes(element);
+			if ((element = object.get("isHealing")) != null)
+				type.isHealing = element.getAsBoolean();
+			if ((element = object.get("isCapturing")) != null)
+				type.isCapturing = element.getAsBoolean();
 			if ((element = object.get("destroyingType")) != null)
 				type.destroyingType = rules.getCellType(element.getAsString());
 			if ((element = object.get("repairType")) != null)
 				type.repairType = rules.getCellType(element.getAsString());
-			element = object.get("isHeal");
-			type.isHealing = element == null ? baseType.isHealing : element.getAsBoolean();
+			if ((element = object.get("template")) != null)
+				type.template = CellTemplate.fromJSON(element, RulesLoader.this, type);
 			return type;
 		}
 	}
 	
-	public UnitType[] getUnitTypes(JsonElement element, JsonDeserializationContext context)
+	public UnitType[] getUnitTypes(JsonElement element)
 	{
 		String[] names = context.deserialize(element, String[].class);
 		UnitType[] types = new UnitType[names.length];

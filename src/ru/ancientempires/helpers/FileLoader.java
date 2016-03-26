@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -43,6 +45,8 @@ public class FileLoader
 		baseDirectory = loader.baseDirectory;
 		assets = loader.assets;
 		this.prefix = loader.prefix + prefix;
+		if (!this.prefix.endsWith("/"))
+			this.prefix += "/";
 	}
 	
 	public File getFile(String name)
@@ -120,6 +124,18 @@ public class FileLoader
 	public void loadLocalization() throws IOException
 	{
 		Client.client.localization.loadFull(this);
+	}
+	
+	public String[] list(String name) throws IOException
+	{
+		ArrayList<String> list = new ArrayList<>();
+		String[] list1 = getFile(name).list();
+		if (list1 != null)
+			list.addAll(Arrays.asList(list1));
+		String[] list2 = assets.list(prefix + name);
+		if (list2 != null)
+			list.addAll(Arrays.asList(list2));
+		return list.toArray(new String[0]);
 	}
 	
 	@Override

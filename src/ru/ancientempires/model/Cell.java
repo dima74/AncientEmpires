@@ -14,13 +14,14 @@ public class Cell extends IGameHandler
 	public int		j;
 					
 	// только для захватываемых клеточек
-	// public boolean isCapture;
 	public Player	player;
 					
 	public boolean isCapture()
 	{
 		return player != null;
 	}
+	
+	public int specialization;
 	
 	// Для редактора карт
 	public Cell(Game game, CellType type)
@@ -110,7 +111,7 @@ public class Cell extends IGameHandler
 	@Override
 	public String toString()
 	{
-		return type.name;
+		return String.format("%s (%d %d)", type.name, i, j);
 	}
 	
 }

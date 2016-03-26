@@ -137,11 +137,11 @@ public class RulesSaver
 			if (type == defaultType || type.cost != defaultType.cost)
 				result.addProperty("cost", type.cost);
 			if (type == defaultType || !type.repairTypes.equals(defaultType.repairTypes))
-				result.add("repairTypes", toArrray(type.repairTypes));
+				result.add("repairTypes", toArray(type.repairTypes));
 			if (type == defaultType || !type.captureTypes.equals(defaultType.captureTypes))
-				result.add("captureTypes", toArrray(type.captureTypes));
+				result.add("captureTypes", toArray(type.captureTypes));
 			if (type == defaultType || !type.destroyingTypes.equals(defaultType.destroyingTypes))
-				result.add("destroyingTypes", toArrray(type.destroyingTypes));
+				result.add("destroyingTypes", toArray(type.destroyingTypes));
 			if (type == defaultType || type.attackRange != defaultType.attackRange)
 				result.addProperty("attackRange", type.attackRange.name);
 			if (type == defaultType || type.attackRangeReverse != defaultType.attackRangeReverse)
@@ -166,7 +166,7 @@ public class RulesSaver
 		}
 	}
 	
-	public JsonArray toArrray(CellType[] types)
+	public JsonArray toArray(CellType[] types)
 	{
 		JsonArray array = new JsonArray();
 		for (CellType type : types)
@@ -182,7 +182,7 @@ public class RulesSaver
 			JsonObject result = new JsonObject();
 			result.addProperty("name", group.name);
 			result.add("baseType", context.serialize(group.baseType));
-			result.add("types", toArrray(group.types));
+			result.add("types", toArray(group.types));
 			return result;
 		}
 	}
@@ -205,20 +205,22 @@ public class RulesSaver
 			if (type == defaultType || type.defense != defaultType.defense)
 				result.addProperty("defense", type.defense);
 			if (type == defaultType || type.buyTypes != defaultType.buyTypes)
-				result.add("buyTypes", toArrray(type.buyTypes));
+				result.add("buyTypes", toArray(type.buyTypes));
+			if (type == defaultType || type.isHealing != defaultType.isHealing)
+				result.addProperty("isHealing", type.isHealing);
 			if (type == defaultType || type.isCapturing != defaultType.isCapturing)
 				result.addProperty("isCapturing", type.isCapturing);
 			if (type.destroyingType != null && (type == defaultType || type.destroyingType != defaultType.destroyingType))
 				result.addProperty("destroyingType", type.destroyingType.name);
 			if (type.repairType != null && (type == defaultType || type.repairType != defaultType.repairType))
 				result.addProperty("repairType", type.repairType.name);
-			if (type == defaultType || type.isHealing != defaultType.isHealing)
-				result.addProperty("isHeal", type.isHealing);
+			if (type.template != null)
+				result.add("template", type.template.toJSON(RulesSaver.this));
 			return result;
 		}
 	}
 	
-	public JsonArray toArrray(UnitType[] types)
+	public JsonArray toArray(UnitType[] types)
 	{
 		JsonArray array = new JsonArray();
 		for (UnitType type : types)

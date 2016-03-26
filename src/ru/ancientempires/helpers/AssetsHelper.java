@@ -35,6 +35,8 @@ public class AssetsHelper
 	
 	public String[] list(String name) throws IOException
 	{
+		if (name.endsWith("/"))
+			name = name.substring(0, name.length() - 1);
 		return assets.list(name);
 	}
 	

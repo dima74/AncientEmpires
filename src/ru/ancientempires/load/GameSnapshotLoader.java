@@ -214,6 +214,11 @@ public class GameSnapshotLoader
 			game.fieldCells[i][j].load(input, game);
 		}
 		input.close();
+		
+		for (Cell[] line : game.fieldCells)
+			for (Cell cell : line)
+				if (cell.type.template != null)
+					cell.type.template.update(cell);
 	}
 	
 	public void loadUnits() throws Exception

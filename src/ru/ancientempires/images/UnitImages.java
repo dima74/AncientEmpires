@@ -73,7 +73,7 @@ public class UnitImages extends IImages
 				Bitmap[] bitmaps = new Bitmap[imageNames.length];
 				for (int j = 0; j < bitmaps.length; j++)
 					bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
-				unitBitmaps[type][colorI] = new FewBitmaps().setBitmaps(bitmaps);
+				unitBitmaps[type][colorI] = new FewBitmaps(bitmaps);
 			}
 			reader.endObject();
 		}

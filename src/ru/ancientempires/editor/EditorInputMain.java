@@ -78,7 +78,19 @@ public class EditorInputMain implements Callback
 				game.setUnit(i, j, new Unit(((EditorStructUnit) struct).unit));
 		}
 		else
+		{
 			game.fieldCells[i][j] = new Cell(((EditorStructCell) struct).cell);
+			game.fieldCells[i][j].i = i;
+			game.fieldCells[i][j].j = j;
+			for (int ni = i - 1; ni <= i + 1; ni++)
+				for (int nj = j - 1; nj <= j + 1; nj++)
+					if (game.checkCoordinates(ni, nj))
+					{
+						Cell cell = game.fieldCells[ni][nj];
+						if (cell.type.template != null)
+							cell.type.template.update(cell);
+					}
+		}
 	}
 	
 	public void setStruct(int i, int color)

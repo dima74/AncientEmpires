@@ -43,6 +43,8 @@ public class CellImages extends IImages
 									
 	public FewBitmaps getCellBitmap(Cell cell, boolean dual)
 	{
+		if (cell.type.template != null)
+			return dual ? null : cell.type.template.get(cell);
 		if (dual)
 		{
 			CellBitmap cellBitmap = cellBitmapsDual[cell.type.ordinal];
@@ -54,7 +56,7 @@ public class CellImages extends IImages
 	
 	public boolean containsBitmap(CellType type)
 	{
-		return cellBitmaps[type.ordinal] != null;
+		return type.template != null || cellBitmaps[type.ordinal] != null;
 	}
 	
 	public boolean isCellSmokes(Cell cell)
@@ -70,7 +72,6 @@ public class CellImages extends IImages
 		
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
-		
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
 		for (int i = 0; reader.peek() == JsonToken.BEGIN_OBJECT; i++)
@@ -86,7 +87,7 @@ public class CellImages extends IImages
 			Bitmap[] defaultBitmaps = new Bitmap[imageNames.length];
 			for (int j = 0; j < defaultBitmaps.length; j++)
 				defaultBitmaps[j] = loader.loadImage("default/" + imageNames[j]);
-			cellBitmap.defaultBitmap = new FewBitmaps().setBitmaps(defaultBitmaps);
+			cellBitmap.defaultBitmap = new FewBitmaps(defaultBitmaps);
 			
 			// colorBitmaps
 			if (type.isCapturing)
@@ -97,7 +98,7 @@ public class CellImages extends IImages
 					Bitmap[] bitmaps = new Bitmap[imageNames.length];
 					for (int j = 0; j < bitmaps.length; j++)
 						bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
-					cellBitmap.colorBitmaps[colorI] = new FewBitmaps().setBitmaps(bitmaps);
+					cellBitmap.colorBitmaps[colorI] = new FewBitmaps(bitmaps);
 				}
 			}
 			
@@ -116,8 +117,11 @@ public class CellImages extends IImages
 			reader.endObject();
 		}
 		reader.endArray();
-		
 		reader.endObject();
+		
+		for (CellType type : rules.cellTypes)
+			if (type.template != null)
+				type.template.load(loader, type);
 	}
 	
 	@Override

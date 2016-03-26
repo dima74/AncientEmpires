@@ -116,4 +116,10 @@ public class GamePath
 		return Client.client.allFolders.get(gameID.subSequence(0, gameID.lastIndexOf('.')));
 	}
 	
+	@Override
+	public String toString()
+	{
+		return String.format("%s (%s)", gameID, name);
+	}
+	
 }
