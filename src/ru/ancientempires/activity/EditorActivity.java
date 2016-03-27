@@ -1,6 +1,7 @@
 package ru.ancientempires.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import ru.ancientempires.Extras;
 import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.client.Client;
@@ -66,7 +67,7 @@ public class EditorActivity extends BaseActivity
 	protected void onStop()
 	{
 		super.onStop();
-		setContentView(null);
+		setContentView(new View(this));
 		thread.isRunning = false;
 		if (EditorChooseDialog.dialog != null)
 		{

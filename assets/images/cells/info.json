@@ -126,62 +126,6 @@
 		},
 
 		{
-			"type": "WAY_DOWN_UP",
-			"images": 
-			[
-				"ways/way_down_up.png"
-			]
-		},
-
-		{
-			"type": "WAY_LEFT_DOWN",
-			"images": 
-			[
-				"ways/way_left_down.png"
-			]
-		},
-
-		{
-			"type": "WAY_LEFT_RIGHT",
-			"images": 
-			[
-				"ways/way_left_right.png"
-			]
-		},
-
-		{
-			"type": "WAY_LEFT_RIGHT_DOWN_UP",
-			"images": 
-			[
-				"ways/way_left_right_down_up.png"
-			]
-		},
-
-		{
-			"type": "WAY_LEFT_UP",
-			"images": 
-			[
-				"ways/way_left_up.png"
-			]
-		},
-
-		{
-			"type": "WAY_RIGHT_DOWN",
-			"images": 
-			[
-				"ways/way_right_down.png"
-			]
-		},
-
-		{
-			"type": "WAY_RIGHT_UP",
-			"images": 
-			[
-				"ways/way_right_up.png"
-			]
-		},
-
-		{
 			"type": "WATER_WAY_HORIZONTAL",
 			"images": 
 			[

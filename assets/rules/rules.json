@@ -37,13 +37,7 @@
 		"CAMP",
 		"TEMPLE",
 		"CITADEL",
-		"WAY_DOWN_UP",
-		"WAY_LEFT_DOWN",
-		"WAY_LEFT_RIGHT",
-		"WAY_LEFT_RIGHT_DOWN_UP",
-		"WAY_LEFT_UP",
-		"WAY_RIGHT_DOWN",
-		"WAY_RIGHT_UP",
+		"WAY",
 		"WATER_WAY_HORIZONTAL",
 		"WATER_WAY_VERTICAL",
 		"WATER",
@@ -51,7 +45,6 @@
 		"DEFAULT_GROUP",
 		"HEALING_GROUP",
 		"BUILDINGS_GROUP",
-		"WAY_GROUP",
 		"WATER_WAY_GROUP",
 		"WATER_GROUP"
 	],
@@ -59,7 +52,6 @@
 		"DEFAULT",
 		"HEALING",
 		"BUILDINGS",
-		"WAY",
 		"WATER_WAY",
 		"WATER"
 	],
@@ -396,23 +388,6 @@
 			]
 		},
 		{
-			"name": "WAY",
-			"baseType": {
-				"name": "WAY_GROUP"
-			},
-			"types": [
-				"WAY_DOWN_UP",
-				"WAY_LEFT_DOWN",
-				"WAY_LEFT_RIGHT",
-				"WAY_LEFT_RIGHT_DOWN_UP",
-				"WAY_LEFT_UP",
-				"WAY_RIGHT_DOWN",
-				"WAY_RIGHT_UP",
-				"WATER_WAY_HORIZONTAL",
-				"WATER_WAY_VERTICAL"
-			]
-		},
-		{
 			"name": "WATER_WAY",
 			"baseType": {
 				"name": "WATER_WAY_GROUP",
@@ -522,25 +497,18 @@
 			"name": "CITADEL"
 		},
 		{
-			"name": "WAY_DOWN_UP"
-		},
-		{
-			"name": "WAY_LEFT_DOWN"
-		},
-		{
-			"name": "WAY_LEFT_RIGHT"
-		},
-		{
-			"name": "WAY_LEFT_RIGHT_DOWN_UP"
-		},
-		{
-			"name": "WAY_LEFT_UP"
-		},
-		{
-			"name": "WAY_RIGHT_DOWN"
-		},
-		{
-			"name": "WAY_RIGHT_UP"
+			"name": "WAY",
+			"template": {
+				"type": "WAY",
+				"friends": [
+					"WATER_WAY_VERTICAL",
+					"WATER_WAY_HORIZONTAL"
+				],
+				"friendsUp": [
+					"TEMPLE",
+					"CASTLE"
+				]
+			}
 		},
 		{
 			"baseType": "WATER_WAY_GROUP",
@@ -556,10 +524,11 @@
 			"template": {
 				"type": "WATER",
 				"friends": [
+					"WATER_SPARKS",
 					"WATER_WAY_VERTICAL",
-					"WATER_WAY_HORIZONTAL",
-					"WATER_SPARKS"
-				]
+					"WATER_WAY_HORIZONTAL"
+				],
+				"friendsUp": []
 			}
 		},
 		{
@@ -578,9 +547,6 @@
 			"baseType": "HEALING_GROUP",
 			"name": "BUILDINGS_GROUP",
 			"isCapturing": true
-		},
-		{
-			"name": "WAY_GROUP"
 		},
 		{
 			"name": "WATER_WAY_GROUP",

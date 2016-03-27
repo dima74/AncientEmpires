@@ -37,6 +37,15 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_editor_choose);
 		
+		try
+		{
+			Client.client.finishPart1();
+		}
+		catch (InterruptedException e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 		MyAssert.a(Client.client.user != null);
 		setText(R.id.textName, Strings.EDITOR_GAME_NAME);
 		setHint(R.id.textNameEdit, Client.client.getNameForNewGame());
