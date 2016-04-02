@@ -7,9 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.widget.Toast;
-import ru.ancientempires.GameThread;
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
+import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
@@ -114,12 +114,12 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 	@Override
 	public void showTitle(final String text, final Script script)
 	{
-		GameActivity.activity.runOnUiThread(new Runnable()
+		BaseGameActivity.activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				Toast.makeText(GameActivity.activity, text, Toast.LENGTH_SHORT)
+				Toast.makeText(BaseGameActivity.activity, text, Toast.LENGTH_SHORT)
 						.show();
 				new Handler().postDelayed(new Runnable()
 				{
@@ -380,7 +380,7 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 		DrawCameraMove.delta = 6;
 		if (main.infoY != 0)
 			main.infoMove.startShow();
-		GameActivity.activity.invalidateOptionsMenu();
+		BaseGameActivity.activity.invalidateOptionsMenu();
 		script.performAction();
 	}
 	
@@ -388,7 +388,7 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
 		main.isActiveGame = false;
-		GameActivity.activity.invalidateOptionsMenu();
+		BaseGameActivity.activity.invalidateOptionsMenu();
 	}
 	
 	@Override
@@ -414,7 +414,7 @@ public class DrawCampaign extends Draw implements IDrawCampaign
 	@Override
 	public void updateCampaign()
 	{
-		GameThread.thread.needUpdateCampaign = true;
+		postUpdateCampaign();
 	}
 	
 }

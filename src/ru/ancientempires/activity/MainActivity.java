@@ -8,7 +8,7 @@ import ru.ancientempires.MenuActions;
 public class MainActivity extends BaseListActivity
 {
 	
-	public static String			gameToStart	= "editor";
+	public static String			gameToStart	= "skirmish";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]

@@ -2,7 +2,6 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.GameThread;
 import ru.ancientempires.Point;
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
@@ -12,12 +11,12 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	
 	public static int	framesForCell	= 8;							// ii-2, player-4
 	public int			framesForCellMy	= DrawUnitMove.framesForCell;
-	
+										
 	public UnitBitmap	unitBitmap;
 	public Point[]		points;
 	public int			targetI;
 	public int			targetJ;
-	
+						
 	private void initFromEnd()
 	{
 		unitBitmap = new UnitBitmap(game.getUnit(targetI, targetJ));
@@ -91,7 +90,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 			main.unitsDead.keep[targetI][targetJ] = false;
 		}
 		unitBitmap.hanlers = null;
-		GameThread.thread.needUpdateCampaign = true;
+		postUpdateCampaign();
 		destroy();
 	}
 	

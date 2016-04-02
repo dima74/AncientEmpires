@@ -7,19 +7,20 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 import ru.ancientempires.MyColor;
-import ru.ancientempires.draws.DrawInfo;
+import ru.ancientempires.activity.EditorActivity;
 import ru.ancientempires.images.Images;
 
 public class EditorChooseView extends View implements Callback
 {
 	
 	public static float		mScale			= 2.0f;
-	public static int		mA				= (int) (Images.get().bitmapSize * DrawInfo.mScale);
+	public static int		mA				= (int) (Images.get().bitmapSize * mScale);
 	public static int		A				= Images.get().bitmapSize;
 											
 	private float			h;
 	private float			w;
 							
+	private EditorActivity	activity;
 	private MyColor[]		myColors;
 	private DrawChoose		choose;
 	private int				selectedStart;
@@ -29,9 +30,10 @@ public class EditorChooseView extends View implements Callback
 	private int				xDivider		= 10;
 	private Paint			paintDivider	= new Paint();
 											
-	public EditorChooseView(Context context, EditorStruct[] structs, MyColor[] myColors, int selected)
+	public EditorChooseView(Context context, EditorActivity activity, EditorStruct[] structs, MyColor[] myColors, int selected)
 	{
 		super(context);
+		this.activity = activity;
 		this.myColors = myColors;
 		this.structs = structs;
 		selectedStart = selected;
@@ -71,7 +73,8 @@ public class EditorChooseView extends View implements Callback
 			structs[i].x = xFirst + A / 2 + i % structsPerLine * (A + wBetween);
 		}
 		
-		EditorThread.thread.view = this;
+		// для postInvalidate()
+		activity.getThread().view = this;
 	}
 	
 	@Override
@@ -83,8 +86,8 @@ public class EditorChooseView extends View implements Callback
 		{
 			int i = EditorStruct.getNearest(structs, event.getY() / mScale, event.getX() / mScale);
 			EditorDrawMain.main.inputMain.setStruct(i, choose == null ? 0 : choose.selected);
-			EditorChooseDialog.dialog.dismiss();
-			EditorChooseDialog.dialog = null;
+			activity.dialog.dismiss();
+			activity.dialog = null;
 			return true;
 		}
 		return false;

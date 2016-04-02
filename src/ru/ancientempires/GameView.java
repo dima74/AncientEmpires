@@ -1,23 +1,20 @@
 package ru.ancientempires;
 
-import android.content.Context;
 import android.view.SurfaceHolder;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activity.BaseGameActivity;
 
 public class GameView extends BaseView implements SurfaceHolder.Callback
 {
 	
-	public GameView(Context context)
+	public GameView(BaseGameActivity activity)
 	{
-		super(context);
+		super(activity);
 	}
 	
 	@Override
-	public void surfaceCreated(SurfaceHolder holder)
+	public BaseThread createThread()
 	{
-		super.surfaceCreated(holder);
-		thread = GameActivity.activity.thread = new GameThread(getHolder());
-		thread.start();
+		return new GameThread(activity, getHolder());
 	}
 	
 }

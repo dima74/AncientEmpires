@@ -1,7 +1,8 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
-import ru.ancientempires.BaseView;
+import ru.ancientempires.activity.BaseGameActivity;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.ArrowsImages;
@@ -14,8 +15,9 @@ import ru.ancientempires.images.SmokeImages;
 import ru.ancientempires.images.SparksImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.UnitImages;
+import ru.ancientempires.model.Game;
 
-public class Draw extends IDraw
+public class Draw
 {
 	
 	public Images Images()
@@ -73,16 +75,31 @@ public class Draw extends IDraw
 		return Client.client.images.smoke;
 	}
 	
+	public DrawMain	main		= DrawMain.main;
+	public Game		game		= BaseGameActivity.activity.game;
 	public float	mapScale	= 2;
 	public int		A			= Images().bitmapSize;
 	public float	fA			= Images().bitmapSize * mapScale;
 	public float	a			= A / 24.0f;
-	public int		h			= BaseView.h;
-	public int		w			= BaseView.w;
 								
+	public int h()
+	{
+		return BaseGameActivity.activity.getView().h;
+	}
+	
+	public int w()
+	{
+		return BaseGameActivity.activity.getView().w;
+	}
+	
 	public int iFrame()
 	{
 		return main.iFrame;
+	}
+	
+	public void postUpdateCampaign()
+	{
+		GameActivity.activity.postUpdateCampaign();
 	}
 	
 	public boolean isEnd()

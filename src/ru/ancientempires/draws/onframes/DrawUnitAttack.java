@@ -1,7 +1,6 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
-import android.widget.Toast;
 import ru.ancientempires.Strings;
 import ru.ancientempires.action.result.AttackResult;
 
@@ -66,7 +65,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 					.increaseFrameStart(framesBeforePartTwo + 4);
 			add(levelUp);
 			if (result.isPromotion)
-				add(new DrawToast(String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name), Toast.LENGTH_SHORT)
+				add(new DrawToast(String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name))
 						.setFrameStart(levelUp.frameEnd + 1));
 		}
 		

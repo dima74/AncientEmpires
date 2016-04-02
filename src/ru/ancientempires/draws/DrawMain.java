@@ -6,7 +6,6 @@ import java.util.Random;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import ru.ancientempires.BaseDrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.draws.inputs.InputPlayer;
 import ru.ancientempires.draws.onframes.DrawBlackScreen;
@@ -90,8 +89,8 @@ public class DrawMain extends BaseDrawMain
 	@Override
 	public void setVisibleMapSize()
 	{
-		visibleMapH = h - info.h;
-		visibleMapW = w;
+		visibleMapH = h() - info.h;
+		visibleMapW = w();
 	}
 	
 	public DrawMain()
@@ -125,7 +124,7 @@ public class DrawMain extends BaseDrawMain
 		canvas.restore();
 		
 		canvas.save();
-		canvas.translate(0, h - info.h);
+		canvas.translate(0, h() - info.h);
 		infoNull.draw(canvas);
 		infoMove.draw(canvas);
 		canvas.translate(0, infoY);
@@ -156,7 +155,7 @@ public class DrawMain extends BaseDrawMain
 	{
 		// проверка по иксу немного странная ---
 		// ведь GameView (пока что) всегда имеет ширину равный ширине экрана
-		if (!isActiveGame || touchY < 0 || touchX < 0 || touchY > h - info.h || touchX > w)
+		if (!isActiveGame || touchY < 0 || touchX < 0 || touchY > h() - info.h || touchX > w())
 			return;
 		if (action.isActive())
 		{

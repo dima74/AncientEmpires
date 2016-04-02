@@ -1,24 +1,22 @@
 package ru.ancientempires.editor;
 
-import android.content.Context;
-import android.view.SurfaceHolder;
+import ru.ancientempires.BaseThread;
 import ru.ancientempires.BaseView;
+import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.EditorActivity;
 
 public class EditorView extends BaseView
 {
 	
-	public EditorView(Context context)
+	public EditorView(BaseGameActivity activity)
 	{
-		super(context);
+		super(activity);
 	}
 	
 	@Override
-	public void surfaceCreated(SurfaceHolder holder)
+	public BaseThread createThread()
 	{
-		super.surfaceCreated(holder);
-		thread = EditorActivity.activity.thread = new EditorThread(getHolder());
-		thread.start();
+		return new EditorThread((EditorActivity) activity, getHolder());
 	}
 	
 }

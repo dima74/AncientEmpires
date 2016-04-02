@@ -423,7 +423,7 @@ public class II extends GameHandler
 		ArrayList<Cell> cells = new ArrayList<Cell>();
 		for (Cell[] line : fieldCells)
 			for (Cell cell : line)
-				if (cell.type.isCapturing)
+				if (cell.type.isCapturing || cell.type.repairType != null || cell.type.destroyingType != null)
 					cells.add(cell);
 		buildings = cells.toArray(new Cell[0]);
 		mapAlphaData = new int[w][h];

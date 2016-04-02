@@ -1,6 +1,7 @@
 package ru.ancientempires;
 
 import android.view.SurfaceHolder;
+import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
@@ -10,17 +11,16 @@ import ru.ancientempires.framework.MyAssert;
 public class GameThread extends BaseThread
 {
 	
-	public static GameThread	thread;
-								
-	public InputMain			inputMain;
-	volatile public boolean		needUpdateCampaign	= false;
-													
-	public GameThread(SurfaceHolder surfaceHolder)
+	// public static GameThread thread;
+	
+	public InputMain		inputMain;
+	volatile public boolean	needUpdateCampaign	= false;
+												
+	public GameThread(BaseGameActivity activity, SurfaceHolder surfaceHolder)
 	{
-		super(surfaceHolder);
-		// MyAssert.a(GameThread.thread == null || !GameThread.thread.isAlive());
-		MyAssert.a(GameThread.thread == null);
-		GameThread.thread = this;
+		super(activity, surfaceHolder);
+		// MyAssert.a(GameThread.thread == null);
+		// GameThread.thread = this;
 		
 		drawMain = new DrawMain();
 		inputMain = new InputMain((DrawMain) drawMain);
@@ -47,7 +47,7 @@ public class GameThread extends BaseThread
 	@Override
 	public void afterRun()
 	{
-		thread = null;
+		// thread = null;
 		try
 		{
 			Client.client.stopGame();

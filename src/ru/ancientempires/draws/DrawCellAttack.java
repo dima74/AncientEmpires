@@ -1,7 +1,6 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
-import ru.ancientempires.GameThread;
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
@@ -51,7 +50,7 @@ public class DrawCellAttack extends DrawOnFramesGroup
 	@Override
 	public void onEnd()
 	{
-		GameThread.thread.needUpdateCampaign = true;
+		postUpdateCampaign();
 	}
 	
 }

@@ -14,7 +14,7 @@ public class DrawChoose extends Draw
 											
 	public int				hBeforeBitmap	= mA / 4;
 	public int				h				= mA + hBeforeBitmap * 2;
-	public int				w				= super.w;
+	public int				w				= w();
 											
 	public Callback			callback;
 	public EditorStruct[]	structs;

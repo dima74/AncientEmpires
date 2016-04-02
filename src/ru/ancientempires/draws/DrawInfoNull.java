@@ -8,12 +8,12 @@ import android.graphics.Paint;
 public class DrawInfoNull extends Draw
 {
 	
-	public int	a	= 2;
-	public int	h	= DrawInfo.mA + 8 * 2;
-	public int	w	= super.w;
-	
-	private Bitmap backgroundBitmap;
-	
+	public int		a	= 2;
+	public int		h	= DrawInfo.mA + 8 * 2;
+	public int		w	= w();
+						
+	private Bitmap	backgroundBitmap;
+					
 	public DrawInfoNull()
 	{
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);

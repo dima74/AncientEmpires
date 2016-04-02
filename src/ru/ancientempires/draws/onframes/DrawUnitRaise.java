@@ -1,19 +1,18 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
-import ru.ancientempires.GameThread;
 import ru.ancientempires.images.SparksImages;
 
 public class DrawUnitRaise extends DrawOnFramesGroup
 {
 	
-	private static final int FRAME_LENGTH = SparksImages.get().amountDefault * 3 * 2;
-	
-	private int	targetI;
-	private int	targetJ;
-	
-	private int frameUpdateTargetUnit = -1;
-	
+	private static final int	FRAME_LENGTH			= SparksImages.get().amountDefault * 3 * 2;
+														
+	private int					targetI;
+	private int					targetJ;
+								
+	private int					frameUpdateTargetUnit	= -1;
+														
 	public DrawUnitRaise(int targetI, int targetJ)
 	{
 		this.targetI = targetI;
@@ -23,7 +22,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 		int d = (int) (4 * a);
 		int[] array =
 		{
-				d, A - d
+			d, A - d
 		};
 		
 		draws.clear();
@@ -52,7 +51,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 	@Override
 	public void onEnd()
 	{
-		GameThread.thread.needUpdateCampaign = true;
+		postUpdateCampaign();
 	}
 	
 }

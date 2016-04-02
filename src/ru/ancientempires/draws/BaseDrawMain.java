@@ -1,11 +1,7 @@
-package ru.ancientempires;
+package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import ru.ancientempires.draws.Draw;
-import ru.ancientempires.draws.DrawCells;
-import ru.ancientempires.draws.DrawUnits;
-import ru.ancientempires.draws.DrawUnitsDead;
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
@@ -20,8 +16,6 @@ public abstract class BaseDrawMain extends Draw
 	public void setupStatic()
 	{}
 	
-	public GameView				view;
-								
 	public int					mapH;
 	public int					mapW;
 	public int					visibleMapH;

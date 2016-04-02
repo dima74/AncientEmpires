@@ -28,6 +28,16 @@ public class Client
 	
 	public static GamePath getGame(String gameID)
 	{
+		if (client.init != null)
+			try
+			{
+				client.finishPart1();
+			}
+			catch (InterruptedException e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 		return Client.client.allGames.get(gameID);
 	}
 	

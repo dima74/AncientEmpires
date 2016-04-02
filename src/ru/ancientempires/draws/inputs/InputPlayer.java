@@ -1,6 +1,5 @@
 package ru.ancientempires.draws.inputs;
 
-import ru.ancientempires.GameThread;
 import ru.ancientempires.NoticeUnitBuy;
 import ru.ancientempires.UnitBuyDialog;
 import ru.ancientempires.action.ActionCellBuy;
@@ -94,7 +93,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		new ActionUnitRepair()
 				.setIJ(i, j)
 				.perform(game);
-		GameThread.thread.needUpdateCampaign = true;
+		drawMain.postUpdateCampaign();
 		return true;
 	}
 	
@@ -103,7 +102,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		new ActionUnitCapture()
 				.setIJ(i, j)
 				.perform(game);
-		GameThread.thread.needUpdateCampaign = true;
+		drawMain.postUpdateCampaign();
 		return true;
 	}
 	
@@ -126,7 +125,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 				
 		drawMain.info.update();
 		inputUnit.start(lastTapI, lastTapJ);
-		GameThread.thread.needUpdateCampaign = true;
+		drawMain.postUpdateCampaign();
 	}
 	
 	@Override

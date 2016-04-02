@@ -1,7 +1,7 @@
 package ru.ancientempires.editor;
 
 import android.graphics.Canvas;
-import ru.ancientempires.BaseDrawMain;
+import ru.ancientempires.draws.BaseDrawMain;
 
 public class EditorDrawMain extends BaseDrawMain
 {
@@ -26,8 +26,8 @@ public class EditorDrawMain extends BaseDrawMain
 	@Override
 	public void setVisibleMapSize()
 	{
-		visibleMapH = h - choose.h;
-		visibleMapW = w;
+		visibleMapH = h() - choose.h;
+		visibleMapW = w();
 	}
 	
 	public EditorDrawMain()
@@ -41,14 +41,14 @@ public class EditorDrawMain extends BaseDrawMain
 		super.draw(canvas);
 		canvas.restore();
 		
-		canvas.translate(0, h - choose.h);
+		canvas.translate(0, h() - choose.h);
 		choose.draw(canvas);
 	}
 	
 	@Override
 	public void touch(float touchY, float touchX)
 	{
-		if (choose.touch(touchY - (h - choose.h), touchX))
+		if (choose.touch(touchY - (h() - choose.h), touchX))
 			return;
 		super.touch(touchY, touchX);
 	}

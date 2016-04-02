@@ -1,27 +1,33 @@
 package ru.ancientempires;
 
-import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.framework.Debug;
+import ru.ancientempires.framework.MyAssert;
 
-public class BaseView extends SurfaceView implements SurfaceHolder.Callback
+public abstract class BaseView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public static int		h;
-	public static int		w;
-							
+	public BaseGameActivity	activity;
 	public BaseThread		thread;
 	public GestureDetector	detector;
 							
-	public BaseView(Context context)
+	public int				h;
+	public int				w;
+							
+	private boolean			isSurfaceCreated;
+	private boolean			isSizeChanged;
+							
+	public BaseView(BaseGameActivity activity)
 	{
-		super(context);
+		super(activity);
+		this.activity = activity;
 		Debug.onCreate(this);
 		getHolder().addCallback(this);
-		detector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
+		detector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener()
 		{
 			@Override
 			public boolean onDown(MotionEvent e)
@@ -64,6 +70,9 @@ public class BaseView extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		Debug.onStart(this);
+		MyAssert.a(!isSurfaceCreated);
+		isSurfaceCreated = true;
+		onStart();
 	}
 	
 	@Override
@@ -80,8 +89,22 @@ public class BaseView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
-		BaseView.h = h;
-		BaseView.w = w;
+		MyAssert.a(!isSizeChanged);
+		this.h = h;
+		this.w = w;
+		isSizeChanged = true;
+		onStart();
+	}
+	
+	public abstract BaseThread createThread();
+	
+	public final void onStart()
+	{
+		if (isSizeChanged && isSurfaceCreated)
+		{
+			thread = createThread();
+			thread.start();
+		}
 	}
 	
 }

@@ -8,11 +8,11 @@ import ru.ancientempires.images.Images;
 public class DrawAction extends Draw
 {
 	
-	public static float	mScale	= 2.5f;
-	public static int	mA		= (int) (Images.get().bitmapSize * DrawAction.mScale);
-	
-	public static Paint whiteAlphaPaint = new Paint();
-	
+	public static float	mScale			= 2.5f;
+	public static int	mA				= (int) (Images.get().bitmapSize * DrawAction.mScale);
+										
+	public static Paint	whiteAlphaPaint	= new Paint();
+										
 	static
 	{
 		DrawAction.whiteAlphaPaint.setColor(0xDDFFFFFF);
@@ -20,10 +20,10 @@ public class DrawAction extends Draw
 	
 	private ActionFromTo	action1;
 	private ActionFromTo	action2;
-	
-	public int	h	= ActionImages().h * 2;
-	public int	w	= super.w;
-	
+							
+	public int				h	= ActionImages().h * 2;
+	public int				w	= w();
+								
 	public void start(ActionFromTo action1, ActionFromTo action2)
 	{
 		this.action1 = action1;

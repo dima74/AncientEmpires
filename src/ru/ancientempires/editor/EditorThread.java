@@ -9,17 +9,17 @@ import ru.ancientempires.save.GameSaver;
 public class EditorThread extends BaseThread
 {
 	
-	public static EditorThread	thread;
-								
-	public EditorInputMain		inputMain;
-	public EditorChooseView		view;
-								
-	public EditorThread(SurfaceHolder surfaceHolder)
+	// public static EditorThread thread;
+	
+	public EditorInputMain	inputMain;
+	public EditorChooseView	view;
+							
+	public EditorThread(EditorActivity activity, SurfaceHolder surfaceHolder)
 	{
-		super(surfaceHolder);
+		super(activity, surfaceHolder);
 		
 		drawMain = new EditorDrawMain();
-		inputMain = new EditorInputMain((EditorDrawMain) drawMain);
+		inputMain = new EditorInputMain(activity, (EditorDrawMain) drawMain);
 		((EditorDrawMain) drawMain).setInputMain(inputMain);
 		
 		drawMain.cells.update();
@@ -31,7 +31,7 @@ public class EditorThread extends BaseThread
 	@Override
 	public void beforeRun()
 	{
-		thread = this;
+		// thread = this;
 	}
 	
 	@Override
@@ -44,10 +44,10 @@ public class EditorThread extends BaseThread
 	@Override
 	public void afterRun()
 	{
-		thread = null;
+		// thread = null;
 		try
 		{
-			new GameSaver(EditorActivity.activity.game).saveBaseGame();
+			new GameSaver(activity.game).saveBaseGame();
 		}
 		catch (Exception e)
 		{

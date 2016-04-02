@@ -16,14 +16,17 @@ import ru.ancientempires.rules.Rules;
 public class EditorInputMain implements Callback
 {
 	
-	public Game				game			= EditorActivity.activity.game;
+	public EditorActivity	activity;
+	public Game				game;
 	public EditorDrawMain	drawMain;
 							
 	public int[]			colorsSelected	= new int[3];
 	public EditorStruct[][]	structs			= new EditorStruct[3][];
 											
-	public EditorInputMain(EditorDrawMain drawMain)
+	public EditorInputMain(EditorActivity activity, EditorDrawMain drawMain)
 	{
+		this.activity = activity;
+		game = activity.game;
 		this.drawMain = drawMain;
 		createStructs();
 	}
@@ -62,7 +65,7 @@ public class EditorInputMain implements Callback
 				colors = MyColor.values();
 			if (i == 2)
 				colors = new MyColor[0];
-			new EditorChooseDialog().show(structs[i], colors, colorsSelected[selected]);
+			new EditorChooseDialog().show(activity, structs[i], colors, colorsSelected[selected]);
 		}
 	}
 	

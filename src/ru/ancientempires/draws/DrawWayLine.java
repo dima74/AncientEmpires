@@ -11,7 +11,7 @@ public class DrawWayLine extends Draw
 	
 	static
 	{
-		DrawWayLine.LINE_PAINT.setStrokeWidth(new Draw().A / 3);
+		// DrawWayLine.LINE_PAINT.setStrokeWidth(new Draw().A / 3);
 		DrawWayLine.LINE_PAINT.setColor(0xFFE10052);
 	}
 	

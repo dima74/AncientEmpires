@@ -13,10 +13,10 @@ public class DrawToast extends DrawOnFrames
 	public String	text;
 	public int		duration;
 					
-	public DrawToast(String text, int duration)
+	public DrawToast(String text)
 	{
 		this.text = text;
-		this.duration = duration;
+		duration = Toast.LENGTH_SHORT;
 		animate(1);
 	}
 	

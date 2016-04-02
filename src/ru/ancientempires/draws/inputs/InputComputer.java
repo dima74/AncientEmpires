@@ -2,7 +2,6 @@ package ru.ancientempires.draws.inputs;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.GameThread;
 import ru.ancientempires.action.Action;
 import ru.ancientempires.action.ActionGameEndTurn;
 
@@ -23,7 +22,7 @@ public class InputComputer extends AbstractPlayerInput
 		drawMain.cells.update();
 		drawMain.cellsDual.update();
 		drawMain.info.update();
-		GameThread.thread.needUpdateCampaign = true;
+		drawMain.postUpdateCampaign();
 	}
 	
 	@Override

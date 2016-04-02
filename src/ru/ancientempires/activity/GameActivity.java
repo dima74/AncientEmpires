@@ -1,12 +1,10 @@
 package ru.ancientempires.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import ru.ancientempires.Extras;
 import ru.ancientempires.GameThread;
 import ru.ancientempires.GameView;
@@ -16,38 +14,59 @@ import ru.ancientempires.action.ActionUnitMove;
 import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
-import ru.ancientempires.draws.IDraw;
-import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
-import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 
-public class GameActivity extends BaseActivity
+public class GameActivity extends BaseGameActivity
 {
 	
 	public static GameActivity	activity;
 								
-	public GameView				view;
-	public GameThread			thread;
-	public AlertDialog			dialog;
-								
-	public Game					game;
 	public String				baseGameID;
 	public String				gameID;
 								
+	@Override
+	public GameView getView()
+	{
+		return (GameView) super.getView();
+	}
+	
+	@Override
+	public GameThread getThread()
+	{
+		return (GameThread) super.getThread();
+	}
+	
+	@Override
+	public DrawMain getDrawMain()
+	{
+		return (DrawMain) super.getDrawMain();
+	}
+	
+	public InputMain getInputMain()
+	{
+		return getThread() == null ? null : getThread().inputMain;
+	}
+	
+	public void postUpdateCampaign()
+	{
+		getThread().needUpdateCampaign = true;
+	}
+	
 	public static void startGame(String gameID, boolean useLastTeams)
 	{
-		GameActivity.startGame(GameActivity.activity, gameID, useLastTeams);
+		GameActivity.startGame(BaseGameActivity.activity, gameID, useLastTeams);
 	}
 	
 	public static void startGame(Activity activity, String gameID, boolean useLastTeams)
 	{
-		if (GameActivity.activity != null)
-			GameActivity.activity.finish();
+		if (BaseGameActivity.activity != null)
+			BaseGameActivity.activity.finish();
 			
 		GamePath path = Client.getGame(gameID);
 		
@@ -87,10 +106,9 @@ public class GameActivity extends BaseActivity
 			public void doInBackground() throws Exception
 			{
 				Client.client.finishPart2();
-				if (GameActivity.activity != null)
-					GameActivity.activity.view.thread.join();
+				if (BaseGameActivity.activity != null)
+					BaseGameActivity.activity.view.thread.join();
 				game = Client.client.startGame(gameID == null ? baseGameID : gameID);
-				IDraw.gameStatic = game;
 				gameID = game.path.gameID;
 			}
 			
@@ -98,46 +116,21 @@ public class GameActivity extends BaseActivity
 			public void onPostExecute()
 			{
 				setTitle(game.path.name);
-				GameActivity.activity = GameActivity.this;
+				activity = GameActivity.this;
+				BaseGameActivity.activity = GameActivity.this;
 				view = new GameView(GameActivity.this);
-				thread = (GameThread) view.thread;
 				setContentView(view);
 			};
 		}.start();
 	}
 	
 	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		thread.isRunning = false;
-		if (view != null)
-			((ViewGroup) view.getParent()).removeView(view);
-		if (dialog != null)
-		{
-			dialog.dismiss();
-			dialog = null;
-		}
-		try
-		{
-			thread.join();
-		}
-		catch (InterruptedException e)
-		{
-			MyAssert.a(false);
-			e.printStackTrace();
-		}
-		game = null;
-		IDraw.gameStatic = null;
-	}
-	
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		boolean isActiveGame = thread != null
-				&& thread.drawMain != null
-				&& thread.drawMain.isActiveGame();
+		boolean isActiveGame = getDrawMain() != null
+				&& getThread().drawMain != null
+				&& getThread().drawMain.isActiveGame();
 		if (isActiveGame)
 			getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
@@ -183,10 +176,10 @@ public class GameActivity extends BaseActivity
 								.setIJ(i, j)
 								.setTargetIJ(i, j)
 								.perform(game);
-						((DrawMain) thread.drawMain).units.update();
-						if (thread.inputMain.inputPlayer.inputUnit.isActive)
-							thread.inputMain.inputPlayer.inputUnit.tap(i, j);
-						thread.inputMain.inputPlayer.inputUnit.start(i, j);
+						getDrawMain().units.update();
+						if (getInputMain().inputPlayer.inputUnit.isActive)
+							getInputMain().inputPlayer.inputUnit.tap(i, j);
+						getInputMain().inputPlayer.inputUnit.start(i, j);
 						break;
 					case R.id.action_kill_unit:
 						while (!game.players[1].units.isEmpty())
@@ -194,9 +187,9 @@ public class GameActivity extends BaseActivity
 							Unit unit = game.players[1].units.get(0);
 							new ActionCampaignRemoveUnit().setIJ(unit.i, unit.j).perform(game);
 						}
-						((DrawMain) thread.drawMain).units.update();
+						getDrawMain().units.update();
 						game.campaign.needSaveSnapshot = true;
-						thread.needUpdateCampaign = true;
+						getThread().needUpdateCampaign = true;
 						break;
 					case R.id.action_capture_castle:
 						CellType type = game.rules.getCellType("CASTLE");
@@ -205,7 +198,7 @@ public class GameActivity extends BaseActivity
 								if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
 								{
 									cell.player = game.players[0];
-									thread.needUpdateCampaign = true;
+									getThread().needUpdateCampaign = true;
 								}
 						break;
 				}

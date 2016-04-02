@@ -12,12 +12,12 @@ public class DrawInfo extends Draw
 	
 	public static float			mScale	= 2.0f;
 	public static int			mA		= (int) (Images.get().bitmapSize * DrawInfo.mScale);
-	public static final Paint	paint	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	color1	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	color2	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	color3	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	color4	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	color5	= new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint	paint	= new Paint();
+	public static final Paint	color1	= new Paint();
+	public static final Paint	color2	= new Paint();
+	public static final Paint	color3	= new Paint();
+	public static final Paint	color4	= new Paint();
+	public static final Paint	color5	= new Paint();
 										
 	static
 	{
@@ -26,20 +26,13 @@ public class DrawInfo extends Draw
 		DrawInfo.color3.setColor(0xFF434A64);
 		DrawInfo.color4.setColor(0xFF242A45);
 		DrawInfo.color5.setColor(0xFF12142F);
-		
-		DrawInfo.paint.setStrokeWidth(1);
-		DrawInfo.color1.setStrokeWidth(2);
-		DrawInfo.color2.setStrokeWidth(2);
-		DrawInfo.color3.setStrokeWidth(2);
-		DrawInfo.color4.setStrokeWidth(2);
-		DrawInfo.color5.setStrokeWidth(2);
 	}
 	
 	private Bitmap	backgroundBitmap;
 					
 	public int		a	= 2;
 	public int		h	= DrawInfo.mA + 8 * 2;
-	public int		w	= super.w;
+	public int		w	= w();
 	private int		mW	= w - a * 7 - DrawInfo.mA;
 	private int		color;
 					
@@ -54,37 +47,58 @@ public class DrawInfo extends Draw
 		drawRightPart(canvas, h, w, mW - a);
 	}
 	
-	private void drawLeftPart(Canvas canvas, float h, float w)
+	private void drawLeftPart(Canvas canvas, int h, int w)
 	{
-		float nh = h / a;
-		float nw = w / a;
+		// float nh = h / a;
+		// float nw = w / a;
 		canvas.drawRect(0, 0, w, h, DrawInfo.color3);
 		canvas.drawRect(a, a, w - a, h - a, DrawInfo.color1);
-		canvas.drawRect(3 * a, 3 * a, w - 3 * a, h - 3 * a, DrawInfo.color3);
+		canvas.drawRect(3 * a, 3 * a, w - 3 * a, h - 3 * a, DrawInfo.color4);
 		
-		drawLine(canvas, 3, 3.5f, 6, 3.5f, DrawInfo.color5, true, true, true, nh, nw);
-		drawLine(canvas, 4, 4.5f, 6, 4.5f, DrawInfo.color4, false, true, true, nh, nw);
-		drawLine(canvas, 4, 5.5f, 6, 5.5f, DrawInfo.color4, false, true, true, nh, nw);
-		drawLine(canvas, 3, 6.5f, 7, 6.5f, DrawInfo.color1, true, true, true, nh, nw);
-		drawLine(canvas, 7.5f, 4, 7.5f, 8, DrawInfo.color2, false, false, true, nh, nw);
-		drawLine(canvas, 3.5f, 8, 3.5f, nw - 8, DrawInfo.color2, false, false, false, nh, nw);
-		drawLine(canvas, 8, 4.5f, nh - 8, 4.5f, DrawInfo.color5, false, false, true, nh, nw);
-		drawLine(canvas, 4.5f, 8, 4.5f, nw - 8, DrawInfo.color5, false, true, false, nh, nw);
+		/*
+			
+			0123456789
+			
+		0	33333333333
+		1	31111111111
+		2	31111111111
+		3	31155513222
+		4	31154413555
+		5	31154413
+		6	31111113
+		7	31132222
+		8	31135     4
+		9	31135    44
+			31135   444
+			
+		*/
 		
-		canvas.drawRect(5 * a, 8 * a, w - 5 * a, h - 8 * a, DrawInfo.color4);
-		canvas.drawRect(8 * a, 5 * a, w - 8 * a, h - 5 * a, DrawInfo.color4);
+		drawRect(canvas, 3, 3, 1, 3, color5, true, true, true, true, h, w);
+		drawRect(canvas, 3, 6, 4, 1, color1, true, true, true, true, h, w);
+		drawRect(canvas, 3, 7, 5, 1, color3, true, true, true, true, h, w);
+		drawRect(canvas, 7, 4, 1, 4, color2, false, false, true, true, h, w);
+		
+		drawRect(canvas, 3 * a, 8 * a, a, w - 16 * a, color2, false, false, false, false, h, w);
+		drawRect(canvas, 4 * a, 8 * a, a, w - 16 * a, color5, false, true, false, false, h, w);
+		drawRect(canvas, 8 * a, 4 * a, h - 16 * a, a, color5, false, false, true, false, h, w);
+		drawRect(canvas, 7 * a, 3 * a, h - 14 * a, a, color3, false, false, true, false, h, w);
 	}
 	
-	private void drawLine(Canvas canvas, float i1, float j1, float i2, float j2, Paint paint,
-			boolean axial, boolean vertical, boolean horizontal, float nh, float nw)
+	private void drawRect(Canvas canvas, int y, int x, int h, int w, Paint paint,
+			boolean axial, boolean vertical, boolean horizontal, boolean needMulti, int nh, int nw)
 	{
-		canvas.drawLine(a * j1, a * i1, a * j2, a * i2, paint);
-		if (axial)
-			drawLine(canvas, j1, i1, j2, i2, paint, false, vertical, horizontal, nh, nw);
-		if (vertical)
-			drawLine(canvas, nh - i1, j1, nh - i2, j2, paint, false, false, horizontal, nh, nw);
-		if (horizontal)
-			drawLine(canvas, i1, nw - j1, i2, nw - j2, paint, false, false, false, nh, nw);
+		if (needMulti)
+			drawRect(canvas, y * a, x * a, h * a, w * a, paint, axial, vertical, horizontal, false, nh, nw);
+		else
+		{
+			canvas.drawRect(x, y, x + w, y + h, paint);
+			if (axial)
+				drawRect(canvas, x, y, w, h, paint, false, vertical, horizontal, false, nh, nw);
+			if (vertical)
+				drawRect(canvas, nh - y - h, x, h, w, paint, false, false, horizontal, false, nh, nw);
+			if (horizontal)
+				drawRect(canvas, y, nw - x - w, h, w, paint, false, false, false, false, nh, nw);
+		}
 	}
 	
 	private void drawRightPart(Canvas canvas, float h, float w, float mW)
@@ -130,17 +144,16 @@ public class DrawInfo extends Draw
 		}
 		
 		// градиент по цвету игрока
-		int amn = 8;
-		for (int i = 0; i < amn; i++)
+		int number = 8;
+		for (int i = 0; i < number; i++)
 		{
-			DrawInfo.paint.setColor(color & 0x00FFFFFF | 0xFF * (amn - i) / amn << 24);
+			DrawInfo.paint.setColor(color & 0x00FFFFFF | 0xFF * (number - i) / number << 24);
 			
-			float y1 = (5 + i) * a;
-			float x1 = (i < 3 ? 8 : 5) * a;
-			float y2 = (5 + i) * a;
-			float x2 = mW - (i < 3 ? 8 : 5) * a - .5f;
-			for (int k = 0; k < a; k++)
-				canvas.drawLine(x1, y1 + k + 1, x2, y2 + k + 1, DrawInfo.paint);
+			int y1 = (5 + i) * a;
+			int x1 = (i < 3 ? 8 : 5) * a;
+			int y2 = y1 + a;
+			int x2 = mW - x1;
+			canvas.drawRect(x1, y1, x2, y2, DrawInfo.paint);
 		}
 		
 		int xGold = (int) (mW * .075f);
