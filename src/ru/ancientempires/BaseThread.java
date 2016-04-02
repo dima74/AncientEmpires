@@ -85,11 +85,10 @@ public class BaseThread extends Thread
 				if (isTouch)
 					drawMain.touch(touchY, touchX);
 				if (runnable != null)
-					synchronized (this)
-					{
-						runnable.run();
-						runnable = null;
-					}
+				{
+					runnable.run();
+					runnable = null;
+				}
 			}
 			catch (Exception e)
 			{
