@@ -5,6 +5,7 @@ import android.graphics.Color;
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
+import ru.ancientempires.test.My;
 
 public abstract class BaseDrawMain extends Draw
 {
@@ -68,6 +69,7 @@ public abstract class BaseDrawMain extends Draw
 			offsetY = nextOffsetY;
 			offsetX = nextOffsetX;
 		}
+		My.printFrame(iFrame, (int) (offsetY * mapScale), (int) (offsetX * mapScale));
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.save();

@@ -2,18 +2,19 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import ru.ancientempires.test.My;
 
 public class DrawBitmaps extends DrawOnFramesWithRangeValues
 {
 	
 	public static final int	FRAMES_FOR_BITMAP	= 2;
 	public int				framesForBitmap		= DrawBitmaps.FRAMES_FOR_BITMAP;
-	
-	public Bitmap[] bitmaps;
-	
-	public int	y;
-	public int	x;
-	
+												
+	public Bitmap[]			bitmaps;
+							
+	public int				y;
+	public int				x;
+							
 	public DrawBitmaps setFramesForBitmap(int framesForBitmap)
 	{
 		this.framesForBitmap = framesForBitmap;
@@ -42,6 +43,7 @@ public class DrawBitmaps extends DrawOnFramesWithRangeValues
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
+		My.drawBitmap(bitmaps[value / framesForBitmap % bitmaps.length], y, x, value / framesForBitmap % bitmaps.length);
 		canvas.drawBitmap(bitmaps[value / framesForBitmap % bitmaps.length], x, y, null);
 	}
 	

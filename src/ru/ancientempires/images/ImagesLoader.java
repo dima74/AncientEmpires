@@ -5,6 +5,7 @@ import java.io.IOException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.test.My;
 
 public class ImagesLoader extends FileLoader
 {
@@ -21,7 +22,10 @@ public class ImagesLoader extends FileLoader
 	
 	public Bitmap loadImage(String name) throws IOException
 	{
-		return BitmapFactory.decodeStream(openIS(name));
+		// TODO debug
+		Bitmap bitmap = BitmapFactory.decodeStream(openIS(name));
+		My.add(bitmap, prefix + name);
+		return bitmap;
 	}
 	
 	public Bitmap loadImageAndResize(String name, float scale) throws IOException
