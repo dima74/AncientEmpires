@@ -8,7 +8,9 @@ import ru.ancientempires.MenuActions;
 public class MainActivity extends BaseListActivity
 {
 	
-	public static String			gameToStart	= "skirmish";
+	public static int				skirmish	= 5;
+	public static int				campaign	= 1;
+	public static String			gameToStart	= "campaign";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]

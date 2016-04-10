@@ -15,6 +15,7 @@ import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
+import ru.ancientempires.campaign.scripts.ScriptSetCursorPosition;
 import ru.ancientempires.campaign.scripts.ScriptSetMapPosition;
 import ru.ancientempires.campaign.scripts.ScriptSetUnitSpeed;
 import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
@@ -65,11 +66,15 @@ public interface IDrawCampaign
 	
 	public void setMapPosition(int i, int j, ScriptSetMapPosition script);
 	
+	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script);
+	
 	//
 	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script);
 	
 	//
-	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script);
+	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script);
+	
+	public void unitMove(int iStart, int jStart, int iEnd, int jEnd, Script script, boolean makeSmoke);
 	
 	public void unitMove(Point[] keyPoints, ScriptUnitMoveExtended script);
 	
@@ -77,7 +82,7 @@ public interface IDrawCampaign
 	
 	public void unitDie(int i, int j, ScriptUnitDie script);
 	
-	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script);
+	public void unitCreateAndMove(ScriptUnitCreateAndMove script);
 	
 	public void removeUnit(int i, int j, ScriptRemoveUnit script);
 	
@@ -99,11 +104,10 @@ public interface IDrawCampaign
 	
 	public void closeMission() throws Exception;
 	
-	public void updateCampaign();
-	
 	public void hideInfoImmediately(Script script);
 	
-	//
-	public void unitCreateAndMove(ScriptUnitCreateAndMove script);
+	public void vibrate();
+	
+	public void updateCampaign();
 	
 }

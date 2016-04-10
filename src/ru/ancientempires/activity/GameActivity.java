@@ -1,8 +1,10 @@
 package ru.ancientempires.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import ru.ancientempires.Extras;
@@ -209,6 +211,12 @@ public class GameActivity extends BaseGameActivity
 			view.thread.runOnGameThread(runnable);
 		}
 		return true;
+	}
+	
+	public static void vibrate()
+	{
+		Vibrator v = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+		v.vibrate(400);
 	}
 	
 }

@@ -1,8 +1,6 @@
 package ru.ancientempires.draws;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 import ru.ancientempires.model.Unit;
 
@@ -25,7 +23,7 @@ public class DrawUnits extends Draw
 	{
 		Unit floatingUnit = game.floatingUnit;
 		if (floatingUnit != null)
-			drawUnit(canvas, new UnitBitmap(floatingUnit));
+			new UnitBitmap(floatingUnit).draw(canvas, iFrame());
 			
 		for (int i = 0; i < game.h; i++)
 			for (int j = 0; j < game.w; j++)
@@ -33,7 +31,7 @@ public class DrawUnits extends Draw
 				{
 					updateUnit(i, j);
 					if (field[i][j] != null)
-						drawUnit(canvas, field[i][j]);
+						field[i][j].draw(canvas, iFrame());
 				}
 	}
 	
@@ -44,30 +42,6 @@ public class DrawUnits extends Draw
 				field[i][j] = null;
 			else if (field[i][j] == null || field[i][j].unit != game.fieldUnits[i][j])
 				field[i][j] = new UnitBitmap(game.fieldUnits[i][j]);
-	}
-	
-	public void drawUnit(Canvas canvas, UnitBitmap unitBitmap)
-	{
-		canvas.drawBitmap(unitBitmap.getBaseBitmap(), unitBitmap.x, unitBitmap.y, null);
-		Bitmap healthBitmap = unitBitmap.getHealthBitmap();
-		if (healthBitmap != null)
-			canvas.drawBitmap(healthBitmap, unitBitmap.x, unitBitmap.y + A - healthBitmap.getHeight(), null);
-		if (unitBitmap.unit.level != 0)
-		{
-			Bitmap levelBitmap = unitBitmap.getLevelBitmap();
-			canvas.drawBitmap(levelBitmap, unitBitmap.x + A - levelBitmap.getWidth(), unitBitmap.y + A - levelBitmap.getHeight(), null);
-		}
-		
-		if (unitBitmap.hasPositiveBonus())
-		{
-			Bitmap bonusBitmap = StatusesImages.get().aura;
-			canvas.drawBitmap(bonusBitmap, unitBitmap.x, unitBitmap.y, null);
-		}
-		if (unitBitmap.hasNegativeBonus())
-		{
-			Bitmap bonusBitmap = StatusesImages.get().poison;
-			canvas.drawBitmap(bonusBitmap, unitBitmap.x + A - bonusBitmap.getWidth(), unitBitmap.y, null);
-		}
 	}
 	
 }

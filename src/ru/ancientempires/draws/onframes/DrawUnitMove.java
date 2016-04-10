@@ -1,9 +1,9 @@
 package ru.ancientempires.draws.onframes;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import ru.ancientempires.Point;
 import ru.ancientempires.action.result.ActionResultUnitMove;
+import ru.ancientempires.draws.DrawLevel;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 
 public class DrawUnitMove extends DrawOnFramesWithRangeValues
@@ -16,7 +16,8 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	public Point[]		points;
 	public int			targetI;
 	public int			targetJ;
-						
+	public boolean		makeSmoke		= true;
+										
 	private void initFromEnd()
 	{
 		unitBitmap = new UnitBitmap(game.getUnit(targetI, targetJ));
@@ -30,7 +31,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 		unitBitmap.keepTurn = true;
 	}
 	
-	public void start(Point[] points, ActionResultUnitMove result, boolean initFromStart)
+	public DrawUnitMove start(Point[] points, ActionResultUnitMove result, boolean initFromStart)
 	{
 		this.points = points;
 		targetI = points[points.length - 1].i;
@@ -48,9 +49,16 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 			main.unitsDead.keep[targetI][targetJ] = true;
 		}
 		
-		animateRange(0, (points.length - 1) * framesForCellMy - 1);
+		animateRange(0, (points.length - 1) * framesForCellMy);
 		if (result != null)
 			main.add(new DrawUnitMoveEnd(result, frameCount));
+		return this;
+	}
+	
+	public DrawUnitMove setMakeSmoke(boolean makeSmoke)
+	{
+		this.makeSmoke = makeSmoke;
+		return this;
 	}
 	
 	public void destroy()
@@ -67,18 +75,36 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 			return;
 		int i = value / framesForCellMy;
 		int iPart = value % framesForCellMy;
-		unitBitmap.y = (points[i].i * (framesForCellMy - 1 - iPart) + points[i + 1].i * iPart) * A / (framesForCellMy - 1);
-		unitBitmap.x = (points[i].j * (framesForCellMy - 1 - iPart) + points[i + 1].j * iPart) * A / (framesForCellMy - 1);
-		drawUnit(canvas, unitBitmap);
+		unitBitmap.y = (points[i].i * (framesForCellMy - 1 - iPart) + points[i + (frameLeft == 0 ? 0 : 1)].i * iPart) * A / (framesForCellMy - 1);
+		unitBitmap.x = (points[i].j * (framesForCellMy - 1 - iPart) + points[i + (frameLeft == 0 ? 0 : 1)].j * iPart) * A / (framesForCellMy - 1);
+		unitBitmap.draw(canvas, iFrame());
 		unitBitmap.move();
-	}
-	
-	public void drawUnit(Canvas canvas, UnitBitmap unitBitmap)
-	{
-		canvas.drawBitmap(unitBitmap.getBaseBitmap(), unitBitmap.x, unitBitmap.y, null);
-		Bitmap healthBitmap = unitBitmap.getHealthBitmap();
-		if (healthBitmap != null)
-			canvas.drawBitmap(unitBitmap.getHealthBitmap(), unitBitmap.x, unitBitmap.y + A - SmallNumberImages().h, null);
+		
+		if (makeSmoke && value > 0 && (iPart == 0 || iPart == framesForCellMy / 2))
+		{
+			int ySmoke = (int) unitBitmap.y;
+			int xSmoke = (int) unitBitmap.x;
+			
+			int currentI = iPart == 0 ? i : i + 1;
+			int previousI = iPart == 0 ? i - 1 : i;
+			if (points[currentI].j == points[previousI].j)
+			{
+				ySmoke += points[currentI].i < points[previousI].i ? 24 : -SmokeImages().hSmall;
+				xSmoke += (24 - SmokeImages().wSmall) / 2;
+			}
+			else
+			{
+				ySmoke += 24 - SmokeImages().hSmall;
+				xSmoke += points[currentI].j < points[previousI].j ? 24 : -SmokeImages().hSmall;
+			}
+			
+			DrawBitmaps draw = new DrawBitmaps()
+					.setYX(ySmoke, xSmoke)
+					.setBitmaps(SmokeImages().bitmapsSmall)
+					.setFramesForBitmap((main.rnd.nextInt(3) + 1) * 2)
+					.animateRepeat(1);
+			main.add(draw, DrawLevel.BOTTOM);
+		}
 	}
 	
 	@Override
@@ -89,7 +115,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 			main.units.move[targetI][targetJ] = false;
 			main.unitsDead.keep[targetI][targetJ] = false;
 		}
-		unitBitmap.hanlers = null;
+		unitBitmap.handlers = null;
 		postUpdateCampaign();
 		destroy();
 	}

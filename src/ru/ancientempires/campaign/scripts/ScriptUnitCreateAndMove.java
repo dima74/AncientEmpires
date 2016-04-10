@@ -21,7 +21,8 @@ public class ScriptUnitCreateAndMove extends Script
 	public Player	player;
 	public Point[]	keyPoints;
 	public int[]	handlers;
-	
+	public boolean	makeSmoke	= true;
+								
 	public ScriptUnitMoveHandler[] getHandlers()
 	{
 		ScriptUnitMoveHandler[] handlersScript = new ScriptUnitMoveHandler[handlers.length];
@@ -57,6 +58,12 @@ public class ScriptUnitCreateAndMove extends Script
 		return this;
 	}
 	
+	public ScriptUnitCreateAndMove disableMakeSmoke()
+	{
+		makeSmoke = false;
+		return this;
+	}
+	
 	@Override
 	public void start()
 	{
@@ -86,6 +93,7 @@ public class ScriptUnitCreateAndMove extends Script
 		writer.name("player").value(player.ordinal);
 		writer.name("keyPoints");
 		new Gson().toJson(keyPoints, Point[].class, writer);
+		writer.name("makeSmoke").value(makeSmoke);
 		
 		if (handlersScript == null)
 			handlersScript = new ScriptUnitMoveHandler[0];
@@ -103,6 +111,7 @@ public class ScriptUnitCreateAndMove extends Script
 		player = game.players[JsonHelper.readInt(reader, "player")];
 		MyAssert.a("keyPoints", reader.nextName());
 		keyPoints = new Gson().fromJson(reader, Point[].class);
+		makeSmoke = JsonHelper.readBoolean(reader, "makeSmoke");
 		
 		MyAssert.a("handlers", reader.nextName());
 		handlers = new Gson().fromJson(reader, int[].class);

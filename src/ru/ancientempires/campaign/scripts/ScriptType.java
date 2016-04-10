@@ -45,6 +45,7 @@ public enum ScriptType
 	UNIT_MOVE_EXTENDED(ScriptUnitMoveExtended.class),
 	UNIT_CHANGE_POSITION(true, ScriptUnitChangePosition.class),
 	SET_MAP_POSITION(true, ScriptSetMapPosition.class),
+	SET_CURSOR_POSITION(true, ScriptSetCursorPosition.class),
 	CELL_ATTACK_PART_TWO(ScriptCellAttackPartTwo.class),
 	SET_COORDINATE_NAMED_UNIT_I(true, ScriptSetCoordinateNamedUnitI.class),
 	SET_COORDINATE_NAMED_UNIT_J(true, ScriptSetCoordinateNamedUnitJ.class),
@@ -61,9 +62,9 @@ public enum ScriptType
 	UNIT_CREATE_MOVE(ScriptUnitCreateAndMove.class),
 	UNIT_HANDLER_POINT(true, ScriptUnitMoveHandlerPoint.class);
 	
-	public boolean isSimple;
-	public Class<? extends Script> scriptClass;
-	
+	public boolean					isSimple;
+	public Class<? extends Script>	scriptClass;
+									
 	ScriptType(Class<? extends Script> scriptClass)
 	{
 		this(false, scriptClass);

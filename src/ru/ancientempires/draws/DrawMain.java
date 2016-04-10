@@ -6,6 +6,7 @@ import java.util.Random;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import ru.ancientempires.Paints;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.draws.inputs.InputPlayer;
 import ru.ancientempires.draws.onframes.DrawBlackScreen;
@@ -123,6 +124,9 @@ public class DrawMain extends BaseDrawMain
 		buildingSmokes.draw(canvas);
 		canvas.restore();
 		
+		if (minOffsetY == maxOffsetY && offsetY > 0)
+			canvas.drawRect(0, (maxOffsetY + mapH) * mapScale, w(), visibleMapH, Paints.WHITE);
+			
 		canvas.save();
 		canvas.translate(0, h() - info.h);
 		infoNull.draw(canvas);
@@ -139,6 +143,9 @@ public class DrawMain extends BaseDrawMain
 			canvas.restore();
 		}
 		
+		if (minOffsetY == maxOffsetY && offsetY > 0)
+			canvas.drawRect(0, 0, w(), offsetY * mapScale, Paints.WHITE);
+			
 		blackScreen.draw(canvas);
 		if (isBlackScreen)
 			canvas.drawColor(Color.BLACK);

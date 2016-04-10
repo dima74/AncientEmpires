@@ -26,7 +26,7 @@ public class ConditionAnd extends Condition
 	@Override
 	public boolean check()
 	{
-		for (Script script : previous)
+		for (Script script : scripts)
 			if (!script.check())
 				return false;
 		return true;

@@ -1,20 +1,19 @@
 package ru.ancientempires.draws.campaign;
 
 import android.graphics.Canvas;
-import ru.ancientempires.draws.Draw;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 import ru.ancientempires.draws.onframes.DrawOnFramesWithRangeFloat;
 
 public class DrawCameraMove extends DrawOnFramesGroup
 {
 	
-	public static float delta = new Draw().a * 12;
-	
-	private float	startOffsetY;
-	private float	startOffsetX;
-	private float	endOffsetY;
-	private float	endOffsetX;
-	
+	public static float	delta	= 12;
+								
+	private float		startOffsetY;
+	private float		startOffsetX;
+	private float		endOffsetY;
+	private float		endOffsetX;
+						
 	public void start(int iEnd, int jEnd)
 	{
 		startOffsetY = main.offsetY;

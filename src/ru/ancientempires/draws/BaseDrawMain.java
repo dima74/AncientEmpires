@@ -5,7 +5,6 @@ import android.graphics.Color;
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
-import ru.ancientempires.test.My;
 
 public abstract class BaseDrawMain extends Draw
 {
@@ -46,8 +45,8 @@ public abstract class BaseDrawMain extends Draw
 		setVisibleMapSize();
 		mapH = game.h * A;
 		mapW = game.w * A;
-		nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
-		nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
+		offsetY = nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
+		offsetX = nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
 		if (minOffsetY < 0)
 		{
 			minOffsetY = -(mapH - visibleMapH / mapScale);
@@ -69,7 +68,6 @@ public abstract class BaseDrawMain extends Draw
 			offsetY = nextOffsetY;
 			offsetX = nextOffsetX;
 		}
-		My.printFrame(iFrame, (int) (offsetY * mapScale), (int) (offsetX * mapScale));
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.save();

@@ -1,9 +1,12 @@
 package ru.ancientempires.images.bitmaps;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import ru.ancientempires.Point;
 import ru.ancientempires.campaign.scripts.ScriptUnitMoveHandler;
+import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.images.SmallNumberImages;
+import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Unit;
 
@@ -17,7 +20,7 @@ public class UnitBitmap
 	public int						health;
 	public boolean					canUpdateHealth	= true;
 	public boolean					keepTurn		= false;
-	public ScriptUnitMoveHandler[]	hanlers;
+	public ScriptUnitMoveHandler[]	handlers;
 									
 	public UnitBitmap(Unit unit)
 	{
@@ -70,6 +73,46 @@ public class UnitBitmap
 		return hasNegativeBonus;
 	}
 	
+	public int idleAnimationFrameLeft;
+	
+	public void idleAnimation(int frameCount)
+	{
+		idleAnimationFrameLeft = frameCount;
+	}
+	
+	public void draw(Canvas canvas, int iFrame)
+	{
+		float y = this.y;
+		float x = this.x;
+		if (idleAnimationFrameLeft > 0)
+		{
+			x += (iFrame / 2 % 2 - 1) * 2;
+			y += DrawMain.main.rnd.nextBoolean() ? 1 : 0;
+			--idleAnimationFrameLeft;
+		}
+		
+		canvas.drawBitmap(getBaseBitmap(), x, y, null);
+		Bitmap healthBitmap = getHealthBitmap();
+		if (healthBitmap != null)
+			canvas.drawBitmap(healthBitmap, x, y + 24 - healthBitmap.getHeight(), null);
+		if (unit.level != 0)
+		{
+			Bitmap levelBitmap = getLevelBitmap();
+			canvas.drawBitmap(levelBitmap, x + 24 - levelBitmap.getWidth(), y + 24 - levelBitmap.getHeight(), null);
+		}
+		
+		if (hasPositiveBonus())
+		{
+			Bitmap bonusBitmap = StatusesImages.get().aura;
+			canvas.drawBitmap(bonusBitmap, x, y, null);
+		}
+		if (hasNegativeBonus())
+		{
+			Bitmap bonusBitmap = StatusesImages.get().poison;
+			canvas.drawBitmap(bonusBitmap, x + 24 - bonusBitmap.getWidth(), y, null);
+		}
+	}
+	
 	public Point getIJ()
 	{
 		return new Point(y / 24, x / 24);
@@ -77,8 +120,8 @@ public class UnitBitmap
 	
 	public void move()
 	{
-		if (hanlers != null)
-			for (ScriptUnitMoveHandler script : hanlers)
+		if (handlers != null)
+			for (ScriptUnitMoveHandler script : handlers)
 				script.unitMove(this);
 	}
 	

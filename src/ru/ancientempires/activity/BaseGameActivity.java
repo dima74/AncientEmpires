@@ -38,7 +38,12 @@ public class BaseGameActivity extends BaseActivity
 		super.onStop();
 		getThread().isRunning = false;
 		if (view != null)
-			((ViewGroup) view.getParent()).removeView(view);
+		{
+			ViewGroup viewGroup = (ViewGroup) view.getParent();
+			MyAssert.a(viewGroup != null);
+			if (viewGroup != null)
+				viewGroup.removeView(view);
+		}
 		if (dialog != null)
 		{
 			dialog.dismiss();

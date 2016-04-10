@@ -15,7 +15,7 @@ public class ScriptUnitMoveAbout extends Script
 	private int	j;
 	private int	targetI;
 	private int	targetJ;
-	
+				
 	public ScriptUnitMoveAbout()
 	{}
 	
@@ -40,7 +40,7 @@ public class ScriptUnitMoveAbout extends Script
 	public void start()
 	{
 		find();
-		campaign.iDrawCampaign.unitMove(i, j, targetI, targetJ, this);
+		campaign.iDrawCampaign.unitMove(i, j, targetI, targetJ, this, true);
 	}
 	
 	@Override

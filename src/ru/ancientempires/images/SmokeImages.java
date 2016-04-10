@@ -9,16 +9,16 @@ public class SmokeImages extends IImages
 	
 	public Bitmap[]	bitmapsDefault;
 	public Bitmap[]	bitmapsSmall;
-	
-	public int	amountDefault;
-	public int	amountSmall;
-	
-	public int	hDefault;
-	public int	wDefault;
-	
-	public int	hSmall;
-	public int	wSmall;
-	
+					
+	public int		amountDefault;
+	public int		amountSmall;
+					
+	public int		hDefault;
+	public int		wDefault;
+					
+	public int		hSmall;
+	public int		wSmall;
+					
 	@Override
 	public void preload(ImagesLoader loader) throws IOException
 	{

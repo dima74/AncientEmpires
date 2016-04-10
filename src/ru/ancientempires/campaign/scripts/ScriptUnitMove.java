@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
 import ru.ancientempires.campaign.Coordinate;
 import ru.ancientempires.campaign.CoordinateInteger;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptUnitMove extends Script
 {
@@ -16,7 +17,8 @@ public class ScriptUnitMove extends Script
 	private Coordinate	j;
 	private Coordinate	targetI;
 	private Coordinate	targetJ;
-	
+	public boolean		makeSmoke	= true;
+									
 	public ScriptUnitMove()
 	{}
 	
@@ -36,6 +38,12 @@ public class ScriptUnitMove extends Script
 		this.targetJ = new CoordinateInteger(targetJ);
 	}
 	
+	public ScriptUnitMove disableMakeSmoke()
+	{
+		makeSmoke = false;
+		return this;
+	}
+	
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
@@ -43,12 +51,13 @@ public class ScriptUnitMove extends Script
 		j = Coordinate.getNew(reader, "j");
 		targetI = Coordinate.getNew(reader, "targetI");
 		targetJ = Coordinate.getNew(reader, "targetJ");
+		makeSmoke = JsonHelper.readBoolean(reader, "makeSmoke");
 	}
 	
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.unitMove(i.get(), j.get(), targetI.get(), targetJ.get(), this);
+		campaign.iDrawCampaign.unitMove(i.get(), j.get(), targetI.get(), targetJ.get(), this, makeSmoke);
 	}
 	
 	@Override
@@ -58,6 +67,7 @@ public class ScriptUnitMove extends Script
 		j.save(writer, "j");
 		targetI.save(writer, "targetI");
 		targetJ.save(writer, "targetJ");
+		writer.name("makeSmoke").value(makeSmoke);
 	}
 	
 	@Override

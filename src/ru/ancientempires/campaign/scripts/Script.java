@@ -15,16 +15,16 @@ public abstract class Script
 {
 	
 	// Нужен только при сохранении
-	public int index;
-	
+	public int			index;
+						
 	public ScriptType	type;
 	public Script[]		previous;
 	public boolean		isStarting	= false;
 	public boolean		isFinishing	= false;
-	
-	public Campaign	campaign;
-	public Game		game;
-	
+									
+	public Campaign		campaign;
+	public Game			game;
+						
 	public void load(JsonReader reader, ArrayList<Script> scripts) throws IOException
 	{
 		load(reader);
@@ -84,7 +84,7 @@ public abstract class Script
 	@Override
 	public String toString()
 	{
-		return String.format("%d%d %s", isStarting ? 1 : 0, isFinishing ? 1 : 0, getClass().getSimpleName());
+		return String.format("%d%d %3d %s", isStarting ? 1 : 0, isFinishing ? 1 : 0, index, getClass().getSimpleName());
 	}
 	
 }

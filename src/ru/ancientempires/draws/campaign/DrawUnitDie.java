@@ -9,15 +9,15 @@ public class DrawUnitDie extends DrawOnFramesGroup
 	
 	private int	i;
 	private int	j;
-	
-	public void start(int i, int j)
+				
+	public DrawUnitDie(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 		add(new DrawBitmaps()
 				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsDefault)
-				.animateRepeat(2));
+				.animateRepeat(1));
 				
 		int startY = i * A;
 		int startX = j * A;

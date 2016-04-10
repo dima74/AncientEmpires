@@ -7,5 +7,5 @@ public class ActionResultUnitMove extends ActionResult
 	
 	public int		sign;
 	public Unit[]	units;
-	
+					
 }

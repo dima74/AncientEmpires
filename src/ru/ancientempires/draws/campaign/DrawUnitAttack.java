@@ -6,8 +6,9 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
 	
-	public void start(int i, int j)
+	public DrawUnitAttack(int i, int j)
 	{
+		main.units.field[i][j].idleAnimation(16);
 		add(new DrawBitmaps()
 				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsAttack)

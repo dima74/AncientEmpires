@@ -87,7 +87,7 @@ public class LevelMenuActivity extends BaseListActivity
 		if (MainActivity.gameToStart != "" && MainActivity.firstStart)
 		{
 			// String folder = getIntent().getStringExtra(PlayMenuActivity.EXTRA_FOLDER);
-			int i = "campaign".equals(folderID) ? 0 : "skirmish".equals(folderID) ? 5 : 0;
+			int i = "campaign".equals(folderID) ? MainActivity.campaign : "skirmish".equals(folderID) ? MainActivity.skirmish : 0;
 			onListItemClick(null, null, i, 0);
 		}
 	}
