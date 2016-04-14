@@ -64,7 +64,6 @@ public class ActionUnitAttack extends ActionFromTo
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 		targetCell.destroy();
-		unit.setTurn();
 	}
 	
 	private void attackUnit()

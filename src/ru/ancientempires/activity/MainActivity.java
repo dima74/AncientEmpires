@@ -10,7 +10,7 @@ public class MainActivity extends BaseListActivity
 	
 	public static int				skirmish	= 5;
 	public static int				campaign	= 1;
-	public static String			gameToStart	= "campaign";
+	public static String			gameToStart	= "test";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]

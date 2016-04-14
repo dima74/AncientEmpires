@@ -83,7 +83,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			add(gameDrawBitmaps);
 			frameStartSmoke = gameDrawBitmaps.frameEnd;
 			
-			int startY = y;
+			int startY = y + 24 - SmokeImages().hDefault;
 			int startX = x;
 			int endY = startY - 3 * 2 * SmokeImages().amountDefault;
 			int endX = startX;
