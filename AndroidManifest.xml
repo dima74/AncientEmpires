@@ -47,6 +47,8 @@
 			android:name=".activity.EditorActivity"
 			android:label="@string/title_activity_editor" >
 		</activity>
+		<activity android:name=".activity.TestActivity" >
+		</activity>
 	</application>
 
 </manifest>

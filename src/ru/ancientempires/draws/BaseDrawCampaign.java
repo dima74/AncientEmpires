@@ -6,10 +6,12 @@ import java.util.Iterator;
 import android.graphics.Canvas;
 import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
+import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptCellAttackPartTwo;
 import ru.ancientempires.campaign.scripts.ScriptDelay;
+import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
 import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
@@ -27,6 +29,7 @@ import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreateAndMove;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.campaign.scripts.ScriptUnitMoveExtended;
+import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.campaign.DrawCameraMove;
 import ru.ancientempires.draws.campaign.DrawUnitAttack;
 import ru.ancientempires.draws.campaign.DrawUnitDie;
@@ -310,9 +313,29 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 	
 	@Override
+	public void enableActiveGame(ScriptEnableActiveGame script)
+	{
+		main.isActiveGame = true;
+		main.isDrawCursor = false;
+		DrawUnitMove.framesForCell = 8;
+		DrawCameraMove.delta = 6;
+		if (main.infoY != 0)
+			main.infoMove.startShow();
+		script.performAction();
+	}
+	
+	@Override
 	public void updateCampaign()
 	{
 		postUpdateCampaign();
+	}
+	
+	@Override
+	public void closeMission() throws Exception
+	{
+		Client.client.stopGame();
+		if (game.path.nextGameID != null)
+			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
 }

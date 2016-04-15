@@ -13,14 +13,11 @@ import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptGameOver;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
 import ru.ancientempires.campaign.scripts.ScriptShowTarget;
-import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.campaign.DialogGameOver;
 import ru.ancientempires.draws.campaign.DialogShowIntro;
 import ru.ancientempires.draws.campaign.DialogShowTarget;
-import ru.ancientempires.draws.campaign.DrawCameraMove;
 import ru.ancientempires.draws.campaign.MyDialog;
 import ru.ancientempires.draws.campaign.MyDialogWithoutImage;
-import ru.ancientempires.draws.onframes.DrawUnitMove;
 
 public class DrawCampaign extends BaseDrawCampaign
 {
@@ -75,14 +72,8 @@ public class DrawCampaign extends BaseDrawCampaign
 	@Override
 	public void enableActiveGame(ScriptEnableActiveGame script)
 	{
-		main.isActiveGame = true;
-		main.isDrawCursor = false;
-		DrawUnitMove.framesForCell = 8;
-		DrawCameraMove.delta = 6;
-		if (main.infoY != 0)
-			main.infoMove.startShow();
+		super.enableActiveGame(script);
 		BaseGameActivity.activity.invalidateOptionsMenu();
-		script.performAction();
 	}
 	
 	@Override
@@ -102,14 +93,6 @@ public class DrawCampaign extends BaseDrawCampaign
 	public void vibrate()
 	{
 		GameActivity.vibrate();
-	}
-	
-	@Override
-	public void closeMission() throws Exception
-	{
-		Client.client.stopGame();
-		if (game.path.nextGameID != null)
-			GameActivity.startGame(game.path.nextGameID, false);
 	}
 	
 }

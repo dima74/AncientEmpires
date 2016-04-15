@@ -1,6 +1,7 @@
 package ru.ancientempires.activity;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.ViewGroup;
 import ru.ancientempires.BaseThread;
 import ru.ancientempires.BaseView;
@@ -30,6 +31,13 @@ public class BaseGameActivity extends BaseActivity
 	public BaseDrawMain getDrawMain()
 	{
 		return getThread() == null ? null : getThread().drawMain;
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		MainActivity.firstStart = false;
 	}
 	
 	@Override

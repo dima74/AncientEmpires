@@ -9,8 +9,8 @@ public class MainActivity extends BaseListActivity
 {
 	
 	public static int				skirmish	= 5;
-	public static int				campaign	= 1;
-	public static String			gameToStart	= "test";
+	public static int				campaign	= 2;
+	public static String			gameToStart	= "campaign";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]
@@ -51,6 +51,8 @@ public class MainActivity extends BaseListActivity
 		super.onResume();
 		if (firstStart && "editor".equals(gameToStart))
 			moveTo(EditorBaseActivity.class);
+		else if (firstStart && "test".equals(gameToStart))
+			moveTo(TestActivity.class);
 		else if (firstStart && gameToStart != "")
 			moveTo(PlayMenuActivity.class);
 	}

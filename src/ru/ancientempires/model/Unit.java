@@ -369,7 +369,7 @@ public class Unit extends IGameHandler
 	@Override
 	public String toString()
 	{
-		return hashCode() + " " + String.format("%s (%d %d) %d %d (%b %b)", type.name, i, j, player.ordinal, health, isMove, isTurn);
+		return String.format("%15s (%2d %2d) %d %d (%b %b)", type.name, i, j, player.ordinal, health, isMove, isTurn);
 	}
 	
 	// II

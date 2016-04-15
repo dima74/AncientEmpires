@@ -154,10 +154,7 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 		button.setOnClickListener(this);
 		
 		if (MainActivity.firstStart)
-		{
-			MainActivity.firstStart = false;
 			onClick(null);
-		}
 	}
 	
 	private View getView(SimplePlayer player, int team)
