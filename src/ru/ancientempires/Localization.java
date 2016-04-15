@@ -15,6 +15,11 @@ import ru.ancientempires.helpers.FileLoader;
 public class Localization
 {
 	
+	public static boolean contains(String stringID)
+	{
+		return Client.client.localization.map.containsKey(stringID);
+	}
+	
 	public static String get(String stringID)
 	{
 		MyAssert.a(Client.client.localization.map.containsKey(stringID));

@@ -12,7 +12,8 @@ public class DialogGameOver
 	
 	public void createDialog()
 	{
-		Builder builder = new Builder(GameActivity.activity);
+		final Builder builder = new Builder(GameActivity.activity);
+		builder.setCancelable(false);
 		builder.setTitle("Поражение!");
 		builder.setPositiveButton("Заново", new OnClickListener()
 		{
@@ -30,7 +31,14 @@ public class DialogGameOver
 				GameActivity.activity.startActivity(new Intent(GameActivity.activity, MainActivity.class));
 			}
 		});
-		builder.show();
+		GameActivity.activity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				builder.show();
+			}
+		});
 	}
 	
 }

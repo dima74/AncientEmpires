@@ -5,6 +5,7 @@ import java.util.HashMap;
 import ru.ancientempires.campaign.conditions.ConditionCastleNumber;
 import ru.ancientempires.campaign.conditions.ConditionNamedUnitDead;
 import ru.ancientempires.campaign.conditions.ConditionNamedUnitIntoBounds;
+import ru.ancientempires.campaign.conditions.ConditionOr;
 import ru.ancientempires.campaign.conditions.ConditionTurn;
 import ru.ancientempires.campaign.conditions.ConditionUnitIntoBounds;
 import ru.ancientempires.campaign.conditions.ConditionUnitNumber;
@@ -57,6 +58,7 @@ public enum ScriptType
 	CONDITION_UNIT_INTO_BOUNDS(true, ConditionUnitIntoBounds.class),
 	CONDITION_NAMED_UNIT_INTO_BOUNDS(true, ConditionNamedUnitIntoBounds.class),
 	CONDITION_PLAYER_TURN(true, ConditionTurn.class),
+	CONDITION_OR(true, ConditionOr.class),
 	
 	UNIT_CREATE_MOVE(ScriptUnitCreateAndMove.class),
 	UNIT_HANDLER_POINT(true, ScriptUnitMoveHandlerPoint.class);

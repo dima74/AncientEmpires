@@ -77,9 +77,10 @@ public class Unit extends IGameHandler
 	{
 		for (int levelCopy = level; levelCopy >= 0; levelCopy--)
 		{
-			String possibleName = Localization.get(type.name + "." + levelCopy);
-			if (possibleName != null)
+			String key = type.name + "." + levelCopy;
+			if (Localization.contains(key))
 			{
+				String possibleName = Localization.get(key);
 				boolean result = !possibleName.equals(unit.name);
 				unit.name = possibleName;
 				return result;
