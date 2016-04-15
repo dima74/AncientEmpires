@@ -13,7 +13,7 @@ public class ScriptShowTarget extends Script
 	
 	private String	textTitle;
 	private String	textTarget;
-	
+					
 	public ScriptShowTarget()
 	{}
 	

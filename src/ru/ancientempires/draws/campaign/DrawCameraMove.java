@@ -7,7 +7,7 @@ import ru.ancientempires.draws.onframes.DrawOnFramesWithRangeFloat;
 public class DrawCameraMove extends DrawOnFramesGroup
 {
 	
-	public static float	delta	= 12;
+	public static float	delta	= 6;
 								
 	private float		startOffsetY;
 	private float		startOffsetX;
@@ -26,7 +26,7 @@ public class DrawCameraMove extends DrawOnFramesGroup
 		
 		float deltaY = endOffsetY - startOffsetY;
 		float deltaX = endOffsetX - startOffsetX;
-		int frameLength = Math.round(Math.max(Math.abs(deltaY), Math.abs(deltaX)) * mapScale / DrawCameraMove.delta);
+		int frameLength = Math.round(Math.max(Math.abs(deltaY), Math.abs(deltaX)) / DrawCameraMove.delta);
 		float stepY = deltaY == 0 ? 1 : deltaY / frameLength;
 		float stepX = deltaX == 0 ? 1 : deltaX / frameLength;
 		

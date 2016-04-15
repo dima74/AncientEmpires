@@ -17,7 +17,7 @@ public class Localization
 	
 	public static String get(String stringID)
 	{
-		// MyAssert.a(map.containsKey(stringID));
+		MyAssert.a(Client.client.localization.map.containsKey(stringID));
 		return Client.client.localization.map.get(stringID);
 	}
 	

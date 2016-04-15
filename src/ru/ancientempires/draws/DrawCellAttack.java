@@ -3,7 +3,6 @@ package ru.ancientempires.draws;
 import android.graphics.Canvas;
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
-import ru.ancientempires.draws.onframes.DrawBitmapsMoving;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
 public class DrawCellAttack extends DrawOnFramesGroup
@@ -42,42 +41,9 @@ public class DrawCellAttack extends DrawOnFramesGroup
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(1));
 		frameUpdateTargetCell = frameEnd;
-		int frameIncrase = frameCount;
 		
-		// SmokeImages().wDefault == 24
-		int smokeY = y + 24 - SmokeImages().hDefault;
-		add(new DrawBitmapsMoving()
-				.setLineYX(smokeY, x, smokeY - 16, x)
-				.setBitmaps(SmokeImages().bitmapsDefault)
-				.setFramesForBitmap(4)
-				.animateRepeat(1)
-				.increaseFrameStart(frameIncrase));
-				
-		for (int i = 0; i < 5; ++i)
-		{
-			int framesForBitmap = 2 + main.rnd.nextInt(7);
-			int framesCount = framesForBitmap * 4;
-			int deltaY = -2 + main.rnd.nextInt(2); // [-2,-1]
-			int deltaX = -2 + i;
-			
-			int startY = y + 24 - SmokeImages().hSmall;
-			int startX = x + (24 - SmokeImages().wSmall) / 2;
-			int endY = startY + (framesCount - 1) * deltaY;
-			int endX = startX + (framesCount - 1) * deltaX / 2;
-			add(new DrawBitmapsMoving()
-					.setLineYX(startY, startX, endY, endX)
-					.setBitmaps(SmokeImages().bitmapsSmall)
-					.setFramesForBitmap(framesForBitmap)
-					.animateRepeat(1)
-					.increaseFrameStart(frameIncrase));
-		}
-		
-		add(new DrawBitmaps()
-				.setYX(y, x)
-				.setBitmaps(SparksImages().bitmapsDefault)
-				.setFramesForBitmap(4)
-				.animateRepeat(1)
-				.increaseFrameStart(frameIncrase));
+		add(new DrawCellAttackPartTwo(targetI, targetJ)
+				.increaseFrameStart(frameCount));
 				
 		main.cells.keep[targetI][targetJ] = true;
 		main.cellsDual.keep[targetI][targetJ] = true;

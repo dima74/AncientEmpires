@@ -8,7 +8,7 @@ public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
 	public int	start;
 	public int	end;
 	public int	step;
-	
+				
 	public DrawOnFramesWithRangeValues animateRange(int start, int end, int step)
 	{
 		this.start = start;

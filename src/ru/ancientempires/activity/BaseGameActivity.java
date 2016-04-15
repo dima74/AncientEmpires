@@ -67,7 +67,7 @@ public class BaseGameActivity extends BaseActivity
 			e.printStackTrace();
 		}
 		game = null;
-		activity = null;
+		// activity = null;
 	}
 	
 }

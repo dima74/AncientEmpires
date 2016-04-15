@@ -2,6 +2,8 @@ package ru.ancientempires.draws;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.view.Gravity;
+import android.widget.TextView;
 import android.widget.Toast;
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
@@ -36,8 +38,11 @@ public class DrawCampaign extends BaseDrawCampaign
 			@Override
 			public void run()
 			{
-				Toast.makeText(BaseGameActivity.activity, text, Toast.LENGTH_SHORT)
-						.show();
+				Toast toast = Toast.makeText(BaseGameActivity.activity, text, Toast.LENGTH_SHORT);
+				TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+				if (v != null)
+					v.setGravity(Gravity.CENTER);
+				toast.show();
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override

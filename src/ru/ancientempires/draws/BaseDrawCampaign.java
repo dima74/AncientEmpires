@@ -299,11 +299,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		script.performAction();
 		main.buildingSmokes.update();
 		
-		DrawOnFrames draw = new DrawBitmaps()
-				.setYX(i * A, j * A)
-				.setBitmaps(SparksImages().bitmapsDefault).setFramesForBitmap(4)
-				.animateRepeat(1);
-		add(draw, script);
+		add(new DrawCellAttackPartTwo(i, j), script);
 	}
 	
 	@Override

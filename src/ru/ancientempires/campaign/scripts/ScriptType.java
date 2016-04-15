@@ -57,7 +57,6 @@ public enum ScriptType
 	CONDITION_UNIT_INTO_BOUNDS(true, ConditionUnitIntoBounds.class),
 	CONDITION_NAMED_UNIT_INTO_BOUNDS(true, ConditionNamedUnitIntoBounds.class),
 	CONDITION_PLAYER_TURN(true, ConditionTurn.class),
-	CONDITION_AND(true, ConditionAnd.class),
 	
 	UNIT_CREATE_MOVE(ScriptUnitCreateAndMove.class),
 	UNIT_HANDLER_POINT(true, ScriptUnitMoveHandlerPoint.class);
