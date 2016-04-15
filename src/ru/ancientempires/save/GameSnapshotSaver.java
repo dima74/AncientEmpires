@@ -57,6 +57,7 @@ public class GameSnapshotSaver
 		writer.name("currentPlayer").value(game.currentPlayer.color.name());
 		writer.name("currentTurn").value(game.currentTurn);
 		writer.name("unitsLimit").value(game.unitsLimit);
+		writer.name("allowedUnits").value(game.allowedUnits);
 		writer.name("seed").value(game.getSeed());
 		writer.endObject();
 		writer.close();

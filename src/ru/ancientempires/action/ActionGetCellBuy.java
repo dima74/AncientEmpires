@@ -2,6 +2,7 @@ package ru.ancientempires.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.handler.ActionHelper;
@@ -34,7 +35,8 @@ public class ActionGetCellBuy extends ActionFrom
 		Cell cell = game.fieldCells[i][j];
 		CellType cellType = cell.type;
 		
-		ArrayList<Unit> units = new ArrayList<Unit>(Arrays.asList(cellType.buyUnits[cell.player.ordinal]));
+		List<Unit> cellUnits = Arrays.asList(cellType.buyUnits[cell.player.ordinal]);
+		ArrayList<Unit> units = new ArrayList<Unit>(game.allowedUnits == -1 ? cellUnits : cellUnits.subList(0, game.allowedUnits));
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
 		result = new ActionResultGetCellBuy(units);
 		

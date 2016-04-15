@@ -112,6 +112,7 @@ public class GameSnapshotLoader
 		game.currentPlayer = game.getPlayer(MyColor.valueOf(JsonHelper.readString(reader, "currentPlayer")));
 		game.currentTurn = JsonHelper.readInt(reader, "currentTurn");
 		game.unitsLimit = JsonHelper.readInt(reader, "unitsLimit");
+		game.allowedUnits = JsonHelper.readInt(reader, "allowedUnits");
 		long seed = JsonHelper.readLong(reader, "seed");
 		game.random = new Random(seed);
 		if (path.isBaseGame)

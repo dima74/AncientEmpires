@@ -10,7 +10,7 @@ public class MainActivity extends BaseListActivity
 	
 	public static int				skirmish	= 5;
 	public static int				campaign	= 3;
-	public static String			gameToStart	= "campaign";
+	public static String			gameToStart	= "skirmish";
 	public static boolean			firstStart	= true;
 												
 	private static MenuActions[]	actions		= new MenuActions[]
@@ -55,6 +55,12 @@ public class MainActivity extends BaseListActivity
 			moveTo(TestActivity.class);
 		else if (firstStart && gameToStart != "")
 			moveTo(PlayMenuActivity.class);
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		finish();
 	}
 	
 }

@@ -127,6 +127,7 @@ public class Game
 	public Set<Unit>			unitsOutside	= new HashSet<Unit>();
 	public Unit[][]				fieldUnitsDead;
 	public ArrayList<Unit>[]	unitsStaticDead;
+	public int					allowedUnits;
 								
 	// если на одной клетке стоят два война, то это задний
 	public Unit					floatingUnit;
