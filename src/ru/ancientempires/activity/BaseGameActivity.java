@@ -45,13 +45,6 @@ public class BaseGameActivity extends BaseActivity
 	{
 		super.onStop();
 		getThread().isRunning = false;
-		if (view != null)
-		{
-			ViewGroup viewGroup = (ViewGroup) view.getParent();
-			MyAssert.a(viewGroup != null);
-			if (viewGroup != null)
-				viewGroup.removeView(view);
-		}
 		if (dialog != null)
 		{
 			dialog.dismiss();
@@ -65,6 +58,13 @@ public class BaseGameActivity extends BaseActivity
 		{
 			MyAssert.a(false);
 			e.printStackTrace();
+		}
+		if (view != null)
+		{
+			ViewGroup viewGroup = (ViewGroup) view.getParent();
+			MyAssert.a(viewGroup != null);
+			if (viewGroup != null)
+				viewGroup.removeView(view);
 		}
 		game = null;
 		// activity = null;
