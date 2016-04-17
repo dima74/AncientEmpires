@@ -37,7 +37,7 @@ public class ScriptIntro extends Script
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.showIntro(image, text, this);
+		campaign.iDrawCampaign.dialogIntro(image, text, this);
 	}
 	
 	@Override

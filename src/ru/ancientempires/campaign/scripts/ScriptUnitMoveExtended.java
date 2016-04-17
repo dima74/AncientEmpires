@@ -9,12 +9,14 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.Point;
 import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.helpers.JsonHelper;
 
 public class ScriptUnitMoveExtended extends Script
 {
 	
-	private Point[] keyPoints;
-	
+	public Point[]	keyPoints;
+	public boolean	makeSmoke	= true;
+								
 	public ScriptUnitMoveExtended()
 	{}
 	
@@ -25,17 +27,24 @@ public class ScriptUnitMoveExtended extends Script
 			this.keyPoints[i] = new Point(keyPoints[i * 2], keyPoints[i * 2 + 1]);
 	}
 	
+	public ScriptUnitMoveExtended disableMakeSmoke()
+	{
+		makeSmoke = false;
+		return this;
+	}
+	
 	@Override
 	public void load(JsonReader reader) throws IOException
 	{
 		MyAssert.a("keyPoints", reader.nextName());
 		keyPoints = new Gson().fromJson(reader, Point[].class);
+		makeSmoke = JsonHelper.readBoolean(reader, "makeSmoke");
 	}
 	
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.unitMove(keyPoints, this);
+		campaign.iDrawCampaign.unitMove(this);
 	}
 	
 	@Override
@@ -43,6 +52,7 @@ public class ScriptUnitMoveExtended extends Script
 	{
 		writer.name("keyPoints");
 		new Gson().toJson(keyPoints, Point[].class, writer);
+		writer.name("makeSmoke").value(makeSmoke);
 	}
 	
 	@Override

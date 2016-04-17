@@ -87,6 +87,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		}
 	}
 	
+	//
 	@Override
 	public void delay(final int milliseconds, final ScriptDelay script)
 	{
@@ -143,6 +144,12 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		main.isDrawCursor = true;
 	}
 	
+	@Override
+	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script)
+	{
+		main.inputPlayer.tapWithoutAction(i, j);
+	}
+	
 	//
 	@Override
 	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script)
@@ -163,12 +170,6 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	public void setMapPosition(int i, int j, ScriptSetMapPosition script)
 	{
 		main.focusOnCell(i, j);
-	}
-	
-	@Override
-	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script)
-	{
-		main.inputPlayer.tapWithoutAction(i, j);
 	}
 	
 	//
@@ -194,13 +195,22 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 	
 	@Override
-	public void unitMove(Point[] keyPoints, ScriptUnitMoveExtended script)
+	public void unitMove(ScriptUnitMoveExtended script)
 	{
-		Point[] points = getPoints(keyPoints);
 		DrawUnitMove draw = new DrawUnitMove();
-		draw.start(points, null, true);
+		draw.start(getPoints(script.keyPoints), null, true).setMakeSmoke(script.makeSmoke);
 		add(draw, script);
 		script.performAction();
+	}
+	
+	@Override
+	public void unitCreateAndMove(ScriptUnitCreateAndMove script)
+	{
+		script.performAction();
+		DrawUnitMove draw = new DrawUnitMove();
+		draw.start(getPoints(script.keyPoints), null, false).setMakeSmoke(script.makeSmoke);
+		draw.unitBitmap.handlers = script.getHandlers();
+		add(draw, script);
 	}
 	
 	private Point[] getPoints(Point[] keyPoints)
@@ -228,15 +238,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		return points;
 	}
 	
-	@Override
-	public void unitCreateAndMove(ScriptUnitCreateAndMove script)
-	{
-		script.performAction();
-		DrawUnitMove draw = new DrawUnitMove();
-		draw.start(getPoints(script.keyPoints), null, false).setMakeSmoke(script.makeSmoke);
-		draw.unitBitmap.handlers = script.getHandlers();
-		add(draw, script);
-	}
+	//
 	
 	@Override
 	public void unitAttack(int i, int j, ScriptUnitAttack script)

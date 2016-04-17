@@ -9,12 +9,12 @@ import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
+import ru.ancientempires.campaign.scripts.ScriptDialogTarget;
 import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
 import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptGameOver;
 import ru.ancientempires.campaign.scripts.ScriptIntro;
-import ru.ancientempires.campaign.scripts.ScriptShowTarget;
 import ru.ancientempires.draws.campaign.DialogGameOver;
 import ru.ancientempires.draws.campaign.DialogShowIntro;
 import ru.ancientempires.draws.campaign.DialogShowTarget;
@@ -25,13 +25,31 @@ public class DrawCampaign extends BaseDrawCampaign
 {
 	
 	@Override
-	public void showIntro(Bitmap bitmap, String text, ScriptIntro script)
+	public void dialogIntro(Bitmap bitmap, String text, ScriptIntro script)
 	{
 		new DialogShowIntro().showDialog(bitmap, text, script);
 	}
 	
 	@Override
-	public void showTitle(final String text, final Script script)
+	public void dialog(Bitmap bitmap, String text, ScriptDialog script)
+	{
+		new MyDialog().showDialog(bitmap, text, script);
+	}
+	
+	@Override
+	public void dialog(String text, ScriptDialogWithoutImage script)
+	{
+		new MyDialogWithoutImage().showDialog(text, script);
+	}
+	
+	@Override
+	public void dialogTarget(String textTitle, String textTarget, ScriptDialogTarget script)
+	{
+		new DialogShowTarget().showDialog(textTitle, textTarget, script);
+	}
+	
+	@Override
+	public void toastTitle(final String text, final Script script)
 	{
 		BaseGameActivity.activity.runOnUiThread(new Runnable()
 		{
@@ -53,24 +71,6 @@ public class DrawCampaign extends BaseDrawCampaign
 				}, 2000);
 			}
 		});
-	}
-	
-	@Override
-	public void showDialog(Bitmap bitmap, String text, ScriptDialog script)
-	{
-		new MyDialog().showDialog(bitmap, text, script);
-	}
-	
-	@Override
-	public void showDialog(String text, ScriptDialogWithoutImage script)
-	{
-		new MyDialogWithoutImage().showDialog(text, script);
-	}
-	
-	@Override
-	public void showTarget(String textTitle, String textTarget, ScriptShowTarget script)
-	{
-		new DialogShowTarget().showDialog(textTitle, textTarget, script);
 	}
 	
 	//

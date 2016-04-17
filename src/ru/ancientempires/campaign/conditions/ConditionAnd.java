@@ -2,13 +2,13 @@ package ru.ancientempires.campaign.conditions;
 
 import ru.ancientempires.campaign.scripts.Script;
 
-public class ConditionOr extends ConditionBoolean
+public class ConditionAnd extends ConditionBoolean
 {
 	
-	public ConditionOr()
+	public ConditionAnd()
 	{}
 	
-	public ConditionOr(Script... scripts)
+	public ConditionAnd(Script... scripts)
 	{
 		super(scripts);
 	}
@@ -18,8 +18,8 @@ public class ConditionOr extends ConditionBoolean
 	{
 		for (Script script : scripts)
 			if (script.checkGeneral())
-				return true;
-		return false;
+				return false;
+		return true;
 	}
 	
 }

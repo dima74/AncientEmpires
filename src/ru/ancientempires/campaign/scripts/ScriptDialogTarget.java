@@ -8,16 +8,16 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.Localization;
 import ru.ancientempires.helpers.JsonHelper;
 
-public class ScriptShowTarget extends Script
+public class ScriptDialogTarget extends Script
 {
 	
 	private String	textTitle;
 	private String	textTarget;
 					
-	public ScriptShowTarget()
+	public ScriptDialogTarget()
 	{}
 	
-	public ScriptShowTarget(String textTitle, String textTarget)
+	public ScriptDialogTarget(String textTitle, String textTarget)
 	{
 		this.textTitle = textTitle;
 		this.textTarget = textTarget;
@@ -33,7 +33,7 @@ public class ScriptShowTarget extends Script
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.showTarget(textTitle, textTarget, this);
+		campaign.iDrawCampaign.dialogTarget(textTitle, textTarget, this);
 	}
 	
 	@Override

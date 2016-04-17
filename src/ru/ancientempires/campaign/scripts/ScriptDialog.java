@@ -40,7 +40,7 @@ public class ScriptDialog extends Script
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.showDialog(image, text, this);
+		campaign.iDrawCampaign.dialog(image, text, this);
 	}
 	
 	@Override

@@ -8,15 +8,15 @@ import com.google.gson.stream.JsonWriter;
 import ru.ancientempires.Localization;
 import ru.ancientempires.helpers.JsonHelper;
 
-public class ScriptMissionComplete extends Script
+public class ScriptToastTitle extends Script
 {
 	
 	private String text;
 	
-	public ScriptMissionComplete()
+	public ScriptToastTitle()
 	{}
 	
-	public ScriptMissionComplete(String text)
+	public ScriptToastTitle(String text)
 	{
 		this.text = text;
 	}
@@ -30,7 +30,7 @@ public class ScriptMissionComplete extends Script
 	@Override
 	public void start()
 	{
-		campaign.iDrawCampaign.showTitle(text, this);
+		campaign.iDrawCampaign.toastTitle(text, this);
 	}
 	
 	@Override
