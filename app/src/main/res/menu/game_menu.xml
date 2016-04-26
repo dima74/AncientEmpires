@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="ru.ancientempires.activity.GameActivity">
+
+	<item
+		android:id="@+id/action_end_turn"
+		android:orderInCategory="100"
+		android:title="@string/action_end_turn"
+		app:showAsAction="ifRoom" />
+	<item
+		android:id="@+id/action_reset"
+		android:orderInCategory="100"
+		android:title="@string/action_reset"
+		app:showAsAction="never" />
+	<item
+		android:id="@+id/action_wisp"
+		android:orderInCategory="100"
+		android:title="@string/action_wisp"
+		app:showAsAction="never" />
+	<item
+		android:id="@+id/action_kill_unit"
+		android:orderInCategory="100"
+		android:title="Kill unit"
+		app:showAsAction="never" />
+	<item
+		android:id="@+id/action_capture_castle"
+		android:orderInCategory="100"
+		android:title="Capture castle"
+		app:showAsAction="never" />
+
+</menu>

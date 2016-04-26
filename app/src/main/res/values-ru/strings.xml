@@ -1,0 +1,24 @@
+<resources>
+    <!-- app information -->
+
+    <!-- options menu -->
+    <string name="action_settings">Настройки</string>
+    <string name="action_end_turn">Конец хода</string>
+    <string name="action_reset">Заново</string>
+    <string name="action_wisp">Сделать ход</string>
+
+    <!-- other -->
+    <string name="loading">Загрузка</string>
+    <string name="buy">Купить</string>
+
+    <!-- buttons -->
+    <string name="button_fight">Играть!</string>
+    <string name="button_create">Создать</string>
+
+    <!-- activities titles -->
+    <string name="title_activity_play_menu">Играть</string>
+    <string name="title_activity_editor_base">Редактор карт</string>
+    <string name="title_activity_editor_choose">Настройте параметры</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_editor">Редактор карт</string>
+</resources>

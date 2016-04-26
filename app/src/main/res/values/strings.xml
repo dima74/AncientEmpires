@@ -1,0 +1,25 @@
+<resources>
+	<!-- app information -->
+	<string name="app_name" translatable="false">Ancient Empires</string>
+
+	<!-- options menu -->
+	<string name="action_settings">Settings</string>
+	<string name="action_end_turn">End turn</string>
+	<string name="action_reset">Restart</string>
+	<string name="action_wisp">Make move</string>
+
+	<!-- other -->
+	<string name="loading">Loading</string>
+	<string name="buy">Buy</string>
+
+	<!-- buttons -->
+	<string name="button_fight">Fight!</string>
+	<string name="button_create">Create</string>
+
+	<!-- activities titles -->
+	<string name="title_activity_play_menu">Play</string>
+	<string name="title_activity_editor_base">Map Editor</string>
+	<string name="title_activity_editor_choose">Choose Settings</string>
+	<string name="title_activity_settings">Settings</string>
+	<string name="title_activity_editor">Map Editor</string>
+</resources>

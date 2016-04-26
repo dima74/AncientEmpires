@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Preference
+        android:key="deleteSaves"
+        android:title="Удалить все сохранения" />
+    <Preference
+        android:key="appInfo"
+        android:title="Информация о приложении" />
+
+</PreferenceScreen>
