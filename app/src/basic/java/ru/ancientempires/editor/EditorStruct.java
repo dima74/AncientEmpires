@@ -2,6 +2,7 @@ package ru.ancientempires.editor;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.Paints;
 import ru.ancientempires.model.Game;
@@ -24,10 +25,10 @@ public abstract class EditorStruct
 		return Math.hypot(struct.y - touchY, struct.x - touchX);
 	}
 	
-	public float	y;
-	public float	x;
-	public Game		game;
-					
+	public float y;
+	public float x;
+	public Game  game;
+
 	public EditorStruct()
 	{}
 	

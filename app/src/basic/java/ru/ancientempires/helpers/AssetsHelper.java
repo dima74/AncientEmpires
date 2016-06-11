@@ -1,9 +1,9 @@
 package ru.ancientempires.helpers;
 
+import android.content.res.AssetManager;
+
 import java.io.IOException;
 import java.io.InputStream;
-
-import android.content.res.AssetManager;
 
 public class AssetsHelper
 {

@@ -1,6 +1,7 @@
 package ru.ancientempires.campaign.conditions;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -9,6 +10,8 @@ import java.io.IOException;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class ConditionNamedUnitIntoBounds extends Condition
 {
@@ -52,4 +55,23 @@ public class ConditionNamedUnitIntoBounds extends Condition
 		writer.name("name").value(name);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("name", name);
+		object.add("bounds", SerializableJsonHelper.toJsonArray(bounds));
+		return object;
+	}
+
+	public ConditionNamedUnitIntoBounds fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		name = object.get("name").getAsString();
+		bounds = AbstractBounds.fromJsonArray(object.get("bounds").getAsJsonArray(), info);
+		return this;
+	}
+
 }

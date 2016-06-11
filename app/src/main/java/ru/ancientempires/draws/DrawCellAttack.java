@@ -1,6 +1,7 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
@@ -8,10 +9,11 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 public class DrawCellAttack extends DrawOnFramesGroup
 {
 	
-	private int	targetI;
-	private int	targetJ;
-	private int	frameUpdateTargetCell	= -1;
-										
+	private int targetI;
+	private int targetJ;
+	private int frameUpdateTargetCell = -1;
+
+
 	/*
 	
 	public final void sub_6de(Unit var1)
@@ -44,7 +46,7 @@ public class DrawCellAttack extends DrawOnFramesGroup
 		
 		add(new DrawCellAttackPartTwo(targetI, targetJ)
 				.increaseFrameStart(frameCount));
-				
+
 		main.cells.keep[targetI][targetJ] = true;
 		main.cellsDual.keep[targetI][targetJ] = true;
 	}

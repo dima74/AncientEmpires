@@ -1,78 +1,55 @@
 package ru.ancientempires.save;
 
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.action.Action;
-import ru.ancientempires.campaign.Campaign;
-import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
-import ru.ancientempires.load.GameLoader;
+import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
 
 public class GameSaver
 {
-	
-	public GameSaveLoader  loader;
-	public Game            game;
+
 	public Game            mainGame;
+	public Game            game;
 	public GameSaverThread thread;
 
-	public GameSaver(Game game)
+	public FileLoader       loader;
+	public FileOutputStream actionsFOS;
+	public DataOutputStream actionsDOS;
+	//public PrintWriter      snapshotsWriter;
+
+	public GameSaver(Game mainGame) throws Exception
 	{
-		mainGame = game;
-		loader = new GameSaveLoader(game.path.getLoader());
+		this.mainGame = mainGame;
+		mainGame.path.addNoteInitial(mainGame);
+		game = mainGame.myClone();
 		thread = new GameSaverThread();
 		thread.start();
-	}
-	
-	public class LoadFirstSnapshot implements Save
-	{
-		@Override
-		public void save() throws Exception
-		{
-			game = new GameLoader(mainGame.path, mainGame.rules).load(false);
-			game.path = mainGame.path;
-			game.path.canChooseTeams = false;
-			// game.campaign = mainGame.campaign.createSimpleCopy(game);
-			game.isSaver = true;
-		}
-	}
-	
-	public void initFromBase() throws Exception
-	{
-		FileLoader baseLoader = Client.getGame(mainGame.path.baseGameID).getLoader();
-		FileCopier copier = new FileCopier(baseLoader, loader);
-		copier.copy("campaign.json", "strings.json");
-		for (String lang : mainGame.path.localizations)
-			copier.copy("strings_" + lang + ".json");
 
-		new SaveSnapshot().save(mainGame);
-		add(new LoadFirstSnapshot());
+		loader = game.path.getLoader();
+		actionsFOS = loader.openFOS(GamePath.ACTIONS);
+		actionsDOS = new DataOutputStream(actionsFOS);
+		//snapshotsWriter = loader.getPrintWriter(GamePath.SNAPSHOTS);
 	}
-	
-	public void init() throws IOException
-	{
-		loader.load();
-		add(new LoadFirstSnapshot());
-	}
-	
+
 	// всё, кроме strings
-	public void saveBaseGame() throws Exception
+	public static void createBaseGame(Game game) throws Exception
 	{
-		new SaveSnapshot().save(mainGame);
-		if (!mainGame.campaign.isDefault)
-			mainGame.campaign.save(loader);
-		thread.stopRunning();
+		FileLoader loader = game.path.getLoader();
+		loader.mkdirs();
+		//loader.getFile(GamePath.ACTIONS).createNewFile();
+		//loader.getFile(GamePath.SNAPSHOTS).createNewFile();
+
+		if (!game.campaign.isDefault)
+			game.campaign.save(loader);
+		game.path.addNoteInitial(game);
+		game.path.save();
 	}
-	
-	public void checkSaveSnapshot() throws IOException
-	{
-		if (loader.numberActionsAfterLastSave == 100)
-			saveSnapshot();
-	}
-	
+	/*
 	public class SaveSnapshot implements Save
 	{
 		private Campaign campaign;
@@ -93,16 +70,19 @@ public class GameSaver
 		
 		public void save(Game game) throws Exception
 		{
-			++loader.numberSnapshots;
-			loader.snapshots().mkdirs();
-			loader.actions().mkdirs();
-			loader.numberActionsAfterLastSave = 0;
-			if (campaign != null)
-				game.campaign = campaign;
-			new GameSnapshotSaver(game, loader.snapshots()).save();
-			// game.lastTime =
-			game.path.save();
-			loader.save();
+			//if (campaign != null)
+			game.campaign = campaign;
+
+			Scanner scanner = loader.getScanner(GamePath.LAST_SNAPSHOT);
+			String lastSnapshot = scanner.nextLine();
+			scanner.close();
+
+			PrintWriter writer = loader.getPrintWriter(GamePath.LAST_SNAPSHOT);
+			writer.printf("%d %d %s", game.path.numberActions, game.path.numberSnapshots, game.toJson());
+			writer.close();
+
+			snapshotsWriter.print(lastSnapshot);
+			game.path.numberSnapshots++;
 		}
 	}
 	
@@ -110,6 +90,7 @@ public class GameSaver
 	{
 		add(new SaveSnapshot(mainGame.campaign.createSimpleCopy(game)));
 	}
+	*/
 	
 	public class SaveAction implements Save
 	{
@@ -121,19 +102,33 @@ public class GameSaver
 		}
 		
 		@Override
-		public void save() throws IOException
+		public int save() throws Exception
 		{
 			action.checkBase(game);
 			action.performQuickBase(game);
-			if (!action.isCampaign())
+			//if (!action.isCampaign())
 			{
-				String relativeNumberAction = "" + loader.numberActionsAfterLastSave++;
-				DataOutputStream dos = loader.actions().openDOS(relativeNumberAction);
-				action.saveBase(dos);
-				dos.close();
-				loader.save();
-				checkSaveSnapshot();
+				//action.saveBase(actionsDOS);
+				action.toData(actionsDOS);
+				++game.path.numberActions;
 			}
+			return 0;
+		}
+	}
+
+	public static class SaveWithRC implements Save
+	{
+		int rc;
+
+		public SaveWithRC(int rc)
+		{
+			this.rc = rc;
+		}
+
+		@Override
+		public int save() throws Exception
+		{
+			return rc;
 		}
 	}
 	
@@ -142,22 +137,27 @@ public class GameSaver
 		add(new SaveAction(action));
 	}
 	
-	public void waitSave() throws InterruptedException
+	public void waitSave() throws Exception
 	{
 		MyAssert.a(thread.isAlive());
-		while (!thread.queue.isEmpty())
-			Thread.yield();
+		add(new SaveWithRC(1));
+		thread.reverseQueue.take();
+		actionsDOS.flush();
+		//snapshotsWriter.flush();
 	}
-	
-	public void finishSave() throws InterruptedException
+
+	public void finishSave() throws Exception
 	{
-		thread.stopRunning();
+		add(new SaveWithRC(2));
 		thread.join();
+		actionsDOS.close();
+		game.path.save();
+		//snapshotsWriter.close();
 	}
 	
 	public void add(Save save)
 	{
-		thread.queue.offer(save);
+		thread.queue.add(save);
 	}
 	
 }

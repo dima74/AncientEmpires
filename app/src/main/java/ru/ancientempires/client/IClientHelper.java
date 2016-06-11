@@ -7,10 +7,10 @@ import ru.ancientempires.helpers.AssetsHelper;
 public interface IClientHelper
 {
 	
-	public File getFilesDir();
+	File getFilesDir();
 	
-	public AssetsHelper getAssets();
+	AssetsHelper getAssets();
 	
-	public String getID();
+	String getID();
 	
 }

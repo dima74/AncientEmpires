@@ -17,5 +17,7 @@ public enum Strings
 	public String toString()
 	{
 		return Localization.get(name());
-	};
+	}
+
+	;
 }

@@ -4,6 +4,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
@@ -11,16 +12,16 @@ import ru.ancientempires.framework.MyAssert;
 public abstract class BaseView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public BaseGameActivity	activity;
-	public BaseThread		thread;
-	public GestureDetector	detector;
-							
-	public int				h;
-	public int				w;
-							
-	private boolean			isSurfaceCreated;
-	private boolean			isSizeChanged;
-							
+	public BaseGameActivity activity;
+	public BaseThread       thread;
+	public GestureDetector  detector;
+
+	public int h;
+	public int w;
+
+	private boolean isSurfaceCreated;
+	private boolean isSizeChanged;
+
 	public BaseView(BaseGameActivity activity)
 	{
 		super(activity);

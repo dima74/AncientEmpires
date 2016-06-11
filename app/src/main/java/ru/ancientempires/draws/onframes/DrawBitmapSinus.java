@@ -8,13 +8,60 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 	
 	// length = 48
 	public static final int[] YS = new int[]
-	{
-			9, 9, 6, 6, 4, 4, 3, 3, 3, 3, 4, 4, 6, 6, 9, 9, 13, 13, 11, 11, 10, 10, 10, 10, 11, 11, 13, 13, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
-	};
+			{
+					9,
+					9,
+					6,
+					6,
+					4,
+					4,
+					3,
+					3,
+					3,
+					3,
+					4,
+					4,
+					6,
+					6,
+					9,
+					9,
+					13,
+					13,
+					11,
+					11,
+					10,
+					10,
+					10,
+					10,
+					11,
+					11,
+					13,
+					13,
+					12,
+					12,
+					12,
+					12,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13,
+					13
+			};
 	
-	private int		y	= 0;
-	private int		x	= 0;
-	private Bitmap	bitmap;
+	private int y = 0;
+	private int x = 0;
+	private Bitmap bitmap;
 	
 	public DrawBitmapSinus animate(int y, int x, Bitmap bitmap, int valuesForFrame)
 	{

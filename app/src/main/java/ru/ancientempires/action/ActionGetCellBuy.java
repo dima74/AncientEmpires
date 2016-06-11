@@ -1,5 +1,7 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,7 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGetCellBuy extends ActionFrom
 {
@@ -52,4 +55,18 @@ public class ActionGetCellBuy extends ActionFrom
 				status[k] = BuyStatus.SUCCESS;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionGetCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

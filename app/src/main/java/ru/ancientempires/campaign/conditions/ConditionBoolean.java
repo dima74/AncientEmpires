@@ -1,6 +1,7 @@
 package ru.ancientempires.campaign.conditions;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -9,17 +10,18 @@ import java.util.ArrayList;
 
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.reflection.NumberedArray;
+import ru.ancientempires.serializable.AsNumberedArray;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public abstract class ConditionBoolean extends Condition
 {
 
-	@NumberedArray
+	@AsNumberedArray
 	public Script[] scripts;
 	
 	public ConditionBoolean()
-	{
-	}
+	{}
 	
 	public ConditionBoolean(Script... scripts)
 	{
@@ -52,4 +54,21 @@ public abstract class ConditionBoolean extends Condition
 		resolveAliases(this.scripts, scripts);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.add("scripts", SerializableJsonHelper.toJsonArrayNumbered(scripts));
+		return object;
+	}
+
+	public ConditionBoolean fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		scripts = Script.newInstanceArrayNumbered(object.get("scripts").getAsJsonArray(), info);
+		return this;
+	}
+
 }

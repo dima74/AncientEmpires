@@ -1,6 +1,7 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class DrawCells extends Draw
@@ -11,10 +12,10 @@ public class DrawCells extends Draw
 	// private final int availableY;
 	// private final int availableX;
 	
-	private boolean			isDual	= false;
-	public FewBitmaps[][]	field	= new FewBitmaps[game.h][game.w];
-	public boolean[][]		keep	= new boolean[game.h][game.w];
-									
+	private boolean        isDual = false;
+	public  FewBitmaps[][] field  = new FewBitmaps[game.h][game.w];
+	public  boolean[][]    keep   = new boolean[game.h][game.w];
+
 	public DrawCells()
 	{
 		// availableY = h - main.info.h;
@@ -48,13 +49,13 @@ public class DrawCells extends Draw
 		int minJ = -(this.gameDraw.offsetX - this.gameDraw.maxOffsetX) / A;
 		int maxI = Math.min((-(this.gameDraw.offsetY - this.gameDraw.maxOffsetY) + this.availableY + A - 1) / A, this.h);
 		int maxJ = Math.min((-(this.gameDraw.offsetX - this.gameDraw.maxOffsetX) + this.availableX + A - 1) / A, this.w);
-		*/
 		int minI = 0;
 		int minJ = 0;
 		int maxI = game.h;
 		int maxJ = game.w;
-		for (int i = minI; i < maxI; i++)
-			for (int j = minJ; j < maxJ; j++)
+		*/
+		for (int i = main.iMin; i < main.iMax; i++)
+			for (int j = main.jMin; j < main.jMax; j++)
 			{
 				updateCell(i, j);
 				FewBitmaps bitmap = field[i][j];

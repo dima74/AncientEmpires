@@ -1,7 +1,10 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler
 {
@@ -9,8 +12,7 @@ public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler
 	public AbstractPoint point;
 	
 	public ScriptUnitMoveHandlerPoint()
-	{
-	}
+	{}
 	
 	public ScriptUnitMoveHandlerPoint(Object... point)
 	{
@@ -24,4 +26,21 @@ public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler
 			complete();
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.add("point", point.toJson());
+		return object;
+	}
+
+	public ScriptUnitMoveHandlerPoint fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		point = info.fromJson((JsonObject) object.get("point"), AbstractPoint.class);
+		return this;
+	}
+
 }

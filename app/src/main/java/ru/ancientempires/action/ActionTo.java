@@ -4,11 +4,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import ru.ancientempires.serializable.LoaderInfo;
+
 public abstract class ActionTo extends Action
 {
 	
-	public int	targetI;
-	public int	targetJ;
+	public int targetI;
+	public int targetJ;
 	
 	public ActionTo setTargetIJ(int targetI, int targetJ)
 	{
@@ -37,4 +39,22 @@ public abstract class ActionTo extends Action
 		output.writeShort(targetJ);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+		output.writeInt(targetI);
+		output.writeInt(targetJ);
+	}
+
+	public ActionTo fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		targetI = input.readInt();
+		targetJ = input.readInt();
+		return this;
+	}
+
 }

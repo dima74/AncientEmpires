@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 {
 	
-	private float	start;
-	private float	end;
-	private float	step;
+	private float start;
+	private float end;
+	private float step;
 	
 	public DrawOnFramesWithRangeFloat animateRange(float start, float end, float step)
 	{

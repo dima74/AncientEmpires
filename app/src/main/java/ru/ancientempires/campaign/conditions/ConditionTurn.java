@@ -1,11 +1,13 @@
 package ru.ancientempires.campaign.conditions;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionTurn extends Condition
 {
@@ -38,4 +40,21 @@ public class ConditionTurn extends Condition
 		writer.name("turn").value(turn);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("turn", turn);
+		return object;
+	}
+
+	public ConditionTurn fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		turn = object.get("turn").getAsInt();
+		return this;
+	}
+
 }

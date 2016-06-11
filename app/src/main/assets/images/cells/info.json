@@ -1,150 +1,112 @@
 {
-	"images": 
-	[
+	"images": [
 		{
 			"type": "MOUNT",
-			"images": 
-			[
+			"images": [
 				"mount.png"
 			]
 		},
-
 		{
 			"type": "HILL",
-			"images": 
-			[
+			"images": [
 				"hill.png"
 			]
 		},
-
 		{
 			"type": "TWO_TREES",
-			"images": 
-			[
+			"images": [
 				"two_trees.png"
 			]
 		},
-
 		{
 			"type": "THREE_TREES",
-			"images": 
-			[
+			"images": [
 				"three_trees.png"
 			]
 		},
-
 		{
 			"type": "PLAIN",
-			"images": 
-			[
+			"images": [
 				"plain.png"
 			]
 		},
-
 		{
 			"type": "CITADEL_LEFT",
-			"images": 
-			[
+			"images": [
 				"citadel_left.png"
 			]
 		},
-
 		{
 			"type": "CITADEL_RIGHT",
-			"images": 
-			[
+			"images": [
 				"citadel_right.png"
 			]
 		},
-
 		{
 			"type": "CITADEL_UP",
-			"images": 
-			[
+			"images": [
 				"citadel_up.png"
 			]
 		},
-
 		{
 			"type": "BUILDING",
-			"images": 
-			[
+			"images": [
 				"building.png"
 			],
-
 			"isSmokes": true
 		},
-
 		{
 			"type": "BUILDING_DESTROYING",
-			"images": 
-			[
+			"images": [
 				"building_destroying.png"
 			]
 		},
-
 		{
 			"type": "CASTLE",
-			"images": 
-			[
+			"images": [
 				"castle.png"
 			]
 		},
-
 		{
 			"type": "CASTLE",
-			"images": 
-			[
+			"images": [
 				"castle_up.png"
 			],
-
 			"isDual": true
 		},
-
 		{
 			"type": "CAMP",
-			"images": 
-			[
+			"images": [
 				"camp.png"
 			]
 		},
-
 		{
 			"type": "TEMPLE",
-			"images": 
-			[
+			"images": [
 				"temple.png"
 			]
 		},
-
 		{
 			"type": "CITADEL",
-			"images": 
-			[
+			"images": [
 				"citadel.png"
 			]
 		},
-
 		{
 			"type": "WATER_WAY_HORIZONTAL",
-			"images": 
-			[
+			"images": [
 				"water_ways/horizontal.png"
 			]
 		},
-
 		{
 			"type": "WATER_WAY_VERTICAL",
-			"images": 
-			[
+			"images": [
 				"water_ways/vertical.png"
 			]
 		},
-
 		{
 			"type": "WATER_SPARKS",
-			"images": 
-			[
+			"images": [
 				"water_sparks1.png",
 				"water_sparks2.png"
 			]

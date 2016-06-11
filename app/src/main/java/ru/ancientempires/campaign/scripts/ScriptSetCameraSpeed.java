@@ -1,11 +1,13 @@
 package ru.ancientempires.campaign.scripts;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCameraSpeed extends Script
 {
@@ -38,4 +40,21 @@ public class ScriptSetCameraSpeed extends Script
 		writer.name("delta").value(delta);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("delta", delta);
+		return object;
+	}
+
+	public ScriptSetCameraSpeed fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		delta = object.get("delta").getAsInt();
+		return this;
+	}
+
 }

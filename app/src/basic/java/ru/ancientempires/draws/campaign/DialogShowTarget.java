@@ -1,6 +1,7 @@
 package ru.ancientempires.draws.campaign;
 
 import android.app.AlertDialog;
+
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.ScriptDialogTarget;
 

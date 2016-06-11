@@ -1,15 +1,17 @@
 package ru.ancientempires.images;
 
-import java.io.IOException;
+import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import android.graphics.Bitmap;
+import java.io.IOException;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
@@ -18,7 +20,7 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
 
-public class UnitImages extends IImages
+public class UnitImages extends AbstractImages
 {
 	
 	public static UnitImages get()
@@ -26,14 +28,14 @@ public class UnitImages extends IImages
 		return Client.client.images.unit;
 	}
 	
-	public Rules			rules;
-							
-	public MyColor[]		colors	= MyColor.values();
-	public int[]			playerToColorI;
-	public FewBitmaps[][]	greyUnitBitmaps;
-	public FewBitmaps[][]	unitBitmaps;
-	public Bitmap[][]		unitBitmapsBuy;
-							
+	public Rules rules;
+
+	public MyColor[] colors = MyColor.values();
+	public int[]          playerToColorI;
+	public FewBitmaps[][] greyUnitBitmaps;
+	public FewBitmaps[][] unitBitmaps;
+	public Bitmap[][]     unitBitmapsBuy;
+
 	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
 	{
 		if (unit.isTurn && !keepTurn)
@@ -53,7 +55,7 @@ public class UnitImages extends IImages
 	}
 	
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
@@ -84,14 +86,14 @@ public class UnitImages extends IImages
 	}
 	
 	@Override
-	public void load(ImagesLoader loader, Game game) throws IOException
+	public void load(FileLoader loader, Game game) throws IOException
 	{
 		playerToColorI = new int[game.players.length];
 		for (Player player : game.players)
 			for (int colorI = 0; colorI < colors.length; colorI++)
 				if (player.color == colors[colorI])
 					playerToColorI[player.ordinal] = colorI;
-					
+
 		unitBitmapsBuy = new Bitmap[rules.unitTypes.length][5];
 		for (int colorI = 0; colorI < colors.length; colorI++)
 			for (int typeI = 1; typeI < unitBitmapsBuy.length; typeI++)

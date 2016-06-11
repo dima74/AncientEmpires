@@ -2,6 +2,7 @@ package ru.ancientempires;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
+
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.framework.Debug;
@@ -10,18 +11,18 @@ import ru.ancientempires.framework.MyAssert;
 public class BaseThread extends Thread
 {
 	
-	public static final long	MILLISECONDS_BETWEEN_FRAMES	= 1000 / 30;
-															
-	public BaseGameActivity		activity;
-	public SurfaceHolder		surfaceHolder;
-	public BaseDrawMain			drawMain;
-								
-	volatile public boolean		isRunning					= true;
-															
-	public float				touchY;
-	public float				touchX;
-	public boolean				isTouch;
-								
+	public static final int MILLISECONDS_BETWEEN_FRAMES = 1000 / 30;
+
+	public BaseGameActivity activity;
+	public SurfaceHolder    surfaceHolder;
+	public BaseDrawMain     drawMain;
+
+	volatile public boolean isRunning = true;
+
+	public float   touchY;
+	public float   touchX;
+	public boolean isTouch;
+
 	public BaseThread(BaseGameActivity activity, SurfaceHolder surfaceHolder)
 	{
 		Debug.onCreate(this);

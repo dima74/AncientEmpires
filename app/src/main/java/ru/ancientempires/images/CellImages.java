@@ -1,15 +1,17 @@
 package ru.ancientempires.images;
 
-import java.io.IOException;
+import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import android.graphics.Bitmap;
+import java.io.IOException;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
@@ -19,7 +21,7 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.rules.Rules;
 
-public class CellImages extends IImages
+public class CellImages extends AbstractImages
 {
 	
 	public static CellImages get()
@@ -27,20 +29,20 @@ public class CellImages extends IImages
 		return Client.client.images.cell;
 	}
 	
-	public Rules		rules;
-						
-	public CellBitmap[]	cellBitmaps;
-	public CellBitmap[]	cellBitmapsDual;
-						
-	public int[]		playerToColorI;
-	public MyColor[]	colors	= new MyColor[]
-									{
-										MyColor.RED,
-										MyColor.GREEN,
-										MyColor.BLUE,
-										MyColor.BLACK
-									};
-									
+	public Rules rules;
+
+	public CellBitmap[] cellBitmaps;
+	public CellBitmap[] cellBitmapsDual;
+
+	public int[] playerToColorI;
+	public MyColor[] colors = new MyColor[]
+			{
+					MyColor.RED,
+					MyColor.GREEN,
+					MyColor.BLUE,
+					MyColor.BLACK
+			};
+
 	public FewBitmaps getCellBitmap(Cell cell, boolean dual)
 	{
 		if (cell.type.template != null)
@@ -65,7 +67,7 @@ public class CellImages extends IImages
 	}
 	
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		cellBitmaps = new CellBitmap[rules.cellTypes.length];
 		cellBitmapsDual = new CellBitmap[rules.cellTypes.length];
@@ -108,7 +110,7 @@ public class CellImages extends IImages
 				// dual
 				if (name == "isDual")
 					cellBitmap.isDual = reader.nextBoolean();
-					
+
 				// smoke
 				if (name == "isSmokes")
 					cellBitmap.isSmokes = reader.nextBoolean();
@@ -125,7 +127,7 @@ public class CellImages extends IImages
 	}
 	
 	@Override
-	public void load(ImagesLoader loader, Game game) throws IOException
+	public void load(FileLoader loader, Game game) throws IOException
 	{
 		playerToColorI = new int[game.players.length];
 		for (Player player : game.players)

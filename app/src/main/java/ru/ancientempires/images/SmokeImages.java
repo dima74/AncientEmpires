@@ -1,32 +1,34 @@
 package ru.ancientempires.images;
 
-import java.io.IOException;
-
 import android.graphics.Bitmap;
 
-public class SmokeImages extends IImages
+import java.io.IOException;
+
+import ru.ancientempires.helpers.FileLoader;
+
+public class SmokeImages extends AbstractImages
 {
 	
-	public Bitmap[]	bitmapsDefault;
-	public Bitmap[]	bitmapsSmall;
-					
-	public int		amountDefault;
-	public int		amountSmall;
-					
-	public int		hDefault;
-	public int		wDefault;
-					
-	public int		hSmall;
-	public int		wSmall;
-					
+	public Bitmap[] bitmapsDefault;
+	public Bitmap[] bitmapsSmall;
+
+	public int amountDefault;
+	public int amountSmall;
+
+	public int hDefault;
+	public int wDefault;
+
+	public int hSmall;
+	public int wSmall;
+
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
-		preloadDefault(loader.getImagesLoader("default/"));
-		preloadSmall(loader.getImagesLoader("small/"));
+		preloadDefault(loader.getLoader("default/"));
+		preloadSmall(loader.getLoader("small/"));
 	}
 	
-	private void preloadDefault(ImagesLoader loader) throws IOException
+	private void preloadDefault(FileLoader loader) throws IOException
 	{
 		amountDefault = 4;
 		bitmapsDefault = new Bitmap[amountDefault];
@@ -36,7 +38,7 @@ public class SmokeImages extends IImages
 		wDefault = bitmapsDefault[0].getWidth();
 	}
 	
-	private void preloadSmall(ImagesLoader loader) throws IOException
+	private void preloadSmall(FileLoader loader) throws IOException
 	{
 		amountSmall = 4;
 		bitmapsSmall = new Bitmap[amountSmall];

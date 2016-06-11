@@ -1,14 +1,15 @@
 package ru.ancientempires.bonuses;
 
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.google.gson.JsonObject;
-
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusCost extends Bonus
 {
@@ -77,4 +78,21 @@ public class BonusCost extends Bonus
 		return true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("multi", multi);
+		return object;
+	}
+
+	public BonusCost fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		multi = object.get("multi").getAsInt();
+		return this;
+	}
+
 }

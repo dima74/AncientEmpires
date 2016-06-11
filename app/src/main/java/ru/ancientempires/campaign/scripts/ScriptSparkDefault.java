@@ -1,11 +1,13 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSparkDefault extends Script
 {
@@ -47,6 +49,25 @@ public class ScriptSparkDefault extends Script
 	public boolean isSimple()
 	{
 		return false;
+	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		return object;
+	}
+
+	public ScriptSparkDefault fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		return this;
 	}
 
 }

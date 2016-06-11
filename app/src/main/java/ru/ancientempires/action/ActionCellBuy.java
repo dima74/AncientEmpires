@@ -11,6 +11,7 @@ import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCellBuy extends ActionFrom
 {
@@ -89,4 +90,20 @@ public class ActionCellBuy extends ActionFrom
 		output.writeShort(iUnit);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+		output.writeInt(iUnit);
+	}
+
+	public ActionCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		iUnit = input.readInt();
+		return this;
+	}
+
 }

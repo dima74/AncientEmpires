@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.activity.EditorActivity;
 import ru.ancientempires.images.Images;
@@ -13,23 +14,23 @@ import ru.ancientempires.images.Images;
 public class EditorChooseView extends View implements Callback
 {
 	
-	public static float		mScale			= 2.0f;
-	public static int		mA				= (int) (Images.get().bitmapSize * mScale);
-	public static int		A				= Images.get().bitmapSize;
-											
-	private float			h;
-	private float			w;
-							
-	private EditorActivity	activity;
-	private MyColor[]		myColors;
-	private DrawChoose		choose;
-	private int				selectedStart;
-	private EditorStruct[]	structs;
-							
-	private float			hDivider		= 2 / mScale;
-	private int				xDivider		= 10;
-	private Paint			paintDivider	= new Paint();
-											
+	public static float mScale = 2.0f;
+	public static int   mA     = (int) (Images.get().bitmapSize * mScale);
+	public static int   A      = Images.get().bitmapSize;
+
+	private float h;
+	private float w;
+
+	private EditorActivity activity;
+	private MyColor[]      myColors;
+	private DrawChoose     choose;
+	private int            selectedStart;
+	private EditorStruct[] structs;
+
+	private float hDivider     = 2 / mScale;
+	private int   xDivider     = 10;
+	private Paint paintDivider = new Paint();
+
 	public EditorChooseView(Context context, EditorActivity activity, EditorStruct[] structs, MyColor[] myColors, int selected)
 	{
 		super(context);

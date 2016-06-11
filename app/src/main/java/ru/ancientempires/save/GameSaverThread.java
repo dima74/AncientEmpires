@@ -1,29 +1,27 @@
 package ru.ancientempires.save;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import ru.ancientempires.framework.MyAssert;
 
 public class GameSaverThread extends Thread
 {
 	
-	ConcurrentLinkedQueue<Save>	queue		= new ConcurrentLinkedQueue<Save>();
-	volatile private boolean	isRunning	= true;
-											
+	public LinkedBlockingQueue<Save>    queue        = new LinkedBlockingQueue<>();
+	public LinkedBlockingQueue<Boolean> reverseQueue = new LinkedBlockingQueue<>(); // Void нельзя, ибо нельзя null
+
 	@Override
 	public void run()
 	{
 		try
 		{
-			while (isRunning)
+			while (true)
 			{
-				Save action;
-				while ((action = queue.peek()) != null)
-				{
-					action.save();
-					queue.poll();
-				}
-				Thread.yield();
+				int rc = queue.take().save();
+				if (rc == 1)
+					reverseQueue.add(true);
+				else if (rc == 2)
+					break;
 			}
 		}
 		catch (Exception e)
@@ -31,11 +29,7 @@ public class GameSaverThread extends Thread
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-	}
-	
-	public void stopRunning()
-	{
-		isRunning = false;
+		MyAssert.a(queue.isEmpty());
 	}
 	
 }

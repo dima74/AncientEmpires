@@ -1,7 +1,16 @@
 package ru.ancientempires.model;
 
-public class CellType
+import ru.ancientempires.model.struct.Struct;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Numbered;
+
+public class CellType implements Numbered
 {
+
+	public static CellType newInstance(int i, LoaderInfo info)
+	{
+		return info.rules.cellTypes[i];
+	}
 
 	public int ordinal;
 
@@ -22,6 +31,7 @@ public class CellType
 	public CellType repairType;
 
 	public CellTemplate template;
+	public Struct       struct;
 
 	// Эти поля используются только для копирования в клеточку
 	public boolean isCaptureDefault;
@@ -30,6 +40,12 @@ public class CellType
 	{
 		this.name = name.intern();
 		this.ordinal = ordinal;
+	}
+
+	@Override
+	public int getNumber()
+	{
+		return ordinal;
 	}
 	
 	public CellType setProperties(CellType type)

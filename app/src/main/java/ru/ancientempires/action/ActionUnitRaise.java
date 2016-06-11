@@ -1,8 +1,12 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitRaise extends ActionFromTo
 {
@@ -19,7 +23,7 @@ public class ActionUnitRaise extends ActionFromTo
 	{
 		if (!super.check())
 			return false;
-			
+
 		Unit unit = game.fieldUnits[i][j];
 		Unit targetUnit = game.fieldUnitsDead[targetI][targetJ];
 		return unit != null && targetUnit != null && !unit.isTurn && unit.type.raiseRange.checkAccess(unit, targetUnit);
@@ -40,4 +44,18 @@ public class ActionUnitRaise extends ActionFromTo
 		game.fieldUnitsDead[targetI][targetJ] = null;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionUnitRaise fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

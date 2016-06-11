@@ -1,5 +1,10 @@
 package ru.ancientempires.tasks;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.atteo.classindex.IndexSubclasses;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,14 +13,19 @@ import java.util.List;
 
 import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public abstract class Task extends IGameHandler
+@IndexSubclasses
+public abstract class Task extends IGameHandler implements SerializableJson
 {
 	
 	public static List<Class<? extends Task>> classes = Arrays.asList(
 			TaskRemoveTombstone.class,
 			TaskRemoveBonus.class);
-			
+
 	public static Task loadNew(DataInputStream input, Game game) throws Exception
 	{
 		int ordinal = input.readShort();
@@ -25,7 +35,7 @@ public abstract class Task extends IGameHandler
 		return task;
 	}
 	
-	public int turnToRun;
+	@Exclude public int turnToRun;
 	
 	public Task setTurn(int differenceTurn)
 	{
@@ -55,4 +65,26 @@ public abstract class Task extends IGameHandler
 	
 	public abstract void save(DataOutputStream output) throws IOException;
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = SerializableJsonHelper.toJson(this);
+		return object;
+	}
+
+	public Task fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		return this;
+	}
+
+	static public Task[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Task[] array = new Task[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Task.class);
+		return array;
+	}
+
 }

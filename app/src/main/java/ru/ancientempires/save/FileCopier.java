@@ -9,9 +9,9 @@ import ru.ancientempires.helpers.FileLoader;
 public class FileCopier
 {
 	
-	private FileLoader	from;
-	private FileLoader	to;
-	private byte[]		buffer	= new byte[1024 * 1024];
+	private FileLoader from;
+	private FileLoader to;
+	private byte[] buffer = new byte[1024 * 1024];
 	
 	public FileCopier(FileLoader from, FileLoader to)
 	{

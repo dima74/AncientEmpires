@@ -8,12 +8,12 @@ import ru.ancientempires.draws.DrawUnitsHeal;
 public class InputMain extends AbstractInput
 {
 	
-	public static InputMain		main;
-								
-	public InputPlayer			inputPlayer;
-	public InputComputer		inputComputer;
-	public AbstractPlayerInput	currentInput;
-								
+	public static InputMain main;
+
+	public InputPlayer         inputPlayer;
+	public InputComputer       inputComputer;
+	public AbstractPlayerInput currentInput;
+
 	public InputMain(DrawMain drawMain)
 	{
 		InputMain.main = this;

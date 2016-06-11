@@ -1,6 +1,7 @@
 package ru.ancientempires.editor;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.draws.Draw;
 import ru.ancientempires.draws.DrawAction;
 import ru.ancientempires.draws.DrawInfo;
@@ -9,18 +10,18 @@ import ru.ancientempires.images.Images;
 public class DrawChoose extends Draw
 {
 	
-	public static float		mScale			= 2.0f;
-	public static int		mA				= (int) (Images.get().bitmapSize * DrawInfo.mScale);
-											
-	public int				hBeforeBitmap	= mA / 4;
-	public int				h				= mA + hBeforeBitmap * 2;
-	public int				w				= w();
-											
-	public Callback			callback;
-	public EditorStruct[]	structs;
-	public int				selected		= 0;
-	public DrawSelected		selectedDraw	= new DrawSelected(hBeforeBitmap - DrawSelected.h * 2);
-											
+	public static float mScale = 2.0f;
+	public static int   mA     = (int) (Images.get().bitmapSize * DrawInfo.mScale);
+
+	public int hBeforeBitmap = mA / 4;
+	public int h             = mA + hBeforeBitmap * 2;
+	public int w             = w();
+
+	public Callback       callback;
+	public EditorStruct[] structs;
+	public int          selected     = 0;
+	public DrawSelected selectedDraw = new DrawSelected(hBeforeBitmap - DrawSelected.h * 2);
+
 	public void create(int n, Callback callback)
 	{
 		structs = new EditorStruct[n];

@@ -13,5 +13,6 @@ public enum BuyStatus
 	public String toString()
 	{
 		return Localization.get(name());
-	};
+	}
+
 }

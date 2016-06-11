@@ -1,6 +1,7 @@
 package ru.ancientempires;
 
 import android.view.SurfaceHolder;
+
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
@@ -13,9 +14,9 @@ public class GameThread extends BaseThread
 	
 	// public static GameThread thread;
 	
-	public InputMain		inputMain;
-	volatile public boolean	needUpdateCampaign	= false;
-												
+	public InputMain inputMain;
+	volatile public boolean needUpdateCampaign = false;
+
 	public GameThread(BaseGameActivity activity, SurfaceHolder surfaceHolder)
 	{
 		super(activity, surfaceHolder);

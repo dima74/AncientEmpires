@@ -36,8 +36,8 @@ public class MyDialogFragment
 						1, 1,
 						LayoutParams.TYPE_APPLICATION,
 						LayoutParams.FLAG_NOT_FOCUSABLE
-								// | LayoutParams.FLAG_NOT_TOUCH_MODAL
-								| LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+						// | LayoutParams.FLAG_NOT_TOUCH_MODAL
+						| LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 						PixelFormat.TRANSPARENT);
 				viewOverlay = new View(GameActivity.activity);
 				WindowManager windowManager = (WindowManager) GameActivity.activity.getSystemService(Context.WINDOW_SERVICE);

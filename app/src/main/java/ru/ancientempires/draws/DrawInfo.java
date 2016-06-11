@@ -4,21 +4,22 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
 import ru.ancientempires.images.Images;
 import ru.ancientempires.model.Cell;
 
 public class DrawInfo extends Draw
 {
 	
-	public static float			mScale	= 2.0f;
-	public static int			mA		= (int) (Images.get().bitmapSize * DrawInfo.mScale);
-	public static final Paint	paint	= new Paint();
-	public static final Paint	color1	= new Paint();
-	public static final Paint	color2	= new Paint();
-	public static final Paint	color3	= new Paint();
-	public static final Paint	color4	= new Paint();
-	public static final Paint	color5	= new Paint();
-										
+	public static       float mScale = 2.0f;
+	public static       int   mA     = (int) (Images.get().bitmapSize * DrawInfo.mScale);
+	public static final Paint paint  = new Paint();
+	public static final Paint color1 = new Paint();
+	public static final Paint color2 = new Paint();
+	public static final Paint color3 = new Paint();
+	public static final Paint color4 = new Paint();
+	public static final Paint color5 = new Paint();
+
 	static
 	{
 		DrawInfo.color1.setColor(0xFFAFB7AB);
@@ -28,17 +29,17 @@ public class DrawInfo extends Draw
 		DrawInfo.color5.setColor(0xFF12142F);
 	}
 	
-	private Bitmap	backgroundBitmap;
-					
-	public int		a	= 2;
-	public int		h	= DrawInfo.mA + 8 * 2;
-	public int		w	= w();
-	private int		mW	= w - a * 7 - DrawInfo.mA;
-	private int		color;
-					
-	private Bitmap	goldBitmap;
-	private Bitmap	amountBitmap;
-					
+	private Bitmap backgroundBitmap;
+
+	public  int a  = 2;
+	public  int h  = DrawInfo.mA + 8 * 2;
+	public  int w  = w();
+	private int mW = w - a * 7 - DrawInfo.mA;
+	private int color;
+
+	private Bitmap goldBitmap;
+	private Bitmap amountBitmap;
+
 	public DrawInfo()
 	{
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
@@ -85,7 +86,7 @@ public class DrawInfo extends Draw
 	}
 	
 	private void drawRect(Canvas canvas, int y, int x, int h, int w, Paint paint,
-			boolean axial, boolean vertical, boolean horizontal, boolean needMulti, int nh, int nw)
+	                      boolean axial, boolean vertical, boolean horizontal, boolean needMulti, int nh, int nw)
 	{
 		if (needMulti)
 			drawRect(canvas, y * a, x * a, h * a, w * a, paint, axial, vertical, horizontal, false, nh, nw);

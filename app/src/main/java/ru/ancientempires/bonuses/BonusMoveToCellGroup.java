@@ -1,22 +1,25 @@
 package ru.ancientempires.bonuses;
 
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import com.google.gson.JsonObject;
 
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusMoveToCellGroup extends Bonus
 {
-	
-	public CellGroup	group;
-	public int			bonus;
+
+	@AsNumbered
+	public CellGroup group;
+	public int       bonus;
 	
 	public BonusMoveToCellGroup()
 	{}
@@ -37,7 +40,9 @@ public class BonusMoveToCellGroup extends Bonus
 	public int getSign()
 	{
 		return (int) Math.signum(bonus);
-	};
+	}
+
+	;
 	
 	@Override
 	public void saveJson(JsonObject object)
@@ -99,4 +104,23 @@ public class BonusMoveToCellGroup extends Bonus
 		return true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("group", group.getNumber());
+		object.addProperty("bonus", bonus);
+		return object;
+	}
+
+	public BonusMoveToCellGroup fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		group = CellGroup.newInstance(object.get("group").getAsInt(), info);
+		bonus = object.get("bonus").getAsInt();
+		return this;
+	}
+
 }

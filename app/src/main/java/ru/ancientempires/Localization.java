@@ -1,12 +1,12 @@
 package ru.ancientempires;
 
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
@@ -26,7 +26,7 @@ public class Localization
 		return Client.client.localization.map.get(stringID);
 	}
 	
-	public Map<String, String> map = new HashMap<String, String>();
+	public Map<String, String> map = new HashMap<>();
 	
 	public void loadFull(FileLoader loader) throws IOException
 	{

@@ -1,18 +1,20 @@
 package ru.ancientempires.campaign.scripts;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCursorPosition extends Script
 {
 	
-	private int	i;
-	private int	j;
-				
+	private int i;
+	private int j;
+
 	public ScriptSetCursorPosition()
 	{}
 	
@@ -42,4 +44,23 @@ public class ScriptSetCursorPosition extends Script
 		writer.name("j").value(j);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		return object;
+	}
+
+	public ScriptSetCursorPosition fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		return this;
+	}
+
 }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import ru.ancientempires.R;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.scripts.ScriptDialog;

@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import ru.ancientempires.R;
 
 public class TestActivity extends Activity

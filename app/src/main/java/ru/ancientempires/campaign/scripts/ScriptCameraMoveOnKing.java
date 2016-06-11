@@ -1,11 +1,12 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.campaign.points.PointInteger;
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.model.Player;
-import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptCameraMoveOnKing extends ScriptCameraMove
+public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint
 {
 	
 	public Player player;
@@ -17,13 +18,23 @@ public class ScriptCameraMoveOnKing extends ScriptCameraMove
 	{
 		this.player = getGame().players[player];
 	}
-	
+
 	@Override
 	public void start()
 	{
-		Unit king = new UnitHelper(game).getKing(player);
-		point = new PointInteger(king.i, king.j);
 		campaign.iDrawCampaign.cameraMove(this);
+	}
+
+	@Override
+	public int i()
+	{
+		return new UnitHelper(game).getKing(player).i;
+	}
+
+	@Override
+	public int j()
+	{
+		return new UnitHelper(game).getKing(player).j;
 	}
 
 	@Override
@@ -32,4 +43,21 @@ public class ScriptCameraMoveOnKing extends ScriptCameraMove
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("player", player.getNumber());
+		return object;
+	}
+
+	public ScriptCameraMoveOnKing fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		player = Player.newInstance(object.get("player").getAsInt(), info);
+		return this;
+	}
+
 }

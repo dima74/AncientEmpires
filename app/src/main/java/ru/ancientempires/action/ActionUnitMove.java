@@ -1,17 +1,22 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.bonuses.BonusCreate;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitMove extends ActionFromTo
 {
 	
-	private ActionResultUnitMove	result	= new ActionResultUnitMove();
-	private Unit					unit;
+	private ActionResultUnitMove result = new ActionResultUnitMove();
+	@Exclude private Unit unit;
 	
 	@Override
 	public ActionResultUnitMove perform(Game game)
@@ -45,7 +50,7 @@ public class ActionUnitMove extends ActionFromTo
 		unit.isTurn = !new ActionHelper(game).canUnitAction(unit);
 		if (!type.canDoTwoActionAfterOne && !(i == targetI && j == targetJ))
 			unit.setTurn();
-			
+
 		handleAfterMoveEffect();
 	}
 	
@@ -69,4 +74,18 @@ public class ActionUnitMove extends ActionFromTo
 		return String.format("Move (%d %d)->(%d %d) (%s %s)", i, j, targetI, targetJ, game.fieldUnits[i][j], game.fieldUnits[targetI][targetJ]);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionUnitMove fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

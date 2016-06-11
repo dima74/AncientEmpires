@@ -1,11 +1,11 @@
 package ru.ancientempires.bonuses;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+
+import java.util.Arrays;
+import java.util.List;
 
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
@@ -27,7 +27,7 @@ public abstract class BonusCreator
 	public static List<Class<? extends BonusCreator>> classes = Arrays.asList(
 			BonusCreatorWisp.class,
 			BonusCreatorDireWolf.class);
-			
+
 	public int ordinal()
 	{
 		return BonusCreator.classes.indexOf(getClass());

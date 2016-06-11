@@ -18,7 +18,7 @@ public class DrawCellAttackPartTwo extends DrawOnFramesGroup
 				.setBitmaps(SmokeImages().bitmapsDefault)
 				.setFramesForBitmap(4)
 				.animateRepeat(1));
-				
+
 		for (int i = 0; i < 5; ++i)
 		{
 			int framesForBitmap = 2 + main.rnd.nextInt(7);

@@ -6,7 +6,7 @@ import java.util.Map;
 public class NamedCoordinates
 {
 	
-	private static Map<String, Integer>	coordinates	= new HashMap<String, Integer>();
+	private static Map<String, Integer> coordinates = new HashMap<String, Integer>();
 	
 	public static int get(String name)
 	{

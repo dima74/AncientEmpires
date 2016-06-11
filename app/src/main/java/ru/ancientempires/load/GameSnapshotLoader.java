@@ -26,9 +26,9 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.reflection.LoaderInfo;
-import ru.ancientempires.reflection.ReflectionLoader;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.ReflectionLoader;
 import ru.ancientempires.tasks.Task;
 
 public class GameSnapshotLoader
@@ -39,6 +39,7 @@ public class GameSnapshotLoader
 	public FileLoader loaderCampaign;
 	public Game       game;
 	public Rules      rules;
+	public LoaderInfo info;
 
 	public GameSnapshotLoader(GamePath path, Rules rules) throws Exception
 	{
@@ -46,7 +47,8 @@ public class GameSnapshotLoader
 		this.rules = rules;
 		game = new Game(rules);
 		loaderCampaign = path.getLoader();
-		loader = path.getGameSaveLoader().snapshots();
+		//loader = path.getGameSaveLoader().snapshots();
+		info = new LoaderInfo(game);
 	}
 	
 	public Game load(boolean loadCampaign) throws Exception
@@ -76,7 +78,8 @@ public class GameSnapshotLoader
 			{
 				game.campaign.load(Client.client.defaultGameLoader);
 				game.campaign.isDefault = true;
-			} else
+			}
+			else
 				game.campaign.load(loaderCampaign);
 
 			if (path.isBaseGame && game.campaign.isDefault)
@@ -155,8 +158,8 @@ public class GameSnapshotLoader
 		game.players = new Player[players.size()];
 		for (int i = 0; i < players.size(); i++)
 		{
-			Player player = new Player(players.get(i).getAsJsonObject());
-			game.players[player.ordinal] = player;
+			//Player player = new Player(players.get(i).getAsJsonObject());
+			//game.players[player.ordinal] = player;
 		}
 	}
 	
@@ -180,7 +183,8 @@ public class GameSnapshotLoader
 			Player[] players = new Player[teams[i].players.length];
 			for (int j = 0; j < players.length; j++)
 				players[j] = game.getPlayer(teams[i].players[j]);
-			game.teams[i] = new Team(players);
+			//game.teams[i] = new Team(i, players);
+			MyAssert.a(false);
 		}
 	}
 	
@@ -203,7 +207,8 @@ public class GameSnapshotLoader
 				players[j].type = teams[i].players[j].type;
 				players[j].gold = teams[i].players[j].gold;
 			}
-			game.teams[i] = new Team(players);
+			//game.teams[i] = new Team(i, players);
+			MyAssert.a(false);
 		}
 		game.unitsLimit = JsonHelper.readInt(reader, "unitsLimit");
 		reader.endObject();
@@ -229,7 +234,7 @@ public class GameSnapshotLoader
 		input.close();
 	}
 	
-	public void loadCells() throws IOException
+	public void loadCells() throws Exception
 	{
 		DataInputStream input = loader.openDIS("cells.dat");
 		int numberCells = input.readInt();
@@ -237,7 +242,7 @@ public class GameSnapshotLoader
 		{
 			int i = input.readShort();
 			int j = input.readShort();
-			game.fieldCells[i][j].load(input, game);
+			game.fieldCells[i][j].load(input, info);
 		}
 		input.close();
 		
@@ -256,7 +261,7 @@ public class GameSnapshotLoader
 		
 		game.unitsStaticDead = new ArrayList[game.players.length];
 		for (int i = 0; i < game.players.length; i++)
-			loadUnits(input, game.unitsStaticDead[i] = new ArrayList<Unit>(), false);
+			loadUnits(input, game.unitsStaticDead[i] = new ArrayList<>(), false);
 		input.close();
 	}
 	
@@ -294,7 +299,7 @@ public class GameSnapshotLoader
 		{
 			int turn = input.readInt();
 			int numberTasks = input.readInt();
-			ArrayList<Task> tasks = new ArrayList<Task>(numberTasks);
+			ArrayList<Task> tasks = new ArrayList<>(numberTasks);
 			for (int j = 0; j < numberTasks; j++)
 			{
 				Task task = Task.loadNew(input, game);

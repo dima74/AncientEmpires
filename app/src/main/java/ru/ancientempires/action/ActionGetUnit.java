@@ -1,20 +1,26 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.result.ActionResultGetUnit;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGetUnit extends ActionFrom
 {
 	
-	private ActionResultGetUnit	result	= new ActionResultGetUnit();
-	private Unit				unit;
-	private int					diameter;
-	private int					radius;
-								
+	private ActionResultGetUnit result = new ActionResultGetUnit();
+	@Exclude
+	private Unit unit;
+	private int  diameter;
+	private int  radius;
+
 	@Override
 	public boolean changesGame()
 	{
@@ -49,7 +55,7 @@ public class ActionGetUnit extends ActionFrom
 		result.fieldMoveReal = new boolean[diameter][diameter];
 		if (!unit.isMove && game.checkFloating(unit))
 			createWay(result.fieldMove, result.fieldMoveReal);
-			
+
 		result.fieldAttack = new boolean[diameter][diameter];
 		result.fieldAttackReal = new boolean[diameter][diameter];
 		result.fieldRaise = new boolean[diameter][diameter];
@@ -61,20 +67,20 @@ public class ActionGetUnit extends ActionFrom
 		}
 	}
 	
-	private static final int[]	addI	=
-	{
-		-1,
-		0,
-		0,
-		+1
-	};
-	private static final int[]	addJ	=
-	{
-		0,
-		-1,
-		+1,
-		0
-	};
+	private static final int[] addI =
+			{
+					-1,
+					0,
+					0,
+					+1
+			};
+	private static final int[] addJ =
+			{
+					0,
+					-1,
+					+1,
+					0
+			};
 	
 	public void createWay(boolean[][] fieldMove, boolean[][] fieldMoveReal)
 	{
@@ -103,7 +109,7 @@ public class ActionGetUnit extends ActionFrom
 					}
 			if (minDistanceI == -1)
 				break;
-				
+
 			fieldMove[minDistanceI][minDistanceJ] = true;
 			for (int k = 0; k < 4; k++)
 			{
@@ -119,7 +125,7 @@ public class ActionGetUnit extends ActionFrom
 				Unit nextUnit = game.fieldUnits[nextIAbsolute][nextJAbsolute];
 				if (nextUnit != null && nextUnit.player.team != unit.player.team)
 					continue;
-					
+
 				int currentIAbsolute = unit.i + minDistanceI - radius;
 				int currentJAbsolute = unit.j + minDistanceJ - radius;
 				int steps = unit.getSteps(currentIAbsolute, currentJAbsolute, game.fieldCells[nextIAbsolute][nextJAbsolute]);
@@ -151,7 +157,7 @@ public class ActionGetUnit extends ActionFrom
 				Unit targetUnit = game.fieldUnits[targetI][targetJ];
 				Cell targetCell = game.fieldCells[targetI][targetJ];
 				boolean can = targetUnit != null && targetUnit.player.team != unit.player.team
-						|| targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+				              || targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 				result.canAttack |= can;
 				return can;
 			}
@@ -190,4 +196,22 @@ public class ActionGetUnit extends ActionFrom
 				}
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+		output.writeInt(diameter);
+		output.writeInt(radius);
+	}
+
+	public ActionGetUnit fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		diameter = input.readInt();
+		radius = input.readInt();
+		return this;
+	}
+
 }

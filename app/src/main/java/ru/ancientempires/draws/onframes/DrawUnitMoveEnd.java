@@ -1,15 +1,16 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.model.Unit;
 
 public class DrawUnitMoveEnd extends DrawOnFramesGroup
 {
 	
-	private int		frameUpdateBonus;
-	private Unit[]	units;
-					
+	private int    frameUpdateBonus;
+	private Unit[] units;
+
 	public DrawUnitMoveEnd(ActionResultUnitMove result, int frameToStart)
 	{
 		draws.clear();

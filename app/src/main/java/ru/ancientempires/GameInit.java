@@ -18,9 +18,9 @@ public class GameInit
 					показываем прогресс бар и дозагружаем.
 	*/
 	
-	public Thread	foldersInitThread;
-	public Thread	initThread;
-					
+	public Thread foldersInitThread;
+	public Thread initThread;
+
 	public void init()
 	{
 		MyLog.l("GameInit.init()");

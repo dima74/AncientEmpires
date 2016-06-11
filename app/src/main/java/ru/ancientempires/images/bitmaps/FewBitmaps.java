@@ -1,22 +1,23 @@
 package ru.ancientempires.images.bitmaps;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
-import ru.ancientempires.images.ImagesLoader;
+import ru.ancientempires.helpers.FileLoader;
 
 public class FewBitmaps
 {
 	
-	public static int	ordinal;
-	public Bitmap[]		bitmaps;
-						
+	public static int      ordinal;
+	public        Bitmap[] bitmaps;
+
 	public FewBitmaps(Bitmap... bitmaps)
 	{
 		this.bitmaps = bitmaps;
 	}
 	
-	public FewBitmaps(ImagesLoader loader, String... names) throws IOException
+	public FewBitmaps(FileLoader loader, String... names) throws IOException
 	{
 		bitmaps = new Bitmap[names.length];
 		for (int i = 0; i < names.length; i++)

@@ -1,5 +1,6 @@
 package ru.ancientempires.campaign.conditions;
 
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -7,6 +8,7 @@ import java.io.IOException;
 
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionNamedUnitDead extends Condition
 {
@@ -40,4 +42,21 @@ public class ConditionNamedUnitDead extends Condition
 		writer.name("name").value(name);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("name", name);
+		return object;
+	}
+
+	public ConditionNamedUnitDead fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		name = object.get("name").getAsString();
+		return this;
+	}
+
 }

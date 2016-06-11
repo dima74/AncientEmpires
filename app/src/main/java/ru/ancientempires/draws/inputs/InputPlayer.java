@@ -12,11 +12,11 @@ import ru.ancientempires.handler.ActionHelper;
 public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 {
 	
-	public int			lastTapI;
-	public int			lastTapJ;
-						
-	public InputUnit	inputUnit	= new InputUnit(this);
-									
+	public int lastTapI;
+	public int lastTapJ;
+
+	public InputUnit inputUnit = new InputUnit(this);
+
 	@Override
 	public void beginTurn()
 	{
@@ -122,7 +122,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 				.setUnit(iUnit)
 				.setIJ(lastTapI, lastTapJ)
 				.perform(game);
-				
+
 		drawMain.info.update();
 		inputUnit.start(lastTapI, lastTapJ);
 		drawMain.postUpdateCampaign();

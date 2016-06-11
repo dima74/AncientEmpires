@@ -19,7 +19,7 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
-import ru.ancientempires.reflection.ReflectionSaver;
+import ru.ancientempires.serializable.ReflectionSaver;
 import ru.ancientempires.tasks.Task;
 
 public class GameSnapshotSaver
@@ -159,10 +159,10 @@ public class GameSnapshotSaver
 		output.close();
 	}
 	
-	public void saveCells() throws IOException
+	public void saveCells() throws Exception
 	{
 		DataOutputStream output = loader.openDOS("cells.dat");
-		ArrayList<Cell> cells = new ArrayList<Cell>();
+		ArrayList<Cell> cells = new ArrayList<>();
 		for (Cell[] line : game.fieldCells)
 			for (Cell cell : line)
 				if (cell.needSave())

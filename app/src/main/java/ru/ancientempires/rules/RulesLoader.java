@@ -1,10 +1,5 @@
 package ru.ancientempires.rules;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -13,6 +8,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
@@ -24,17 +24,21 @@ import ru.ancientempires.model.CellTemplate;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.model.struct.Struct;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class RulesLoader
 {
 	
-	private FileLoader					loader;
-	public Rules						rules;
-	public JsonDeserializationContext	context;
-										
+	private FileLoader loader;
+	public Rules rules = new Rules();
+	public JsonDeserializationContext context;
+	public LoaderInfo                 info;
+
 	public RulesLoader(FileLoader loader)
 	{
 		this.loader = loader;
+		info = new LoaderInfo(rules);
 	}
 	
 	public Rules load() throws IOException
@@ -61,8 +65,7 @@ public class RulesLoader
 		{
 			RulesLoader.this.context = context;
 			JsonObject object = json.getAsJsonObject();
-			
-			rules = new Rules();
+
 			rules.name = object.get("name").getAsString();
 			rules.version = object.get("version").getAsString();
 			rules.author = object.get("author").getAsString();
@@ -86,7 +89,7 @@ public class RulesLoader
 				
 				Имхо очень прикольно =)
 			*/
-			rules.setRanges(context.<Range[]> deserialize(object.get("ranges"), Range[].class));
+			rules.setRanges(context.<Range[]>deserialize(object.get("ranges"), Range[].class));
 			
 			context.deserialize(object.get("defaultUnitType"), UnitType.class);
 			context.deserialize(object.get("defaultCellType"), CellType.class);
@@ -135,7 +138,7 @@ public class RulesLoader
 			UnitType type = rules.getUnitType(object.get("name").getAsString());
 			if (baseType != null)
 				type.setProperties(baseType);
-				
+
 			JsonElement element;
 			
 			if ((element = object.get("specializations")) != null)
@@ -147,7 +150,7 @@ public class RulesLoader
 			}
 			if ((element = object.get("templateType")) != null)
 				type.templateType = rules.getUnitType(element.getAsString());
-				
+
 			if ((element = object.get("health")) != null)
 				type.healthDefault = element.getAsInt();
 			element = object.get("attackMin");
@@ -188,9 +191,9 @@ public class RulesLoader
 			type.isFly = element == null ? baseType.isFly : element.getAsBoolean();
 			
 			element = object.get("bonuses");
-			type.bonuses = element == null ? baseType.bonuses : context.<Bonus[]> deserialize(element, Bonus[].class);
+			type.bonuses = element == null ? baseType.bonuses : context.<Bonus[]>deserialize(element, Bonus[].class);
 			element = object.get("creators");
-			type.creators = element == null ? baseType.creators : context.<BonusCreator[]> deserialize(element, BonusCreator[].class);
+			type.creators = element == null ? baseType.creators : context.<BonusCreator[]>deserialize(element, BonusCreator[].class);
 			
 			return type;
 		}
@@ -237,7 +240,7 @@ public class RulesLoader
 			CellType type = rules.getCellType(object.get("name").getAsString());
 			if (baseType != null)
 				type.setProperties(baseType);
-				
+
 			JsonElement element;
 			
 			if ((element = object.get("steps")) != null)
@@ -258,6 +261,19 @@ public class RulesLoader
 				type.repairType = rules.getCellType(element.getAsString());
 			if ((element = object.get("template")) != null)
 				type.template = CellTemplate.fromJSON(element, RulesLoader.this, type);
+
+			try
+			{
+				//if ((element = object.get("struct")) != null)
+				//	type.struct = Struct.fromJSON(element, info);
+				if (object.has("struct"))
+					type.struct = info.fromJson((JsonObject) object.get("struct"), Struct.class);
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 			return type;
 		}
 	}

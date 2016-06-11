@@ -1,5 +1,9 @@
 package ru.ancientempires.campaign;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -8,23 +12,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ru.ancientempires.IDrawCampaign;
+import ru.ancientempires.action.campaign.ActionCampaignRewriteScriptsStatus;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.reflection.LoaderInfo;
-import ru.ancientempires.reflection.ReflectionLoader;
-import ru.ancientempires.reflection.ReflectionSaver;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class Campaign
 {
 	
 	public Game game;
-
+	
 	public Script[]      scripts;
+	public JsonArray     arrayState; // используется только при загрузке
 	public IDrawCampaign iDrawCampaign;
 	public boolean isDefault = false;
-
+	public boolean needActionRewriteScriptsStatus;
+	
 	public Campaign(Game game)
 	{
 		this.game = game;
@@ -33,22 +38,39 @@ public class Campaign
 	public void save(FileLoader loader) throws Exception
 	{
 		JsonWriter writer = loader.getWriter("campaign.json");
-		ReflectionSaver.save(writer, scripts);
+		//ReflectionSaver.save(writer, scripts);
+		
+		JsonObject object = new JsonObject();
+		object.add("scripts", SerializableJsonHelper.toJsonArray(scripts));
+		if (isDefault)
+			object.add("state", toJsonState());
+		writer.jsonValue(object.toString());
 		writer.close();
 	}
 	
 	public void load(FileLoader loader) throws Exception
 	{
 		JsonReader reader = loader.getReader("campaign.json");
-		scripts = ReflectionLoader.load(reader, Script[].class, new LoaderInfo(game));
+		//scripts = ReflectionLoader.load(reader, Script[].class, new LoaderInfo(game));
+		JsonObject object = (JsonObject) new JsonParser().parse(reader);
 		reader.close();
 
-		for (Script script : scripts)
+		this.scripts = game.getLoaderInfo().fromJsonArray((JsonArray) object.get("scripts"), Script.class);
+		
+		int i = 0;
+		for (Script script : this.scripts)
 		{
 			script.campaign = this;
-			script.game = game;
-			script.resolveAliases(scripts);
+			//script.game = game;
+			MyAssert.a(script.game == game);
+			script.index = i++; // не будет использоваться, для отладки
+			script.resolveAliases(this.scripts);
 		}
+
+		if (arrayState == null)
+			arrayState = (JsonArray) object.get("state");
+		fromJsonState(arrayState);
+		arrayState = null;
 	}
 	
 	public void start()
@@ -57,8 +79,8 @@ public class Campaign
 	}
 	
 	public boolean isUpdate;
-	public boolean needSaveSnapshot;
-
+	//public boolean needSaveSnapshot;
+	
 	public void update()
 	{
 		if (isUpdate)
@@ -78,8 +100,11 @@ public class Campaign
 						script.isFinishing = true;
 				}
 		}
-
+		
 		isUpdate = false;
+		if (needActionRewriteScriptsStatus)
+			new ActionCampaignRewriteScriptsStatus(game.campaign.scripts).perform(game);
+		/*
 		if (needSaveSnapshot)
 		{
 			try
@@ -92,6 +117,7 @@ public class Campaign
 			}
 			needSaveSnapshot = false;
 		}
+		*/
 	}
 	
 	public void finish(Script script)
@@ -122,11 +148,31 @@ public class Campaign
 		input.close();
 	}
 	
+	public JsonArray toJsonState() throws Exception
+	{
+		JsonArray array = new JsonArray();
+		for (Script script : scripts)
+		{
+			array.add(new JsonPrimitive(script.isStarting ? 1 : 0));
+			array.add(new JsonPrimitive(script.isFinishing ? 1 : 0));
+		}
+		return array;
+	}
+	
+	public void fromJsonState(JsonArray array) throws IOException
+	{
+		for (int i = 0; i < scripts.length; i++)
+		{
+			scripts[i].isStarting = array.get(i * 2).getAsInt() == 1;
+			scripts[i].isFinishing = array.get(i * 2 + 1).getAsInt() == 1;
+		}
+	}
+
+	/*
 	private static class SimpleScript extends Script
 	{
 		public SimpleScript()
-		{
-		}
+		{}
 
 		public SimpleScript(Script script)
 		{
@@ -143,5 +189,6 @@ public class Campaign
 			campaign.scripts[i] = new SimpleScript(scripts[i]);
 		return campaign;
 	}
+	*/
 	
 }

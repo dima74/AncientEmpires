@@ -1,6 +1,9 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.images.bitmaps.UnitBitmap;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptUnitMoveHandler extends Script
 {
@@ -12,8 +15,10 @@ public abstract class ScriptUnitMoveHandler extends Script
 	public void complete()
 	{
 		if (!complete)
+		{
+			complete = true;
 			campaign.iDrawCampaign.updateCampaign();
-		complete = true;
+		}
 	}
 	
 	@Override
@@ -22,4 +27,21 @@ public abstract class ScriptUnitMoveHandler extends Script
 		return super.check() && complete;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("complete", complete);
+		return object;
+	}
+
+	public ScriptUnitMoveHandler fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		complete = object.get("complete").getAsBoolean();
+		return this;
+	}
+
 }

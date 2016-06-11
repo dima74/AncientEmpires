@@ -8,9 +8,9 @@ public class DrawLevelUp extends DrawOnFramesGroup
 	// 2 2 2 2 40
 	// 21 17 13 9 5
 	
-	private static final int	FRAME_ANIMATE			= 48;
-	private static final int	FRAME_ANIMATE_MOTION	= 16;
-	private static final int	FRAME_ANIMATE_STATIC	= 32;
+	private static final int FRAME_ANIMATE        = 48;
+	private static final int FRAME_ANIMATE_MOTION = 16;
+	private static final int FRAME_ANIMATE_STATIC = 32;
 	
 	public DrawLevelUp animate(int y, int x)
 	{
@@ -23,9 +23,9 @@ public class DrawLevelUp extends DrawOnFramesGroup
 			add(new DrawBitmapsMoving()
 					.setLineYX(levelUpYStart, levelUpX, levelUpYEnd, levelUpX)
 					.setBitmaps(new Bitmap[]
-			{
-					Images().levelUp
-			})
+							{
+									Images().levelUp
+							})
 					.setFramesForBitmap(DrawLevelUp.FRAME_ANIMATE_MOTION)
 					.animateRepeat(1)
 					.increaseFrameStart((int) (i * 3 * a)));

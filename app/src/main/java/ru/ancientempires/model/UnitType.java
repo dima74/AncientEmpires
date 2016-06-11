@@ -5,15 +5,21 @@ import java.util.HashMap;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusCreator;
-import ru.ancientempires.reflection.LoaderInfo;
-import ru.ancientempires.reflection.Named;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Named;
+import ru.ancientempires.serializable.Numbered;
 
-public class UnitType implements Named
+public class UnitType implements Named, Numbered
 {
 
 	public static UnitType newInstance(String name, LoaderInfo info)
 	{
 		return info.rules.getUnitType(name);
+	}
+
+	public static UnitType newInstance(int i, LoaderInfo info)
+	{
+		return info.rules.unitTypes[i];
 	}
 
 	/*
@@ -127,6 +133,12 @@ public class UnitType implements Named
 	}
 
 	@Override
+	public int getNumber()
+	{
+		return ordinal;
+	}
+
+	@Override
 	public String toString()
 	{
 		return name;
@@ -155,7 +167,8 @@ public class UnitType implements Named
 		{
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

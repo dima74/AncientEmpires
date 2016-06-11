@@ -1,14 +1,14 @@
 package ru.ancientempires.load;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
@@ -17,15 +17,15 @@ import ru.ancientempires.framework.MyLog;
 public class GamesFolder
 {
 	
-	public ArrayList<GamePath>	games;
-	public String				folderID;
-	public String				name;
-	public String				path;
-								
-	public int					numberGames;
-	public boolean				isCampaign;
-	public boolean				isSave;
-								
+	public ArrayList<GamePath> games;
+	public String              folderID;
+	public String              name;
+	public String              path;
+
+	public int     numberGames;
+	public boolean isCampaign;
+	public boolean isSave;
+
 	public String getName(int i, GamePath game)
 	{
 		String name = game.name;
@@ -49,12 +49,12 @@ public class GamesFolder
 		name = Client.client.localization.loadName(Client.client.gamesLoader.getLoader(path));
 		
 		load();
-		if ("user".equals(folderID) && false)
+		if ("save".equals(folderID) && false)
 		{
 			numberGames = 0;
 			save();
 		}
-		games = new ArrayList<GamePath>();
+		games = new ArrayList<>();
 		for (int i = 0; i < numberGames; i++)
 			games.add(GamePath.get(path + i + "/", true));
 	}

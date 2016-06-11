@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 public class DrawBitmap extends DrawOnFrames
 {
 	
-	private Bitmap	bitmap;
-	private int		y;
-	private int		x;
+	private Bitmap bitmap;
+	private int    y;
+	private int    x;
 	
 	public DrawBitmap setBitmap(Bitmap bitmap)
 	{

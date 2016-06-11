@@ -1,18 +1,19 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.draws.Draw;
 
 public abstract class DrawOnFrames extends Draw
 {
 	
-	public int		frameCount;
-	public int		framePass;
-	public int		frameLeft	= 0;
-	public int		frameStart;
-	public int		frameEnd;
-	public boolean	isEndDrawing;
-					
+	public int frameCount;
+	public int framePass;
+	public int frameLeft = 0;
+	public int     frameStart;
+	public int     frameEnd;
+	public boolean isEndDrawing;
+
 	public DrawOnFrames animate(int frameCount)
 	{
 		frameStart = iFrame() + 1;

@@ -5,11 +5,12 @@ import android.graphics.Bitmap;
 import java.io.IOException;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
-public class Images extends IImages
+public class Images extends AbstractImages
 {
 	
 	public static Images get()
@@ -18,9 +19,9 @@ public class Images extends IImages
 	}
 	
 	// public float baseMulti = 1.0f; // 4.5f / 3.0f;
-	public int		bitmapSize	= 24;
-	public Rules	rules;
-					
+	public int bitmapSize = 24;
+	public Rules rules;
+
 	public void setRules(Rules rules)
 	{
 		this.rules = rules;
@@ -28,47 +29,47 @@ public class Images extends IImages
 		unit.rules = rules;
 	}
 	
-	public CellImages			cell		= new CellImages();
-	public UnitImages			unit		= new UnitImages();
-	public ActionImages			action		= new ActionImages();
-	public SmallNumberImages	smallNumber	= new SmallNumberImages();
-	public BigNumberImages		bigNumber	= new BigNumberImages();
-	public SparksImages			sparks		= new SparksImages();
-	public CursorImages			cursor		= new CursorImages();
-	public ArrowsImages			arrows		= new ArrowsImages();
-	public StatusesImages		statuses	= new StatusesImages();
-	public SmokeImages			smoke		= new SmokeImages();
-											
-	public Bitmap				amountGold;
-	public Bitmap				amountUnits;
-	public Bitmap				attack;
-	public Bitmap				defence;
-	public Bitmap				levelIncrease;
-	public Bitmap				levelUp;
-	public FewBitmaps			tombstone;
-	public Bitmap				gameover;
-								
-	public int					amountGoldH;
-	public int					amountGoldW;
-	public int					amountUnitsH;
-	public int					amountUnitsW;
-								
-	public int					levelUpH;
-	public int					levelUpW;
-								
+	public CellImages        cell        = new CellImages();
+	public UnitImages        unit        = new UnitImages();
+	public ActionImages      action      = new ActionImages();
+	public SmallNumberImages smallNumber = new SmallNumberImages();
+	public BigNumberImages   bigNumber   = new BigNumberImages();
+	public SparksImages      sparks      = new SparksImages();
+	public CursorImages      cursor      = new CursorImages();
+	public ArrowsImages      arrows      = new ArrowsImages();
+	public StatusesImages    statuses    = new StatusesImages();
+	public SmokeImages       smoke       = new SmokeImages();
+
+	public Bitmap     amountGold;
+	public Bitmap     amountUnits;
+	public Bitmap     attack;
+	public Bitmap     defence;
+	public Bitmap     levelIncrease;
+	public Bitmap     levelUp;
+	public FewBitmaps tombstone;
+	public Bitmap     gameover;
+
+	public int amountGoldH;
+	public int amountGoldW;
+	public int amountUnitsH;
+	public int amountUnitsW;
+
+	public int levelUpH;
+	public int levelUpW;
+
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
-		cell.preload(loader.getImagesLoader("cells"));
-		unit.preload(loader.getImagesLoader("units"));
-		action.preload(loader.getImagesLoader("actions"));
-		smallNumber.preload(loader.getImagesLoader("numbers"));
-		bigNumber.preload(loader.getImagesLoader("bigNumbers"));
-		sparks.preload(loader.getImagesLoader("sparks"));
-		cursor.preload(loader.getImagesLoader("cursors"));
-		arrows.preload(loader.getImagesLoader("arrows"));
-		statuses.preload(loader.getImagesLoader("statuses"));
-		smoke.preload(loader.getImagesLoader("smoke"));
+		cell.preload(loader.getLoader("cells"));
+		unit.preload(loader.getLoader("units"));
+		action.preload(loader.getLoader("actions"));
+		smallNumber.preload(loader.getLoader("numbers"));
+		bigNumber.preload(loader.getLoader("bigNumbers"));
+		sparks.preload(loader.getLoader("sparks"));
+		cursor.preload(loader.getLoader("cursors"));
+		arrows.preload(loader.getLoader("arrows"));
+		statuses.preload(loader.getLoader("statuses"));
+		smoke.preload(loader.getLoader("smoke"));
 		
 		// self
 		amountGold = loader.loadImage("amountGold.png");
@@ -91,10 +92,10 @@ public class Images extends IImages
 	}
 	
 	@Override
-	public void load(ImagesLoader loader, Game game) throws IOException
+	public void load(FileLoader loader, Game game) throws IOException
 	{
-		cell.load(loader.getImagesLoader("cells"), game);
-		unit.load(loader.getImagesLoader("units"), game);
+		cell.load(loader.getLoader("cells"), game);
+		unit.load(loader.getLoader("units"), game);
 	}
 	
 }

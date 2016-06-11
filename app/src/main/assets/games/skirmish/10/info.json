@@ -1,1 +1,1 @@
-{"gameID":"skirmish.10","numberPlayers":4,"isBaseGame":true,"canChooseTeams":true,"h":19,"w":19,"defaultLocalization":"en_US","localizations":["ru_RU"]}
+{"gameID":"skirmish.10","baseGameID":"skirmish.10","defaultLocalization":"en_US","localizations":["ru_RU"],"isBaseGame":true,"canChooseTeams":true,"numberPlayers":4,"numberTeams":4,"h":19,"w":19,"numberSnapshots":0,"numberActions":0}

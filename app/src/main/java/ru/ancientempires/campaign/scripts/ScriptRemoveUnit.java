@@ -1,13 +1,15 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptRemoveUnit extends ScriptOnePoint
 {
 
 	public ScriptRemoveUnit()
-	{
-	}
+	{}
 	
 	public ScriptRemoveUnit(Object... point)
 	{
@@ -28,4 +30,19 @@ public class ScriptRemoveUnit extends ScriptOnePoint
 				.perform(game);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		return object;
+	}
+
+	public ScriptRemoveUnit fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		return this;
+	}
+
 }

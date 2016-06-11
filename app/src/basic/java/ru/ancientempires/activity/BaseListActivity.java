@@ -30,7 +30,8 @@ public abstract class BaseListActivity extends BaseActivity
 				try
 				{
 					loadBackground();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();

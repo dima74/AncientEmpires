@@ -1,12 +1,15 @@
 package ru.ancientempires.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 import ru.ancientempires.Localization;
 import ru.ancientempires.action.Checker;
@@ -14,29 +17,42 @@ import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.OnlyIf;
+import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class Unit extends IGameHandler
+public class Unit extends IGameHandler implements SerializableJson
 {
-	
-	public UnitType		type;
-	public Player		player;
-						
-	public int			i;
-	public int			j;
-	public int			health;
-	public int			level;
-	public int			experience;
+
+	@AsNumbered public UnitType type;
+	@AsNumbered public Player   player;
+
+	public int i;
+	public int j;
+	public int health;
+	public int level;
+	public int experience;
 	// только для статичных войнов
-	public int			numberBuys;
-						
-	public boolean		isMove;
-	public boolean		isTurn;
-						
-	public Set<Bonus>	bonuses	= new HashSet<Bonus>();
-								
+	@OnlyIf("isStatic")
+	public int numberBuys;
+
+	private boolean isStatic()
+	{
+		return type.isStatic;
+	}
+
+	public boolean isMove;
+	public boolean isTurn;
+
+	public HashSet<Bonus> bonuses = new HashSet<>();
+
 	// Локализованное, с учётом уровня
-	public String		name;
-						
+	@Exclude
+	public String name;
+
 	public void setTurn()
 	{
 		isMove = true;
@@ -119,7 +135,11 @@ public class Unit extends IGameHandler
 	 	экземпляр
 	 -> свойства из unitType
 	 */
-	
+
+	// LoaderInfo.fromJson() -> newInstance
+	public Unit()
+	{}
+
 	// используется при загрузки игры
 	public Unit(Game game)
 	{
@@ -173,7 +193,7 @@ public class Unit extends IGameHandler
 	
 	public Bonus[] getBonuses()
 	{
-		ArrayList<Bonus> bonuses = new ArrayList<Bonus>(this.bonuses);
+		ArrayList<Bonus> bonuses = new ArrayList<>(this.bonuses);
 		bonuses.addAll(Arrays.asList(type.bonuses));
 		return bonuses.toArray(new Bonus[0]);
 	}
@@ -374,6 +394,7 @@ public class Unit extends IGameHandler
 	}
 	
 	// II
+	@Exclude
 	public int var_8f7;
 	
 	public int sub_462(Unit targetUnit)
@@ -388,7 +409,7 @@ public class Unit extends IGameHandler
 		// return (type.attackMin + type.attackMax + getOffenceBonusAgainstUnitEx(targetUnit, j, i)
 		// + type.defence + getDefenceBonusAgainstUnitEx(targetUnit, j, i)) * health / 100;
 		return (type.attackMin + type.attackMax + getBonusAttack(i, j, targetUnit)
-				+ type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
+		        + type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
 	}
 	
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)
@@ -427,5 +448,58 @@ public class Unit extends IGameHandler
 			}
 		}).toArray(new Unit[0]);
 	}
-	
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(type.ordinal, player.ordinal, i, j, health, level, experience, numberBuys, isMove, isTurn, bonuses.size());
+	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = new JsonObject();
+		object.addProperty("type", type.getName());
+		object.addProperty("player", player.getNumber());
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		object.addProperty("health", health);
+		object.addProperty("level", level);
+		object.addProperty("experience", experience);
+		if (isStatic())
+			object.addProperty("numberBuys", numberBuys);
+		object.addProperty("isMove", isMove);
+		object.addProperty("isTurn", isTurn);
+		object.add("bonuses", SerializableJsonHelper.toJsonArray(bonuses));
+		return object;
+	}
+
+	public Unit fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		game = info.game;
+		type = UnitType.newInstance(object.get("type").getAsString(), info);
+		player = Player.newInstance(object.get("player").getAsInt(), info);
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		health = object.get("health").getAsInt();
+		level = object.get("level").getAsInt();
+		experience = object.get("experience").getAsInt();
+		if (isStatic())
+			numberBuys = object.get("numberBuys").getAsInt();
+		isMove = object.get("isMove").getAsBoolean();
+		isTurn = object.get("isTurn").getAsBoolean();
+		bonuses = new HashSet<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
+		return this;
+	}
+
+	static public Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Unit[] array = new Unit[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Unit.class);
+		return array;
+	}
+
 }

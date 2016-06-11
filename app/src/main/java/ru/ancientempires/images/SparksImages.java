@@ -1,11 +1,13 @@
 package ru.ancientempires.images;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.helpers.FileLoader;
 
-public class SparksImages extends IImages
+public class SparksImages extends AbstractImages
 {
 	
 	public static SparksImages get()
@@ -13,29 +15,29 @@ public class SparksImages extends IImages
 		return Client.client.images.sparks;
 	}
 	
-	public Bitmap[]	bitmapsDefault;
-	public Bitmap[]	bitmapsSmall;
-	public Bitmap[]	bitmapsAttack;
+	public Bitmap[] bitmapsDefault;
+	public Bitmap[] bitmapsSmall;
+	public Bitmap[] bitmapsAttack;
 	
-	public int	amountDefault;
-	public int	amountSmall;
-	public int	amountAttack;
+	public int amountDefault;
+	public int amountSmall;
+	public int amountAttack;
 	
-	public int	hDefault;
-	public int	wDefault;
+	public int hDefault;
+	public int wDefault;
 	
-	public int	hSmall;
-	public int	wSmall;
+	public int hSmall;
+	public int wSmall;
 	
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
-		preloadDefault(loader.getImagesLoader("default/"));
-		preloadSmall(loader.getImagesLoader("small/"));
-		preloadAtttack(loader.getImagesLoader("attack/"));
+		preloadDefault(loader.getLoader("default/"));
+		preloadSmall(loader.getLoader("small/"));
+		preloadAttack(loader.getLoader("attack/"));
 	}
 	
-	private void preloadDefault(ImagesLoader loader) throws IOException
+	private void preloadDefault(FileLoader loader) throws IOException
 	{
 		amountDefault = 6;
 		bitmapsDefault = new Bitmap[amountDefault];
@@ -45,7 +47,7 @@ public class SparksImages extends IImages
 		wDefault = bitmapsDefault[0].getWidth();
 	}
 	
-	private void preloadSmall(ImagesLoader loader) throws IOException
+	private void preloadSmall(FileLoader loader) throws IOException
 	{
 		amountSmall = 3;
 		bitmapsSmall = new Bitmap[amountSmall];
@@ -55,7 +57,7 @@ public class SparksImages extends IImages
 		wSmall = bitmapsSmall[0].getWidth();
 	}
 	
-	private void preloadAtttack(ImagesLoader loader) throws IOException
+	private void preloadAttack(FileLoader loader) throws IOException
 	{
 		amountAttack = 6;
 		bitmapsAttack = new Bitmap[amountAttack];

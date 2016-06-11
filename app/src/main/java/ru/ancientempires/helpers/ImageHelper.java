@@ -58,7 +58,6 @@ public class ImageHelper
 					int ncB = (int) ((mR * rB + mG * gB + mB * bB) / mSum);
 					
 					data[i][j] = ImageHelper.getColor(ncA, ncR, ncG, ncB);
-					System.out.print("");
 				}
 			}
 		

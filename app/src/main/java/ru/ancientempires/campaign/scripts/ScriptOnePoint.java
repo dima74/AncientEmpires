@@ -1,15 +1,17 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.campaign.points.AbstractPoint;
+import com.google.gson.JsonObject;
 
-public abstract class ScriptOnePoint extends Script
+import ru.ancientempires.campaign.points.AbstractPoint;
+import ru.ancientempires.serializable.LoaderInfo;
+
+public abstract class ScriptOnePoint extends AbstractScriptOnePoint
 {
 	
 	public AbstractPoint point;
 	
 	public ScriptOnePoint()
-	{
-	}
+	{}
 	
 	public ScriptOnePoint(Object... points)
 	{
@@ -26,4 +28,21 @@ public abstract class ScriptOnePoint extends Script
 		return point.getJ();
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.add("point", point.toJson());
+		return object;
+	}
+
+	public ScriptOnePoint fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		point = info.fromJson((JsonObject) object.get("point"), AbstractPoint.class);
+		return this;
+	}
+
 }

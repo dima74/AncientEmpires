@@ -1,22 +1,23 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.Strings;
 import ru.ancientempires.action.result.AttackResult;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
 	
-	public AttackResult	result;
-						
-	private int			y;
-	private int			x;
-						
-	private int			frameStartSmoke;
-	private int			frameUpdateBonus;
-						
-	private boolean		isDirect	= false;
-									
+	public AttackResult result;
+
+	private int y;
+	private int x;
+
+	private int frameStartSmoke;
+	private int frameUpdateBonus;
+
+	private boolean isDirect = false;
+
 	public DrawUnitAttack setDirect()
 	{
 		isDirect = true;
@@ -47,7 +48,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 					.setBitmaps(SparksImages().bitmapsDefault)
 					.animateRepeat(1)
 					.increaseFrameStart(framesBeforePartTwo));
-					
+
 			int offsetY = (int) (y - 22 * a);
 			int offsetX = x + (A - StatusesImages().w) / 2;
 			DrawOnFrames draw = new DrawBitmapSinus()

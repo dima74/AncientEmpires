@@ -1,11 +1,13 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptDelay extends Script
 {
@@ -45,4 +47,21 @@ public class ScriptDelay extends Script
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("milliseconds", milliseconds);
+		return object;
+	}
+
+	public ScriptDelay fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		milliseconds = object.get("milliseconds").getAsInt();
+		return this;
+	}
+
 }

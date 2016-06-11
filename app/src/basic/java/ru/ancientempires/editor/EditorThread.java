@@ -1,6 +1,7 @@
 package ru.ancientempires.editor;
 
 import android.view.SurfaceHolder;
+
 import ru.ancientempires.BaseThread;
 import ru.ancientempires.activity.EditorActivity;
 import ru.ancientempires.framework.MyAssert;
@@ -11,9 +12,9 @@ public class EditorThread extends BaseThread
 	
 	// public static EditorThread thread;
 	
-	public EditorInputMain	inputMain;
-	public EditorChooseView	view;
-							
+	public EditorInputMain  inputMain;
+	public EditorChooseView view;
+
 	public EditorThread(EditorActivity activity, SurfaceHolder surfaceHolder)
 	{
 		super(activity, surfaceHolder);
@@ -47,7 +48,7 @@ public class EditorThread extends BaseThread
 		// thread = null;
 		try
 		{
-			new GameSaver(activity.game).saveBaseGame();
+			GameSaver.createBaseGame(activity.game);
 		}
 		catch (Exception e)
 		{

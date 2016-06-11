@@ -2,14 +2,15 @@ package ru.ancientempires;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+
 import ru.ancientempires.framework.MyAssert;
 
 public abstract class MyAsyncTask extends Thread
 {
 	
-	private ProgressDialog	dialog;
-	private Activity		activity;
-							
+	private ProgressDialog dialog;
+	private Activity       activity;
+
 	public MyAsyncTask(Activity activity)
 	{
 		this.activity = activity;

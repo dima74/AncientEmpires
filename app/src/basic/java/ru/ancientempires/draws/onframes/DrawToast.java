@@ -4,15 +4,16 @@ import android.graphics.Canvas;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.framework.MyAssert;
 
 public class DrawToast extends DrawOnFrames
 {
 	
-	public String	text;
-	public int		duration;
-					
+	public String text;
+	public int    duration;
+
 	public DrawToast(String text)
 	{
 		this.text = text;

@@ -1,12 +1,5 @@
 package ru.ancientempires.activity;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +10,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import ru.ancientempires.Extras;
 import ru.ancientempires.Localization;
 import ru.ancientempires.PlayerType;
@@ -93,12 +94,12 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 	 	teams.json - это просто инфа о командах, всё остальное в players.json
 	 */
 	
-	private GamePath		path;
-	private SimpleTeam[]	teams;
-	private SimplePlayer[]	players;
-	private View[]			views;
-	private int				defaultGold;
-							
+	private GamePath       path;
+	private SimpleTeam[]   teams;
+	private SimplePlayer[] players;
+	private View[]         views;
+	private int            defaultGold;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -136,7 +137,7 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 				players[player.ordinal] = player;
 				listView.addView(views[player.ordinal] = getView(player, iTeam));
 			}
-			
+
 		TextView textGold = (TextView) findViewById(R.id.textGold);
 		textGold.setText(Strings.GOLD.toString());
 		EditText textGoldEdit = (EditText) findViewById(R.id.textGoldEdit);

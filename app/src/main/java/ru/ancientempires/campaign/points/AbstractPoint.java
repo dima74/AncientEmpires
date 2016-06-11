@@ -1,13 +1,23 @@
 package ru.ancientempires.campaign.points;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import org.atteo.classindex.IndexSubclasses;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableData;
+import ru.ancientempires.serializable.SerializableDataHelper;
+import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
-public abstract class AbstractPoint extends IGameHandler
+public abstract class AbstractPoint extends IGameHandler implements SerializableJson, SerializableData
 {
 	
 	public abstract int getI();
@@ -43,10 +53,11 @@ public abstract class AbstractPoint extends IGameHandler
 			{
 				list.add(new PointInteger((int) points[i], (int) points[i + 1]));
 				++i;
-			} else if (o.getClass() == String.class)
+			}
+			else if (o.getClass() == String.class)
 				list.add(new PointNamed((String) o));
 		}
-		return list.toArray(new AbstractPoint[0]);
+		return list.toArray(new AbstractPoint[list.size()]);
 	}
 
 	public static AbstractPoint createPoint(Object... points)
@@ -59,5 +70,37 @@ public abstract class AbstractPoint extends IGameHandler
 	{
 		return "{" + getI() + ", " + getJ() + "}";
 	}
-	
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = SerializableJsonHelper.toJson(this);
+		return object;
+	}
+
+	public AbstractPoint fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		return this;
+	}
+
+	static public AbstractPoint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		AbstractPoint[] array = new AbstractPoint[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), AbstractPoint.class);
+		return array;
+	}
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		SerializableDataHelper.toData(output, this);
+	}
+
+	public AbstractPoint fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		return this;
+	}
+
 }

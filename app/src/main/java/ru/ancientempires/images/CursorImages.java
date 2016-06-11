@@ -1,26 +1,28 @@
 package ru.ancientempires.images;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
-public class CursorImages extends IImages
+public class CursorImages extends AbstractImages
 {
 	
-	public Bitmap		cursorWay;
-	public Bitmap		cursorAttack;
-	public Bitmap		cursorMixed;
-						
-	public FewBitmaps	cursor;
-	public FewBitmaps	cursorPointerAttack;
-	public FewBitmaps	cursorPointerWay;
-						
-	public int			cursorH;
-	public int			cursorW;
-						
+	public Bitmap cursorWay;
+	public Bitmap cursorAttack;
+	public Bitmap cursorMixed;
+
+	public FewBitmaps cursor;
+	public FewBitmaps cursorPointerAttack;
+	public FewBitmaps cursorPointerWay;
+
+	public int cursorH;
+	public int cursorW;
+
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		cursorWay = loader.loadImage("cursor_way.png");
 		cursorAttack = loader.loadImage("cursor_attack.png");

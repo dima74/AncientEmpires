@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import ru.ancientempires.action.BuyStatus;
 import ru.ancientempires.action.result.ActionResultGetCellBuy;
 import ru.ancientempires.activity.GameActivity;
@@ -66,9 +67,9 @@ public class UnitBuyDialog
 		});
 	}
 	
-	private static final int	BLACK	= Color.BLACK;
-	private static final int	GREY	= 0xFFAAAAAA;
-										
+	private static final int BLACK = Color.BLACK;
+	private static final int GREY  = 0xFFAAAAAA;
+
 	private View getView(Unit unit, BuyStatus status)
 	{
 		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);

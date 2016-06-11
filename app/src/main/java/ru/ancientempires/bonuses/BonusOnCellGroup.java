@@ -1,23 +1,26 @@
 package ru.ancientempires.bonuses;
 
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import com.google.gson.JsonObject;
 
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusOnCellGroup extends Bonus
 {
-	
-	public CellGroup	group;
-	public int			bonusAttack;
-	public int			bonusDefence;
+
+	@AsNumbered
+	public CellGroup group;
+	public int       bonusAttack;
+	public int       bonusDefence;
 	
 	public BonusOnCellGroup()
 	{}
@@ -113,4 +116,25 @@ public class BonusOnCellGroup extends Bonus
 		return true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("group", group.getNumber());
+		object.addProperty("bonusAttack", bonusAttack);
+		object.addProperty("bonusDefence", bonusDefence);
+		return object;
+	}
+
+	public BonusOnCellGroup fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		group = CellGroup.newInstance(object.get("group").getAsInt(), info);
+		bonusAttack = object.get("bonusAttack").getAsInt();
+		bonusDefence = object.get("bonusDefence").getAsInt();
+		return this;
+	}
+
 }

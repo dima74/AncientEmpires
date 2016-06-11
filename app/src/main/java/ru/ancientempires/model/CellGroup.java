@@ -5,23 +5,38 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Numbered;
 
-public class CellGroup
+public class CellGroup implements Numbered
 {
+
+	public static CellGroup newInstance(int i, LoaderInfo info)
+	{
+		return info.rules.cellGroups[i];
+	}
+
+	public String   name;
+	public CellType baseType;
+	public int      ordinal;
+
+	public CellType[]    types;
+	public Set<CellType> typesSet;
 	
-	public String	name;
-	public CellType	baseType;
-	
-	public CellType[]		types;
-	public Set<CellType>	typesSet;
-	
-	public CellGroup(String name, Rules rules)
+	public CellGroup(Rules rules, String name, int ordinal)
 	{
 		this.name = name;
 		baseType = rules.getCellType(name + "_GROUP");
 		baseType.isDefault = true;
+		this.ordinal = ordinal;
 	}
-	
+
+	@Override
+	public int getNumber()
+	{
+		return ordinal;
+	}
+
 	public boolean contains(CellType type)
 	{
 		return typesSet.contains(type);
@@ -30,7 +45,7 @@ public class CellGroup
 	public void setTypes(CellType... types)
 	{
 		this.types = types;
-		typesSet = new HashSet<CellType>(Arrays.asList(types));
+		typesSet = new HashSet<>(Arrays.asList(types));
 	}
 	
 	public void setBaseTypeToAll()

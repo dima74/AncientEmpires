@@ -1,5 +1,8 @@
 package ru.ancientempires.campaign;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,16 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJson;
 
 public class NamedObjects<T>
 {
-	
-	public static NamedObjects get()
-	{
-		return Client.getGame().namedUnits;
-	}
 	
 	public T get(String name)
 	{
@@ -43,7 +42,7 @@ public class NamedObjects<T>
 	
 	public void trySave(DataOutputStream output, T object) throws IOException
 	{
-		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<>();
 		for (Entry<String, T> entry : objects.entrySet())
 			if (entry.getValue() == object)
 				names.add(entry.getKey());
@@ -53,4 +52,18 @@ public class NamedObjects<T>
 			output.writeUTF(name);
 	}
 	
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = new JsonObject();
+		for (Entry<String, T> entry : objects.entrySet())
+			object.add(entry.getKey(), ((SerializableJson) entry.getValue()).toJson());
+		return object;
+	}
+
+	public <ActualT extends SerializableJson> void fromJson(JsonObject object, LoaderInfo info, Class<ActualT> c) throws Exception
+	{
+		for (Entry<String, JsonElement> entry : object.entrySet())
+			objects.put(entry.getKey(), (T) info.fromJson((JsonObject) entry.getValue(), c));
+	}
+
 }

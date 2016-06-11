@@ -1,5 +1,6 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -7,7 +8,8 @@ import java.io.IOException;
 
 import ru.ancientempires.Localization;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.reflection.Localize;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Localize;
 
 public class ScriptDialogTarget extends Script
 {
@@ -50,4 +52,23 @@ public class ScriptDialogTarget extends Script
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("textTitle", textTitle);
+		object.addProperty("textTarget", textTarget);
+		return object;
+	}
+
+	public ScriptDialogTarget fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		textTitle = ru.ancientempires.Localization.get(object.get("textTitle").getAsString());
+		textTarget = ru.ancientempires.Localization.get(object.get("textTarget").getAsString());
+		return this;
+	}
+
 }

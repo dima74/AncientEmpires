@@ -2,6 +2,7 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
 import ru.ancientempires.Point;
 
 public class DrawWayLine extends Draw

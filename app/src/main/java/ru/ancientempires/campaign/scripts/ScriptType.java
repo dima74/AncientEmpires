@@ -72,9 +72,9 @@ public enum ScriptType
 	CONDITION_OR(true, ConditionOr.class),
 	CONDITION_AND(true, ConditionAnd.class);
 	
-	public boolean					isSimple;
-	public Class<? extends Script>	scriptClass;
-									
+	public boolean                 isSimple;
+	public Class<? extends Script> scriptClass;
+
 	ScriptType(Class<? extends Script> scriptClass)
 	{
 		this(false, scriptClass);

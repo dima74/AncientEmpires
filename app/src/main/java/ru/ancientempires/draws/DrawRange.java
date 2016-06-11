@@ -2,16 +2,17 @@ package ru.ancientempires.draws;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
 import ru.ancientempires.action.result.ActionResultGetUnit;
 
 public class DrawRange extends Draw
 {
 	
-	private int	startI;
-	private int	startJ;
+	private int startI;
+	private int startJ;
 	
-	private int	radius;
-	private int	diameter;
+	private int radius;
+	private int diameter;
 	
 	private Bitmap[][] field;
 	

@@ -1,17 +1,18 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class DrawCursor extends Draw
 {
 	
-	private FewBitmaps	cursor;
-	private int			cursorH;
-	private int			cursorW;
+	private FewBitmaps cursor;
+	private int        cursorH;
+	private int        cursorW;
 	
-	private int	cursorY;
-	private int	cursorX;
+	private int cursorY;
+	private int cursorX;
 	
 	public DrawCursor setCursor(FewBitmaps cursor)
 	{

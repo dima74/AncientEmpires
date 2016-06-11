@@ -5,8 +5,11 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import ru.ancientempires.BaseThread;
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activity.MainActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptDialogIntro;
@@ -15,11 +18,13 @@ import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
 import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptGameOver;
+import ru.ancientempires.campaign.scripts.ScriptSnakeMap;
 import ru.ancientempires.draws.campaign.DialogGameOver;
 import ru.ancientempires.draws.campaign.DialogShowIntro;
 import ru.ancientempires.draws.campaign.DialogShowTarget;
 import ru.ancientempires.draws.campaign.MyDialog;
 import ru.ancientempires.draws.campaign.MyDialogWithoutImage;
+import ru.ancientempires.draws.onframes.DrawSnakeMap;
 
 public class DrawCampaign extends BaseDrawCampaign
 {
@@ -87,7 +92,15 @@ public class DrawCampaign extends BaseDrawCampaign
 		main.isActiveGame = false;
 		BaseGameActivity.activity.invalidateOptionsMenu();
 	}
-	
+
+	@Override
+	public void closeMission() throws Exception
+	{
+		super.closeMission();
+		if (game.path.nextGameID == null)
+			GameActivity.activity.moveTo(MainActivity.class);
+	}
+
 	@Override
 	public void gameOver(ScriptGameOver script)
 	{
@@ -98,6 +111,13 @@ public class DrawCampaign extends BaseDrawCampaign
 	public void vibrate()
 	{
 		GameActivity.vibrate();
+	}
+
+	@Override
+	public void snakeMap(ScriptSnakeMap script)
+	{
+		int frames = script.milliseconds / BaseThread.MILLISECONDS_BETWEEN_FRAMES;
+		add(new DrawSnakeMap().animate(frames), script);
 	}
 	
 }

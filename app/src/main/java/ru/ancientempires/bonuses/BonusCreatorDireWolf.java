@@ -37,9 +37,9 @@ public class BonusCreatorDireWolf extends BonusCreator
 				.setTurn(game.numberPlayers())
 				.register();
 		return new BonusCreate[]
-		{
-				new BonusCreate(targetUnit, bonus)
-		};
+				{
+						new BonusCreate(targetUnit, bonus)
+				};
 	}
 	
 	@Override

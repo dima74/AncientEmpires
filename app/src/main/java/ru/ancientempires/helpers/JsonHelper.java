@@ -1,8 +1,8 @@
 package ru.ancientempires.helpers;
 
-import java.io.IOException;
-
 import com.google.gson.stream.JsonReader;
+
+import java.io.IOException;
 
 import ru.ancientempires.framework.MyAssert;
 

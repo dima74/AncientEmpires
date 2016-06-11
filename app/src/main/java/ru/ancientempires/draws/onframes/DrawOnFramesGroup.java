@@ -1,8 +1,8 @@
 package ru.ancientempires.draws.onframes;
 
-import java.util.ArrayList;
-
 import android.graphics.Canvas;
+
+import java.util.ArrayList;
 
 public class DrawOnFramesGroup extends DrawOnFrames
 {

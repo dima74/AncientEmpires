@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import android.graphics.Bitmap;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -11,8 +11,10 @@ import java.io.IOException;
 import ru.ancientempires.Localization;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.helpers.JsonHelper;
-import ru.ancientempires.reflection.BitmapPath;
-import ru.ancientempires.reflection.Localize;
+import ru.ancientempires.serializable.BitmapPath;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Localize;
 
 public class ScriptDialog extends Script
 {
@@ -20,11 +22,10 @@ public class ScriptDialog extends Script
 	@Localize public    String text;
 	@BitmapPath private String imagePath;
 	private             String align;
-	@Expose private     Bitmap image;
+	@Exclude private    Bitmap image;
 
 	public ScriptDialog()
-	{
-	}
+	{}
 	
 	public ScriptDialog(String text, String imagePath, String align)
 	{
@@ -67,4 +68,27 @@ public class ScriptDialog extends Script
 	{
 		return super.toString() + " " + imagePath + " " + text;
 	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("text", text);
+		object.addProperty("imagePath", imagePath);
+		object.addProperty("align", align);
+		return object;
+	}
+
+	public ScriptDialog fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
+		imagePath = object.get("imagePath").getAsString();
+		image = Client.client.imagesLoader.loadImage(imagePath);
+		align = object.get("align").getAsString();
+		return this;
+	}
+
 }

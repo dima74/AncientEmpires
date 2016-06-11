@@ -9,14 +9,15 @@ import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.campaign.points.AbstractPoint;
+import ru.ancientempires.campaign.scripts.AbstractScriptOnePoint;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;
-import ru.ancientempires.campaign.scripts.ScriptCameraMove;
 import ru.ancientempires.campaign.scripts.ScriptCellAttackPartTwo;
 import ru.ancientempires.campaign.scripts.ScriptDelay;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
+import ru.ancientempires.campaign.scripts.ScriptOnePoint;
 import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
 import ru.ancientempires.campaign.scripts.ScriptSetCursorPosition;
@@ -31,11 +32,13 @@ import ru.ancientempires.campaign.scripts.ScriptUnitChangePosition;
 import ru.ancientempires.campaign.scripts.ScriptUnitCreate;
 import ru.ancientempires.campaign.scripts.ScriptUnitDie;
 import ru.ancientempires.campaign.scripts.ScriptUnitMove;
+import ru.ancientempires.campaign.scripts.ScriptUnitMoveHandler;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.campaign.DrawCameraMove;
 import ru.ancientempires.draws.campaign.DrawUnitAttack;
 import ru.ancientempires.draws.campaign.DrawUnitDie;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
+import ru.ancientempires.draws.onframes.DrawCitadelAttack;
 import ru.ancientempires.draws.onframes.DrawOnFrames;
 import ru.ancientempires.draws.onframes.DrawUnitMove;
 import ru.ancientempires.framework.MyAssert;
@@ -101,7 +104,8 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 				try
 				{
 					Thread.sleep(milliseconds);
-				} catch (InterruptedException e)
+				}
+				catch (InterruptedException e)
 				{
 					MyAssert.a(false);
 					e.printStackTrace();
@@ -159,10 +163,10 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 	
 	@Override
-	public void cameraMove(ScriptCameraMove script)
+	public void cameraMove(AbstractScriptOnePoint script)
 	{
-		int targetI = script.point.getI();
-		int targetJ = script.point.getJ();
+		int targetI = script.i();
+		int targetJ = script.j();
 		main.inputPlayer.tapWithoutAction(targetI, targetJ);
 		DrawCameraMove draw = new DrawCameraMove();
 		draw.start(targetI, targetJ);
@@ -188,7 +192,12 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		if (!initFromStart)
 			script.performAction();
 		DrawUnitMove draw = new DrawUnitMove().setMakeSmoke(script.makeSmoke).start(getPoints(script.points), null, initFromStart);
-		draw.unitBitmap.handlers = script.handlers;
+		if (script.handlers != null)
+		{
+			draw.unitBitmap.handlers = new ScriptUnitMoveHandler[script.handlers.length];
+			for (int i = 0; i < script.handlers.length; i++)
+				draw.unitBitmap.handlers[i] = ((ScriptUnitMoveHandler) script.handlers[i]);
+		}
 		add(draw, script);
 		if (initFromStart)
 			script.performAction();
@@ -199,7 +208,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		int length = 1;
 		for (int i = 1; i < keyPoints.length; i++)
 			length += Math.abs(keyPoints[i].getI() - keyPoints[i - 1].getI())
-					+ Math.abs(keyPoints[i].getJ() - keyPoints[i - 1].getJ());
+			          + Math.abs(keyPoints[i].getJ() - keyPoints[i - 1].getJ());
 
 		Point[] points = new Point[length];
 		int nPoint = 0;
@@ -256,7 +265,13 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	{
 		script.performAction();
 	}
-	
+
+	@Override
+	public void citadelAttack(ScriptOnePoint script)
+	{
+		add(new DrawCitadelAttack(script.i(), script.j()), script);
+	}
+
 	//
 	@Override
 	public void sparksDefault(int i, int j, ScriptSparkDefault script)
@@ -316,5 +331,5 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		if (game.path.nextGameID != null)
 			GameActivity.startGame(game.path.nextGameID, false);
 	}
-	
+
 }

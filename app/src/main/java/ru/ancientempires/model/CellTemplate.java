@@ -1,17 +1,18 @@
 package ru.ancientempires.model;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.images.ImagesLoader;
+import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.rules.RulesLoader;
 import ru.ancientempires.rules.RulesSaver;
@@ -38,13 +39,13 @@ public class CellTemplate
 		return object;
 	}
 	
-	public FewBitmaps[]			bitmaps		= new FewBitmaps[256];
-	public CellTemplateType		type;
-								
-	public CellType				cellType;
-	public HashSet<CellType>	friends		= new HashSet<>();
-	public HashSet<CellType>	friendsUp	= new HashSet<>();
-											
+	public FewBitmaps[] bitmaps = new FewBitmaps[256];
+	public CellTemplateType type;
+
+	public CellType cellType;
+	public HashSet<CellType> friends   = new HashSet<>();
+	public HashSet<CellType> friendsUp = new HashSet<>();
+
 	public CellTemplate(CellTemplateType type, CellType cellType, CellType... friendTypes)
 	{
 		this.type = type;
@@ -63,9 +64,9 @@ public class CellTemplate
 		return bitmaps[cell.specialization];
 	}
 	
-	public final void load(ImagesLoader loader, CellType cellType) throws IOException
+	public final void load(FileLoader loader, CellType cellType) throws IOException
 	{
-		loader = loader.getLoader(cellType.name).getImagesLoader();
+		loader = loader.getLoader(cellType.name);
 		String[] images = loader.list("");
 		for (String image : images)
 		{
@@ -182,7 +183,7 @@ public class CellTemplate
 			return true;
 		Cell target = cell.game.fieldCells[i][j];
 		return cellType == target.type || friends.contains(target.type)
-				|| j == cell.j && i + 1 == cell.i && friendsUp.contains(target.type);
+		       || j == cell.j && i + 1 == cell.i && friendsUp.contains(target.type);
 	}
 	
 	@Override

@@ -19,9 +19,9 @@ public class UnitBitmap
 	public float x;
 
 	public Unit unit;
-	public int health;
+	public int  health;
 	public boolean canUpdateHealth = true;
-	public boolean keepTurn = false;
+	public boolean keepTurn        = false;
 	public ScriptUnitMoveHandler[] handlers;
 
 	public UnitBitmap(Unit unit)

@@ -1,10 +1,5 @@
 package ru.ancientempires.rules;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Map.Entry;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -14,9 +9,15 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map.Entry;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusCreator;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellType;
@@ -26,9 +27,9 @@ import ru.ancientempires.model.UnitType;
 public class RulesSaver
 {
 	
-	public FileLoader	loader;
-	public Rules		rules;
-						
+	public FileLoader loader;
+	public Rules      rules;
+
 	public RulesSaver(FileLoader loader, Rules rules)
 	{
 		this.loader = loader;
@@ -123,7 +124,7 @@ public class RulesSaver
 			}
 			if (type.templateType != null)
 				result.addProperty("templateType", type.templateType.name);
-				
+
 			if (type == defaultType || type.healthDefault != defaultType.healthDefault)
 				result.addProperty("health", type.healthDefault);
 			if (type == defaultType || type.attackMin != defaultType.attackMin)
@@ -216,6 +217,19 @@ public class RulesSaver
 				result.addProperty("repairType", type.repairType.name);
 			if (type.template != null)
 				result.add("template", type.template.toJSON(RulesSaver.this));
+
+			//if (type.struct != null)
+			//	result.add("struct", type.struct.toJSON());
+			try
+			{
+				if (type.struct != null)
+					result.add("struct", type.struct.toJson());
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
+			}
 			return result;
 		}
 	}

@@ -1,9 +1,11 @@
 package ru.ancientempires.images;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.helpers.FileLoader;
 
 public class SmallNumberImages extends NumberImages
 {
@@ -13,11 +15,11 @@ public class SmallNumberImages extends NumberImages
 		return Client.client.images.smallNumber;
 	}
 	
-	public Bitmap	asterisk;
-	public Bitmap	defenceBitmap;
-					
+	public Bitmap asterisk;
+	public Bitmap defenceBitmap;
+
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		preloadBase(loader);
 		defenceBitmap = loader.loadImage("defence.png");

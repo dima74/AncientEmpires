@@ -1,8 +1,10 @@
 package ru.ancientempires.images;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
+import ru.ancientempires.helpers.FileLoader;
 
 public class BigNumberImages extends NumberImages
 {
@@ -10,7 +12,7 @@ public class BigNumberImages extends NumberImages
 	public Bitmap slashBitmap;
 	
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		plus = loader.loadImage("+.png");
 		slashBitmap = loader.loadImage("slash.png");

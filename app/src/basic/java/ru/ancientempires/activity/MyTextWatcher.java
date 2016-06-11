@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
 import ru.ancientempires.framework.MyAssert;
 
 public class MyTextWatcher implements TextWatcher
 {
 	
-	private int	defaultValue;
-	private int	minValue;
-	private int	maxValue;
-				
+	private int defaultValue;
+	private int minValue;
+	private int maxValue;
+
 	public MyTextWatcher(int maxValue)
 	{
 		this(0, maxValue);

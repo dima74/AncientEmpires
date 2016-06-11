@@ -1,5 +1,7 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 import ru.ancientempires.action.result.ActionResultGameEndTurn;
@@ -8,6 +10,7 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGameEndTurn extends Action
 {
@@ -76,4 +79,18 @@ public class ActionGameEndTurn extends Action
 		currentPlayer.gold += game.currentEarns[currentPlayer.ordinal];
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionGameEndTurn fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

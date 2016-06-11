@@ -1,15 +1,41 @@
 apply plugin: 'java'
 
-sourceSets {
-    main {
-        java {
-            srcDirs '../app/src/main/java'
-        }
-    }
+buildscript {
+	repositories {
+		mavenLocal()
+		jcenter()
+		maven {
+			url 'https://repo.eclipse.org/content/repositories/eclipse-staging/'
+		}
+	}
+	dependencies {
+		classpath group: 'fr.inria.gforge.spoon',
+				name: 'spoon-gradle-plugin',
+				version: '1.0-SNAPSHOT'
+		classpath files('../processors/build/libs/processors.jar')
+	}
 }
 
+sourceSets.main.java.srcDirs += '../app/src/main/java'
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'org.atteo.classindex:classindex:3.3'
-    compile 'com.google.code.gson:gson:2.6.2'
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'org.atteo.classindex:classindex:3.3'
+	compile 'com.google.code.gson:gson:2.6.2'
+	compile 'fr.inria.gforge.spoon:spoon-core:5.1.0'
 }
+
+repositories {
+	maven {
+		url 'https://repo.eclipse.org/content/repositories/eclipse-staging/'
+	}
+}
+
+/*
+apply plugin: 'spoon'
+spoon {
+	processors = ['ru.ancientempires.processors.JsonProcessor',
+	              'ru.ancientempires.processors.DataProcessor']
+	compileOriginalSources true
+}
+//*/

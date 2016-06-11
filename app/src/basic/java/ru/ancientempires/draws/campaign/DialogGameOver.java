@@ -3,7 +3,7 @@ package ru.ancientempires.draws.campaign;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
+
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.activity.MainActivity;
 
@@ -28,7 +28,7 @@ public class DialogGameOver
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				GameActivity.activity.startActivity(new Intent(GameActivity.activity, MainActivity.class));
+				GameActivity.activity.moveTo(MainActivity.class);
 			}
 		});
 		GameActivity.activity.runOnUiThread(new Runnable()

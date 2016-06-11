@@ -1,5 +1,7 @@
 package ru.ancientempires.swing;
 
+import android.graphics.Canvas;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,7 +14,6 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import android.graphics.Canvas;
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.draws.DrawMain;
@@ -23,30 +24,30 @@ import ru.ancientempires.model.Game;
 public class GameComponent extends JComponent implements MouseListener, MouseMotionListener
 {
 	
-	public int				h					= 700;
-	public int				w					= 600;
-												
-	public long				begin				= Long.MAX_VALUE;
-	public long				end					= Long.MIN_VALUE;
-	public long				last				= System.currentTimeMillis();
-												
-	public JFrame			frame;
-	public Game				game;
-	public DrawMain			drawMain;
-	public InputMain		inputMain;
-							
-	volatile public boolean	needUpdateCampaign	= false;
-												
-	public float			touchY;
-	public float			touchX;
-	public boolean			isTouch;
-							
-	private int				lastY;
-	private int				lastX;
-	private boolean			isDrag;
-							
-	public Runnable			runnable;
-							
+	public int h = 700;
+	public int w = 600;
+
+	public long begin = Long.MAX_VALUE;
+	public long end   = Long.MIN_VALUE;
+	public long last  = System.currentTimeMillis();
+
+	public JFrame    frame;
+	public Game      game;
+	public DrawMain  drawMain;
+	public InputMain inputMain;
+
+	volatile public boolean needUpdateCampaign = false;
+
+	public float   touchY;
+	public float   touchX;
+	public boolean isTouch;
+
+	private int     lastY;
+	private int     lastX;
+	private boolean isDrag;
+
+	public Runnable runnable;
+
 	public void runOnGameThread(Runnable runnable)
 	{
 		MyAssert.a(this.runnable == null);

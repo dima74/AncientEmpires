@@ -1,6 +1,7 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.draws.Draw;
 
 public class DrawBuildingSmokes extends Draw

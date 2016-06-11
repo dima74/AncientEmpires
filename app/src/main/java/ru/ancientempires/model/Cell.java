@@ -1,28 +1,42 @@
 package ru.ancientempires.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 
 import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.struct.StructInfo;
+import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.MyNullable;
+import ru.ancientempires.serializable.SerializableJson;
 
-public class Cell extends IGameHandler
+public class Cell extends IGameHandler implements SerializableJson
 {
-	
-	public CellType	type;
-	public int		i;
-	public int		j;
-					
+
+	@Exclude
+	public CellType type;
+	public int      i;
+	public int      j;
+
 	// только для захватываемых клеточек
-	public Player	player;
-					
+	@AsNumbered
+	@MyNullable
+	public Player player;
+
 	public boolean isCapture()
 	{
 		return player != null;
 	}
-	
-	public int specialization;
-	
+
+	@Exclude
+	public int        specialization;
+	@MyNullable
+	public StructInfo structInfo;
+
 	// Для редактора карт
 	public Cell(Game game, CellType type)
 	{
@@ -37,7 +51,7 @@ public class Cell extends IGameHandler
 		player = cell.player;
 	}
 	
-	// в принципе можно прямо тут обновлять fieldCell
+	// в принципе можно прямо тут обновлять fieldCells
 	public Cell(Game game, CellType type, int i, int j)
 	{
 		this(game, type);
@@ -60,14 +74,14 @@ public class Cell extends IGameHandler
 		return isCapture();
 	}
 	
-	public void save(DataOutputStream output, Game game) throws IOException
+	public void save(DataOutputStream output, Game game) throws Exception
 	{
 		output.writeBoolean(isCapture());
 		if (isCapture())
 			output.write(player.ordinal);
 	}
 	
-	public void load(DataInputStream input, Game game) throws IOException
+	public void load(DataInputStream input, LoaderInfo info) throws Exception
 	{
 		boolean isCapture = input.readBoolean();
 		if (isCapture)
@@ -114,4 +128,39 @@ public class Cell extends IGameHandler
 		return String.format("%s (%d %d)", type.name, i, j);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = new JsonObject();
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		if (player != null)
+			object.addProperty("player", player.getNumber());
+		if (structInfo != null)
+			object.add("structInfo", structInfo.toJson());
+		return object;
+	}
+
+	public Cell fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		game = info.game;
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		if (object.has("player"))
+			player = Player.newInstance(object.get("player").getAsInt(), info);
+		if (object.has("structInfo"))
+			structInfo = info.fromJson((JsonObject) object.get("structInfo"), StructInfo.class);
+		return this;
+	}
+
+	static public Cell[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Cell[] array = new Cell[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Cell.class);
+		return array;
+	}
+
 }

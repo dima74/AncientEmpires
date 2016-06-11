@@ -1,18 +1,20 @@
 package ru.ancientempires.images;
 
-import java.io.IOException;
-
 import android.graphics.Bitmap;
 
-public class ArrowsImages extends IImages
+import java.io.IOException;
+
+import ru.ancientempires.helpers.FileLoader;
+
+public class ArrowsImages extends AbstractImages
 {
 	
-	public Bitmap	equals;
-	public Bitmap	more;
-	public Bitmap	less;
+	public Bitmap equals;
+	public Bitmap more;
+	public Bitmap less;
 	
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		equals = loader.loadImage("equals.png");
 		more = loader.loadImage("more.png");

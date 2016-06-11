@@ -1,5 +1,9 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
+
+import ru.ancientempires.serializable.LoaderInfo;
+
 public class ScriptUnitAttack extends ScriptFrom
 {
 	
@@ -23,4 +27,19 @@ public class ScriptUnitAttack extends ScriptFrom
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		return object;
+	}
+
+	public ScriptUnitAttack fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		return this;
+	}
+
 }

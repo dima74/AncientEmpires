@@ -30,20 +30,20 @@ public class InputUnit extends AbstractInput
 		this.inputPlayer = inputPlayer;
 	}
 	
-	public boolean				isActive	= false;
-											
-	private ActionResultGetUnit	result;
-								
-	private int					radius;
-	private int					diameter;
-								
-	private int					i;
-	private int					j;
-	private int					targetI;
-	private int					targetJ;
-								
-	private DrawRange			drawRange;
-								
+	public boolean isActive = false;
+
+	private ActionResultGetUnit result;
+
+	private int radius;
+	private int diameter;
+
+	private int i;
+	private int j;
+	private int targetI;
+	private int targetJ;
+
+	private DrawRange drawRange;
+
 	public boolean isSameTap(int i, int j)
 	{
 		return this.i == i && this.j == j;
@@ -58,7 +58,7 @@ public class InputUnit extends AbstractInput
 				.perform(game);
 		if (!result.canMove && !result.canAttack && !result.canRaise)
 			return false;
-			
+
 		this.i = i;
 		this.j = j;
 		

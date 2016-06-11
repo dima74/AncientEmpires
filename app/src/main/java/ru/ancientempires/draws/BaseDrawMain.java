@@ -2,6 +2,7 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
@@ -16,28 +17,35 @@ public abstract class BaseDrawMain extends Draw
 	public void setupStatic()
 	{}
 	
-	public int					mapH;
-	public int					mapW;
-	public int					visibleMapH;
-	public int					visibleMapW;
-	public int					iFrame;
-								
-	volatile public float		nextOffsetY;
-	volatile public float		nextOffsetX;
-	public float				offsetY;
-	public float				offsetX;
-								
-	public float				maxOffsetY;
-	public float				maxOffsetX;
-	public float				minOffsetY;
-	public float				minOffsetX;
-								
-	public DrawCells			cells			= new DrawCells();
-	public DrawCells			cellsDual		= new DrawCells().setDual();
-	public DrawUnitsDead		unitsDead		= new DrawUnitsDead();
-	public DrawUnits			units			= new DrawUnits();
-	public DrawBuildingSmokes	buildingSmokes	= new DrawBuildingSmokes();
-												
+	public int mapH;
+	public int mapW;
+	public int visibleMapH;
+	public int visibleMapW;
+	public int iFrame;
+
+	volatile public float nextOffsetY;
+	volatile public float nextOffsetX;
+	public          float offsetY;
+	public          float offsetX;
+	public          float extraOffsetY;
+	public          float extraOffsetX;
+
+	public int iMin;
+	public int iMax;
+	public int jMin;
+	public int jMax;
+
+	public float maxOffsetY;
+	public float maxOffsetX;
+	public float minOffsetY;
+	public float minOffsetX;
+
+	public DrawCells          cells          = new DrawCells();
+	public DrawCells          cellsDual      = new DrawCells().setDual();
+	public DrawUnitsDead      unitsDead      = new DrawUnitsDead();
+	public DrawUnits          units          = new DrawUnits();
+	public DrawBuildingSmokes buildingSmokes = new DrawBuildingSmokes();
+
 	public abstract void setVisibleMapSize();
 	
 	public final void initOffset()
@@ -68,16 +76,39 @@ public abstract class BaseDrawMain extends Draw
 			offsetY = nextOffsetY;
 			offsetX = nextOffsetX;
 		}
+		setBounds();
 		canvas.drawColor(Color.WHITE);
 		
 		canvas.save();
 		canvas.scale(mapScale, mapScale);
 		canvas.translate(offsetX, offsetY);
-		
+
+		canvas.translate(extraOffsetX, extraOffsetY);
 		cells.draw(canvas);
 		cellsDual.draw(canvas);
+		canvas.translate(-extraOffsetX, -extraOffsetY);
 		unitsDead.draw(canvas);
 		units.draw(canvas);
+	}
+
+	public void setBounds()
+	{
+		for (int i = 0; i < game.h; i++)
+			if (i * A <= -offsetY)
+				iMin = i;
+		for (int i = game.h; i >= 0; i--)
+			if (i * A >= -offsetY + visibleMapH / mapScale)
+				iMax = i;
+		for (int j = 0; j < game.w; j++)
+			if (j * A <= -offsetX)
+				jMin = j;
+		for (int j = game.w; j >= 0; j--)
+			if (j * A >= -offsetX + visibleMapW / mapScale)
+				jMax = j;
+		iMin = Math.max(0, iMin - 1);
+		iMax = Math.min(game.h, iMax + 1);
+		jMin = Math.max(0, jMin - 1);
+		jMax = Math.min(game.w, jMax + 1);
 	}
 	
 	public boolean isActiveGame()

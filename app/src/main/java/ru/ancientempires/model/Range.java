@@ -3,10 +3,10 @@ package ru.ancientempires.model;
 public class Range
 {
 	
-	public String		name;
-	public int			radius;
-	public int			size;
-	public boolean[][]	table;
+	public String      name;
+	public int         radius;
+	public int         size;
+	public boolean[][] table;
 	
 	public Range(String name, boolean[][] table)
 	{

@@ -9,10 +9,10 @@ import ru.ancientempires.framework.MyAssert;
 public class Canvas
 {
 	
-	private Graphics2D	g;
-	private int			h;
-	private int			w;
-						
+	private Graphics2D g;
+	private int        h;
+	private int        w;
+
 	public Canvas(Graphics2D g)
 	{
 		this.g = g;
@@ -38,7 +38,7 @@ public class Canvas
 		int color = paint.color;
 		if (color != 0)
 			g.setColor(new java.awt.Color(paint.color, true));
-			
+
 		int x = (int) left;
 		int y = (int) top;
 		int w = (int) (right - left);

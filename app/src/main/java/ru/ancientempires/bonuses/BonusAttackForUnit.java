@@ -1,23 +1,26 @@
 package ru.ancientempires.bonuses;
 
+import com.google.gson.JsonObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import com.google.gson.JsonObject;
 
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusAttackForUnit extends Bonus
 {
-	
-	public UnitType	targetType;
-	public int		bonusAttack;
-	public int		bonusDefence;
+
+	@AsNumbered
+	public UnitType targetType;
+	public int      bonusAttack;
+	public int      bonusDefence;
 	
 	public BonusAttackForUnit()
 	{}
@@ -119,4 +122,25 @@ public class BonusAttackForUnit extends Bonus
 		return true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("targetType", targetType.getName());
+		object.addProperty("bonusAttack", bonusAttack);
+		object.addProperty("bonusDefence", bonusDefence);
+		return object;
+	}
+
+	public BonusAttackForUnit fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		targetType = UnitType.newInstance(object.get("targetType").getAsString(), info);
+		bonusAttack = object.get("bonusAttack").getAsInt();
+		bonusDefence = object.get("bonusDefence").getAsInt();
+		return this;
+	}
+
 }

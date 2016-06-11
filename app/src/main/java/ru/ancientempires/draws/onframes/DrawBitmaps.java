@@ -6,14 +6,14 @@ import android.graphics.Canvas;
 public class DrawBitmaps extends DrawOnFramesWithRangeValues
 {
 	
-	public static final int	FRAMES_FOR_BITMAP	= 2;
-	public int				framesForBitmap		= DrawBitmaps.FRAMES_FOR_BITMAP;
-												
-	public Bitmap[]			bitmaps;
-							
-	public int				y;
-	public int				x;
-							
+	public static final int FRAMES_FOR_BITMAP = 2;
+	public              int framesForBitmap   = DrawBitmaps.FRAMES_FOR_BITMAP;
+
+	public Bitmap[] bitmaps;
+
+	public int y;
+	public int x;
+
 	public DrawBitmaps setFramesForBitmap(int framesForBitmap)
 	{
 		this.framesForBitmap = framesForBitmap;

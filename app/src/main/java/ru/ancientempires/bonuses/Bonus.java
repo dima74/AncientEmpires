@@ -1,19 +1,26 @@
 package ru.ancientempires.bonuses;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.atteo.classindex.IndexSubclasses;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.gson.JsonObject;
-
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public abstract class Bonus
+@IndexSubclasses
+public abstract class Bonus implements SerializableJson
 {
 	
 	public static List<Class<? extends Bonus>> classes = Arrays.asList(
@@ -23,7 +30,7 @@ public abstract class Bonus
 			BonusMoveToCellGroup.class,
 			BonusOnCellGroup.class,
 			BonusCost.class);
-			
+
 	public static Bonus loadJsonBase(JsonObject object, Rules rules) throws Exception
 	{
 		int ordinal = object.get("type").getAsInt();
@@ -130,5 +137,27 @@ public abstract class Bonus
 			return false;
 		return true;
 	}
-	
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = SerializableJsonHelper.toJson(this);
+		return object;
+	}
+
+	public Bonus fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		return this;
+	}
+
+	static public Bonus[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Bonus[] array = new Bonus[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Bonus.class);
+		return array;
+	}
+
 }

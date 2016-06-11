@@ -1,11 +1,13 @@
 package ru.ancientempires.images;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 
-import android.graphics.Bitmap;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.helpers.FileLoader;
 
-public class StatusesImages extends IImages
+public class StatusesImages extends AbstractImages
 {
 	
 	public static StatusesImages get()
@@ -13,14 +15,14 @@ public class StatusesImages extends IImages
 		return Client.client.images.statuses;
 	}
 	
-	public Bitmap	aura;
-	public Bitmap	poison;
-					
-	public int		h;
-	public int		w;
-					
+	public Bitmap aura;
+	public Bitmap poison;
+
+	public int h;
+	public int w;
+
 	@Override
-	public void preload(ImagesLoader loader) throws IOException
+	public void preload(FileLoader loader) throws IOException
 	{
 		aura = loader.loadImage("aura.png");
 		poison = loader.loadImage("poison.png");

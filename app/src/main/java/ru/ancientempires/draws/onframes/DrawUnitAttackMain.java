@@ -1,23 +1,24 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.action.result.AttackResult;
 
 public class DrawUnitAttackMain extends DrawOnFramesGroup
 {
 	
-	public static final int	FRAMES_BETWEEN_ANIMATES	= 32;	// GameDrawDecreaseHealth.FRAMES_ANIMATE * 2 / 3;
-													
-	private DrawUnitAttack	drawDirect;
-	private DrawUnitAttack	drawReverse;
-							
-	private boolean			isReverseAttack;
-	private boolean			isUnitDie;
-							
-	public int				frameToStartPartTwo;
-	public int				framesBeforePartTwo;
-							
+	public static final int FRAMES_BETWEEN_ANIMATES = 32;    // GameDrawDecreaseHealth.FRAMES_ANIMATE * 2 / 3;
+
+	private DrawUnitAttack drawDirect;
+	private DrawUnitAttack drawReverse;
+
+	private boolean isReverseAttack;
+	private boolean isUnitDie;
+
+	public int frameToStartPartTwo;
+	public int framesBeforePartTwo;
+
 	public DrawUnitAttackMain()
 	{
 		drawDirect = new DrawUnitAttack().setDirect();

@@ -1,6 +1,7 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.draws.onframes.DrawOnFrames;
 
 public class DrawInfoMove extends DrawOnFrames

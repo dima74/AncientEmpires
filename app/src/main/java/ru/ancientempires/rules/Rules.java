@@ -12,26 +12,26 @@ import ru.ancientempires.model.UnitType;
 public class Rules
 {
 	
-	public String						name;
-	public String						version;
-	public String						author;
-										
-	public Unit							defaultUnit;
-	public UnitType						defaultUnitType;
-	public CellType						defaultCellType;
-										
-	public Range[]						ranges;
-	public HashMap<String, Range>		rangesMap;
-	public Range						rangeMax;
-										
-	public UnitType[]					unitTypes;
-	public HashMap<String, UnitType>	unitTypesMap	= new HashMap<String, UnitType>();
-														
-	public CellGroup[]					cellGroups;
-	public HashMap<String, CellGroup>	cellGroupsMap	= new HashMap<String, CellGroup>();
-	public CellType[]					cellTypes;
-	public HashMap<String, CellType>	cellTypesMap	= new HashMap<String, CellType>();
-														
+	public String name;
+	public String version;
+	public String author;
+
+	public Unit     defaultUnit;
+	public UnitType defaultUnitType;
+	public CellType defaultCellType;
+
+	public Range[]                ranges;
+	public HashMap<String, Range> rangesMap;
+	public Range                  rangeMax;
+
+	public UnitType[] unitTypes;
+	public HashMap<String, UnitType> unitTypesMap = new HashMap<String, UnitType>();
+
+	public CellGroup[] cellGroups;
+	public HashMap<String, CellGroup> cellGroupsMap = new HashMap<String, CellGroup>();
+	public CellType[] cellTypes;
+	public HashMap<String, CellType> cellTypesMap = new HashMap<String, CellType>();
+
 	public void preInitUnitTypes(String[] names)
 	{
 		unitTypes = new UnitType[names.length];
@@ -56,7 +56,7 @@ public class Rules
 	{
 		cellGroups = new CellGroup[names.length];
 		for (int i = 0; i < names.length; i++)
-			cellGroups[i] = new CellGroup(names[i], this);
+			cellGroups[i] = new CellGroup(this, names[i], i);
 		for (CellGroup group : cellGroups)
 			cellGroupsMap.put(group.name, group);
 	}
@@ -86,7 +86,7 @@ public class Rules
 		rangesMap = new HashMap<String, Range>();
 		for (Range range : ranges)
 			rangesMap.put(range.name, range);
-			
+
 		int maxRadius = 0;
 		for (Range type : ranges)
 			maxRadius = Math.max(maxRadius, type.radius);

@@ -3,6 +3,7 @@ package ru.ancientempires.activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.ViewGroup;
+
 import ru.ancientempires.BaseThread;
 import ru.ancientempires.BaseView;
 import ru.ancientempires.draws.BaseDrawMain;
@@ -12,12 +13,12 @@ import ru.ancientempires.model.Game;
 public class BaseGameActivity extends BaseActivity
 {
 	
-	public static BaseGameActivity	activity;
-									
-	public BaseView					view;
-	public Dialog					dialog;
-	public Game						game;
-									
+	public static BaseGameActivity activity;
+
+	public BaseView view;
+	public Dialog   dialog;
+	public Game     game;
+
 	public BaseView getView()
 	{
 		return view;

@@ -1,6 +1,9 @@
 package ru.ancientempires.tasks;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.model.Game;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class TaskRemoveTombstone extends TaskFrom
 {
@@ -19,4 +22,19 @@ public class TaskRemoveTombstone extends TaskFrom
 		game.fieldUnitsDead[i][j] = null;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		return object;
+	}
+
+	public TaskRemoveTombstone fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		return this;
+	}
+
 }

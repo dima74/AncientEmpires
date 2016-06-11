@@ -1,20 +1,25 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
+import com.google.gson.JsonObject;
+
+import java.util.Arrays;
+
+import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.campaign.points.AbstractPoint;
-import ru.ancientempires.reflection.NumberedArray;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.MyNullable;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class ScriptUnitMove extends Script
 {
 	
-	public AbstractPoint[]         points;
-	@NumberedArray
-	public ScriptUnitMoveHandler[] handlers;
+	public AbstractPoint[] points;
+	@MyNullable
+	public Script[]        handlers; // не ScriptUnitMoveHandler, чтобы можно было присваивать ScriptAlias
 	public boolean makeSmoke = true;
 
 	public ScriptUnitMove()
-	{
-	}
+	{}
 	
 	public ScriptUnitMove(Object... points)
 	{
@@ -31,6 +36,13 @@ public class ScriptUnitMove extends Script
 	{
 		makeSmoke = false;
 		return this;
+	}
+
+	public void resolveAliases(Script[] scripts)
+	{
+		super.resolveAliases(scripts);
+		if (handlers != null)
+			resolveAliases(handlers, scripts);
 	}
 	
 	private AbstractPoint first()
@@ -66,14 +78,16 @@ public class ScriptUnitMove extends Script
 	@Override
 	public void start()
 	{
-		System.out.printf("%15s %5s %5s\n", game.getUnit(i(), j()).type.name, first(), last());
 		campaign.iDrawCampaign.unitMove(this, true);
 	}
 	
 	@Override
 	public void performAction()
 	{
-		new ActionCampaignUnitMove().setIJ(i(), j()).setTargetIJ(targetI(), targetJ()).perform(game);
+		new ActionCampaignUnitChangePosition()
+				.setIJ(i(), j())
+				.setTargetIJ(targetI(), targetJ())
+				.perform(game);
 	}
 
 	@Override
@@ -81,5 +95,38 @@ public class ScriptUnitMove extends Script
 	{
 		return false;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return "ScriptUnitMove{" +
+		       "points=" + Arrays.toString(points) +
+		       ", handlers=" + handlers +
+		       ", makeSmoke=" + makeSmoke +
+		       '}';
+	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.add("points", SerializableJsonHelper.toJsonArray(points));
+		if (handlers != null)
+			object.add("handlers", SerializableJsonHelper.toJsonArrayNumbered(handlers));
+		object.addProperty("makeSmoke", makeSmoke);
+		return object;
+	}
+
+	public ScriptUnitMove fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		points = AbstractPoint.fromJsonArray(object.get("points").getAsJsonArray(), info);
+		if (object.has("handlers"))
+			handlers = Script.newInstanceArrayNumbered(object.get("handlers").getAsJsonArray(), info);
+		makeSmoke = object.get("makeSmoke").getAsBoolean();
+		return this;
+	}
+
 }

@@ -165,8 +165,8 @@
 		{
 			"name": "KING",
 			"specializations": {
-				"BLUE": "KING_GALAMAR",
 				"BLACK": "KING_SAETH",
+				"BLUE": "KING_GALAMAR",
 				"RED": "KING_DEMONLORD",
 				"GREEN": "KING_VALADORN"
 			},
@@ -494,19 +494,42 @@
 		},
 		{
 			"baseType": "HEALING_GROUP",
-			"name": "CITADEL"
+			"name": "CITADEL",
+			"struct": {
+				"type": 0,
+				"typeName": "StructCitadel",
+				"crystalType": "CRYSTAL",
+				"crystalsRequired": 3,
+				"constraints": [
+					{
+						"di": 0,
+						"dj": -1,
+						"type": 6
+					},
+					{
+						"di": 0,
+						"dj": 1,
+						"type": 7
+					},
+					{
+						"di": -1,
+						"dj": 0,
+						"type": 8
+					}
+				]
+			}
 		},
 		{
 			"name": "WAY",
 			"template": {
 				"type": "WAY",
 				"friends": [
-					"WATER_WAY_VERTICAL",
-					"WATER_WAY_HORIZONTAL"
+					"WATER_WAY_HORIZONTAL",
+					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": [
-					"TEMPLE",
-					"CASTLE"
+					"CASTLE",
+					"TEMPLE"
 				]
 			}
 		},
@@ -525,8 +548,8 @@
 				"type": "WATER",
 				"friends": [
 					"WATER_SPARKS",
-					"WATER_WAY_VERTICAL",
-					"WATER_WAY_HORIZONTAL"
+					"WATER_WAY_HORIZONTAL",
+					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": []
 			}

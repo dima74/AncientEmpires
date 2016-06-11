@@ -1,6 +1,7 @@
 package ru.ancientempires.activity;
 
 import android.os.Bundle;
+
 import ru.ancientempires.Extras;
 import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.client.Client;
@@ -55,7 +56,9 @@ public class EditorActivity extends BaseGameActivity
 				BaseGameActivity.activity = EditorActivity.this;
 				view = new EditorView(EditorActivity.this);
 				setContentView(view);
-			};
+			}
+
+			;
 		}.start();
 	}
 	

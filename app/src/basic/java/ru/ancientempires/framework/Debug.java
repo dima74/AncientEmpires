@@ -2,7 +2,6 @@ package ru.ancientempires.framework;
 
 import android.app.Activity;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ public class Debug
 	public static boolean writeFirstLaunch = false;
 
 	public static HashMap<Object, Integer> indexes = new HashMap();
-	public static HashSet<Object> running = new HashSet();
+	public static HashSet<Object>          running = new HashSet();
 
 	private static void checkFirstLaunch()
 	{
@@ -40,7 +39,8 @@ public class Debug
 				MyAssert.a(activity instanceof Activity);
 				Client.client = new Client(new AndroidClientHelper((Activity) activity));
 				Client.client.startLoadParts12();
-			} catch (IOException e)
+			}
+			catch (Exception e)
 			{
 				MyAssert.a(false);
 				e.printStackTrace();

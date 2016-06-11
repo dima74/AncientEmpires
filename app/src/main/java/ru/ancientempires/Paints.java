@@ -6,11 +6,11 @@ import android.graphics.Paint;
 public class Paints
 {
 	
-	public static final Paint	ANTI_ALIAS_FLAG	= new Paint(Paint.ANTI_ALIAS_FLAG);
-	public static final Paint	WHITE			= new Paint();
-	public static final Paint	RED				= new Paint();
-	public static final Paint[]	MY_COLORS		= new Paint[MyColor.values().length];
-												
+	public static final Paint   ANTI_ALIAS_FLAG = new Paint(Paint.ANTI_ALIAS_FLAG);
+	public static final Paint   WHITE           = new Paint();
+	public static final Paint   RED             = new Paint();
+	public static final Paint[] MY_COLORS       = new Paint[MyColor.values().length];
+
 	static
 	{
 		WHITE.setColor(Color.WHITE);

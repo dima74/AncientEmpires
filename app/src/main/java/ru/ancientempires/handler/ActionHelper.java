@@ -29,10 +29,10 @@ public class ActionHelper extends IGameHandler
 	public boolean canUnitAction(Unit unit)
 	{
 		return isUnitActive(unit)
-				&& (canUnitMove(unit) || game.checkFloating() && (canUnitAttack(unit)
-						|| canUnitRepair(unit)
-						|| canUnitCapture(unit)
-						|| canUnitRaise(unit)));
+		       && (canUnitMove(unit) || game.checkFloating() && (canUnitAttack(unit)
+		                                                         || canUnitRepair(unit)
+		                                                         || canUnitCapture(unit)
+		                                                         || canUnitRaise(unit)));
 	}
 	
 	public boolean canUnitMove(Unit unit)
@@ -49,7 +49,7 @@ public class ActionHelper extends IGameHandler
 			{
 				Unit targetUnit = game.fieldUnits[targetCell.i][targetCell.j];
 				return targetUnit != null && targetUnit.player.team != unit.player.team
-						|| targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+				       || targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 			}
 		});
 	}
@@ -75,7 +75,7 @@ public class ActionHelper extends IGameHandler
 		for (int relativeI = minRelativeI; relativeI <= maxRelativeI; relativeI++)
 			for (int relativeJ = minRelativeJ; relativeJ <= maxRelativeJ; relativeJ++)
 				if (range.table[range.radius + relativeI][range.radius + relativeJ]
-						&& checker.check(field[i + relativeI][j + relativeJ]))
+				    && checker.check(field[i + relativeI][j + relativeJ]))
 					return true;
 		return false;
 	}
@@ -131,10 +131,10 @@ public class ActionHelper extends IGameHandler
 	private boolean dfs(int i, int j, Unit unit, int moveRadius)
 	{
 		return moveRadius >= 0 && (game.fieldUnits[i][j] == null
-				|| tryDfs(i, j, i - 1, j, unit, moveRadius)
-				|| tryDfs(i, j, i, j - 1, unit, moveRadius)
-				|| tryDfs(i, j, i, j + 1, unit, moveRadius)
-				|| tryDfs(i, j, i + 1, j, unit, moveRadius));
+		                           || tryDfs(i, j, i - 1, j, unit, moveRadius)
+		                           || tryDfs(i, j, i, j - 1, unit, moveRadius)
+		                           || tryDfs(i, j, i, j + 1, unit, moveRadius)
+		                           || tryDfs(i, j, i + 1, j, unit, moveRadius));
 	}
 	
 	private boolean tryDfs(int i, int j, int targetI, int targetJ, Unit unit, int moveRadius)

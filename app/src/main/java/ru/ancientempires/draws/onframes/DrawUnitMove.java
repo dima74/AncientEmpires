@@ -1,6 +1,7 @@
 package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.Point;
 import ru.ancientempires.action.result.ActionResultUnitMove;
 import ru.ancientempires.draws.DrawLevel;
@@ -9,15 +10,15 @@ import ru.ancientempires.images.bitmaps.UnitBitmap;
 public class DrawUnitMove extends DrawOnFramesWithRangeValues
 {
 	
-	public static int	framesForCell	= 8;							// ii-2, player-4
-	public int			framesForCellMy	= DrawUnitMove.framesForCell;
-										
-	public UnitBitmap	unitBitmap;
-	public Point[]		points;
-	public int			targetI;
-	public int			targetJ;
-	public boolean		makeSmoke		= true;
-										
+	public static int framesForCell   = 8;                            // ii-2, player-4
+	public        int framesForCellMy = DrawUnitMove.framesForCell;
+
+	public UnitBitmap unitBitmap;
+	public Point[]    points;
+	public int        targetI;
+	public int        targetJ;
+	public boolean makeSmoke = true;
+
 	private void initFromEnd()
 	{
 		unitBitmap = new UnitBitmap(game.getUnit(targetI, targetJ));
@@ -41,7 +42,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 			initFromStart(points[0].i, points[0].j);
 		else
 			initFromEnd();
-			
+
 		if (game.checkCoordinates(targetI, targetJ))
 		{
 			main.units.field[targetI][targetJ] = unitBitmap;

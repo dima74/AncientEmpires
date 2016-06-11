@@ -1,17 +1,19 @@
 package ru.ancientempires.campaign.scripts;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptFrom extends Script
 {
 	
-	public int	i;
-	public int	j;
+	public int i;
+	public int j;
 	
 	public ScriptFrom()
 	{}
@@ -36,4 +38,23 @@ public abstract class ScriptFrom extends Script
 		writer.name("j").value(j);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		return object;
+	}
+
+	public ScriptFrom fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		return this;
+	}
+
 }

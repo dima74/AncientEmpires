@@ -6,13 +6,13 @@ import android.widget.ListView;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.reflection.ReflectionHelper;
+import ru.ancientempires.serializable.ReflectionHelper;
 
 public class MainActivity extends BaseListActivity
 {
 
 	public static int     skirmish    = 5;
-	public static int     campaign    = 6;
+	public static int     campaign    = 0;
 	public static String  gameToStart = "campaign";
 	public static boolean firstStart  = true;
 

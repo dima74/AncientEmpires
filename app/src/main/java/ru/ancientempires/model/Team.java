@@ -1,15 +1,25 @@
 package ru.ancientempires.model;
 
-public class Team
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Numbered;
+
+public class Team implements Numbered
 {
-	
-	public Player[] players;
-	
-	public Team(Player[] players)
+
+	public static Team newInstance(int i, LoaderInfo info)
 	{
-		this.players = players;
+		return info.game.teams[i];
 	}
-	
+
+	public int      ordinal;
+	public Player[] players;
+
+	@Override
+	public int getNumber()
+	{
+		return ordinal;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

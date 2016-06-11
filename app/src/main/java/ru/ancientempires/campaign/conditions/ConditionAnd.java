@@ -1,6 +1,9 @@
 package ru.ancientempires.campaign.conditions;
 
+import com.google.gson.JsonObject;
+
 import ru.ancientempires.campaign.scripts.Script;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionAnd extends ConditionBoolean
 {
@@ -22,4 +25,19 @@ public class ConditionAnd extends ConditionBoolean
 		return true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		return object;
+	}
+
+	public ConditionAnd fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		return this;
+	}
+
 }

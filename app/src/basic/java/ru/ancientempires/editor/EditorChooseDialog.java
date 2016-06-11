@@ -1,6 +1,7 @@
 package ru.ancientempires.editor;
 
 import android.app.AlertDialog;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.activity.EditorActivity;
 

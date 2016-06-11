@@ -1,6 +1,7 @@
 package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.activity.BaseGameActivity;
 import ru.ancientempires.activity.GameActivity;
 import ru.ancientempires.client.Client;
@@ -75,13 +76,13 @@ public class Draw
 		return Client.client.images.smoke;
 	}
 	
-	public DrawMain	main		= DrawMain.main;
-	public Game		game		= BaseGameActivity.activity.game;
-	public float	mapScale	= 2;
-	public int		A			= Images().bitmapSize;
-	public float	fA			= Images().bitmapSize * mapScale;
-	public float	a			= A / 24.0f;
-								
+	public DrawMain main     = DrawMain.main;
+	public Game     game     = BaseGameActivity.activity.game;
+	public float    mapScale = 2;
+	public int      A        = Images().bitmapSize;
+	public float    fA       = Images().bitmapSize * mapScale;
+	public float    a        = A / 24.0f;
+
 	public int h()
 	{
 		return BaseGameActivity.activity.getView().h;

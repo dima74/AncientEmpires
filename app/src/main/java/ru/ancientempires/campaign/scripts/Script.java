@@ -1,6 +1,7 @@
 package ru.ancientempires.campaign.scripts;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -12,13 +13,17 @@ import java.util.ArrayList;
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.CampaignEditorGame;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.reflection.LoaderInfo;
-import ru.ancientempires.reflection.Numbered;
-import ru.ancientempires.reflection.NumberedArray;
+import ru.ancientempires.serializable.AsNumberedArray;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.Numbered;
+import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
-public abstract class Script implements Numbered
+public abstract class Script extends IGameHandler implements SerializableJson, Numbered
 {
 
 	public static Script newInstance(int i, LoaderInfo info)
@@ -27,7 +32,7 @@ public abstract class Script implements Numbered
 	}
 
 	// Нужен только при сохранении
-	@Expose public int index;
+	@Exclude public int index;
 
 	@Override
 	public int getNumber()
@@ -36,12 +41,11 @@ public abstract class Script implements Numbered
 	}
 
 	//@Expose public        ScriptType type;
-	@NumberedArray public Script[] previous;
-	@Expose public boolean isStarting  = false;
-	@Expose public boolean isFinishing = false;
+	@AsNumberedArray public Script[] previous;
+	@Exclude public boolean isStarting  = false;
+	@Exclude public boolean isFinishing = false;
 
-	@Expose public Campaign campaign;
-	@Expose public Game     game;
+	@Exclude public Campaign campaign;
 
 	//*
 	public void load(JsonReader reader, ArrayList<Script> scripts) throws IOException
@@ -50,8 +54,7 @@ public abstract class Script implements Numbered
 	}
 	
 	public void load(JsonReader reader) throws IOException
-	{
-	}
+	{}
 	//*/
 
 	public boolean isSimple()
@@ -73,8 +76,7 @@ public abstract class Script implements Numbered
 	}
 	
 	public void start()
-	{
-	}
+	{}
 
 	//*
 	public final void saveGeneral(JsonWriter writer) throws IOException
@@ -92,8 +94,7 @@ public abstract class Script implements Numbered
 	}
 	
 	public void save(JsonWriter writer) throws IOException
-	{
-	}
+	{}
 	//*/
 	
 	public void finish()
@@ -103,18 +104,12 @@ public abstract class Script implements Numbered
 	}
 	
 	public void performAction()
-	{
-	}
+	{}
 	
 	// Используется только в конструкторах, которые вызываются только в редакторе кампании
 	public Game getGame()
 	{
 		return CampaignEditorGame.game;
-	}
-
-	public String toString()
-	{
-		return String.format("%d%d %3d %s", isStarting ? 1 : 0, isFinishing ? 1 : 0, index, getClass().getSimpleName());
 	}
 
 	public void resolveAliases(Script[] scripts)
@@ -127,6 +122,43 @@ public abstract class Script implements Numbered
 		for (int i = 0; i < scripts.length; i++)
 			if (scripts[i].getClass() == ScriptLoaderAlias.class)
 				scripts[i] = all[((ScriptLoaderAlias) scripts[i]).i];
+	}
+
+	public String toString()
+	{
+		return String.format("%d%d %3d %s", isStarting ? 1 : 0, isFinishing ? 1 : 0, index, getClass().getSimpleName());
+	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = SerializableJsonHelper.toJson(this);
+		object.add("previous", SerializableJsonHelper.toJsonArrayNumbered(previous));
+		return object;
+	}
+
+	public Script fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		previous = Script.newInstanceArrayNumbered(object.get("previous").getAsJsonArray(), info);
+		return this;
+	}
+
+	static public Script[] newInstanceArrayNumbered(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Script[] array = new Script[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = newInstance(jsonArray.get(i).getAsInt(), info);
+		return array;
+	}
+
+	static public Script[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	{
+		Script[] array = new Script[jsonArray.size()];
+		for (int i = 0; i < array.length; i++)
+			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Script.class);
+		return array;
 	}
 
 }

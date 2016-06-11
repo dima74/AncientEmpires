@@ -7,9 +7,9 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 public class DrawUnitDie extends DrawOnFramesGroup
 {
 	
-	private int	i;
-	private int	j;
-				
+	private int i;
+	private int j;
+
 	public DrawUnitDie(int i, int j)
 	{
 		this.i = i;
@@ -18,7 +18,7 @@ public class DrawUnitDie extends DrawOnFramesGroup
 				.setYX(i * A, j * A)
 				.setBitmaps(SparksImages().bitmapsDefault)
 				.animateRepeat(1));
-				
+
 		int startY = i * A;
 		int startX = j * A;
 		int endY = startY - 3 * 2 * SmokeImages().amountDefault;

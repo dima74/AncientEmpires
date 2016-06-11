@@ -7,12 +7,12 @@ import ru.ancientempires.model.CellType;
 public class CellBitmap
 {
 	
-	public boolean		isDual		= false;
-	public boolean		isSmokes	= false;
-									
-	public FewBitmaps	defaultBitmap;
-	public FewBitmaps[]	colorBitmaps;
-						
+	public boolean isDual   = false;
+	public boolean isSmokes = false;
+
+	public FewBitmaps   defaultBitmap;
+	public FewBitmaps[] colorBitmaps;
+
 	public FewBitmaps getBitmap(Cell cell)
 	{
 		CellType type = cell.type;

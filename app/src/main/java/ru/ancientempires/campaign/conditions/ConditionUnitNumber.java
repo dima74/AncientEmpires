@@ -1,19 +1,21 @@
 package ru.ancientempires.campaign.conditions;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Player;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionUnitNumber extends Condition
 {
 	
-	private Player	player;
-	private int		comparator;	// -1 less, 0 equals, +1 more
-	private int		number;
+	private Player player;
+	private int    comparator;    // -1 less, 0 equals, +1 more
+	private int    number;
 	
 	public ConditionUnitNumber()
 	{}
@@ -53,4 +55,25 @@ public class ConditionUnitNumber extends Condition
 		writer.name("number").value(number);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("player", player.getNumber());
+		object.addProperty("comparator", comparator);
+		object.addProperty("number", number);
+		return object;
+	}
+
+	public ConditionUnitNumber fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		player = Player.newInstance(object.get("player").getAsInt(), info);
+		comparator = object.get("comparator").getAsInt();
+		number = object.get("number").getAsInt();
+		return this;
+	}
+
 }

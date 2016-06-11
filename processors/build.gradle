@@ -1,0 +1,68 @@
+apply plugin: 'java'
+
+buildscript {
+	repositories {
+		maven {
+			url 'https://repo.eclipse.org/content/repositories/eclipse-staging/'
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir '../app/src/main/java'
+			srcDir '../desktop/src/main/java'
+		}
+	}
+}
+
+dependencies {compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'fr.inria.gforge.spoon:spoon-core:5.1.0'
+	compile 'org.atteo.classindex:classindex:3.3'
+	compile 'com.google.code.gson:gson:2.6.2'
+}
+
+repositories {
+	maven {
+		url 'https://repo.eclipse.org/content/repositories/eclipse-staging/'
+	}
+}
+
+/*
+task deleteJar(type: Delete) {
+	delete '../app/libs/processors.jar'
+}
+
+task createJar(type: Copy) {
+	from('build/libs/')
+	into('../app/libs/')
+	include('processors.jar')
+}
+
+task allClean {}
+task myJar {}
+//task desktopClean {}
+task desktopBuild {}
+task my {}
+
+//allClean.dependsOn(tasks.getByPath(':processors:clean'), tasks.getByPath(':desktop:clean'))
+myJar.dependsOn(tasks.jar)
+//desktopClean.dependsOn(tasks.getByPath(':desktop:clean'))
+//my.dependsOn(tasks.allClean, tasks.myJar, tasks.desktopBuild)
+my.dependsOn(tasks.allClean, tasks.myJar)
+
+tasks.myJar.mustRunAfter(tasks.allClean)
+//tasks.desktopClean.mustRunAfter(tasks.myJar)
+tasks.desktopBuild.mustRunAfter(tasks.myJar)
+
+task replaceSources(type: Exec) {
+	//workingDir '../tomcat/bin'
+	commandLine './replace.sh'
+}
+
+desktopBuild.dependsOn(tasks.getByPath(':desktop:spoon'))
+//*/
+
+task myJar {}
+myJar.dependsOn(tasks.jar)

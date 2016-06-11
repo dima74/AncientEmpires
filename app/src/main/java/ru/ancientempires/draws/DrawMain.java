@@ -1,11 +1,12 @@
 package ru.ancientempires.draws;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
 import ru.ancientempires.Paints;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.draws.inputs.InputPlayer;
@@ -22,34 +23,34 @@ public class DrawMain extends BaseDrawMain
 		main = this;
 	}
 	
-	public InputMain	inputMain;
-	public InputPlayer	inputPlayer;
-						
+	public InputMain   inputMain;
+	public InputPlayer inputPlayer;
+
 	public void setInputMain(InputMain inputMain)
 	{
 		this.inputMain = inputMain;
 		inputPlayer = inputMain.inputPlayer;
 	}
 	
-	public Random					rnd				= new Random();
-													
-	private int						actionY;
-	public DrawAction				action			= new DrawAction();
-	public DrawInfoNull				infoNull		= new DrawInfoNull();
-	public DrawInfo					info			= new DrawInfo();
-	public DrawInfoMove				infoMove		= new DrawInfoMove();
-	public int						infoY			= 0;
-	volatile public boolean			isActiveGame	= true;
-													
-	public Draw						campaign		= new DrawCampaign();
-	public DrawBlackScreen			blackScreen		= new DrawBlackScreen();
-													
-	public boolean					isDrawCursor	= false;
-	public DrawCursor				cursorDefault	= new DrawCursor().setCursor(CursorImages().cursor);
-													
-	public LinkedHashSet<Draw>[]	draws			= new LinkedHashSet[DrawLevel.values().length];
-													
-	public boolean					isBlackScreen	= false;
+	public Random rnd = new Random();
+
+	private int actionY;
+	public          DrawAction   action       = new DrawAction();
+	public          DrawInfoNull infoNull     = new DrawInfoNull();
+	public          DrawInfo     info         = new DrawInfo();
+	public          DrawInfoMove infoMove     = new DrawInfoMove();
+	public          int          infoY        = 0;
+	volatile public boolean      isActiveGame = true;
+
+	public DrawCampaign    campaign    = new DrawCampaign();
+	public DrawBlackScreen blackScreen = new DrawBlackScreen();
+
+	public boolean    isDrawCursor  = false;
+	public DrawCursor cursorDefault = new DrawCursor().setCursor(CursorImages().cursor);
+
+	public LinkedHashSet<Draw>[] draws = new LinkedHashSet[DrawLevel.values().length];
+
+	public boolean isBlackScreen = false;
 													
 	/*
 	 * Порядок рисования:
@@ -101,7 +102,7 @@ public class DrawMain extends BaseDrawMain
 		
 		for (DrawLevel level : DrawLevel.values())
 			draws[level.ordinal()] = new LinkedHashSet<>();
-			
+
 		add(campaign);
 	}
 	
@@ -111,22 +112,22 @@ public class DrawMain extends BaseDrawMain
 		super.draw(canvas);
 		if (isDrawCursor)
 			cursorDefault.draw(canvas);
-			
+
 		for (DrawLevel level : DrawLevel.values())
-			for (Iterator<Draw> iterator = draws[level.ordinal()].iterator(); iterator.hasNext();)
+			for (Iterator<Draw> iterator = draws[level.ordinal()].iterator(); iterator.hasNext(); )
 			{
 				Draw draw = iterator.next();
 				draw.draw(canvas);
 				if (draw.isEnd())
 					iterator.remove();
 			}
-			
+
 		buildingSmokes.draw(canvas);
 		canvas.restore();
 		
 		if (minOffsetY == maxOffsetY && offsetY > 0)
 			canvas.drawRect(0, (maxOffsetY + mapH) * mapScale, w(), visibleMapH, Paints.WHITE);
-			
+
 		canvas.save();
 		canvas.translate(0, h() - info.h);
 		infoNull.draw(canvas);
@@ -145,7 +146,7 @@ public class DrawMain extends BaseDrawMain
 		
 		if (minOffsetY == maxOffsetY && offsetY > 0)
 			canvas.drawRect(0, 0, w(), offsetY * mapScale, Paints.WHITE);
-			
+
 		blackScreen.draw(canvas);
 		if (isBlackScreen)
 			canvas.drawColor(Color.BLACK);

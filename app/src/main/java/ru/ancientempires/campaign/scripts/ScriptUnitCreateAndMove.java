@@ -1,15 +1,18 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.action.campaign.AcionCampaignUnitCreate;
+import com.google.gson.JsonObject;
+
+import ru.ancientempires.action.campaign.ActionCampaignUnitCreate;
 import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitCreateAndMove extends ScriptUnitMove
 {
 	
 	public UnitType unitType;
-	public Player player;
+	public Player   player;
 
 	public ScriptUnitCreateAndMove()
 	{
@@ -31,7 +34,7 @@ public class ScriptUnitCreateAndMove extends ScriptUnitMove
 	@Override
 	public void performAction()
 	{
-		new AcionCampaignUnitCreate()
+		new ActionCampaignUnitCreate()
 				.setType(unitType)
 				.setPlayer(player.ordinal)
 				.setIJ(targetI(), targetJ())
@@ -44,4 +47,23 @@ public class ScriptUnitCreateAndMove extends ScriptUnitMove
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("unitType", unitType.getName());
+		object.addProperty("player", player.getNumber());
+		return object;
+	}
+
+	public ScriptUnitCreateAndMove fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		unitType = UnitType.newInstance(object.get("unitType").getAsString(), info);
+		player = Player.newInstance(object.get("player").getAsInt(), info);
+		return this;
+	}
+
 }

@@ -1,8 +1,11 @@
 package ru.ancientempires.campaign.scripts;
 
-import ru.ancientempires.action.campaign.ActionCampaignUnitMove;
+import com.google.gson.JsonObject;
+
+import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.campaign.points.PointInteger;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitMoveAbout extends ScriptUnitMove
 {
@@ -27,7 +30,7 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 	@Override
 	public void performAction()
 	{
-		new ActionCampaignUnitMove()
+		new ActionCampaignUnitChangePosition()
 				.setIJ(i(), j())
 				.setTargetIJ(targetI(), targetJ())
 				.perform(game);
@@ -61,4 +64,19 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 		return false;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		return object;
+	}
+
+	public ScriptUnitMoveAbout fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		return this;
+	}
+
 }

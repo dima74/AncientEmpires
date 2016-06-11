@@ -1,11 +1,5 @@
 package ru.ancientempires.activity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonWriter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import ru.ancientempires.Extras;
 import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.R;
@@ -26,10 +27,10 @@ import ru.ancientempires.save.GameSaver;
 public class EditorConfigureActivity extends BaseActivity implements OnClickListener
 {
 	
-	private static final int	MAX_MAP_SIZE	= 50;
-	private boolean				isStarting;
-	private String				gameID;
-								
+	private static final int MAX_MAP_SIZE = 50;
+	private boolean isStarting;
+	private String  gameID;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -83,7 +84,9 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 			public void onPostExecute()
 			{
 				moveTo(EditorActivity.class, new Intent().putExtra(Extras.GAME_ID, gameID));
-			};
+			}
+
+			;
 		}.start();
 	}
 	
@@ -109,14 +112,14 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		path.getFolder().add(path);
 		path.name = name;
 		Client.client.allGames.put(gameID, path);
-		new GameSaver(game).saveBaseGame();
+		GameSaver.createBaseGame(game);
 		
 		HashMap<String, String> strings = new HashMap<>();
 		strings.put("name", name);
 		JsonWriter writer = path.getLoader().getWriter("strings.json");
 		new Gson().toJson(strings, Map.class, writer);
 		writer.close();
-	};
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

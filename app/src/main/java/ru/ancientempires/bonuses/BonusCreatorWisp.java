@@ -1,10 +1,10 @@
 package ru.ancientempires.bonuses;
 
-import java.util.ArrayList;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+
+import java.util.ArrayList;
 
 import ru.ancientempires.action.CheckerUnit;
 import ru.ancientempires.handler.ActionHelper;
@@ -17,8 +17,8 @@ import ru.ancientempires.tasks.TaskRemoveBonus;
 public class BonusCreatorWisp extends BonusCreator
 {
 	
-	public Range	range;
-	public Bonus[]	bonuses;
+	public Range   range;
+	public Bonus[] bonuses;
 	
 	public BonusCreatorWisp()
 	{}

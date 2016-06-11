@@ -1,9 +1,11 @@
 package ru.ancientempires.action.campaign;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.ActionFrom;
-import ru.ancientempires.action.result.ActionResult;
-import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignRemoveUnit extends ActionFrom
 {
@@ -13,14 +15,7 @@ public class ActionCampaignRemoveUnit extends ActionFrom
 	{
 		return true;
 	}
-	
-	@Override
-	public ActionResult perform(Game game)
-	{
-		performBase(game);
-		return null;
-	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -28,5 +23,25 @@ public class ActionCampaignRemoveUnit extends ActionFrom
 		game.removeUnit(i, j);
 		unit.player.units.remove(unit);
 	}
+
+	@Override
+	public boolean check()
+	{
+		return game.getUnit(i, j) != null;
+	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionCampaignRemoveUnit fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

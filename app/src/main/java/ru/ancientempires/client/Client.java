@@ -12,7 +12,6 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.Images;
-import ru.ancientempires.images.ImagesLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
@@ -32,7 +31,8 @@ public class Client
 			try
 			{
 				client.finishPart1();
-			} catch (InterruptedException e)
+			}
+			catch (InterruptedException e)
 			{
 				MyAssert.a(false);
 				e.printStackTrace();
@@ -51,15 +51,15 @@ public class Client
 	public          FileLoader rulesLoader;
 	volatile public Rules      rules;
 
-	public ImagesLoader imagesLoader;
+	public FileLoader imagesLoader;
 	public Images images = new Images();
 
-	public Map<String, GamesFolder> allFolders = new HashMap<String, GamesFolder>();
+	public Map<String, GamesFolder> allFolders = new HashMap<>();
 	public GamesFolder campaign;
 	public GamesFolder skirmish;
 	public GamesFolder save;
 	public GamesFolder user;
-	public Map<String, GamePath> allGames = new HashMap<String, GamePath>();
+	public Map<String, GamePath> allGames = new HashMap<>();
 
 	public Localization localization = new Localization();
 
@@ -77,7 +77,7 @@ public class Client
 	public ClientServer clientServer;
 	private Server[] servers = new Server[0];
 
-	public Client(IClientHelper helper) throws IOException
+	public Client(IClientHelper helper) throws Exception
 	{
 		MyAssert.a(Client.client == null);
 		Client.client = this;
@@ -85,10 +85,11 @@ public class Client
 		gamesLoader = fileLoader.getLoader("games/");
 		rulesLoader = fileLoader.getLoader("rules/");
 		defaultGameLoader = gamesLoader.getLoader("defaultGame/");
-		imagesLoader = fileLoader.getLoader("images/").getImagesLoader();
+		imagesLoader = fileLoader.getLoader("images/");
 		clientServer = new ClientServer(this);
 		// ID = helper.getID();
 		savesLoader = gamesLoader.getLoader("save/" + "/");
+		loadPart0();
 	}
 	
 	// То что нужно для показа главного меню
@@ -99,7 +100,6 @@ public class Client
 			return;
 		part0 = true;
 		fileLoader.loadLocalization();
-		Thread.sleep(1000);
 		MyLog.l("done loadPart0");
 	}
 	
@@ -185,7 +185,8 @@ public class Client
 			try
 			{
 				Client.client.clientServer.commit(action);
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				MyAssert.a(false);
 				e.printStackTrace();

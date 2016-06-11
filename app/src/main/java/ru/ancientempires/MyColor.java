@@ -13,9 +13,12 @@ public enum MyColor
 	public static MyColor[] playersColors()
 	{
 		return new MyColor[]
-		{
-			BLUE, RED, GREEN, BLACK
-		};
+				{
+						BLUE,
+						RED,
+						GREEN,
+						BLACK
+				};
 	}
 	
 	public int showColor;

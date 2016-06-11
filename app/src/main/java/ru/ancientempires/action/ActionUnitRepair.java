@@ -1,10 +1,14 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.result.ActionResult;
 import ru.ancientempires.handler.ActionHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitRepair extends ActionFrom
 {
@@ -31,4 +35,18 @@ public class ActionUnitRepair extends ActionFrom
 		unit.isTurn = true;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionUnitRepair fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

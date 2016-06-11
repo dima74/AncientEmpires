@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
+
 import ru.ancientempires.R;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;

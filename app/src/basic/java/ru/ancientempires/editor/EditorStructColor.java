@@ -1,15 +1,16 @@
 package ru.ancientempires.editor;
 
 import android.graphics.Canvas;
+
 import ru.ancientempires.MyColor;
 import ru.ancientempires.Paints;
 
 public class EditorStructColor extends EditorStruct
 {
 	
-	private int		A;
-	private MyColor	color;
-					
+	private int     A;
+	private MyColor color;
+
 	public EditorStructColor(int a, MyColor color)
 	{
 		A = a;

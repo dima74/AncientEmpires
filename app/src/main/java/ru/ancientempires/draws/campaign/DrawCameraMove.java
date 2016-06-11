@@ -30,8 +30,7 @@ public class DrawCameraMove extends DrawOnFramesGroup
 		int frameLength = Math.round(Math.max(Math.abs(deltaY), Math.abs(deltaX)) / delta);
 		float stepY = deltaY == 0 ? 1 : deltaY / frameLength;
 		float stepX = deltaX == 0 ? 1 : deltaX / frameLength;
-		System.out.println(delta);
-		
+
 		add(new DrawOnFramesWithRangeFloat()
 		{
 			@Override

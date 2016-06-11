@@ -1,5 +1,10 @@
 package ru.ancientempires.campaign.scripts;
 
+import com.google.gson.JsonObject;
+
+import ru.ancientempires.action.campaign.ActionCampaignSetNamedBoolean;
+import ru.ancientempires.serializable.LoaderInfo;
+
 public class ScriptSetNamedBoolean extends Script
 {
 
@@ -18,7 +23,27 @@ public class ScriptSetNamedBoolean extends Script
 	@Override
 	public void start()
 	{
-		game.namedBooleans.set(name, bool);
+		new ActionCampaignSetNamedBoolean(name, bool)
+				.perform(game);
+	}
+
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("name", name);
+		object.addProperty("bool", bool);
+		return object;
+	}
+
+	public ScriptSetNamedBoolean fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		name = object.get("name").getAsString();
+		bool = object.get("bool").getAsBoolean();
+		return this;
 	}
 
 }

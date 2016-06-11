@@ -22,6 +22,7 @@ import ru.ancientempires.model.CellTemplateType;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.model.struct.StructCitadel;
 
 public class DefaultRules
 {
@@ -62,72 +63,72 @@ public class DefaultRules
 		return rules;
 	}
 	
-	public String[]	ranges		= new String[]
-									{
-										"EMPTY",
-										"DEFAULT",
-										"ARCHER",
-										"CATAPULT"
-									};
-									
-	public String[]	unitTypes	= new String[]
-									{
-										"DEFAULT",
-										"KING",
-										"SOLDIER",
-										"ARCHER",
-										"ELEMENTAL",
-										"SORCERESS",
-										"WISP",
-										"DIRE_WOLF",
-										"GOLEM",
-										"CATAPULT",
-										"DRAGON",
-										"SKELETON",
-										"CRYSTAL",
-										"KING_GALAMAR",
-										"KING_VALADORN",
-										"KING_DEMONLORD",
-										"KING_SAETH"
-									};
-	public String[]	cellTypes	= new String[]
-									{
-										"DEFAULT",
-										"MOUNT",
-										"HILL",
-										"TWO_TREES",
-										"THREE_TREES",
-										"PLAIN",
-										"CITADEL_LEFT",
-										"CITADEL_RIGHT",
-										"CITADEL_UP",
-										"BUILDING",
-										"BUILDING_DESTROYING",
-										"CASTLE",
-										"CAMP",
-										"TEMPLE",
-										"CITADEL",
-										"WAY",
-										"WATER_WAY_HORIZONTAL",
-										"WATER_WAY_VERTICAL",
-										"WATER",
-										"WATER_SPARKS",
-										
-										"DEFAULT_GROUP",
-										"HEALING_GROUP",
-										"BUILDINGS_GROUP",
-										"WATER_WAY_GROUP",
-										"WATER_GROUP"
-									};
-	public String[]	cellGroups	= new String[]
-									{
-										"DEFAULT",
-										"HEALING",
-										"BUILDINGS",
-										"WATER_WAY",
-										"WATER",
-									};
-									
+	public String[] ranges = new String[]
+			{
+					"EMPTY",
+					"DEFAULT",
+					"ARCHER",
+					"CATAPULT"
+			};
+
+	public String[] unitTypes  = new String[]
+			{
+					"DEFAULT",
+					"KING",
+					"SOLDIER",
+					"ARCHER",
+					"ELEMENTAL",
+					"SORCERESS",
+					"WISP",
+					"DIRE_WOLF",
+					"GOLEM",
+					"CATAPULT",
+					"DRAGON",
+					"SKELETON",
+					"CRYSTAL",
+					"KING_GALAMAR",
+					"KING_VALADORN",
+					"KING_DEMONLORD",
+					"KING_SAETH"
+			};
+	public String[] cellTypes  = new String[]
+			{
+					"DEFAULT",
+					"MOUNT",
+					"HILL",
+					"TWO_TREES",
+					"THREE_TREES",
+					"PLAIN",
+					"CITADEL_LEFT",
+					"CITADEL_RIGHT",
+					"CITADEL_UP",
+					"BUILDING",
+					"BUILDING_DESTROYING",
+					"CASTLE",
+					"CAMP",
+					"TEMPLE",
+					"CITADEL",
+					"WAY",
+					"WATER_WAY_HORIZONTAL",
+					"WATER_WAY_VERTICAL",
+					"WATER",
+					"WATER_SPARKS",
+
+					"DEFAULT_GROUP",
+					"HEALING_GROUP",
+					"BUILDINGS_GROUP",
+					"WATER_WAY_GROUP",
+					"WATER_GROUP"
+			};
+	public String[] cellGroups = new String[]
+			{
+					"DEFAULT",
+					"HEALING",
+					"BUILDINGS",
+					"WATER_WAY",
+					"WATER",
+			};
+
 	private void printGroup(String group, String prefix)
 	{
 		String strings = Arrays
@@ -135,7 +136,7 @@ public class DefaultRules
 				.map(String::toLowerCase)
 				.filter(s -> s.contains(prefix))
 				.collect(Collectors.joining(",\n"));
-				
+
 		System.out.println();
 		System.out.println(group + ".setTypes(\n" + strings + ");");
 	}
@@ -181,61 +182,61 @@ public class DefaultRules
 	}
 	
 	// BEGIN AUTO GENERATE
-	public Range		emptyRange;
-	public Range		defaultRange;
-	public Range		archerRange;
-	public Range		catapultRange;
-						
-	public UnitType		defaultUnitType;
-	public UnitType		king;
-	public UnitType		soldier;
-	public UnitType		archer;
-	public UnitType		elemental;
-	public UnitType		sorceress;
-	public UnitType		wisp;
-	public UnitType		dire_wolf;
-	public UnitType		golem;
-	public UnitType		catapult;
-	public UnitType		dragon;
-	public UnitType		skeleton;
-	public UnitType		crystal;
-	public UnitType		king_galamar;
-	public UnitType		king_valadorn;
-	public UnitType		king_demonlord;
-	public UnitType		king_saeth;
-						
-	public CellGroup	defaultGroup;
-	public CellGroup	healing;
-	public CellGroup	buildings;
-	public CellGroup	water_way;
-	public CellGroup	waterGroup;
-						
-	public CellType		defaultCellType;
-	public CellType		mount;
-	public CellType		hill;
-	public CellType		two_trees;
-	public CellType		three_trees;
-	public CellType		plain;
-	public CellType		citadel_left;
-	public CellType		citadel_right;
-	public CellType		citadel_up;
-	public CellType		building;
-	public CellType		building_destroying;
-	public CellType		castle;
-	public CellType		camp;
-	public CellType		temple;
-	public CellType		citadel;
-	public CellType		way;
-	public CellType		water_way_horizontal;
-	public CellType		water_way_vertical;
-	public CellType		water;
-	public CellType		water_sparks;
-	public CellType		default_group;
-	public CellType		healing_group;
-	public CellType		buildings_group;
-	public CellType		water_way_group;
-	public CellType		water_group;
-						
+	public Range emptyRange;
+	public Range defaultRange;
+	public Range archerRange;
+	public Range catapultRange;
+
+	public UnitType defaultUnitType;
+	public UnitType king;
+	public UnitType soldier;
+	public UnitType archer;
+	public UnitType elemental;
+	public UnitType sorceress;
+	public UnitType wisp;
+	public UnitType dire_wolf;
+	public UnitType golem;
+	public UnitType catapult;
+	public UnitType dragon;
+	public UnitType skeleton;
+	public UnitType crystal;
+	public UnitType king_galamar;
+	public UnitType king_valadorn;
+	public UnitType king_demonlord;
+	public UnitType king_saeth;
+
+	public CellGroup defaultGroup;
+	public CellGroup healing;
+	public CellGroup buildings;
+	public CellGroup water_way;
+	public CellGroup waterGroup;
+
+	public CellType defaultCellType;
+	public CellType mount;
+	public CellType hill;
+	public CellType two_trees;
+	public CellType three_trees;
+	public CellType plain;
+	public CellType citadel_left;
+	public CellType citadel_right;
+	public CellType citadel_up;
+	public CellType building;
+	public CellType building_destroying;
+	public CellType castle;
+	public CellType camp;
+	public CellType temple;
+	public CellType citadel;
+	public CellType way;
+	public CellType water_way_horizontal;
+	public CellType water_way_vertical;
+	public CellType water;
+	public CellType water_sparks;
+	public CellType default_group;
+	public CellType healing_group;
+	public CellType buildings_group;
+	public CellType water_way_group;
+	public CellType water_group;
+
 	public void initVariables()
 	{
 		emptyRange = rules.getRange("EMPTY");
@@ -299,12 +300,12 @@ public class DefaultRules
 	public void createRanges()
 	{
 		Range[] ranges = new Range[]
-		{
-			new Range("EMPTY", 1, 0),
-			new Range("DEFAULT", 1, 1),
-			new Range("ARCHER", 1, 2),
-			new Range("CATAPULT", 2, 4)
-		};
+				{
+						new Range("EMPTY", 1, 0),
+						new Range("DEFAULT", 1, 1),
+						new Range("ARCHER", 1, 2),
+						new Range("CATAPULT", 2, 4)
+				};
 		rules.setRanges(ranges);
 	}
 	
@@ -313,7 +314,7 @@ public class DefaultRules
 		createDefaultUnitType();
 		for (UnitType type : rules.unitTypes)
 			type.setProperties(rules.defaultUnitType);
-			
+
 		soldier.cost = 150;
 		soldier.captureTypes = getCellTypes("BUILDING");
 		soldier.repairTypes = getCellTypes("BUILDING_DESTROYING");
@@ -321,17 +322,17 @@ public class DefaultRules
 		archer.cost = 250;
 		archer.attackRange = archerRange;
 		archer.bonuses = new Bonus[]
-		{
-			new BonusAttackForUnit(dragon, 15, 0)
-		};
+				{
+						new BonusAttackForUnit(dragon, 15, 0)
+				};
 		
 		elemental.defence = 10;
 		elemental.cost = 300;
 		elemental.bonuses = new Bonus[]
-		{
-			new BonusOnCellGroup(waterGroup, 10, 15),
-			new BonusMoveToCellGroup(waterGroup, -2)
-		};
+				{
+						new BonusOnCellGroup(waterGroup, 10, 15),
+						new BonusMoveToCellGroup(waterGroup, -2)
+				};
 		
 		sorceress.attackMin = 40;
 		sorceress.attackMax = 45;
@@ -344,12 +345,12 @@ public class DefaultRules
 		wisp.defence = 10;
 		wisp.cost = 500;
 		wisp.creators = new BonusCreator[]
-		{
-			new BonusCreatorWisp(archerRange, new Bonus[]
 				{
-					new BonusAttackAlways(10, 0)
-				})
-		};
+						new BonusCreatorWisp(archerRange, new Bonus[]
+								{
+										new BonusAttackAlways(10, 0)
+								})
+				};
 		
 		dire_wolf.attackMin = 60;
 		dire_wolf.attackMax = 65;
@@ -357,9 +358,9 @@ public class DefaultRules
 		dire_wolf.moveRadius = 5;
 		dire_wolf.cost = 600;
 		dire_wolf.creators = new BonusCreator[]
-		{
-			new BonusCreatorDireWolf(new BonusAttackAlways(-10, -10))
-		};
+				{
+						new BonusCreatorDireWolf(new BonusAttackAlways(-10, -10))
+				};
 		
 		golem.attackMin = 60;
 		golem.attackMax = 70;
@@ -408,9 +409,9 @@ public class DefaultRules
 		king.isStatic = true;
 		king.hasTombstone = false;
 		king.bonuses = new Bonus[]
-		{
-			new BonusCost(200)
-		};
+				{
+						new BonusCost(200)
+				};
 		
 		king_galamar.setProperties(king);
 		king_valadorn.setProperties(king);
@@ -441,9 +442,9 @@ public class DefaultRules
 		defaultUnitType.canDoTwoActionAfterOne = true;
 		defaultUnitType.isFly = false;
 		defaultUnitType.bonuses = new Bonus[]
-		{
-			new BonusLevel(2, 2)
-		};
+				{
+						new BonusLevel(2, 2)
+				};
 		defaultUnitType.creators = new BonusCreator[0];
 	}
 	
@@ -465,7 +466,7 @@ public class DefaultRules
 		water_way.setTypes(
 				water_way_horizontal,
 				water_way_vertical);
-				
+
 		waterGroup.setTypes(
 				water,
 				water_sparks);
@@ -478,7 +479,7 @@ public class DefaultRules
 			type.setProperties(rules.defaultCellType);
 		for (CellGroup group : rules.cellGroups)
 			group.baseType.setProperties(rules.defaultCellType);
-			
+
 		// default
 		mount.steps = 3;
 		mount.defense = 15;
@@ -504,6 +505,10 @@ public class DefaultRules
 		camp.setProperties(healing_group);
 		temple.setProperties(healing_group);
 		citadel.setProperties(healing_group);
+		citadel.struct = new StructCitadel(crystal, 3)
+				.addConstraint(0, -1, citadel_left)
+				.addConstraint(0, +1, citadel_right)
+				.addConstraint(-1, 0, citadel_up);
 		
 		// buildings
 		buildings_group.setProperties(healing_group);
@@ -528,7 +533,7 @@ public class DefaultRules
 				"GOLEM",
 				"CATAPULT",
 				"DRAGON");
-				
+
 		water_way_group.defense = 5;
 		water_way.setBaseTypeToAll();
 		
@@ -538,11 +543,11 @@ public class DefaultRules
 				water_way_horizontal,
 				water_way_vertical,
 				water_sparks);
-				
+
 		way.template = new CellTemplate(CellTemplateType.WAY, way,
 				water_way_horizontal,
 				water_way_vertical)
-						.setFriendsUp(castle, temple);
+				.setFriendsUp(castle, temple);
 	}
 	
 	public UnitType[] getUnitTypes(String... names)

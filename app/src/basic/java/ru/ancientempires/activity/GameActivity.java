@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import ru.ancientempires.Extras;
 import ru.ancientempires.GameThread;
 import ru.ancientempires.GameView;
@@ -27,11 +28,11 @@ import ru.ancientempires.model.Unit;
 public class GameActivity extends BaseGameActivity
 {
 	
-	public static GameActivity	activity;
-								
-	public String				baseGameID;
-	public String				gameID;
-								
+	public static GameActivity activity;
+
+	public String baseGameID;
+	public String gameID;
+
 	@Override
 	public GameView getView()
 	{
@@ -69,7 +70,7 @@ public class GameActivity extends BaseGameActivity
 	{
 		if (BaseGameActivity.activity != null)
 			BaseGameActivity.activity.finish();
-			
+
 		GamePath path = Client.getGame(gameID);
 		
 		Intent intent = new Intent();
@@ -122,7 +123,9 @@ public class GameActivity extends BaseGameActivity
 				BaseGameActivity.activity = GameActivity.this;
 				view = new GameView(GameActivity.this);
 				setContentView(view);
-			};
+			}
+
+			;
 		}.start();
 	}
 	
@@ -131,8 +134,8 @@ public class GameActivity extends BaseGameActivity
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		boolean isActiveGame = getDrawMain() != null
-				&& getThread().drawMain != null
-				&& getThread().drawMain.isActiveGame();
+		                       && getThread().drawMain != null
+		                       && getThread().drawMain.isActiveGame();
 		if (isActiveGame)
 			getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
@@ -190,7 +193,6 @@ public class GameActivity extends BaseGameActivity
 							new ActionCampaignRemoveUnit().setIJ(unit.i, unit.j).perform(game);
 						}
 						getDrawMain().units.update();
-						game.campaign.needSaveSnapshot = true;
 						getThread().needUpdateCampaign = true;
 						break;
 					case R.id.action_capture_castle:

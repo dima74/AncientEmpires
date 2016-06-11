@@ -3,10 +3,10 @@ package android.graphics;
 public class Paint
 {
 	
-	public static final int	ANTI_ALIAS_FLAG	= 0x01;
-											
-	public int				color;
-							
+	public static final int ANTI_ALIAS_FLAG = 0x01;
+
+	public int color;
+
 	public Paint()
 	{}
 	

@@ -1,9 +1,10 @@
 package ru.ancientempires.client;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.provider.Settings.Secure;
+
+import java.io.File;
+
 import ru.ancientempires.helpers.AssetsHelper;
 
 public class AndroidClientHelper implements IClientHelper

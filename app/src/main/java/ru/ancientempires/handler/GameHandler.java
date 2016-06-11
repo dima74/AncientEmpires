@@ -7,12 +7,12 @@ import ru.ancientempires.model.Unit;
 public abstract class GameHandler extends IGameHandler
 {
 	
-	public Cell[][]	fieldCells;
-	public Unit[][]	fieldUnits;
-	public Unit[][]	fieldUnitsDead;
-	public int		h;
-	public int		w;
-	public int		numberPlayers;
+	public Cell[][] fieldCells;
+	public Unit[][] fieldUnits;
+	public Unit[][] fieldUnitsDead;
+	public int      h;
+	public int      w;
+	public int      numberPlayers;
 	
 	@Override
 	public void setGame(Game game)

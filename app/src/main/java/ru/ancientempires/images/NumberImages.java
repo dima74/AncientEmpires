@@ -1,24 +1,26 @@
 package ru.ancientempires.images;
 
-import java.io.IOException;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 
-public abstract class NumberImages extends IImages
+import java.io.IOException;
+
+import ru.ancientempires.helpers.FileLoader;
+
+public abstract class NumberImages extends AbstractImages
 {
 	
-	public Bitmap	minus;
-	public Bitmap	plus;
-	public Bitmap[]	digits	= new Bitmap[10];
+	public Bitmap minus;
+	public Bitmap plus;
+	public Bitmap[] digits = new Bitmap[10];
 	
-	public Bitmap[]	numbers;
-	public Bitmap[]	numbersPlus;
-	public Bitmap[]	numbersMinus;
+	public Bitmap[] numbers;
+	public Bitmap[] numbersPlus;
+	public Bitmap[] numbersMinus;
 	
-	public int	h;
-	public int	w;
+	public int h;
+	public int w;
 	
 	public Bitmap getBitmap(int number)
 	{
@@ -31,7 +33,7 @@ public abstract class NumberImages extends IImages
 		int numberDigits = 1;
 		while ((copyNumber /= 10) > 0)
 			numberDigits++;
-			
+
 		Bitmap bitmap = Bitmap.createBitmap(w * numberDigits, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		for (int i = numberDigits - 1; i >= 0; i--, number /= 10)
@@ -44,7 +46,7 @@ public abstract class NumberImages extends IImages
 		return sign == 0 ? getBitmap(number) : sign == +1 ? numbersPlus[number] : numbersMinus[number];
 	}
 	
-	public void preloadBase(ImagesLoader loader) throws IOException
+	public void preloadBase(FileLoader loader) throws IOException
 	{
 		for (int i = 0; i < 10; i++)
 			digits[i] = loader.loadImage(i + ".png");

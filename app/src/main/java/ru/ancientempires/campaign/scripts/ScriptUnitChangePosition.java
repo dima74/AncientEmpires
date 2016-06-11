@@ -1,20 +1,22 @@
 package ru.ancientempires.campaign.scripts;
 
-import java.io.IOException;
-
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+
 import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitChangePosition extends Script
 {
 	
-	private int	i;
-	private int	j;
-	private int	targetI;
-	private int	targetJ;
+	private int i;
+	private int j;
+	private int targetI;
+	private int targetJ;
 	
 	public ScriptUnitChangePosition()
 	{}
@@ -60,4 +62,27 @@ public class ScriptUnitChangePosition extends Script
 				.perform(game);
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public JsonObject toJson() throws Exception
+	{
+		JsonObject object = super.toJson();
+		object.addProperty("i", i);
+		object.addProperty("j", j);
+		object.addProperty("targetI", targetI);
+		object.addProperty("targetJ", targetJ);
+		return object;
+	}
+
+	public ScriptUnitChangePosition fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		super.fromJson(object, info);
+		i = object.get("i").getAsInt();
+		j = object.get("j").getAsInt();
+		targetI = object.get("targetI").getAsInt();
+		targetJ = object.get("targetJ").getAsInt();
+		return this;
+	}
+
 }

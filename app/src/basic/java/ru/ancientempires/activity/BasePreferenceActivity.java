@@ -2,6 +2,7 @@ package ru.ancientempires.activity;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
 import ru.ancientempires.framework.Debug;
 
 public abstract class BasePreferenceActivity extends PreferenceActivity

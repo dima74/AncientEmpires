@@ -1,9 +1,9 @@
 package ru.ancientempires.save;
 
-import java.io.IOException;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.FileLoader;
@@ -12,9 +12,9 @@ import ru.ancientempires.helpers.JsonHelper;
 public class GameSaveLoader extends FileLoader
 {
 	
-	volatile public int	numberSnapshots;
-	// == numberActions в info.json в папке "actions/%numberSnapshots - 1%"
-	volatile public int	numberActionsAfterLastSave;
+	volatile public int numberSnapshots;
+	// == numberActions в info.json в папке "actions/<numberSnapshots - 1>"
+	volatile public int numberActionsAfterLastSave;
 	
 	public GameSaveLoader(FileLoader loader)
 	{

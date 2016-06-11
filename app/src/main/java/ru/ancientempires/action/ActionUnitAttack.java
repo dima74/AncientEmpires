@@ -1,5 +1,8 @@
 package ru.ancientempires.action;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import ru.ancientempires.action.result.ActionResultUnitAttack;
 import ru.ancientempires.action.result.AttackResult;
 import ru.ancientempires.bonuses.BonusCreate;
@@ -8,13 +11,15 @@ import ru.ancientempires.handler.UnitHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
+import ru.ancientempires.serializable.Exclude;
+import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitAttack extends ActionFromTo
 {
 	
-	private ActionResultUnitAttack	result	= new ActionResultUnitAttack();
-	private Unit					unit;
-									
+	private ActionResultUnitAttack result = new ActionResultUnitAttack();
+	@Exclude private Unit unit;
+
 	@Override
 	public ActionResultUnitAttack perform(Game game)
 	{
@@ -79,7 +84,7 @@ public class ActionUnitAttack extends ActionFromTo
 		result.isReverseAttack = isReverseAttack;
 		if (isReverseAttack)
 			result.attackResultReverse = attackResultReverse;
-			
+
 		result.unitsToUpdate = new ActionHelper(game).getUnitsChangedStateNearCell(unit.player, targetI, targetJ);
 		for (Unit unit : result.unitsToUpdate)
 			unit.setTurn();
@@ -122,4 +127,18 @@ public class ActionUnitAttack extends ActionFromTo
 		return sign;
 	}
 	
+	// =/({||})\=
+	// from spoon
+
+	public void toData(DataOutputStream output) throws Exception
+	{
+		super.toData(output);
+	}
+
+	public ActionUnitAttack fromData(DataInputStream input, LoaderInfo info) throws Exception
+	{
+		super.fromData(input, info);
+		return this;
+	}
+
 }

@@ -8,7 +8,7 @@ public class UnitBuyDialog
 	
 	public void showDialog(InputPlayer input, ActionResultGetCellBuy result)
 	{
-	
+
 	}
 	
 }
