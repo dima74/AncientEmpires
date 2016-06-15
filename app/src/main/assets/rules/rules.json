@@ -116,7 +116,8 @@
 		"isFly": false,
 		"bonuses": [
 			{
-				"type": 0,
+				"type": 3,
+				"typeName": "BonusLevel",
 				"multiAttack": 2,
 				"multiDefence": 2
 			}
@@ -155,7 +156,8 @@
 			"isFly": false,
 			"bonuses": [
 				{
-					"type": 0,
+					"type": 3,
+					"typeName": "BonusLevel",
 					"multiAttack": 2,
 					"multiDefence": 2
 				}
@@ -165,9 +167,9 @@
 		{
 			"name": "KING",
 			"specializations": {
+				"RED": "KING_DEMONLORD",
 				"BLACK": "KING_SAETH",
 				"BLUE": "KING_GALAMAR",
-				"RED": "KING_DEMONLORD",
 				"GREEN": "KING_VALADORN"
 			},
 			"attackMin": 55,
@@ -185,7 +187,8 @@
 			"hasTombstone": false,
 			"bonuses": [
 				{
-					"type": 5,
+					"type": 2,
+					"typeName": "BonusCost",
 					"multi": 200
 				}
 			]
@@ -206,7 +209,8 @@
 			"attackRange": "ARCHER",
 			"bonuses": [
 				{
-					"type": 2,
+					"type": 1,
+					"typeName": "BonusAttackForUnit",
 					"targetType": "DRAGON",
 					"bonusAttack": 15,
 					"bonusDefence": 0
@@ -219,14 +223,16 @@
 			"cost": 300,
 			"bonuses": [
 				{
-					"type": 4,
-					"group": "WATER",
+					"type": 5,
+					"typeName": "BonusOnCellGroup",
+					"group": 4,
 					"bonusAttack": 10,
 					"bonusDefence": 15
 				},
 				{
-					"type": 3,
-					"group": "WATER",
+					"type": 4,
+					"typeName": "BonusMoveToCellGroup",
+					"group": 4,
 					"bonus": -2
 				}
 			]
@@ -251,7 +257,8 @@
 					"range": "ARCHER",
 					"bonuses": [
 						{
-							"type": 1,
+							"type": 0,
+							"typeName": "BonusAttackAlways",
 							"bonusAttack": 10,
 							"bonusDefence": 0
 						}
@@ -270,7 +277,8 @@
 				{
 					"type": 1,
 					"bonus": {
-						"type": 1,
+						"type": 0,
+						"typeName": "BonusAttackAlways",
 						"bonusAttack": -10,
 						"bonusDefence": -10
 					}
@@ -528,8 +536,8 @@
 					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": [
-					"CASTLE",
-					"TEMPLE"
+					"TEMPLE",
+					"CASTLE"
 				]
 			}
 		},
@@ -547,8 +555,8 @@
 			"template": {
 				"type": "WATER",
 				"friends": [
-					"WATER_SPARKS",
 					"WATER_WAY_HORIZONTAL",
+					"WATER_SPARKS",
 					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": []

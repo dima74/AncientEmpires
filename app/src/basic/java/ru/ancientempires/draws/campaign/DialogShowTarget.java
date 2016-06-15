@@ -2,7 +2,7 @@ package ru.ancientempires.draws.campaign;
 
 import android.app.AlertDialog;
 
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.campaign.scripts.ScriptDialogTarget;
 
 public class DialogShowTarget extends MyDialogFragment

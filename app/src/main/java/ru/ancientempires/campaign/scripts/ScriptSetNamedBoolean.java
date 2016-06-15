@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignSetNamedBoolean;
+import ru.ancientempires.actions.campaign.ActionCampaignSetNamedBoolean;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetNamedBoolean extends Script

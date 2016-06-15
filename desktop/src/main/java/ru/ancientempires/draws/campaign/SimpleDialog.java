@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 
 public class SimpleDialog

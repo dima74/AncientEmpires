@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.serializable.BitmapPath;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
@@ -162,7 +162,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethod(ctClass, "fromJson", actualClass, JsonObject.class, "object", LoaderInfo.class, "info");
 
-		if (!base || (simple && IGameHandler.class.isAssignableFrom(actualClass)))
+		if (!base || (simple && AbstractGameHandler.class.isAssignableFrom(actualClass)))
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(simple ? "game = info.game" : "super.fromJson(object, info)"));
 
 		for (Field field : actualClass.getDeclaredFields())

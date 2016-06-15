@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import java.util.Arrays;
 
-import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
+import ru.ancientempires.actions.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.MyNullable;

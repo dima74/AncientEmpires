@@ -1,12 +1,7 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSparkDefault extends Script
@@ -16,8 +11,7 @@ public class ScriptSparkDefault extends Script
 	private int j;
 	
 	public ScriptSparkDefault()
-	{
-	}
+	{}
 	
 	public ScriptSparkDefault(int i, int j)
 	{
@@ -26,25 +20,11 @@ public class ScriptSparkDefault extends Script
 	}
 	
 	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		i = JsonHelper.readInt(reader, "i");
-		j = JsonHelper.readInt(reader, "j");
-	}
-	
-	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.sparksDefault(i, j, this);
 	}
 	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("i").value(i);
-		writer.name("j").value(j);
-	}
-
 	@Override
 	public boolean isSimple()
 	{

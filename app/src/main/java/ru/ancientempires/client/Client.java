@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.ancientempires.GameInit;
 import ru.ancientempires.Localization;
 import ru.ancientempires.Strings;
-import ru.ancientempires.action.Action;
+import ru.ancientempires.actions.Action;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.Images;
+import ru.ancientempires.load.GameInit;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;

@@ -9,14 +9,15 @@ import java.io.DataInputStream;
 import java.lang.reflect.Array;
 
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
 public class LoaderInfo
 {
 
-	public LoaderInfo() {}
+	public LoaderInfo()
+	{}
 
 	public Game  game;
 	public Rules rules;
@@ -41,10 +42,10 @@ public class LoaderInfo
 	{
 		MyAssert.a(baseClass.getAnnotation(IndexSubclasses.class) != null);
 		int type = object.get("type").getAsInt();
-		MyAssert.a(object.get("typeName").getAsString(), ReflectionHelper.loadMap.get(baseClass)[type].getSimpleName());
-		T result = (T) ReflectionHelper.loadMap.get(baseClass)[type].newInstance();
-		if (result instanceof IGameHandler)
-			((IGameHandler) result).game = game;
+		MyAssert.a(object.get("typeName").getAsString(), SerializableHelper.loadMap.get(baseClass)[type].getSimpleName());
+		T result = (T) SerializableHelper.loadMap.get(baseClass)[type].newInstance();
+		if (result instanceof AbstractGameHandler)
+			((AbstractGameHandler) result).game = game;
 		result.fromJson(object, this);
 		return result;
 	}
@@ -67,11 +68,12 @@ public class LoaderInfo
 
 	public <T extends SerializableData> T fromData(DataInputStream input, Class<T> baseClass) throws Exception
 	{
+		MyAssert.a(input.readInt() == 0x76543210);
 		int type = input.readInt();
-		T result = (T) ReflectionHelper.loadMap.get(baseClass)[type].newInstance();
+		T result = (T) SerializableHelper.loadMap.get(baseClass)[type].newInstance();
 		result.fromData(input, this);
-		if (result instanceof IGameHandler)
-			((IGameHandler) result).game = game;
+		if (result instanceof AbstractGameHandler)
+			((AbstractGameHandler) result).game = game;
 		return result;
 	}
 

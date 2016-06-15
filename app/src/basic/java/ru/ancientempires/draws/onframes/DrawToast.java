@@ -5,7 +5,7 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.framework.MyAssert;
 
 public class DrawToast extends DrawOnFrames

@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import ru.ancientempires.action.ActionGameEndTurn;
+import ru.ancientempires.actions.ActionGameEndTurn;
 import ru.ancientempires.campaign.CampaignImmediately;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.ii.II;
@@ -24,22 +25,23 @@ public class Main
 
 	private static void test2() throws Exception
 	{
-		captureScreen("7");
+		//captureScreen("7");
+
+		File file = new File("/home/dima/1");
+		Files.write(file.toPath(), "hello".getBytes());
+		System.out.println(file.length());
+		new FileInputStream(file).getChannel().position(3);
+		System.out.println(file.length());
 		System.exit(0);
 	}
 
 	private static void test() throws Exception
 	{
-		Game game = Client.client.startGame("campaign.7");
+		Game game = Client.client.startGame("skirmish.0");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
 		new ActionGameEndTurn().perform(game);
-		game.campaign.update();
-		new II(game.rules).turnFull(game);
-		game.campaign.update();
-
-		System.out.println(game.path.numberActions);
 
 		Client.client.stopGame();
 		System.exit(0);
@@ -63,7 +65,7 @@ public class Main
 		//test2();
 
 		//new File(System.getenv("appdata") + "\\Ancient Empires\\");
-		Client client = new Client(new WindowsClientHelper());
+		Client client = new Client(new DesktopClientHelper());
 
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
@@ -75,11 +77,11 @@ public class Main
 		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
 		//testLoadGame("campaign.7", true);
 
-		test();
+		//test();
 		//new Swing("skirmish.11");
 		//new Swing("campaign.7");
-		//testFull();
-		testII("skirmish.0");
+		testFull();
+		//testII("skirmish.0");
 	}
 
 	public static void testFull() throws Exception
@@ -91,6 +93,7 @@ public class Main
 		for (GamesFolder gamesFolder : gamesFolders)
 			for (GamePath path : gamesFolder.games)
 				testII(path.gameID);
+		System.exit(0);
 	}
 
 	public static void testII(String gameID) throws Exception
@@ -102,8 +105,6 @@ public class Main
 		for (int i = 0; !game.players[0].units.isEmpty() && i < 100; i++)
 		{
 			System.out.println("i = " + i);
-			// game.players[1].units.get(0).health = 0;
-			// new UnitHelper(game).checkDied(game.players[1].units.get(0));
 			new ActionGameEndTurn().perform(game);
 			game.campaign.update();
 			new II(game.rules).turnFull(game);

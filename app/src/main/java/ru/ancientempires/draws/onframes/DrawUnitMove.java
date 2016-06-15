@@ -3,7 +3,7 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Canvas;
 
 import ru.ancientempires.Point;
-import ru.ancientempires.action.result.ActionResultUnitMove;
+import ru.ancientempires.actions.result.ActionResultUnitMove;
 import ru.ancientempires.draws.DrawLevel;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 

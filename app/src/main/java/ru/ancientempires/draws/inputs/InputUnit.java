@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ru.ancientempires.Point;
-import ru.ancientempires.action.ActionFromTo;
-import ru.ancientempires.action.ActionGetUnit;
-import ru.ancientempires.action.ActionUnitAttack;
-import ru.ancientempires.action.ActionUnitMove;
-import ru.ancientempires.action.ActionUnitRaise;
-import ru.ancientempires.action.result.ActionResultGetUnit;
-import ru.ancientempires.action.result.ActionResultUnitAttack;
-import ru.ancientempires.action.result.ActionResultUnitMove;
+import ru.ancientempires.actions.ActionFromTo;
+import ru.ancientempires.actions.ActionGetUnit;
+import ru.ancientempires.actions.ActionUnitAttack;
+import ru.ancientempires.actions.ActionUnitMove;
+import ru.ancientempires.actions.ActionUnitRaise;
+import ru.ancientempires.actions.result.ActionResultGetUnit;
+import ru.ancientempires.actions.result.ActionResultUnitAttack;
+import ru.ancientempires.actions.result.ActionResultUnitMove;
 import ru.ancientempires.draws.DrawCellAttack;
 import ru.ancientempires.draws.DrawRange;
 import ru.ancientempires.draws.onframes.DrawUnitAttackMain;
 import ru.ancientempires.draws.onframes.DrawUnitMove;
 import ru.ancientempires.draws.onframes.DrawUnitRaise;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.helpers.ActionHelper;
 
 public class InputUnit extends AbstractInput
 {

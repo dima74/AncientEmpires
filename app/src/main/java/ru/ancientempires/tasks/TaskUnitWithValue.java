@@ -2,10 +2,6 @@ package ru.ancientempires.tasks;
 
 import com.google.gson.JsonObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.WithNumbered;
@@ -27,22 +23,6 @@ public abstract class TaskUnitWithValue extends Task
 	{
 		this.value = value;
 		return this;
-	}
-	
-	@Override
-	public void load(DataInputStream input) throws IOException
-	{
-		int iUnit = input.readInt();
-		unit = game.numberedUnits.get(iUnit);
-		value = input.readInt();
-	}
-	
-	@Override
-	public void save(DataOutputStream output) throws IOException
-	{
-		int iUnit = game.numberedUnits.add(unit);
-		output.writeInt(iUnit);
-		output.writeInt(value);
 	}
 	
 	// =/({||})\=

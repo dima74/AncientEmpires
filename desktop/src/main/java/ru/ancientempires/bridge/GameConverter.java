@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.PlayerType;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
+import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 

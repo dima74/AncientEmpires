@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
+import ru.ancientempires.actions.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.campaign.points.PointInteger;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.serializable.LoaderInfo;

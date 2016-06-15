@@ -2,8 +2,8 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
-import ru.ancientempires.action.result.ActionResultUnitAttack;
-import ru.ancientempires.action.result.AttackResult;
+import ru.ancientempires.actions.result.ActionResultUnitAttack;
+import ru.ancientempires.actions.result.AttackResult;
 
 public class DrawUnitAttackMain extends DrawOnFramesGroup
 {

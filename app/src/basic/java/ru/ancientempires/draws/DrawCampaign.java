@@ -7,9 +7,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.ancientempires.BaseThread;
-import ru.ancientempires.activity.BaseGameActivity;
-import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.activity.MainActivity;
+import ru.ancientempires.activities.BaseGameActivity;
+import ru.ancientempires.activities.GameActivity;
+import ru.ancientempires.activities.MainActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptDialogIntro;

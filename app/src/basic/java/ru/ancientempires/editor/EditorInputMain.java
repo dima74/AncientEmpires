@@ -3,7 +3,7 @@ package ru.ancientempires.editor;
 import java.util.ArrayList;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.activity.EditorActivity;
+import ru.ancientempires.activities.EditorActivity;
 import ru.ancientempires.images.CellImages;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Cell;

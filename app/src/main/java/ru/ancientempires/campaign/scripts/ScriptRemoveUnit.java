@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignRemoveUnit;
+import ru.ancientempires.actions.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptRemoveUnit extends ScriptOnePoint

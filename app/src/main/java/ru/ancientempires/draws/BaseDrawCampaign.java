@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.Point;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
+import ru.ancientempires.campaign.IDrawCampaign;
 import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.campaign.scripts.AbstractScriptOnePoint;
 import ru.ancientempires.campaign.scripts.Script;

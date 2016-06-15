@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.PlayerType;
-import ru.ancientempires.serializable.AsNumbered;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Numbered;
@@ -26,7 +24,6 @@ public class Player implements SerializableJson, Numbered
 	public MyColor color;
 
 	public PlayerType      type;
-	@AsNumbered
 	public Team            team;
 	@Exclude
 	public ArrayList<Unit> units;

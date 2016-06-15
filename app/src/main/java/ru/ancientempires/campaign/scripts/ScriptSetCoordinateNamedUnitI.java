@@ -1,13 +1,8 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.campaign.NamedCoordinates;
-import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.model.NamedCoordinates;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCoordinateNamedUnitI extends Script
@@ -26,23 +21,9 @@ public class ScriptSetCoordinateNamedUnitI extends Script
 	}
 	
 	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		name = JsonHelper.readString(reader, "name");
-		unit = JsonHelper.readString(reader, "unit");
-	}
-	
-	@Override
 	public void start()
 	{
 		NamedCoordinates.set(name, game.namedUnits.get(unit).i);
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("name").value(name);
-		writer.name("unit").value(unit);
 	}
 	
 	// =/({||})\=

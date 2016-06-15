@@ -1,12 +1,7 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptFrom extends Script
@@ -22,20 +17,6 @@ public abstract class ScriptFrom extends Script
 	{
 		this.i = i;
 		this.j = j;
-	}
-	
-	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		i = JsonHelper.readInt(reader, "i");
-		j = JsonHelper.readInt(reader, "j");
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("i").value(i);
-		writer.name("j").value(j);
 	}
 	
 	// =/({||})\=

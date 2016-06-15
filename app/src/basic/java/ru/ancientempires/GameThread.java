@@ -2,8 +2,8 @@ package ru.ancientempires;
 
 import android.view.SurfaceHolder;
 
-import ru.ancientempires.activity.BaseGameActivity;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;

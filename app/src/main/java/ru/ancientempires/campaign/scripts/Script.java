@@ -2,20 +2,14 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 import org.atteo.classindex.IndexSubclasses;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import ru.ancientempires.campaign.Campaign;
 import ru.ancientempires.campaign.CampaignEditorGame;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.serializable.AsNumberedArray;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Numbered;
@@ -23,7 +17,7 @@ import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
-public abstract class Script extends IGameHandler implements SerializableJson, Numbered
+public abstract class Script extends AbstractGameHandler implements SerializableJson, Numbered
 {
 
 	public static Script newInstance(int i, LoaderInfo info)
@@ -40,22 +34,11 @@ public abstract class Script extends IGameHandler implements SerializableJson, N
 		return index;
 	}
 
-	//@Expose public        ScriptType type;
-	@AsNumberedArray public Script[] previous;
+	public Script[] previous;
 	@Exclude public boolean isStarting  = false;
 	@Exclude public boolean isFinishing = false;
 
 	@Exclude public Campaign campaign;
-
-	//*
-	public void load(JsonReader reader, ArrayList<Script> scripts) throws IOException
-	{
-		load(reader);
-	}
-	
-	public void load(JsonReader reader) throws IOException
-	{}
-	//*/
 
 	public boolean isSimple()
 	{
@@ -78,25 +61,6 @@ public abstract class Script extends IGameHandler implements SerializableJson, N
 	public void start()
 	{}
 
-	//*
-	public final void saveGeneral(JsonWriter writer) throws IOException
-	{
-		writer.beginObject();
-		//writer.name("type").value(type.name());
-		
-		writer.name("previous").beginArray();
-		for (Script script : previous)
-			writer.value(script.index);
-		writer.endArray();
-		
-		// save(writer);
-		writer.endObject();
-	}
-	
-	public void save(JsonWriter writer) throws IOException
-	{}
-	//*/
-	
 	public void finish()
 	{
 		MyAssert.a(!isSimple());

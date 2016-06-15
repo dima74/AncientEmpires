@@ -1,6 +1,6 @@
 package ru.ancientempires.draws.inputs;
 
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.model.Game;
 

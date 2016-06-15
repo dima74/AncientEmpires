@@ -2,12 +2,12 @@ package ru.ancientempires.draws.inputs;
 
 import ru.ancientempires.NoticeUnitBuy;
 import ru.ancientempires.UnitBuyDialog;
-import ru.ancientempires.action.ActionCellBuy;
-import ru.ancientempires.action.ActionGetCellBuy;
-import ru.ancientempires.action.ActionUnitCapture;
-import ru.ancientempires.action.ActionUnitRepair;
-import ru.ancientempires.action.result.ActionResultGetCellBuy;
-import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.actions.ActionCellBuy;
+import ru.ancientempires.actions.ActionGetCellBuy;
+import ru.ancientempires.actions.ActionUnitCapture;
+import ru.ancientempires.actions.ActionUnitRepair;
+import ru.ancientempires.actions.result.ActionResultGetCellBuy;
+import ru.ancientempires.helpers.ActionHelper;
 
 public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 {

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.IOException;
 
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class CursorImages extends AbstractImages

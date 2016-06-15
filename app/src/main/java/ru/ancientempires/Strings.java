@@ -19,5 +19,4 @@ public enum Strings
 		return Localization.get(name());
 	}
 
-	;
 }

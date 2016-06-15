@@ -2,7 +2,6 @@ package ru.ancientempires.campaign;
 
 import android.graphics.Bitmap;
 
-import ru.ancientempires.IDrawCampaign;
 import ru.ancientempires.campaign.scripts.AbstractScriptOnePoint;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptBlackScreen;

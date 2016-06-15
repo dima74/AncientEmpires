@@ -1,12 +1,7 @@
 package ru.ancientempires.campaign.conditions;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Player;
@@ -27,14 +22,6 @@ public class ConditionCastleNumber extends Condition
 		this.player = getGame().players[player];
 		this.comparator = comparator;
 		number = value;
-	}
-	
-	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		player = game.players[JsonHelper.readInt(reader, "player")];
-		comparator = JsonHelper.readInt(reader, "comparator");
-		number = JsonHelper.readInt(reader, "number");
 	}
 	
 	private static int sign(int x)
@@ -58,14 +45,6 @@ public class ConditionCastleNumber extends Condition
 				if (cell.type == castle && cell.player == player)
 					number++;
 		return number;
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("player").value(player.ordinal);
-		writer.name("comparator").value(comparator);
-		writer.name("number").value(number);
 	}
 	
 	// =/({||})\=

@@ -1,5 +1,7 @@
 package ru.ancientempires;
 
+import ru.ancientempires.model.PlayerType;
+
 public class SimplePlayer
 {
 	

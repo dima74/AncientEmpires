@@ -14,9 +14,9 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-import ru.ancientempires.action.Action;
+import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
@@ -282,6 +282,7 @@ public class GamePath
 				if (loadCampaign && i == numberActions - c && (numberActions - note.numberActions) > 2 * c)
 					addNote(new SnapshotNote(this, i, (int) fis.getChannel().position(), game));
 			}
+			dis.close();
 		}
 		return game;
 	}

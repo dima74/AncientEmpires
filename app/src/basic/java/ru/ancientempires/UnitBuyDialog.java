@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.ancientempires.action.BuyStatus;
-import ru.ancientempires.action.result.ActionResultGetCellBuy;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.actions.BuyStatus;
+import ru.ancientempires.actions.result.ActionResultGetCellBuy;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.inputs.InputPlayer;
 import ru.ancientempires.images.UnitImages;
 import ru.ancientempires.model.Unit;

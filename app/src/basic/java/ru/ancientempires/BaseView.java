@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import ru.ancientempires.activity.BaseGameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 

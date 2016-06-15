@@ -7,7 +7,7 @@
 
 	<fragment
 		android:id="@+id/list_fragment"
-		android:name="ru.ancientempires.activity.BaseListActivity$MyFragment"
+		android:name="ru.ancientempires.activities.BaseListActivity$MyFragment"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true" />

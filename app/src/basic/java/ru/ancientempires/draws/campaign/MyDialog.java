@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.ancientempires.R;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 
 public class MyDialog extends MyDialogFragment

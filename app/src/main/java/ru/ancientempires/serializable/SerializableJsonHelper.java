@@ -11,7 +11,7 @@ public class SerializableJsonHelper
 	public static JsonObject toJson(SerializableJson object) throws Exception
 	{
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("type", ReflectionHelper.saveMap.get(object.getClass()).index);
+		jsonObject.addProperty("type", SerializableHelper.saveMap.get(object.getClass()).index);
 		jsonObject.addProperty("typeName", object.getClass().getSimpleName());
 		return jsonObject;
 	}

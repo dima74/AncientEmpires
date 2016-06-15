@@ -2,8 +2,8 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignUnitCreate;
-import ru.ancientempires.handler.UnitHelper;
+import ru.ancientempires.actions.campaign.ActionCampaignUnitCreate;
+import ru.ancientempires.helpers.UnitHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.LoaderInfo;

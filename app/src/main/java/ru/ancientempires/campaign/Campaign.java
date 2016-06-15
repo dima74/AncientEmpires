@@ -11,11 +11,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ru.ancientempires.IDrawCampaign;
-import ru.ancientempires.action.campaign.ActionCampaignRewriteScriptsStatus;
+import ru.ancientempires.actions.campaign.ActionCampaignRewriteScriptsStatus;
 import ru.ancientempires.campaign.scripts.Script;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
@@ -38,8 +37,6 @@ public class Campaign
 	public void save(FileLoader loader) throws Exception
 	{
 		JsonWriter writer = loader.getWriter("campaign.json");
-		//ReflectionSaver.save(writer, scripts);
-		
 		JsonObject object = new JsonObject();
 		object.add("scripts", SerializableJsonHelper.toJsonArray(scripts));
 		if (isDefault)
@@ -51,7 +48,6 @@ public class Campaign
 	public void load(FileLoader loader) throws Exception
 	{
 		JsonReader reader = loader.getReader("campaign.json");
-		//scripts = ReflectionLoader.load(reader, Script[].class, new LoaderInfo(game));
 		JsonObject object = (JsonObject) new JsonParser().parse(reader);
 		reader.close();
 

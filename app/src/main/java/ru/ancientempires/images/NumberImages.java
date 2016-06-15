@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 
 import java.io.IOException;
 
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 
 public abstract class NumberImages extends AbstractImages
 {

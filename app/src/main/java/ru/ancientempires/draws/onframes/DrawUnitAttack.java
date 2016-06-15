@@ -3,7 +3,7 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Canvas;
 
 import ru.ancientempires.Strings;
-import ru.ancientempires.action.result.AttackResult;
+import ru.ancientempires.actions.result.AttackResult;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {

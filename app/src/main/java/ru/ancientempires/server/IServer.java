@@ -5,8 +5,8 @@ import ru.ancientempires.model.Game;
 public interface IServer
 {
 	
-	public Game startGame(String gameID) throws Exception;
+	Game startGame(String gameID) throws Exception;
 	
-	public void stopGame() throws Exception;
+	void stopGame() throws Exception;
 	
 }

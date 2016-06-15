@@ -11,18 +11,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import ru.ancientempires.action.BuyStatus;
+import ru.ancientempires.actions.BuyStatus;
 import ru.ancientempires.bridge.GameConverter;
+import ru.ancientempires.campaign.CampaignEditor;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.load.GamePath;
+import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
+import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.DefaultRules;
 import ru.ancientempires.rules.Rules;
-import ru.ancientempires.save.GameSaver;
 
 public class AllGamesConverter
 {
@@ -113,32 +115,34 @@ public class AllGamesConverter
 
 	public void create() throws Exception
 	{
+		if (Client.client.gamesLoader.exists(""))
+			Client.client.gamesLoader.deleteFolder("");
 		rules = new DefaultRules().create();
 		loader = Client.client.fileLoader;
 
 		initLocalization();
-		
+
 		createGames("m", 8, "campaign", true);
 		createGames("s", 12, "skirmish", false);
-		
+
 		createDefaultGame();
 		createTestGame();
 		createFolderNames();
 		createStrings();
 		createRulesLocalization();
-		
+
 		GamesFolder save = new GamesFolder("save", 0);
 		save.isSave = true;
 		save.save();
 		GamesFolder user = new GamesFolder("user", 0);
 		user.save();
-		
+
 		// Runtime.getRuntime().exec("cmd /c start \"\" /min quick");
 		// Runtime.getRuntime().exec("./clear-saves.sh");
 		System.out.println("All games converted!");
 		// System.exit(0);
 	}
-	
+
 	public void createTestGame() throws Exception
 	{
 		Game game = new Game(rules).setSize(40, 40).setNumberPlayers(2);

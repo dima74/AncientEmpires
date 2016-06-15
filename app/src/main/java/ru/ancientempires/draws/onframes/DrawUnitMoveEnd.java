@@ -2,7 +2,7 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
-import ru.ancientempires.action.result.ActionResultUnitMove;
+import ru.ancientempires.actions.result.ActionResultUnitMove;
 import ru.ancientempires.model.Unit;
 
 public class DrawUnitMoveEnd extends DrawOnFramesGroup

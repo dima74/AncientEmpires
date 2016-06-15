@@ -3,33 +3,34 @@ package ru.ancientempires.images;
 import android.graphics.Bitmap;
 
 import java.io.IOException;
+import java.util.HashMap;
 
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionCellBuy;
-import ru.ancientempires.action.ActionGameEndTurn;
-import ru.ancientempires.action.ActionUnitAttack;
-import ru.ancientempires.action.ActionUnitCapture;
-import ru.ancientempires.action.ActionUnitMove;
-import ru.ancientempires.action.ActionUnitRaise;
-import ru.ancientempires.action.ActionUnitRepair;
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.actions.Action;
+import ru.ancientempires.actions.ActionCellBuy;
+import ru.ancientempires.actions.ActionGameEndTurn;
+import ru.ancientempires.actions.ActionUnitAttack;
+import ru.ancientempires.actions.ActionUnitCapture;
+import ru.ancientempires.actions.ActionUnitMove;
+import ru.ancientempires.actions.ActionUnitRaise;
+import ru.ancientempires.actions.ActionUnitRepair;
+import ru.ancientempires.framework.FileLoader;
 
 public class ActionImages extends AbstractImages
 {
 	
-	private Bitmap[] actionBitmaps;
-	public  int      h;
-	public  int      w;
+	private HashMap<Class<? extends Action>, Bitmap> actionBitmaps;
+	public  int                                      h;
+	public  int                                      w;
 	
 	public Bitmap getActionBitmap(Action action)
 	{
-		return actionBitmaps[action.ordinal()];
+		return actionBitmaps.get(action.getClass());
 	}
 	
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
-		actionBitmaps = new Bitmap[20];
+		actionBitmaps = new HashMap<>();
 		String[] actionImageNames = new String[]
 				{
 						"action_cell_buy.png",
@@ -53,9 +54,10 @@ public class ActionImages extends AbstractImages
 				};
 		
 		for (int i = 0; i < actionImageNames.length; i++)
-			actionBitmaps[actionTypes[i].ordinal()] = loader.loadImageAndResize(actionImageNames[i], 2.5f);
-		h = actionBitmaps[actionTypes[0].ordinal()].getHeight();
-		w = actionBitmaps[actionTypes[0].ordinal()].getWidth();
+			actionBitmaps.put(actionTypes[i].getClass(), loader.loadImageAndResize(actionImageNames[i], 2.5f));
+		Bitmap anyBitmap = actionBitmaps.entrySet().iterator().next().getValue();
+		h = anyBitmap.getHeight();
+		w = anyBitmap.getWidth();
 	}
 	
 }

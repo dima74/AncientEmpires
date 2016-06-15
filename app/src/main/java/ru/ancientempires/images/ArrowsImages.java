@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.IOException;
 
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 
 public class ArrowsImages extends AbstractImages
 {

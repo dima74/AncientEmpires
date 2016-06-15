@@ -17,8 +17,8 @@ import java.util.Map.Entry;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusCreator;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellTemplate;
 import ru.ancientempires.model.CellType;
@@ -294,7 +294,7 @@ public class RulesLoader
 		{
 			try
 			{
-				return Bonus.loadJsonBase(json.getAsJsonObject(), rules);
+				return info.fromJson(((JsonObject) json), Bonus.class);
 			}
 			catch (Exception e)
 			{
@@ -318,7 +318,7 @@ public class RulesLoader
 				creator.loadJSON(object, rules, context);
 				return creator;
 			}
-			catch (InstantiationException | IllegalAccessException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 				MyAssert.a(false);

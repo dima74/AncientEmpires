@@ -2,10 +2,6 @@ package ru.ancientempires.tasks;
 
 import com.google.gson.JsonObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
@@ -47,20 +43,6 @@ public class TaskRemoveBonus extends Task
 	{
 		if (unit != null)
 			unit.bonuses.remove(bonus);
-	}
-	
-	@Override
-	public void load(DataInputStream input) throws IOException
-	{
-		unit = game.numberedUnits.get(input.readInt());
-		bonus = game.numberedBonuses.get(input.readInt());
-	}
-	
-	@Override
-	public void save(DataOutputStream output) throws IOException
-	{
-		output.writeInt(game.numberedUnits.add(unit));
-		output.writeInt(game.numberedBonuses.add(bonus));
 	}
 	
 	// =/({||})\=

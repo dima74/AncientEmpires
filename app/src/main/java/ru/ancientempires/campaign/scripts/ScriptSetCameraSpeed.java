@@ -1,12 +1,7 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCameraSpeed extends Script
@@ -23,21 +18,9 @@ public class ScriptSetCameraSpeed extends Script
 	}
 	
 	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		delta = JsonHelper.readInt(reader, "delta");
-	}
-	
-	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.setCameraSpeed(delta, this);
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("delta").value(delta);
 	}
 	
 	// =/({||})\=

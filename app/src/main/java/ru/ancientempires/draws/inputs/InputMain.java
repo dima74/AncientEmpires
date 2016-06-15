@@ -1,7 +1,7 @@
 package ru.ancientempires.draws.inputs;
 
-import ru.ancientempires.action.ActionGameEndTurn;
-import ru.ancientempires.action.result.ActionResultGameEndTurn;
+import ru.ancientempires.actions.ActionGameEndTurn;
+import ru.ancientempires.actions.result.ActionResultGameEndTurn;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.DrawUnitsHeal;
 

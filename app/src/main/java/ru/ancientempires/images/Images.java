@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.io.IOException;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;

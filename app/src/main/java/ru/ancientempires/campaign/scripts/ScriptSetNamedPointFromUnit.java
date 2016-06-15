@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignSetNamedPoint;
+import ru.ancientempires.actions.campaign.ActionCampaignSetNamedPoint;
 import ru.ancientempires.campaign.points.PointInteger;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;

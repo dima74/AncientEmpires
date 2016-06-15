@@ -2,7 +2,7 @@ package ru.ancientempires.images;
 
 import java.io.IOException;
 
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.model.Game;
 
 public abstract class AbstractImages

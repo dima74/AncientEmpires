@@ -3,7 +3,7 @@ package ru.ancientempires.draws;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import ru.ancientempires.action.result.ActionResultGetUnit;
+import ru.ancientempires.actions.result.ActionResultGetUnit;
 
 public class DrawRange extends Draw
 {

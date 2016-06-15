@@ -6,8 +6,8 @@ import com.google.gson.JsonSerializationContext;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.action.CheckerUnit;
-import ru.ancientempires.handler.ActionHelper;
+import ru.ancientempires.actions.CheckerUnit;
+import ru.ancientempires.helpers.ActionHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Unit;

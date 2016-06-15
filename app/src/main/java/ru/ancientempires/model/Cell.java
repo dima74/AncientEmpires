@@ -6,15 +6,13 @@ import com.google.gson.JsonObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import ru.ancientempires.handler.IGameHandler;
 import ru.ancientempires.model.struct.StructInfo;
-import ru.ancientempires.serializable.AsNumbered;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.MyNullable;
 import ru.ancientempires.serializable.SerializableJson;
 
-public class Cell extends IGameHandler implements SerializableJson
+public class Cell extends AbstractGameHandler implements SerializableJson
 {
 
 	@Exclude
@@ -23,7 +21,6 @@ public class Cell extends IGameHandler implements SerializableJson
 	public int      j;
 
 	// только для захватываемых клеточек
-	@AsNumbered
 	@MyNullable
 	public Player player;
 

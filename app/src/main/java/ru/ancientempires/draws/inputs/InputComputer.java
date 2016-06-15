@@ -2,8 +2,8 @@ package ru.ancientempires.draws.inputs;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.action.Action;
-import ru.ancientempires.action.ActionGameEndTurn;
+import ru.ancientempires.actions.Action;
+import ru.ancientempires.actions.ActionGameEndTurn;
 
 public class InputComputer extends AbstractPlayerInput
 {

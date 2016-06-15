@@ -6,13 +6,10 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.framework.MyLog;
 
 public class GamesFolder
 {
@@ -94,27 +91,14 @@ public class GamesFolder
 	{
 		return name;
 	}
-	
+
 	public void deleteAll() throws IOException
 	{
 		for (GamePath game : games)
-			deleteFolder(game.getLoader().getFile(""));
+			game.getLoader().deleteFolder("");
+		games.clear();
 		numberGames = 0;
 		save();
 	}
-	
-	public void deleteFolder(File folder)
-	{
-		MyLog.l(folder);
-		if (!folder.exists())
-			return;
-		MyAssert.a(folder.isDirectory());
-		for (File file : folder.listFiles())
-			if (file.isDirectory())
-				deleteFolder(file);
-			else
-				file.delete();
-		folder.delete();
-	}
-	
+
 }

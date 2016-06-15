@@ -9,8 +9,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 
 public class Localization
 {

@@ -4,8 +4,8 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 
-import ru.ancientempires.activity.GameActivity;
-import ru.ancientempires.activity.MainActivity;
+import ru.ancientempires.activities.GameActivity;
+import ru.ancientempires.activities.MainActivity;
 
 public class DialogGameOver
 {

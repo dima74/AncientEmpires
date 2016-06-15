@@ -3,7 +3,7 @@ package ru.ancientempires;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import ru.ancientempires.activity.BaseGameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;

@@ -2,14 +2,14 @@ package ru.ancientempires.server;
 
 import java.io.IOException;
 
-import ru.ancientempires.action.Action;
+import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.load.GamePath;
+import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
-import ru.ancientempires.save.GameSaver;
 
 public class ClientServer extends Server
 {

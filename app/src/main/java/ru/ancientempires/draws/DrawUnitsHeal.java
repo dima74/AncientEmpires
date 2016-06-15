@@ -2,7 +2,7 @@ package ru.ancientempires.draws;
 
 import java.util.ArrayList;
 
-import ru.ancientempires.action.result.ActionResultGameEndTurn;
+import ru.ancientempires.actions.result.ActionResultGameEndTurn;
 import ru.ancientempires.draws.onframes.DrawNumberSinus;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 import ru.ancientempires.model.Unit;

@@ -10,8 +10,8 @@ import java.io.IOException;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.images.bitmaps.CellBitmap;
 import ru.ancientempires.images.bitmaps.FewBitmaps;

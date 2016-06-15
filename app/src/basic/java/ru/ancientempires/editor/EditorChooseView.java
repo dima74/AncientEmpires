@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import ru.ancientempires.MyColor;
-import ru.ancientempires.activity.EditorActivity;
+import ru.ancientempires.activities.EditorActivity;
 import ru.ancientempires.images.Images;
 
 public class EditorChooseView extends View implements Callback

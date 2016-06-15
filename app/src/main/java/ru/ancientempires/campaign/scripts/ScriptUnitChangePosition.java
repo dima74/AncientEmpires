@@ -1,13 +1,8 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.action.campaign.ActionCampaignUnitChangePosition;
-import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.actions.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitChangePosition extends Script
@@ -30,27 +25,9 @@ public class ScriptUnitChangePosition extends Script
 	}
 	
 	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		i = JsonHelper.readInt(reader, "i");
-		j = JsonHelper.readInt(reader, "j");
-		targetI = JsonHelper.readInt(reader, "targetI");
-		targetJ = JsonHelper.readInt(reader, "targetJ");
-	}
-	
-	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.unitChangePosition(i, j, targetI, targetJ, this);
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("i").value(i);
-		writer.name("j").value(j);
-		writer.name("targetI").value(targetI);
-		writer.name("targetJ").value(targetJ);
 	}
 	
 	@Override

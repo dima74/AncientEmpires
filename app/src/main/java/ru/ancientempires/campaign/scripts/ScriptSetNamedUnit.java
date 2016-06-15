@@ -1,13 +1,8 @@
 package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.action.campaign.ActionCampaignSetNamedUnit;
-import ru.ancientempires.helpers.JsonHelper;
+import ru.ancientempires.actions.campaign.ActionCampaignSetNamedUnit;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetNamedUnit extends Script
@@ -28,14 +23,6 @@ public class ScriptSetNamedUnit extends Script
 	}
 	
 	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		i = JsonHelper.readInt(reader, "i");
-		j = JsonHelper.readInt(reader, "j");
-		name = JsonHelper.readString(reader, "name");
-	}
-	
-	@Override
 	public void start()
 	{
 		new ActionCampaignSetNamedUnit(name)
@@ -43,14 +30,6 @@ public class ScriptSetNamedUnit extends Script
 				.perform(game);
 	}
 	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("i").value(i);
-		writer.name("j").value(j);
-		writer.name("name").value(name);
-	}
-
 	// =/({||})\=
 	// from spoon
 

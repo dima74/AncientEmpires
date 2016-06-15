@@ -1,12 +1,7 @@
 package ru.ancientempires.campaign.conditions;
 
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.serializable.LoaderInfo;
 
@@ -27,14 +22,6 @@ public class ConditionUnitNumber extends Condition
 		number = value;
 	}
 	
-	@Override
-	public void load(JsonReader reader) throws IOException
-	{
-		player = game.players[JsonHelper.readInt(reader, "player")];
-		comparator = JsonHelper.readInt(reader, "comparator");
-		number = JsonHelper.readInt(reader, "number");
-	}
-	
 	private static int sign(int x)
 	{
 		return x == 0 ? 0 : x < 0 ? -1 : 1;
@@ -45,14 +32,6 @@ public class ConditionUnitNumber extends Condition
 	{
 		int number = player.units.size();
 		return ConditionUnitNumber.sign(this.number - number) == comparator;
-	}
-	
-	@Override
-	public void save(JsonWriter writer) throws IOException
-	{
-		writer.name("player").value(player.ordinal);
-		writer.name("comparator").value(comparator);
-		writer.name("number").value(number);
 	}
 	
 	// =/({||})\=

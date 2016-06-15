@@ -5,35 +5,15 @@ import com.google.gson.JsonObject;
 
 import org.atteo.classindex.IndexSubclasses;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import ru.ancientempires.handler.IGameHandler;
-import ru.ancientempires.model.Game;
+import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
-public abstract class Task extends IGameHandler implements SerializableJson
+public abstract class Task extends AbstractGameHandler implements SerializableJson
 {
-	
-	public static List<Class<? extends Task>> classes = Arrays.asList(
-			TaskRemoveTombstone.class,
-			TaskRemoveBonus.class);
-
-	public static Task loadNew(DataInputStream input, Game game) throws Exception
-	{
-		int ordinal = input.readShort();
-		Task task = Task.classes.get(ordinal).newInstance();
-		task.setGame(game);
-		task.load(input);
-		return task;
-	}
 	
 	@Exclude public int turnToRun;
 	
@@ -49,21 +29,6 @@ public abstract class Task extends IGameHandler implements SerializableJson
 	}
 	
 	public abstract void run();
-	
-	public int ordinal()
-	{
-		return Task.classes.indexOf(getClass());
-	}
-	
-	public void saveBase(DataOutputStream output) throws IOException
-	{
-		output.writeShort(ordinal());
-		save(output);
-	}
-	
-	public abstract void load(DataInputStream input) throws IOException;
-	
-	public abstract void save(DataOutputStream output) throws IOException;
 	
 	// =/({||})\=
 	// from spoon

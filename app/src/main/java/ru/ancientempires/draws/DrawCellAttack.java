@@ -2,7 +2,7 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 
-import ru.ancientempires.action.result.ActionResultUnitAttack;
+import ru.ancientempires.actions.result.ActionResultUnitAttack;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 

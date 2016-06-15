@@ -2,7 +2,7 @@ package ru.ancientempires.draws;
 
 import android.graphics.Bitmap;
 
-import ru.ancientempires.IDrawCampaign;
+import ru.ancientempires.campaign.IDrawCampaign;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
 import ru.ancientempires.campaign.scripts.ScriptDialogIntro;

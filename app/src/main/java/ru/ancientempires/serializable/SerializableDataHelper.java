@@ -8,7 +8,8 @@ public class SerializableDataHelper
 
 	public static void toData(DataOutputStream output, SerializableData object) throws Exception
 	{
-		output.writeInt(ReflectionHelper.saveMap.get(object.getClass()).index);
+		output.writeInt(0x76543210);
+		output.writeInt(SerializableHelper.saveMap.get(object.getClass()).index);
 	}
 
 	public static void toDataArray(DataOutputStream output, boolean[] array) throws Exception

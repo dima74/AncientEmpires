@@ -2,6 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
+import ru.ancientempires.actions.campaign.ActionCampaignActivateStruct;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitActivateStruct extends ScriptOnePoint

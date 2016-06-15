@@ -13,4 +13,5 @@ public class SimpleTeam
 	{
 		this.players = players;
 	}
+
 }

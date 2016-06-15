@@ -17,8 +17,8 @@ import java.util.Map.Entry;
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.bonuses.BonusCreator;
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
@@ -247,7 +247,16 @@ public class RulesSaver
 		@Override
 		public JsonElement serialize(Bonus bonus, Type typeOfSrc, JsonSerializationContext context)
 		{
-			return bonus.saveJsonBase();
+			try
+			{
+				return bonus.toJson();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				MyAssert.a(false);
+			}
+			return null;
 		}
 	}
 	

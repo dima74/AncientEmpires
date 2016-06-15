@@ -2,7 +2,7 @@ package ru.ancientempires;
 
 import android.view.SurfaceHolder;
 
-import ru.ancientempires.activity.BaseGameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
 
 public class GameView extends BaseView implements SurfaceHolder.Callback
 {

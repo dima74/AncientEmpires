@@ -3,9 +3,9 @@ package ru.ancientempires.editor;
 import android.view.SurfaceHolder;
 
 import ru.ancientempires.BaseThread;
-import ru.ancientempires.activity.EditorActivity;
+import ru.ancientempires.activities.EditorActivity;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.save.GameSaver;
+import ru.ancientempires.load.GameSaver;
 
 public class EditorThread extends BaseThread
 {

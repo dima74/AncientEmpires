@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.io.IOException;
 
 import ru.ancientempires.client.Client;
-import ru.ancientempires.helpers.FileLoader;
+import ru.ancientempires.framework.FileLoader;
 
 public class SparksImages extends AbstractImages
 {

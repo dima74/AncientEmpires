@@ -2,7 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.action.campaign.ActionCampaignCellAttack;
+import ru.ancientempires.actions.campaign.ActionCampaignCellAttack;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptCellAttackPartTwo extends ScriptFrom

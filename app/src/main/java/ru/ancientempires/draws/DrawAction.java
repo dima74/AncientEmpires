@@ -3,7 +3,7 @@ package ru.ancientempires.draws;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import ru.ancientempires.action.ActionFromTo;
+import ru.ancientempires.actions.ActionFromTo;
 import ru.ancientempires.images.Images;
 
 public class DrawAction extends Draw

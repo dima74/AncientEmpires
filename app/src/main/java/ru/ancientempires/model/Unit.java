@@ -3,32 +3,27 @@ package ru.ancientempires.model;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
 import ru.ancientempires.Localization;
-import ru.ancientempires.action.Checker;
+import ru.ancientempires.actions.Checker;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.handler.ActionHelper;
-import ru.ancientempires.handler.IGameHandler;
-import ru.ancientempires.serializable.AsNumbered;
+import ru.ancientempires.helpers.ActionHelper;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.OnlyIf;
 import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class Unit extends IGameHandler implements SerializableJson
+public class Unit extends AbstractGameHandler implements SerializableJson
 {
 
-	@AsNumbered public UnitType type;
-	@AsNumbered public Player   player;
+	public UnitType type;
+	public Player   player;
 
 	public int i;
 	public int j;
@@ -302,60 +297,6 @@ public class Unit extends IGameHandler implements SerializableJson
 	public boolean canDestroy(CellType cellType)
 	{
 		return Arrays.asList(type.destroyingTypes).contains(cellType);
-	}
-	
-	public void save(DataOutputStream output, Game game) throws IOException
-	{
-		output.writeUTF(type.name);
-		output.writeInt(player.ordinal);
-		output.writeInt(i);
-		output.writeInt(j);
-		output.writeInt(health);
-		output.writeInt(level);
-		output.writeInt(experience);
-		if (type.isStatic)
-			output.writeInt(numberBuys);
-		output.writeBoolean(isMove);
-		output.writeBoolean(isTurn);
-		
-		output.writeInt(bonuses.size());
-		for (Bonus bonus : bonuses)
-		{
-			bonus.saveBase(output);
-			game.numberedBonuses.trySave(output, bonus);
-		}
-		
-		game.namedUnits.trySave(output, this);
-		game.numberedUnits.trySave(output, this);
-	}
-	
-	public void load(DataInputStream input, Game game) throws Exception
-	{
-		type = game.rules.getUnitType(input.readUTF());
-		player = game.players[input.readInt()];
-		initFromType();
-		i = input.readInt();
-		j = input.readInt();
-		health = input.readInt();
-		level = input.readInt();
-		experience = input.readInt();
-		if (type.isStatic)
-			numberBuys = input.readInt();
-		isMove = input.readBoolean();
-		isTurn = input.readBoolean();
-		
-		MyAssert.a(!isTurn || isMove);
-		
-		int bonusesSize = input.readInt();
-		for (int i = 0; i < bonusesSize; i++)
-		{
-			Bonus bonus = Bonus.loadBase(input, game.rules);
-			bonuses.add(bonus);
-			game.numberedBonuses.tryLoad(input, bonus);
-		}
-		
-		game.namedUnits.tryLoad(input, this);
-		game.numberedUnits.tryLoad(input, this);
 	}
 	
 	@Override

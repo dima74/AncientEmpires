@@ -2,8 +2,8 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 
-import ru.ancientempires.activity.BaseGameActivity;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.ArrowsImages;

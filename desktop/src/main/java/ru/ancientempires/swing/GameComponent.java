@@ -14,8 +14,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import ru.ancientempires.activity.BaseGameActivity;
-import ru.ancientempires.activity.GameActivity;
+import ru.ancientempires.activities.BaseGameActivity;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.MyAssert;

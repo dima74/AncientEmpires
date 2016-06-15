@@ -9,7 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
 
-import ru.ancientempires.handler.IGameHandler;
+import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableData;
 import ru.ancientempires.serializable.SerializableDataHelper;
@@ -17,7 +17,7 @@ import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
-public abstract class AbstractPoint extends IGameHandler implements SerializableJson, SerializableData
+public abstract class AbstractPoint extends AbstractGameHandler implements SerializableJson, SerializableData
 {
 	
 	public abstract int getI();

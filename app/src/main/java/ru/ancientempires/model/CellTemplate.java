@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.rules.RulesLoader;
 import ru.ancientempires.rules.RulesSaver;
