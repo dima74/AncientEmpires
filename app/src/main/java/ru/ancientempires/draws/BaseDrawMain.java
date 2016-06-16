@@ -10,7 +10,10 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 public abstract class BaseDrawMain extends Draw
 {
 	
+	public static BaseDrawMain mainBase;
+
 	{
+		mainBase = this;
 		setupStatic();
 	}
 	

@@ -146,22 +146,22 @@ public class AllGamesConverter
 	public void createTestGame() throws Exception
 	{
 		Game game = new Game(rules)
-				.setSize(40, 40)
+				.setSize(3, 4)
 				.setNumberPlayers(2, 20);
 		
 		Player p0 = game.players[0];
 		Player p1 = game.players[1];
 		p0.gold = 1000;
 		
-		new Unit(game, rules.getUnitType("SOLDIER"), p0).setIJ(20, 15).addToGame();
+		new Unit(game, rules.getUnitType("SOLDIER"), p0).setIJ(0, 1).addToGame();
 		
 		//
 		GamePath path = new GamePath(game, "test.0");
 		path.isBaseGame = true;
-		path.canChooseTeams = false;
+		path.canChooseTeams = true;
 		
-		new CampaignEditor(game).createTestGameCampaign();
-		// game.campaign.isDefault = true;
+		//new CampaignEditor(game).createTestGameCampaign();
+		game.campaign.isDefault = true;
 
 		GameSaver.createBaseGame(game);
 		

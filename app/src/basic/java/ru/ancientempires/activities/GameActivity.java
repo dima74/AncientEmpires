@@ -67,7 +67,7 @@ public class GameActivity extends BaseGameActivity
 		try
 		{
 			String lastTeams = game.path.loadGame(0, false, null).toJson().get("players").toString();
-			GameActivity.startGame(BaseGameActivity.activity, game.path.baseGameID, lastTeams);
+			startGame(BaseGameActivity.activity, game.path.baseGameID, lastTeams);
 		}
 		catch (Exception e)
 		{

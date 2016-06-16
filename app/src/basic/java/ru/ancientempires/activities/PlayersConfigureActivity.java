@@ -1,12 +1,16 @@
 package ru.ancientempires.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.TreeSet;
 
@@ -22,6 +27,7 @@ import ru.ancientempires.Localization;
 import ru.ancientempires.R;
 import ru.ancientempires.Strings;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.model.Game;
@@ -118,8 +124,11 @@ public class PlayersConfigureActivity extends BaseActivity
 			for (int i = 0; i < players.length; i++)
 				players[i].ordinal = i;
 
+			((ImageView) findViewById(R.id.imageView)).setImageBitmap(getBitmap(game));
+
 			views = new View[this.players.length];
 			LinearLayout listView = (LinearLayout) findViewById(R.id.listView);
+			listView.removeAllViews();
 			for (Player player : players)
 				listView.addView(views[player.ordinal] = getView(player, player.team.ordinal, players.length));
 
@@ -143,6 +152,53 @@ public class PlayersConfigureActivity extends BaseActivity
 			e.printStackTrace();
 		}
 	}
+
+	private Bitmap getBitmap(Game game)
+	{
+		try
+		{
+			Client.client.images.load(Client.client.imagesLoader, game);
+		}
+		catch (IOException e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+
+		BaseGameActivity.activity = new BaseGameActivity();
+		BaseGameActivity.activity.game = game;
+		BaseDrawMain mainBase = new BaseDrawMain()
+		{
+			@Override
+			public void setVisibleMapSize()
+			{}
+		};
+		mainBase.iMax = game.h;
+		mainBase.jMax = game.w;
+
+		int h = game.h * 24;
+		int w = game.w * 24;
+		Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+
+		mainBase.cells.draw(canvas);
+		mainBase.cellsDual.draw(canvas);
+		mainBase.unitsDead.draw(canvas);
+		mainBase.units.draw(canvas);
+		BaseGameActivity.activity = null;
+		BaseDrawMain.mainBase = null;
+
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		int screenW = metrics.widthPixels;
+		int screenH = metrics.widthPixels;
+		int scale = 1;
+		while (w * scale < screenW && h * scale < screenH * 2 / 3)
+			++scale;
+		if (scale > 1)
+			bitmap = Bitmap.createScaledBitmap(bitmap, w * scale, h * scale, false);
+
+		return bitmap;
+	}
 	
 	private View getView(Player player, int team, int numberTeams)
 	{
@@ -152,8 +208,6 @@ public class PlayersConfigureActivity extends BaseActivity
 		Spinner spinnerTeam = (Spinner) view.findViewById(R.id.spinnerTeam);
 		
 		textColor.setText(Localization.get(player.color.name()));
-		// TODO сделать в xml
-		textColor.setTextSize(20);
 		textColor.setTextColor(player.color.showColor);
 		
 		ArrayAdapter<PlayerType> adapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PlayerType.values());

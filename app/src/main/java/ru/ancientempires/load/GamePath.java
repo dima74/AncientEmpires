@@ -118,6 +118,7 @@ public class GamePath
 	public GamePath(Game game, String gameID)
 	{
 		this.gameID = gameID;
+		baseGameID = gameID;
 		numberPlayers = game.players.length;
 		numberTeams = game.teams.length;
 		path = gameID.replace('.', '/') + "/";

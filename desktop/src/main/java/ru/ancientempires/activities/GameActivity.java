@@ -10,23 +10,18 @@ public class GameActivity extends BaseGameActivity
 	
 	public static void startGame(String gameID, String lastTeams)
 	{
-		new Thread(new Runnable()
-		{
-			@Override
-			public void run()
+		new Thread(() -> {
+			try
 			{
-				try
-				{
-					if (activity != null)
-						activity.view.frame.dispose();
-					Thread.sleep(1000);
-					new Swing(gameID);
-				}
-				catch (Exception e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
+				if (activity != null)
+					activity.view.frame.dispose();
+				Thread.sleep(1000);
+				new Swing(gameID);
+			}
+			catch (Exception e)
+			{
+				MyAssert.a(false);
+				e.printStackTrace();
 			}
 		}).start();
 	}

@@ -58,6 +58,7 @@ public class Game
 
 	public Game(Rules rules)
 	{
+		MyAssert.a(rules != null);
 		this.rules = rules;
 		ii = new II(rules);
 	}

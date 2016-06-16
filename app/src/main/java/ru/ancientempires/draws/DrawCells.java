@@ -54,8 +54,8 @@ public class DrawCells extends Draw
 		int maxI = game.h;
 		int maxJ = game.w;
 		*/
-		for (int i = main.iMin; i < main.iMax; i++)
-			for (int j = main.jMin; j < main.jMax; j++)
+		for (int i = mainBase.iMin; i < mainBase.iMax; i++)
+			for (int j = mainBase.jMin; j < mainBase.jMax; j++)
 			{
 				updateCell(i, j);
 				FewBitmaps bitmap = field[i][j];

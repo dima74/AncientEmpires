@@ -1,10 +1,12 @@
 package ru.ancientempires;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -13,8 +15,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ru.ancientempires.actions.ActionGameEndTurn;
+import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.campaign.CampaignImmediately;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
@@ -25,22 +29,34 @@ public class Main
 
 	private static void test2() throws Exception
 	{
-		//captureScreen("7");
+		Game game = Client.client.startGame("skirmish.5");
+		BaseGameActivity.activity = new BaseGameActivity();
+		BaseGameActivity.activity.game = game;
+		BaseDrawMain mainBase = new BaseDrawMain()
+		{
+			@Override
+			public void setVisibleMapSize()
+			{}
+		};
+		mainBase.iMax = game.h;
+		mainBase.jMax = game.w;
 
-		File file = new File("/home/dima/1");
-		Files.write(file.toPath(), "hello".getBytes());
-		System.out.println(file.length());
-		new FileInputStream(file).getChannel().position(3);
-		System.out.println(file.length());
-		System.exit(0);
+		int h = game.h * 24;
+		int w = game.w * 24;
+		Bitmap bitmap = Bitmap.createBitmap(w, h, null);
+		Canvas canvas = new Canvas(bitmap);
+
+		mainBase.cells.draw(canvas);
+		mainBase.cellsDual.draw(canvas);
+		mainBase.unitsDead.draw(canvas);
+		mainBase.units.draw(canvas);
+
+		ImageIO.write(bitmap.image, "png", new File("app/src/main/res/drawable/example-game.png"));
 	}
 
 	private static void test() throws Exception
 	{
 		Game game = Client.client.startGame("skirmish.0");
-
-		System.out.println(game.teams[1].ordinal);
-		System.exit(0);
 
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
@@ -81,10 +97,10 @@ public class Main
 		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
 		//testLoadGame("campaign.7", true);
 
-		//test();
+		//test2();
 		//new Swing("skirmish.11");
 		//new Swing("campaign.7");
-		testFull();
+		//testFull();
 		//testII("skirmish.0");
 	}
 

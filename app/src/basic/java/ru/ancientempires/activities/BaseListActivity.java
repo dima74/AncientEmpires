@@ -22,31 +22,17 @@ public abstract class BaseListActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		Debug.onCreate(this);
 		setContentView(R.layout.main_menu_list_view);
-		new Thread()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					loadBackground();
-				}
-				catch (Exception e)
-				{
-					MyAssert.a(false);
-					e.printStackTrace();
-				}
-				runOnUiThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						onLoadFinished();
-					}
-				});
-			}
-		}.start();
 		fragment = (MyFragment) getFragmentManager().findFragmentById(R.id.list_fragment);
+		try
+		{
+			loadBackground();
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+		onLoadFinished();
 	}
 
 	public void onLoadFinished()

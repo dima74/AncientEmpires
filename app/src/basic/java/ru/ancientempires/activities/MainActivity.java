@@ -13,7 +13,7 @@ public class MainActivity extends BaseListActivity
 
 	public static int     skirmish    = 5;
 	public static int     campaign    = 0;
-	public static String  gameToStart = "skirmish";
+	public static String  gameToStart = "test";
 	public static boolean firstStart  = true;
 
 	@Override
@@ -53,7 +53,7 @@ public class MainActivity extends BaseListActivity
 			MyLog.l(c.getSimpleName());
 		if (firstStart && "editor".equals(gameToStart))
 			moveTo(EditorBaseActivity.class);
-		else if (firstStart && "test".equals(gameToStart))
+		else if (firstStart && "TestActivity".equals(gameToStart))
 			moveTo(TestActivity.class);
 		else if (firstStart && gameToStart != "")
 			moveTo(PlayMenuActivity.class);

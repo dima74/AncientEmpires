@@ -76,12 +76,13 @@ public class Draw
 		return Client.client.images.smoke;
 	}
 	
-	public DrawMain main     = DrawMain.main;
-	public Game     game     = BaseGameActivity.activity.game;
-	public float    mapScale = 2;
-	public int      A        = Images().bitmapSize;
-	public float    fA       = Images().bitmapSize * mapScale;
-	public float    a        = A / 24.0f;
+	public DrawMain     main     = DrawMain.main;
+	public BaseDrawMain mainBase = BaseDrawMain.mainBase;
+	public Game         game     = BaseGameActivity.activity.game;
+	public float        mapScale = 2;
+	public int          A        = Images().bitmapSize;
+	public float        fA       = Images().bitmapSize * mapScale;
+	public float        a        = A / 24.0f;
 
 	public int h()
 	{
@@ -95,7 +96,7 @@ public class Draw
 	
 	public int iFrame()
 	{
-		return main.iFrame;
+		return mainBase.iFrame;
 	}
 	
 	public void postUpdateCampaign()
