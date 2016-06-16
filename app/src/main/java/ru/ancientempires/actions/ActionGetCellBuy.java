@@ -45,7 +45,7 @@ public class ActionGetCellBuy extends ActionFrom
 		
 		BuyStatus[] status = result.statuses;
 		for (int k = 0; k < status.length; k++)
-			if (cell.player.numberUnits() >= game.unitsLimit)
+			if (cell.player.numberUnits() >= cell.player.unitsLimit)
 				status[k] = BuyStatus.UNIT_LIMIT_REACHED;
 			else if (game.currentPlayer.gold < units.get(k).getCost())
 				status[k] = BuyStatus.NO_GOLD;

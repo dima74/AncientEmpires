@@ -18,6 +18,7 @@ import ru.ancientempires.actions.campaign.ActionCampaignRemoveUnit;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.helpers.ActionHelper;
 import ru.ancientempires.load.GamePath;
@@ -61,12 +62,26 @@ public class GameActivity extends BaseGameActivity
 		getThread().needUpdateCampaign = true;
 	}
 	
-	public static void startGame(String gameID, boolean useLastTeams)
+	public void restartGame()
 	{
-		GameActivity.startGame(BaseGameActivity.activity, gameID, useLastTeams);
+		try
+		{
+			String lastTeams = game.path.loadGame(0, false, null).toJson().get("players").toString();
+			GameActivity.startGame(BaseGameActivity.activity, game.path.baseGameID, lastTeams);
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
 	}
-	
-	public static void startGame(Activity activity, String gameID, boolean useLastTeams)
+
+	public static void startGame(String gameID, String lastTeams)
+	{
+		startGame(activity, gameID, lastTeams);
+	}
+
+	public static void startGame(Activity activity, String gameID, String lastTeams)
 	{
 		if (BaseGameActivity.activity != null)
 			BaseGameActivity.activity.finish();
@@ -78,7 +93,7 @@ public class GameActivity extends BaseGameActivity
 			intent.setClass(activity, GameActivity.class);
 		else
 			intent.setClass(activity, PlayersConfigureActivity.class)
-					.putExtra(Extras.USE_LAST_TEAMS, useLastTeams);
+					.putExtra(Extras.LAST_PLAYERS, lastTeams);
 		intent.putExtra(Extras.GAME_ID, gameID);
 		activity.startActivity(intent);
 	}
@@ -111,7 +126,8 @@ public class GameActivity extends BaseGameActivity
 				Client.client.finishPart2();
 				if (BaseGameActivity.activity != null)
 					BaseGameActivity.activity.view.thread.join();
-				game = Client.client.startGame(gameID == null ? baseGameID : gameID);
+				String players = getIntent().getStringExtra(Extras.PLAYERS);
+				game = Client.client.startGame(gameID == null ? baseGameID : gameID, players);
 				gameID = game.path.gameID;
 			}
 			
@@ -124,8 +140,6 @@ public class GameActivity extends BaseGameActivity
 				view = new GameView(GameActivity.this);
 				setContentView(view);
 			}
-
-			;
 		}.start();
 	}
 	
@@ -172,7 +186,7 @@ public class GameActivity extends BaseGameActivity
 						((GameThread) view.thread).inputMain.endTurn(true);
 						break;
 					case R.id.action_reset:
-						GameActivity.startGame(game.path.baseGameID, true);
+						restartGame();
 						break;
 					case R.id.action_wisp:
 						int i = game.currentPlayer.cursorI;

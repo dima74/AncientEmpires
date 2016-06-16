@@ -14,6 +14,15 @@ public class Team implements Numbered
 	public int      ordinal;
 	public Player[] players;
 
+	public Team()
+	{}
+
+	// для PlayersConfigureActivity
+	public Team(int ordinal)
+	{
+		this.ordinal = ordinal;
+	}
+
 	@Override
 	public int getNumber()
 	{

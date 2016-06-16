@@ -168,7 +168,7 @@ public class GameConverter
 		int numberPlayers = 2;
 		for (int iPlayer : unitPlayerBaseIs)
 			numberPlayers = Math.max(numberPlayers, iPlayer + 1);
-		game.setNumberPlayers(numberPlayers);
+		game.setNumberPlayers(numberPlayers, 20);
 
 		Player[] players = game.players;
 		for (Player player : game.players)
@@ -227,7 +227,6 @@ public class GameConverter
 			if (game.players.length == 2)
 				game.players[1].type = PlayerType.COMPUTER;
 		}
-		game.unitsLimit = 20;
 		game.allowedUnits = isCampaign ? new int[]
 				{
 						0,

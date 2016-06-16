@@ -79,7 +79,7 @@ public class LevelMenuActivity extends BaseListActivity
 		if (isStartingGameInProcess)
 			return;
 		isStartingGameInProcess = true;
-		GameActivity.startGame(this, currentFolder.games.get(position).gameID, false);
+		GameActivity.startGame(this, currentFolder.games.get(position).gameID, null);
 		finish();
 	}
 	

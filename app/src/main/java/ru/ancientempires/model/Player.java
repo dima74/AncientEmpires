@@ -28,6 +28,7 @@ public class Player implements SerializableJson, Numbered
 	@Exclude
 	public ArrayList<Unit> units;
 	public int             gold;
+	public int             unitsLimit;
 
 	public int cursorI;
 	public int cursorJ;
@@ -96,6 +97,7 @@ public class Player implements SerializableJson, Numbered
 		object.addProperty("type", type.name());
 		object.addProperty("team", team.getNumber());
 		object.addProperty("gold", gold);
+		object.addProperty("unitsLimit", unitsLimit);
 		object.addProperty("cursorI", cursorI);
 		object.addProperty("cursorJ", cursorJ);
 		return object;
@@ -107,6 +109,7 @@ public class Player implements SerializableJson, Numbered
 		type = PlayerType.valueOf(object.get("type").getAsString());
 		team = Team.newInstance(object.get("team").getAsInt(), info);
 		gold = object.get("gold").getAsInt();
+		unitsLimit = object.get("unitsLimit").getAsInt();
 		cursorI = object.get("cursorI").getAsInt();
 		cursorJ = object.get("cursorJ").getAsInt();
 		return this;
@@ -116,7 +119,7 @@ public class Player implements SerializableJson, Numbered
 	{
 		Player[] array = new Player[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
-			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Player.class);
+			array[i] = new Player().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
 

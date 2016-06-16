@@ -21,9 +21,13 @@ public class ClientServer extends Server
 	{
 		this.client = client;
 	}
-	
-	@Override
+
 	public Game startGame(String gameID) throws Exception
+	{
+		return startGame(gameID, null);
+	}
+
+	public Game startGame(String gameID, String players) throws Exception
 	{
 		MyLog.l("");
 		MyLog.l("");
@@ -34,7 +38,7 @@ public class ClientServer extends Server
 		// Иначе копируем в games/ANDROID_ID/
 		GamePath path = Client.getGame(gameID);
 		Rules rules = path.getRules();
-		game = path.loadGame(true);
+		game = path.loadGame(true, players);
 		if (path.isBaseGame)
 		{
 			String newID = "save." + client.numberSaves();
@@ -46,6 +50,7 @@ public class ClientServer extends Server
 					.copyTo(newPath, newID);
 			newGamePath.isBaseGame = false;
 			newGamePath.canChooseTeams = false;
+			newGamePath.numberTeams = game.numberTeams();
 			game.path = newGamePath;
 		}
 		client.images.load(client.imagesLoader, game);

@@ -2,35 +2,35 @@ package ru.ancientempires.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 import ru.ancientempires.Extras;
 import ru.ancientempires.Localization;
 import ru.ancientempires.R;
-import ru.ancientempires.SimplePlayer;
-import ru.ancientempires.SimpleTeam;
 import ru.ancientempires.Strings;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
-import ru.ancientempires.helpers.JsonHelper;
 import ru.ancientempires.load.GamePath;
+import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Player;
 import ru.ancientempires.model.PlayerType;
+import ru.ancientempires.model.Team;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class PlayersConfigureActivity extends BaseActivity implements OnClickListener
+public class PlayersConfigureActivity extends BaseActivity
 {
 	
 	/*
@@ -62,8 +62,10 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 		Сохранение должно быть инкрементальным, то есть надо записывать каждое действие.
 		Так же раз в ~100 действий должен быть записан снимок игры,
 			чтобы можно было быстро отменять действия,
-			ну и чтобы при загрузке игры не приходилось выполнять заново не более 100 действий.
-			Почему нельзя сохранить последний снимок игры? Потому что это может занимать длительное времяЮ и он может не сохраниться (юзер играет, играет, потом резко нажимает кнопку все приложения и завершает наше)
+			ну и чтобы при загрузке игры приходилось выполнять заново не более 100 действий.
+			Почему нельзя сохранить последний снимок игры?
+				Потому что это может занимать длительное времяЮ и он может не сохраниться
+					(юзер играет, играет, потом резко нажимает кнопку все приложения и завершает наше)
 		Соответственно при старте игры базовая игра должна быть скопирована в папку сохранения,
 			она станет первым снимком сохранения.
 	Загрузка игры:
@@ -80,85 +82,69 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 		Нужно уметь получать снимок игры по последнему подходящему снимку и переходам.
 	
 	Старт новой игры:
-		1. Если надо - выбрать тимы (основываясь на defaultTeams.json),
-			сохранить их в базовую папку игры (lastTeams.json)
+		1. Если можно --- настроить параметры игроков, основываясь на записанных в последнем снимке
+			(ну или на стандартных для текущих правил)
+				(такие как типы игроков, золото, команды и ограничение числа войнов)
+					они могут понадобиться только в случае рестарта этой же игры, поэтому можем их не сохранять, а явно передать
 		2. Создать папку куда будем сохранять этот экземпляр игры,
 			загрузить игру из базовой папки,
 			сохранить игру в свою папку,
 			в папке сохранения - добавить в info.json информацию о
 				базовой папке и дате последнего изменения + ещё что-то вроде e-mail'а автора.
-			настроить инкрементальное сохранение.
-	 
-	 defaultTeams & lastTeams:
-	 	Они оба имеют одинаковый формат: инфа о типах игроков, их золоте, их командах и об ограничении числа войнов.
-	 	teams.json - это просто инфа о командах, всё остальное в players.json
+		3. Настроить инкрементальное сохранение
 	 */
 	
-	private GamePath       path;
-	private SimpleTeam[]   teams;
-	private SimplePlayer[] players;
-	private View[]         views;
-	private int            defaultGold;
+	private GamePath path;
+	private Player[] players;
+	private View[]   views;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.choose_view);
-		
-		final String gameID = getIntent().getStringExtra(Extras.GAME_ID);
-		boolean useLastTeams = getIntent().getBooleanExtra(Extras.USE_LAST_TEAMS, false);
-		path = Client.getGame(gameID);
-		setTitle(path.name);
-		
-		int unitsLimit = -1;
 		try
 		{
-			JsonReader reader = path.getLoader().getReader(useLastTeams ? "lastTeams.json" : "defaultTeams.json");
-			reader.beginObject();
-			MyAssert.a("teams", reader.nextName());
-			teams = new Gson().fromJson(reader, SimpleTeam[].class);
-			unitsLimit = JsonHelper.readInt(reader, "unitsLimit");
-			reader.endObject();
-			reader.close();
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.choose_view);
+
+			String gameID = getIntent().getStringExtra(Extras.GAME_ID);
+			path = Client.getGame(gameID);
+			setTitle(path.name);
+
+			String lastPlayers = getIntent().getStringExtra(Extras.LAST_PLAYERS);
+			Game game = path.loadGame(false);
+			game.setNumberTeams(game.numberPlayers());
+			JsonArray playersJson = (JsonArray) (lastPlayers != null ? new JsonParser().parse(lastPlayers) : game.toJson().get("players"));
+			players = Player.fromJsonArray(playersJson, game.getLoaderInfo());
+			for (int i = 0; i < players.length; i++)
+				players[i].ordinal = i;
+
+			views = new View[this.players.length];
+			LinearLayout listView = (LinearLayout) findViewById(R.id.listView);
+			for (Player player : players)
+				listView.addView(views[player.ordinal] = getView(player, player.team.ordinal, players.length));
+
+			TextView textGold = (TextView) findViewById(R.id.textGold);
+			textGold.setText(Strings.GOLD.toString());
+			EditText textGoldEdit = (EditText) findViewById(R.id.textGoldEdit);
+			textGoldEdit.setHint(String.valueOf(players[0].gold));
+			textGoldEdit.addTextChangedListener(new MyTextWatcher(999999));
+
+			TextView textUnitsLimit = (TextView) findViewById(R.id.textUnitsLimit);
+			textUnitsLimit.setText(Strings.UNITS_LIMIT.toString());
+			EditText textUnitsLimitEdit = (EditText) findViewById(R.id.textUnitsLimitEdit);
+			new MyTextWatcher(1000).addTo(textUnitsLimitEdit, players[0].unitsLimit);
+
+			//if (MainActivity.firstStart)
+			//	onClick(null);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-		
-		players = new SimplePlayer[path.numberPlayers];
-		views = new View[players.length];
-		LinearLayout listView = (LinearLayout) findViewById(R.id.listView);
-		for (int iTeam = 0; iTeam < teams.length; iTeam++)
-			for (SimplePlayer player : teams[iTeam].players)
-			{
-				players[player.ordinal] = player;
-				listView.addView(views[player.ordinal] = getView(player, iTeam));
-			}
-
-		TextView textGold = (TextView) findViewById(R.id.textGold);
-		textGold.setText(Strings.GOLD.toString());
-		EditText textGoldEdit = (EditText) findViewById(R.id.textGoldEdit);
-		defaultGold = players[0].gold;
-		textGoldEdit.setHint(String.valueOf(defaultGold));
-		textGoldEdit.addTextChangedListener(new MyTextWatcher(999999));
-		
-		TextView textUnitsLimit = (TextView) findViewById(R.id.textUnitsLimit);
-		textUnitsLimit.setText(Strings.UNITS_LIMIT.toString());
-		EditText textUnitsLimitEdit = (EditText) findViewById(R.id.textUnitsLimitEdit);
-		new MyTextWatcher(100).addTo(textUnitsLimitEdit, unitsLimit);
-		
-		Button button = (Button) findViewById(R.id.button);
-		button.setText(Strings.FIGHT.toString());
-		button.setOnClickListener(this);
-		
-		if (MainActivity.firstStart)
-			onClick(null);
 	}
 	
-	private View getView(SimplePlayer player, int team)
+	private View getView(Player player, int team, int numberTeams)
 	{
 		View view = getLayoutInflater().inflate(R.layout.choose_item, null);
 		TextView textColor = (TextView) view.findViewById(R.id.textColor);
@@ -170,59 +156,75 @@ public class PlayersConfigureActivity extends BaseActivity implements OnClickLis
 		textColor.setTextSize(20);
 		textColor.setTextColor(player.color.showColor);
 		
-		ArrayAdapter<PlayerType> adapterType = new ArrayAdapter<PlayerType>(this, android.R.layout.simple_spinner_dropdown_item, PlayerType.values());
+		ArrayAdapter<PlayerType> adapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PlayerType.values());
 		spinnerType.setAdapter(adapterType);
 		spinnerType.setSelection(player.type.ordinal());
 		
-		String[] teamsNames = new String[teams.length];
+		String[] teamsNames = new String[numberTeams];
 		for (int i = 0; i < teamsNames.length; i++)
 			teamsNames[i] = Strings.TEAM.toString() + " " + (i + 1);
-		ArrayAdapter<String> adapterTeam = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, teamsNames);
+		ArrayAdapter<String> adapterTeam = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teamsNames);
 		spinnerTeam.setAdapter(adapterTeam);
 		spinnerTeam.setSelection(team);
 		
 		return view;
 	}
-	
+
 	@Override
-	public void onClick(View v)
+	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		int gold = getIntValue(R.id.textGoldEdit);
-		int unitsLimit = getIntValue(R.id.textUnitsLimitEdit);
-		
-		ArrayList<SimplePlayer>[] teamsList = new ArrayList[teams.length];
-		for (int i = 0; i < teamsList.length; i++)
-			teamsList[i] = new ArrayList<SimplePlayer>();
-		for (int i = 0; i < views.length; i++)
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.players_configure_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		final int itemId = item.getItemId();
+		switch (itemId)
 		{
-			View view = views[i];
-			Spinner spinnerType = (Spinner) view.findViewById(R.id.spinnerType);
-			Spinner spinnerTeam = (Spinner) view.findViewById(R.id.spinnerTeam);
-			int iTeam = spinnerTeam.getSelectedItemPosition();
-			teamsList[iTeam].add(new SimplePlayer(players[i].color, i, (PlayerType) spinnerType.getSelectedItem(), gold));
+			case R.id.action_fight:
+				onClick();
 		}
-		
-		ArrayList<SimpleTeam> teams = new ArrayList<SimpleTeam>();
-		for (ArrayList<SimplePlayer> list : teamsList)
-			if (!list.isEmpty())
-				teams.add(new SimpleTeam(list.toArray(new SimplePlayer[0])));
+		return true;
+	}
+
+	public void onClick()
+	{
 		try
 		{
-			path.getLoader().mkdirs("");
-			JsonWriter writer = path.getLoader().getWriter("lastTeams.json");
-			writer.beginObject();
-			writer.name("teams");
-			new Gson().toJson(teams.toArray(new SimpleTeam[0]), SimpleTeam[].class, writer);
-			writer.name("unitsLimit").value(unitsLimit);
-			writer.endObject();
-			writer.close();
+			int gold = getIntValue(R.id.textGoldEdit);
+			int unitsLimit = getIntValue(R.id.textUnitsLimitEdit);
+
+			Integer[] teamNumbers = new Integer[players.length];
+			for (int i = 0; i < players.length; i++)
+				teamNumbers[i] = ((Spinner) views[i].findViewById(R.id.spinnerTeam)).getSelectedItemPosition();
+			Integer[] teamNumbersSorted = new TreeSet<>(Arrays.asList(teamNumbers)).toArray(new Integer[0]);
+			int[] teamNumbersToOrdinals = new int[players.length];
+			for (int i = 0; i < players.length; i++)
+				teamNumbersToOrdinals[teamNumbersSorted[i]] = i;
+
+			for (int i = 0; i < players.length; i++)
+			{
+				players[i].team = new Team(teamNumbersToOrdinals[teamNumbers[i]]);
+				players[i].type = (PlayerType) ((Spinner) views[i].findViewById(R.id.spinnerType)).getSelectedItem();
+				players[i].gold = gold;
+				players[i].unitsLimit = unitsLimit;
+			}
+
+			moveTo(GameActivity.class, new Intent()
+					.putExtra(Extras.GAME_ID, path.gameID)
+					.putExtra(Extras.PLAYERS, SerializableJsonHelper.toJsonArray(players).toString()));
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-		moveTo(GameActivity.class, new Intent().putExtra(Extras.GAME_ID, path.gameID));
 	}
 	
 	@Override

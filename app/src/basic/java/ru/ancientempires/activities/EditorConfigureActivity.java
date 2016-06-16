@@ -100,8 +100,7 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		MyAssert.a(Client.client.rules != null);
 		Game game = new Game(Client.client.rules)
 				.setSize(h, w)
-				.setNumberPlayers(4);
-		game.unitsLimit = 20;
+				.setNumberPlayers(4, 20);
 		game.campaign.isDefault = true;
 		
 		gameID = "user." + Client.client.user.numberGames;

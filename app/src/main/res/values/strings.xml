@@ -7,6 +7,7 @@
 	<string name="action_end_turn">End turn</string>
 	<string name="action_reset">Restart</string>
 	<string name="action_wisp">Make move</string>
+	<string name="action_fight">Fight!</string>
 
 	<!-- other -->
 	<string name="loading">Loading</string>

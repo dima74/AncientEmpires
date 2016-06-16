@@ -138,9 +138,10 @@ public class GamePath
 		return Client.client.rules;
 	}
 
-	private void loadName() throws IOException
+	public void loadName() throws IOException
 	{
-		name = Client.client.localization.loadName(getLoader());
+		if (getLoader().exists("strings.json"))
+			name = Client.client.localization.loadName(getLoader());
 	}
 
 	public FileLoader getLoader()
@@ -211,9 +212,12 @@ public class GamePath
 			snapshot = scanner.nextLine();
 		}
 		
-		public Game getGame() throws Exception
+		public Game getGame(String players) throws Exception
 		{
-			return new Game(path).fromJson((JsonObject) new JsonParser().parse(snapshot));
+			JsonObject gameJson = (JsonObject) new JsonParser().parse(snapshot);
+			if (players != null)
+				gameJson.add("players", new JsonParser().parse(players));
+			return new Game(path).fromJson(gameJson);
 		}
 		
 		public static ArrayList<SnapshotNote> get(GamePath path, String name) throws Exception
@@ -244,10 +248,15 @@ public class GamePath
 
 	public Game loadGame(boolean loadCampaign) throws Exception
 	{
-		return loadGame(numberActions, loadCampaign);
+		return loadGame(loadCampaign, null);
 	}
 
-	public Game loadGame(int numberActions, boolean loadCampaign) throws Exception
+	public Game loadGame(boolean loadCampaign, String players) throws Exception
+	{
+		return loadGame(numberActions, loadCampaign, players);
+	}
+
+	public Game loadGame(int numberActions, boolean loadCampaign, String players) throws Exception
 	{
 		SnapshotNote note = new SnapshotNote(this, LAST_SNAPSHOT);
 		if (note.numberActions > numberActions)
@@ -255,7 +264,7 @@ public class GamePath
 				if (noteMaybe.numberActions <= numberActions)
 					note = noteMaybe;
 
-		Game game = note.getGame();
+		Game game = note.getGame(players);
 		if (loadCampaign)
 		{
 			FileLoader loader = Client.getGame(baseGameID).loader;

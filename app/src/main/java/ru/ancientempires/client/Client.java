@@ -162,12 +162,17 @@ public class Client
 	{
 		return Client.client.clientServer.game;
 	}
-	
+
 	public Game startGame(String gameID) throws Exception
 	{
-		return clientServer.startGame(gameID);
+		return startGame(gameID, null);
 	}
-	
+
+	public Game startGame(String gameID, String players) throws Exception
+	{
+		return clientServer.startGame(gameID, players);
+	}
+
 	public void stopGame() throws Exception
 	{
 		clientServer.stopGame();

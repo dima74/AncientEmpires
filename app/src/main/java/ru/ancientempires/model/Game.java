@@ -99,7 +99,15 @@ public class Game
 				fieldCells[i][j] = new Cell(this, types[random.nextInt(types.length)], i, j);
 		return this;
 	}
-	
+
+	public Game setNumberPlayers(int number, int unitsLimit)
+	{
+		setNumberPlayers(number);
+		for (Player player : players)
+			player.unitsLimit = unitsLimit;
+		return this;
+	}
+
 	public Game setNumberPlayers(int number)
 	{
 		players = new Player[number];
@@ -118,11 +126,21 @@ public class Game
 			players[i].team = teams[i];
 		}
 		currentPlayer = players[0];
-		
+
 		unitsStaticDead = new ArrayList[number];
 		for (int i = 0; i < unitsStaticDead.length; i++)
 			unitsStaticDead[i] = new ArrayList<>();
 		return this;
+	}
+
+	public void setNumberTeams(int number)
+	{
+		teams = new Team[number];
+		for (int i = 0; i < teams.length; i++)
+		{
+			teams[i] = new Team();
+			teams[i].ordinal = i;
+		}
 	}
 	
 	public long getSeed()
@@ -156,7 +174,7 @@ public class Game
 	public Campaign campaign = new Campaign(this);
 	public int      h;
 	public int      w;
-	public int      unitsLimit;
+	//public int      unitsLimit;
 	public Cell[][] fieldCells;
 	public Unit[][] fieldUnits;
 	public HashSet<Unit> unitsOutside = new HashSet<>();
@@ -206,8 +224,6 @@ public class Game
 		if (h != game.h)
 			return false;
 		if (w != game.w)
-			return false;
-		if (unitsLimit != game.unitsLimit)
 			return false;
 		if (!Arrays.deepEquals(fieldCells, game.fieldCells))
 			return false;
@@ -342,6 +358,11 @@ public class Game
 		return players.length;
 	}
 
+	public int numberTeams()
+	{
+		return teams.length;
+	}
+
 	//
 	public String get()
 	{
@@ -398,7 +419,6 @@ public class Game
 		object.addProperty("w", w);
 		object.addProperty("currentPlayer", currentPlayer.color.name());
 		object.addProperty("currentTurn", currentTurn);
-		object.addProperty("unitsLimit", unitsLimit);
 		object.addProperty("allowedUnits", allowedUnits);
 		object.addProperty("seed", getSeed());
 
@@ -452,7 +472,7 @@ public class Game
 			unitsStaticDeadArray.add(SerializableJsonHelper.toJsonArray(list));
 		object.add("unitsStaticDead", unitsStaticDeadArray);
 
-		if (!path.isBaseGame || !campaign.isDefault)
+		if (campaign.scripts != null /* для PlayersConfigureActivity */ && (!path.isBaseGame || !campaign.isDefault))
 			object.add("campaignState", campaign.toJsonState());
 
 		return object;
@@ -465,7 +485,6 @@ public class Game
 		h = object.get("h").getAsInt();
 		w = object.get("w").getAsInt();
 		currentTurn = object.get("currentTurn").getAsInt();
-		unitsLimit = object.get("unitsLimit").getAsInt();
 		allowedUnits = object.get("allowedUnits").getAsInt();
 		long seed = object.get("seed").getAsLong();
 		random = new Random(seed);
@@ -476,7 +495,7 @@ public class Game
 		namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
 
 		// teams
-		teams = new Team[path.numberTeams];
+		teams = new Team[path.numberPlayers];
 		for (int i = 0; i < teams.length; i++)
 		{
 			teams[i] = new Team();
@@ -484,7 +503,7 @@ public class Game
 		}
 
 		// players
-		players = info.fromJsonArraySimple((JsonArray) object.get("players"), Player.class);
+		players = Player.fromJsonArray((JsonArray) object.get("players"), info);
 		for (int i = 0; i < players.length; i++)
 		{
 			players[i].units = new ArrayList<>();
@@ -492,8 +511,17 @@ public class Game
 		}
 		currentPlayer = getPlayer(MyColor.valueOf(object.get("currentPlayer").getAsString()));
 
+		// shrink number teams
+		int numberTeams = 0;
+		for (Player player : players)
+			numberTeams = Math.max(player.team.ordinal + 1, numberTeams);
+		Team[] teamsOld = this.teams;
+		teams = new Team[numberTeams];
+		for (int i = 0; i < teams.length; i++)
+			teams[i] = teamsOld[i];
+
 		// teams
-		for (Team team : teams)
+		for (Team team : this.teams)
 		{
 			ArrayList<Player> teamsPlayers = new ArrayList<>();
 			for (Player player : players)
@@ -501,8 +529,8 @@ public class Game
 					teamsPlayers.add(player);
 			team.players = teamsPlayers.toArray(new Player[teamsPlayers.size()]);
 		}
-		for (int i = 0; i < teams.length; i++)
-			teams[i].ordinal = i;
+		for (int i = 0; i < this.teams.length; i++)
+			this.teams[i].ordinal = i;
 
 		// tasks
 		JsonArray tasksArray = (JsonArray) object.get("tasks");

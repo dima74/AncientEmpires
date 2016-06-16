@@ -145,8 +145,9 @@ public class AllGamesConverter
 
 	public void createTestGame() throws Exception
 	{
-		Game game = new Game(rules).setSize(40, 40).setNumberPlayers(2);
-		game.unitsLimit = 20;
+		Game game = new Game(rules)
+				.setSize(40, 40)
+				.setNumberPlayers(2, 20);
 		
 		Player p0 = game.players[0];
 		Player p1 = game.players[1];

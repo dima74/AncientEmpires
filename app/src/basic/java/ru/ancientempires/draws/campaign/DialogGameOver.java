@@ -20,7 +20,7 @@ public class DialogGameOver
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				GameActivity.startGame(GameActivity.activity, GameActivity.activity.game.path.baseGameID, true);
+				GameActivity.activity.restartGame();
 			}
 		});
 		builder.setNegativeButton("В главное меню", new OnClickListener()

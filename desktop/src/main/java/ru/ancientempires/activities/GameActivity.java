@@ -8,7 +8,7 @@ public class GameActivity extends BaseGameActivity
 	
 	public static GameActivity activity;
 	
-	public static void startGame(String gameID, boolean useLastTeams)
+	public static void startGame(String gameID, String lastTeams)
 	{
 		new Thread(new Runnable()
 		{

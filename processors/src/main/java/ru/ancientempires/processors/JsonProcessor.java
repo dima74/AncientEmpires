@@ -54,11 +54,14 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				CtClass ctClass = getFactory().Class().get(baseClass);
 				String simpleName = baseClass.getSimpleName();
 
+				boolean simple = !allSubclasses.contains(ctClass.getActualClass());
+				String inLoop = "array[i] = " + String.format(simple ? "new %s().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);"
+						: "info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), %s.class);", simpleName);
 				CtBlock ctBlock = createMethodStatic(ctClass, "fromJsonArray", Array.newInstance(baseClass, 0).getClass(), JsonArray.class, "jsonArray", LoaderInfo.class, "info");
 				String statement = String.format("%s[] array = new %s[jsonArray.size()];\n" +
 				                                 "\tfor (int i = 0; i < array.length; i++)\n" +
-				                                 "\t\tarray[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), %s.class);\n" +
-				                                 "\treturn array", simpleName, simpleName, simpleName);
+				                                 "\t\t%s\n" +
+				                                 "\treturn array", simpleName, simpleName, inLoop);
 				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
 

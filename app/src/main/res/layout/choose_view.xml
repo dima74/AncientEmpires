@@ -66,9 +66,6 @@
 				android:inputType="number" />
 		</LinearLayout>
 
-		<Button
-			android:id="@+id/button"
-			style="@style/Button" />
 	</LinearLayout>
 
 </ScrollView>

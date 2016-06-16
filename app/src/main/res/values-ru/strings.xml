@@ -6,6 +6,7 @@
 	<string name="action_end_turn">Конец хода</string>
 	<string name="action_reset">Заново</string>
 	<string name="action_wisp">Сделать ход</string>
+	<string name="action_fight">В бой!</string>
 
 	<!-- other -->
 	<string name="loading">Загрузка</string>

@@ -28,7 +28,6 @@ public class InputMain extends AbstractInput
 		drawMain.units.update();
 		drawMain.cursorDefault.update();
 		drawMain.buildingSmokes.update();
-		beginTurn();
 	}
 	
 	public void beginTurn()

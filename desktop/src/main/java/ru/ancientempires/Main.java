@@ -38,6 +38,10 @@ public class Main
 	private static void test() throws Exception
 	{
 		Game game = Client.client.startGame("skirmish.0");
+
+		System.out.println(game.teams[1].ordinal);
+		System.exit(0);
+
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
@@ -104,14 +108,14 @@ public class Main
 
 		for (int i = 0; !game.players[0].units.isEmpty() && i < 100; i++)
 		{
-			System.out.println("i = " + i);
+			//System.out.println("i = " + i);
 			new ActionGameEndTurn().perform(game);
 			game.campaign.update();
 			new II(game.rules).turnFull(game);
 			game.campaign.update();
 		}
 		if (!game.players[0].units.isEmpty())
-			System.out.println("!!! " + gameID);
+			System.out.println(String.format("!!! units not empty %s (%d)", gameID, game.players[0].units.size()));
 
 		game.saver.finishSave();
 		testLoadGame(game.path.gameID, false);

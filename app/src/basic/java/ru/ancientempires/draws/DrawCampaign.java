@@ -84,6 +84,8 @@ public class DrawCampaign extends BaseDrawCampaign
 	{
 		super.enableActiveGame(script);
 		BaseGameActivity.activity.invalidateOptionsMenu();
+		if (main.inputMain.currentInput == null)
+			main.inputMain.beginTurn();
 	}
 	
 	@Override
