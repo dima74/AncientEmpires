@@ -17,7 +17,9 @@ import java.util.Scanner;
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.FileLoader;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 
 // Этот класс описывает описывает общую информацию сохранения
@@ -92,8 +94,26 @@ public class GamePath
 
 	public static class PointScreenCenter
 	{
-		float y;
-		float x;
+		public float i;
+		public float j;
+
+		public PointScreenCenter(int centerI, int centerJ)
+		{
+			i = centerI + 0.5f;
+			j = centerJ + 0.5f;
+		}
+
+		public PointScreenCenter(float i, float j)
+		{
+			this.i = i;
+			this.j = j;
+		}
+
+		@Override
+		public String toString()
+		{
+			return String.format("{%f, %f}", i, j);
+		}
 	}
 
 	public PointScreenCenter[] screenCenters;
@@ -130,6 +150,20 @@ public class GamePath
 				{
 						"ru_RU"
 				};
+		screenCenters = new PointScreenCenter[numberPlayers];
+		for (int i = 0; i < game.players.length; i++)
+			for (Unit unit : game.players[i].units)
+				if (unit.type.isStatic)
+				{
+					int centerI = unit.i;
+					int centerJ = unit.j;
+					if (gameID.equals("campaign.4"))
+					{
+						centerI = 1;
+						centerJ = 11;
+					}
+					screenCenters[i] = new PointScreenCenter(centerI, centerJ);
+				}
 		game.path = this;
 		game.random = new Random(gameID.hashCode());
 	}
@@ -286,11 +320,12 @@ public class GamePath
 			{
 				//Action action = Action.loadNew(dis);
 				Action action = game.getLoaderInfo().fromData(dis, Action.class);
+				//MyLog.l(i, action);
 				action.checkBase(game);
 				action.performQuickBase(game);
-				int c = 100;
+				int c = 2;
 				if (loadCampaign && i == numberActions - c && (numberActions - note.numberActions) > 2 * c)
-					addNote(new SnapshotNote(this, i, (int) fis.getChannel().position(), game));
+					addNote(new SnapshotNote(this, i + 1, (int) fis.getChannel().position(), game));
 			}
 			dis.close();
 		}

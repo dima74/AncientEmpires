@@ -16,7 +16,7 @@ public class SimpleDialog
 	
 	public static void create(String text, Script script)
 	{
-		if (1 == 0)
+		if (1 == 1)
 		{
 			script.finish();
 			return;

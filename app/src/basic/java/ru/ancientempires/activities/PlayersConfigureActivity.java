@@ -143,8 +143,8 @@ public class PlayersConfigureActivity extends BaseActivity
 			EditText textUnitsLimitEdit = (EditText) findViewById(R.id.textUnitsLimitEdit);
 			new MyTextWatcher(1000).addTo(textUnitsLimitEdit, players[0].unitsLimit);
 
-			//if (MainActivity.firstStart)
-			//	onClick(null);
+			if (MainActivity.firstStart)
+				onClick();
 		}
 		catch (Exception e)
 		{
@@ -270,6 +270,7 @@ public class PlayersConfigureActivity extends BaseActivity
 				players[i].unitsLimit = unitsLimit;
 			}
 
+			LevelMenuActivity.activity.finish();
 			moveTo(GameActivity.class, new Intent()
 					.putExtra(Extras.GAME_ID, path.gameID)
 					.putExtra(Extras.PLAYERS, SerializableJsonHelper.toJsonArray(players).toString()));
@@ -284,9 +285,10 @@ public class PlayersConfigureActivity extends BaseActivity
 	@Override
 	public void onBackPressed()
 	{
-		moveTo(LevelMenuActivity.class, new Intent()
-				.putExtra(Extras.FOLDER_ID, path.getFolderID())
-				.putExtra(Extras.FOCUS_ON, path.gameID));
+		finish();
+		//moveTo(LevelMenuActivity.class, new Intent()
+		//		.putExtra(Extras.FOLDER_ID, path.getFolderID())
+		//		.putExtra(Extras.FOCUS_ON, path.gameID));
 	}
 	
 }

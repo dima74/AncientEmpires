@@ -175,8 +175,6 @@ public class GameConverter
 		{
 			int playerI = player.ordinal;
 			player.color = playerI == 0 ? MyColor.BLUE : playerI == 1 ? MyColor.RED : playerI == 2 ? MyColor.GREEN : MyColor.BLACK;
-			player.cursorI = 0;
-			player.cursorJ = 0;
 			player.gold = isCampaign ? money[iMission][playerI] : 2000;
 		}
 		
@@ -189,16 +187,6 @@ public class GameConverter
 			game.setUnit(unitJs[i], unitIs[i], unit);
 			if (isCampaign && iMission == 7)
 				System.out.println(unit);
-			if (unit.type.isStatic)
-			{
-				unit.player.cursorI = unit.i;
-				unit.player.cursorJ = unit.j;
-				if (isCampaign && iMission == 4)
-				{
-					unit.player.cursorI = 1;
-					unit.player.cursorJ = 11;
-				}
-			}
 		}
 		
 		for (int j = 0; j < w; j++)

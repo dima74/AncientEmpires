@@ -7,8 +7,6 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,27 +54,23 @@ public class Main
 
 	private static void test() throws Exception
 	{
-		Game game = Client.client.startGame("skirmish.0");
-
+		Game game = Client.client.startGame("campaign.1");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
-		new ActionGameEndTurn().perform(game);
+		for (int i = 0; !game.players[0].units.isEmpty(); i++)
+		{
+			//System.out.println("i = " + i);
+			new ActionGameEndTurn().perform(game);
+			game.campaign.update();
+			new II(game.rules).turnFull(game);
+			game.campaign.update();
+		}
 
-		Client.client.stopGame();
-		System.exit(0);
+		System.out.println(game.toJsonPretty());
 
-		Game game2 = Client.client.startGame(game.path.gameID);
-		System.out.println(game2.campaign.scripts[0].isStarting);
-
-		System.out.println(game.toJson());
-		System.out.println(game2.toJson());
-		Files.write(Paths.get("/home/dima/1"), game.toJsonPretty().getBytes());
-		Files.write(Paths.get("/home/dima/2"), game2.toJsonPretty().getBytes());
-		System.out.println(game.toJson().toString().equals(game2.toJson().toString()));
-		//MyAssert.a(game.toJson().toString(), game2.toJson().toString());
-
-		System.out.println("Success!");
+		game.saver.finishSave();
+		testLoadGame(game.path.gameID, true);
 		System.exit(0);
 	}
 
@@ -97,11 +91,10 @@ public class Main
 		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
 		//testLoadGame("campaign.7", true);
 
-		//test2();
-		//new Swing("skirmish.11");
-		//new Swing("campaign.7");
-		//testFull();
-		//testII("skirmish.0");
+		//new Swing("campaign.1");
+		testFull();
+		//test();
+		//testII("skirmish.5");
 	}
 
 	public static void testFull() throws Exception
@@ -134,7 +127,7 @@ public class Main
 			System.out.println(String.format("!!! units not empty %s (%d)", gameID, game.players[0].units.size()));
 
 		game.saver.finishSave();
-		testLoadGame(game.path.gameID, false);
+		testLoadGame(game.path.gameID, true);
 	}
 
 	public static void testLoadGame(String gameID, boolean reload) throws Exception

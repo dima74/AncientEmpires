@@ -81,7 +81,7 @@ public class GameActivity extends BaseGameActivity
 		startGame(activity, gameID, lastTeams);
 	}
 
-	public static void startGame(Activity activity, String gameID, String lastTeams)
+	public static boolean startGame(Activity activity, String gameID, String lastTeams)
 	{
 		if (BaseGameActivity.activity != null)
 			BaseGameActivity.activity.finish();
@@ -96,6 +96,7 @@ public class GameActivity extends BaseGameActivity
 					.putExtra(Extras.LAST_PLAYERS, lastTeams);
 		intent.putExtra(Extras.GAME_ID, gameID);
 		activity.startActivity(intent);
+		return path.canChooseTeams;
 	}
 	
 	@Override
@@ -159,8 +160,8 @@ public class GameActivity extends BaseGameActivity
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
 		MenuItem item = menu.findItem(R.id.action_wisp);
-		if (item != null && game != null && game.currentPlayer != null)
-			item.setVisible(new ActionHelper(game).isUnitActive(game.currentPlayer.cursorI, game.currentPlayer.cursorJ) && game.checkFloating());
+		if (item != null && game != null && game.currentPlayer != null && getDrawMain() != null)
+			item.setVisible(new ActionHelper(game).isUnitActive(getDrawMain().cursorDefault.cursorI, getDrawMain().cursorDefault.cursorJ) && game.checkFloating());
 		return true;
 	}
 	
@@ -189,8 +190,8 @@ public class GameActivity extends BaseGameActivity
 						restartGame();
 						break;
 					case R.id.action_wisp:
-						int i = game.currentPlayer.cursorI;
-						int j = game.currentPlayer.cursorJ;
+						int i = getDrawMain().cursorDefault.cursorI;
+						int j = getDrawMain().cursorDefault.cursorJ;
 						new ActionUnitMove()
 								.setIJ(i, j)
 								.setTargetIJ(i, j)

@@ -26,7 +26,6 @@ public class InputMain extends AbstractInput
 		drawMain.cells.update();
 		drawMain.cellsDual.update();
 		drawMain.units.update();
-		drawMain.cursorDefault.update();
 		drawMain.buildingSmokes.update();
 	}
 	

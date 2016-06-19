@@ -18,7 +18,9 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.OnlyIf;
 import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
+import ru.ancientempires.serializable.WithNamed;
 
+@WithNamed("namedUnits")
 public class Unit extends AbstractGameHandler implements SerializableJson
 {
 
@@ -414,6 +416,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		object.addProperty("isMove", isMove);
 		object.addProperty("isTurn", isTurn);
 		object.add("bonuses", SerializableJsonHelper.toJsonArray(bonuses));
+		object.add("names", game.namedUnits.toJsonPart(this));
 		return object;
 	}
 
@@ -432,6 +435,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		isMove = object.get("isMove").getAsBoolean();
 		isTurn = object.get("isTurn").getAsBoolean();
 		bonuses = new HashSet<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
+		game.namedUnits.fromJsonPart(((JsonArray) object.get("names")), this);
 		return this;
 	}
 

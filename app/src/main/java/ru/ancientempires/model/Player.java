@@ -30,8 +30,8 @@ public class Player implements SerializableJson, Numbered
 	public int             gold;
 	public int             unitsLimit;
 
-	public int cursorI;
-	public int cursorJ;
+	//public int cursorI;
+	//public int cursorJ;
 
 	public Player()
 	{}
@@ -42,18 +42,6 @@ public class Player implements SerializableJson, Numbered
 		return ordinal;
 	}
 
-	public JsonObject json()
-	{
-		JsonObject object = new JsonObject();
-		object.addProperty("color", color.name());
-		object.addProperty("ordinal", ordinal);
-		object.addProperty("type", type.name());
-		object.addProperty("gold", gold);
-		object.addProperty("cursorI", cursorI);
-		object.addProperty("cursorJ", cursorJ);
-		return object;
-	}
-	
 	public int numberUnits()
 	{
 		return units.size();
@@ -98,8 +86,8 @@ public class Player implements SerializableJson, Numbered
 		object.addProperty("team", team.getNumber());
 		object.addProperty("gold", gold);
 		object.addProperty("unitsLimit", unitsLimit);
-		object.addProperty("cursorI", cursorI);
-		object.addProperty("cursorJ", cursorJ);
+		//object.addProperty("cursorI", cursorI);
+		//object.addProperty("cursorJ", cursorJ);
 		return object;
 	}
 
@@ -110,8 +98,8 @@ public class Player implements SerializableJson, Numbered
 		team = Team.newInstance(object.get("team").getAsInt(), info);
 		gold = object.get("gold").getAsInt();
 		unitsLimit = object.get("unitsLimit").getAsInt();
-		cursorI = object.get("cursorI").getAsInt();
-		cursorJ = object.get("cursorJ").getAsInt();
+		//cursorI = object.get("cursorI").getAsInt();
+		//cursorJ = object.get("cursorJ").getAsInt();
 		return this;
 	}
 

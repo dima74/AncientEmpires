@@ -178,17 +178,5 @@ public class DrawMain extends BaseDrawMain
 	{
 		inputMain.tap(i, j);
 	}
-	
-	public void updateCursors()
-	{
-		cursorDefault.update();
-	}
-	
-	public void focusOnCell(int i, int j)
-	{
-		float nextOffsetY = -i * A - A / 2 + visibleMapH / mapScale / 2;
-		float nextOffsetX = -j * A - A / 2 + visibleMapW / mapScale / 2;
-		setNextOffset(nextOffsetY, nextOffsetX);
-	}
-	
+
 }

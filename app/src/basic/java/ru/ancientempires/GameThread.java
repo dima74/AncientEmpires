@@ -8,6 +8,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.MyAssert;
+import ru.ancientempires.model.PlayerType;
 
 public class GameThread extends BaseThread
 {
@@ -33,6 +34,11 @@ public class GameThread extends BaseThread
 	{
 		GameActivity.activity.invalidateOptionsMenu();
 		GameActivity.activity.game.campaign.start();
+		if (drawMain.isActiveGame())
+		{
+			MyAssert.a(inputMain.game.currentPlayer.type == PlayerType.PLAYER);
+			inputMain.beginTurn();
+		}
 	}
 	
 	@Override

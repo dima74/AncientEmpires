@@ -2,8 +2,10 @@ package ru.ancientempires.actions;
 
 import org.atteo.classindex.IndexSubclasses;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Arrays;
 
 import ru.ancientempires.actions.result.ActionResult;
 import ru.ancientempires.client.Client;
@@ -104,6 +106,19 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 			ActionTo action = (ActionTo) this;
 			s += coordinates(action.targetI, action.targetJ);
 		}
+
+		try
+		{
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			toData(new DataOutputStream(baos));
+			s += " " + Arrays.toString(baos.toByteArray());
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+
 		// s = game.hashCode() + " " + s;
 		return s;
 	}

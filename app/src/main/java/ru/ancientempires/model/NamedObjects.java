@@ -1,12 +1,9 @@
 package ru.ancientempires.model;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -29,29 +26,22 @@ public class NamedObjects<T>
 	}
 	
 	public HashMap<String, T> objects = new HashMap<>();
-	
-	public void tryLoad(DataInputStream input, T object) throws IOException
-	{
-		int numberNames = input.readInt();
-		for (int i = 0; i < numberNames; i++)
-		{
-			String name = input.readUTF();
-			objects.put(name, object);
-		}
-	}
-	
-	public void trySave(DataOutputStream output, T object) throws IOException
-	{
-		ArrayList<String> names = new ArrayList<>();
-		for (Entry<String, T> entry : objects.entrySet())
-			if (entry.getValue() == object)
-				names.add(entry.getKey());
 
-		output.writeInt(names.size());
-		for (String name : names)
-			output.writeUTF(name);
+	public JsonArray toJsonPart(T unit)
+	{
+		JsonArray array = new JsonArray();
+		for (Entry<String, T> entry : objects.entrySet())
+			if (entry.getValue() == unit)
+				array.add(entry.getKey());
+		return array;
 	}
-	
+
+	public void fromJsonPart(JsonArray names, T unit)
+	{
+		for (JsonElement name : names)
+			objects.put(name.getAsString(), unit);
+	}
+
 	public JsonObject toJson() throws Exception
 	{
 		JsonObject object = new JsonObject();
@@ -65,5 +55,4 @@ public class NamedObjects<T>
 		for (Entry<String, JsonElement> entry : object.entrySet())
 			objects.put(entry.getKey(), (T) info.fromJson((JsonObject) entry.getValue(), c));
 	}
-
 }

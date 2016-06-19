@@ -20,8 +20,8 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	@Override
 	public void beginTurn()
 	{
-		tapWithoutAction(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
-		drawMain.focusOnCell(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
+		//tapWithoutAction(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
+		drawMain.focusOnCurrentPlayerCenter();
 	}
 	
 	/*
@@ -83,9 +83,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	{
 		lastTapI = i;
 		lastTapJ = j;
-		game.currentPlayer.cursorI = i;
-		game.currentPlayer.cursorJ = j;
-		drawMain.updateCursors();
+		drawMain.cursorDefault.tap(i, j);
 	}
 	
 	private boolean tryRepair(int i, int j)
@@ -133,6 +131,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	{
 		if (inputUnit.isActive)
 			inputUnit.destroy();
+		drawMain.saveScreenCenter();
 	}
 	
 }

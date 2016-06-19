@@ -21,6 +21,7 @@ import ru.ancientempires.serializable.Named;
 import ru.ancientempires.serializable.Numbered;
 import ru.ancientempires.serializable.OnlyIf;
 import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.WithNamed;
 import ru.ancientempires.serializable.WithNumbered;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.declaration.CtClass;
@@ -157,6 +158,11 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
+		if (ctClass.getAnnotation(WithNamed.class) != null)
+		{
+			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("object.add(\"names\", game.%s.toJsonPart(this))", annotation.value())));
+		}
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return object"));
 	}
 
@@ -231,6 +237,11 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
+		if (ctClass.getAnnotation(WithNamed.class) != null)
+		{
+			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.fromJsonPart(((JsonArray) object.get(\"names\")), this)", annotation.value())));
+		}
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return this"));
 	}
 

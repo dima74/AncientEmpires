@@ -11,8 +11,8 @@ public class DrawCursor extends Draw
 	private int        cursorH;
 	private int        cursorW;
 	
-	private int cursorY;
-	private int cursorX;
+	public int cursorI;
+	public int cursorJ;
 	
 	public DrawCursor setCursor(FewBitmaps cursor)
 	{
@@ -21,18 +21,18 @@ public class DrawCursor extends Draw
 		cursorW = cursor.getBitmap().getWidth();
 		return this;
 	}
-	
-	public void update()
+
+	public void tap(int i, int j)
 	{
-		int y = A * game.currentPlayer.cursorI;
-		int x = A * game.currentPlayer.cursorJ;
-		cursorY = y + (A - cursorH) / 2;
-		cursorX = x + (A - cursorW) / 2;
+		cursorI = i;
+		cursorJ = j;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
+		int cursorY = cursorI * A + (A - cursorH) / 2;
+		int cursorX = cursorJ * A + (A - cursorW) / 2;
 		canvas.drawBitmap(cursor.getBitmap(), cursorX, cursorY, null);
 	}
 	

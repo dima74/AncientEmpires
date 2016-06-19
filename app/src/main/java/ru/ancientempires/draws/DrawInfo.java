@@ -124,7 +124,7 @@ public class DrawInfo extends Draw
 		
 		if (true)
 		{
-			Cell cell = game.fieldCells[game.currentPlayer.cursorI][game.currentPlayer.cursorJ];
+			Cell cell = game.fieldCells[main.cursorDefault.cursorI][main.cursorDefault.cursorJ];
 			// изображение клеточки
 			canvas.save();
 			int bitmapY = a * 4;

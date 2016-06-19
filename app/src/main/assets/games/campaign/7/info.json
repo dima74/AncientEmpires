@@ -1,1 +1,1 @@
-{"gameID":"campaign.7","baseGameID":"campaign.7","defaultLocalization":"en_US","localizations":["ru_RU"],"isBaseGame":true,"canChooseTeams":false,"numberPlayers":2,"numberTeams":2,"h":18,"w":14,"numberSnapshots":0,"numberActions":0}
+{"gameID":"campaign.7","baseGameID":"campaign.7","defaultLocalization":"en_US","localizations":["ru_RU"],"isBaseGame":true,"canChooseTeams":false,"numberPlayers":2,"numberTeams":2,"h":18,"w":14,"numberSnapshots":0,"numberActions":0,"screenCenters":[{"i":15.5,"j":6.5},{"i":4.5,"j":13.5}]}

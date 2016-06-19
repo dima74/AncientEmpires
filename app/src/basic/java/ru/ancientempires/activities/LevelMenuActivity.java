@@ -17,6 +17,8 @@ import ru.ancientempires.load.GamesFolder;
 public class LevelMenuActivity extends BaseListActivity
 {
 	
+	public static LevelMenuActivity activity;
+
 	public  GamesFolder currentFolder;
 	private boolean     isStartingGameInProcess;
 	private String      folderID;
@@ -32,6 +34,7 @@ public class LevelMenuActivity extends BaseListActivity
 	protected void onStart()
 	{
 		super.onStart();
+		activity = this;
 		isStartingGameInProcess = false;
 	}
 
@@ -49,17 +52,7 @@ public class LevelMenuActivity extends BaseListActivity
 			names.add(currentFolder.getName(names.size(), game));
 		for (String name : names)
 			MyAssert.a(name != null);
-		return names.toArray(new String[0]);
-
-		/*
-		String focus = getIntent().getStringExtra(Extras.FOCUS_ON);
-		if (focus != null)
-			for (int i = 0; i < currentFolder.games.size(); i++)
-				if (focus.equals(currentFolder.games.get(i).gameID))
-				{
-					fragment.setSelection(i);
-					break;
-				}//*/
+		return names.toArray(new String[names.size()]);
 	}
 
 	@Override
@@ -79,16 +72,24 @@ public class LevelMenuActivity extends BaseListActivity
 		if (isStartingGameInProcess)
 			return;
 		isStartingGameInProcess = true;
-		GameActivity.startGame(this, currentFolder.games.get(position).gameID, null);
-		finish();
+		boolean canChooseTeams = GameActivity.startGame(this, currentFolder.games.get(position).gameID, null);
+		if (!canChooseTeams)
+			finish();
 	}
-	
+
 	@Override
 	public void onBackPressed()
 	{
 		moveTo(PlayMenuActivity.class);
 	}
-	
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		activity = this;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

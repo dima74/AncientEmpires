@@ -54,7 +54,7 @@ public class ClientServer extends Server
 			game.path = newGamePath;
 		}
 		client.images.load(client.imagesLoader, game);
-		game.saver = new GameSaver(game);
+		game.saver = new GameSaver(game, path.isBaseGame);
 		game.isMain = true;
 		game.ii.rules = rules;
 		return game;

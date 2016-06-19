@@ -6,6 +6,7 @@ import android.graphics.Color;
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
+import ru.ancientempires.load.GamePath;
 
 public abstract class BaseDrawMain extends Draw
 {
@@ -151,5 +152,36 @@ public abstract class BaseDrawMain extends Draw
 	
 	public void tap(int i, int j)
 	{}
-	
+
+	public void focusOnCell(int i, int j)
+	{
+		float nextOffsetY = -i * A - A / 2 + visibleMapH / mapScale / 2;
+		float nextOffsetX = -j * A - A / 2 + visibleMapW / mapScale / 2;
+		setNextOffset(nextOffsetY, nextOffsetX);
+	}
+
+	public void focusOnCurrentPlayerCenter()
+	{
+		focusOn(game.path.screenCenters[game.currentPlayer.ordinal]);
+	}
+
+	public void focusOn(GamePath.PointScreenCenter point)
+	{
+		float nextOffsetY = -point.i * A + visibleMapH / mapScale / 2 - maxOffsetY;
+		float nextOffsetX = -point.j * A + visibleMapW / mapScale / 2 - maxOffsetX;
+		setNextOffset(nextOffsetY, nextOffsetX);
+	}
+
+	public void saveScreenCenter()
+	{
+		game.path.screenCenters[game.currentPlayer.ordinal] = getScreenCenter();
+	}
+
+	public GamePath.PointScreenCenter getScreenCenter()
+	{
+		float i = (-offsetY + visibleMapH / mapScale / 2 - maxOffsetY) / A;
+		float j = (-offsetX + visibleMapW / mapScale / 2 - maxOffsetX) / A;
+		return new GamePath.PointScreenCenter(i, j);
+	}
+
 }

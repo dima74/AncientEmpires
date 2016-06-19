@@ -1,1 +1,1 @@
-{"gameID":"test.0","baseGameID":"test.0","defaultLocalization":"en_US","localizations":["ru_RU"],"isBaseGame":true,"canChooseTeams":true,"numberPlayers":2,"numberTeams":2,"h":3,"w":4,"numberSnapshots":0,"numberActions":0}
+{"gameID":"test.0","baseGameID":"test.0","defaultLocalization":"en_US","localizations":["ru_RU"],"isBaseGame":true,"canChooseTeams":true,"numberPlayers":2,"numberTeams":2,"h":3,"w":4,"numberSnapshots":0,"numberActions":0,"screenCenters":[null,null]}

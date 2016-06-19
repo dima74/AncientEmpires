@@ -21,10 +21,11 @@ public class GameSaver
 	public DataOutputStream actionsDOS;
 	//public PrintWriter      snapshotsWriter;
 
-	public GameSaver(Game mainGame) throws Exception
+	public GameSaver(Game mainGame, boolean isNewSave) throws Exception
 	{
 		this.mainGame = mainGame;
-		mainGame.path.addNoteInitial(mainGame);
+		if (isNewSave)
+			mainGame.path.addNoteInitial(mainGame);
 		game = mainGame.myClone();
 		thread = new GameSaverThread();
 		thread.start();
@@ -32,7 +33,6 @@ public class GameSaver
 		loader = game.path.getLoader();
 		actionsFOS = loader.openFOS(GamePath.ACTIONS, true);
 		actionsDOS = new DataOutputStream(actionsFOS);
-		//snapshotsWriter = loader.getPrintWriter(GamePath.SNAPSHOTS);
 	}
 
 	// всё, кроме strings

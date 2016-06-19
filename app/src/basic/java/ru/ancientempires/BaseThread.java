@@ -112,6 +112,7 @@ public class BaseThread extends Thread
 					e.printStackTrace();
 				}
 		}
+		drawMain.saveScreenCenter();
 		afterRun();
 		Debug.onStop(this);
 	}
