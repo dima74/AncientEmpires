@@ -17,7 +17,6 @@ import java.util.Scanner;
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.FileLoader;
-import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
@@ -151,6 +150,8 @@ public class GamePath
 						"ru_RU"
 				};
 		screenCenters = new PointScreenCenter[numberPlayers];
+		for (int i = 0; i < screenCenters.length; i++)
+			screenCenters[i] = new PointScreenCenter(0, 0);
 		for (int i = 0; i < game.players.length; i++)
 			for (Unit unit : game.players[i].units)
 				if (unit.type.isStatic)

@@ -146,14 +146,15 @@ public class AllGamesConverter
 	public void createTestGame() throws Exception
 	{
 		Game game = new Game(rules)
-				.setSize(3, 4)
+				.setSize(7, 7)
 				.setNumberPlayers(2, 20);
 		
 		Player p0 = game.players[0];
 		Player p1 = game.players[1];
 		p0.gold = 1000;
 		
-		new Unit(game, rules.getUnitType("SOLDIER"), p0).setIJ(0, 1).addToGame();
+		new Unit(game, rules.getUnitType("ARCHER"), p0).setIJ(3, 3).setLevel(10).addToGame();
+		new Unit(game, rules.getUnitType("SOLDIER"), p1).setIJ(4, 4).addToGame();
 		
 		//
 		GamePath path = new GamePath(game, "test.0");

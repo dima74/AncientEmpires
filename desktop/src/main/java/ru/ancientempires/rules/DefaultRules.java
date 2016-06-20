@@ -321,18 +321,13 @@ public class DefaultRules
 		
 		archer.cost = 250;
 		archer.attackRange = archerRange;
-		archer.bonuses = new Bonus[]
-				{
-						new BonusAttackForUnit(dragon, 15, 0)
-				};
+		archer.addBonuses(new BonusAttackForUnit(dragon, 15, 0));
 		
 		elemental.defence = 10;
 		elemental.cost = 300;
-		elemental.bonuses = new Bonus[]
-				{
-						new BonusOnCellGroup(waterGroup, 10, 15),
-						new BonusMoveToCellGroup(waterGroup, -2)
-				};
+		elemental.addBonuses(
+				new BonusOnCellGroup(waterGroup, 10, 15),
+				new BonusMoveToCellGroup(waterGroup, -2));
 		
 		sorceress.attackMin = 40;
 		sorceress.attackMax = 45;
@@ -346,10 +341,7 @@ public class DefaultRules
 		wisp.cost = 500;
 		wisp.creators = new BonusCreator[]
 				{
-						new BonusCreatorWisp(archerRange, new Bonus[]
-								{
-										new BonusAttackAlways(10, 0)
-								})
+						new BonusCreatorWisp(archerRange, new BonusAttackAlways(10, 0))
 				};
 		
 		dire_wolf.attackMin = 60;
@@ -408,10 +400,7 @@ public class DefaultRules
 		king.captureTypes = getCellTypes("BUILDING", "CASTLE");
 		king.isStatic = true;
 		king.hasTombstone = false;
-		king.bonuses = new Bonus[]
-				{
-						new BonusCost(200)
-				};
+		king.addBonuses(new BonusCost(200));
 		
 		king_galamar.setProperties(king);
 		king_valadorn.setProperties(king);

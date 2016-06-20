@@ -15,7 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.model.PlayerType;
 
 public class Swing
 {
@@ -62,6 +64,11 @@ public class Swing
 		int i = 0;
 		
 		game.campaign.start();
+		if (component.drawMain.isActiveGame())
+		{
+			MyAssert.a(component.inputMain.game.currentPlayer.type == PlayerType.PLAYER);
+			component.inputMain.beginTurn();
+		}
 		while (true)
 		{
 			//System.out.println(DrawCameraMove.delta + " " + DrawUnitMove.framesForCell);

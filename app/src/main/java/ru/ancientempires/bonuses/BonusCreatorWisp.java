@@ -32,7 +32,7 @@ public class BonusCreatorWisp extends BonusCreator
 	@Override
 	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit)
 	{
-		final ArrayList<BonusCreate> creates = new ArrayList<BonusCreate>();
+		final ArrayList<BonusCreate> creates = new ArrayList<>();
 		new ActionHelper(game).forUnitInRange(unit.i, unit.j, range, new CheckerUnit()
 		{
 			@Override
@@ -52,7 +52,7 @@ public class BonusCreatorWisp extends BonusCreator
 				return false;
 			}
 		});
-		return creates.toArray(new BonusCreate[0]);
+		return creates.toArray(new BonusCreate[creates.size()]);
 	}
 	
 	@Override

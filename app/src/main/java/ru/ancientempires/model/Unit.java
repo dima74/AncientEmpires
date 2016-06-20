@@ -192,7 +192,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	{
 		ArrayList<Bonus> bonuses = new ArrayList<>(this.bonuses);
 		bonuses.addAll(Arrays.asList(type.bonuses));
-		return bonuses.toArray(new Bonus[0]);
+		return bonuses.toArray(new Bonus[bonuses.size()]);
 	}
 	
 	public int getMoveRadius()

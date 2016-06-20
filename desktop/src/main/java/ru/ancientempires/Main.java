@@ -21,6 +21,7 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.swing.Swing;
 
 public class Main
 {
@@ -91,8 +92,8 @@ public class Main
 		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
 		//testLoadGame("campaign.7", true);
 
-		//new Swing("campaign.1");
-		testFull();
+		new Swing("test.0");
+		//testFull();
 		//test();
 		//testII("skirmish.5");
 	}

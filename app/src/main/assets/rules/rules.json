@@ -168,8 +168,8 @@
 			"name": "KING",
 			"specializations": {
 				"RED": "KING_DEMONLORD",
-				"BLACK": "KING_SAETH",
 				"BLUE": "KING_GALAMAR",
+				"BLACK": "KING_SAETH",
 				"GREEN": "KING_VALADORN"
 			},
 			"attackMin": 55,
@@ -186,6 +186,12 @@
 			"isStatic": true,
 			"hasTombstone": false,
 			"bonuses": [
+				{
+					"type": 3,
+					"typeName": "BonusLevel",
+					"multiAttack": 2,
+					"multiDefence": 2
+				},
 				{
 					"type": 2,
 					"typeName": "BonusCost",
@@ -209,6 +215,12 @@
 			"attackRange": "ARCHER",
 			"bonuses": [
 				{
+					"type": 3,
+					"typeName": "BonusLevel",
+					"multiAttack": 2,
+					"multiDefence": 2
+				},
+				{
 					"type": 1,
 					"typeName": "BonusAttackForUnit",
 					"targetType": "DRAGON",
@@ -222,6 +234,12 @@
 			"defence": 10,
 			"cost": 300,
 			"bonuses": [
+				{
+					"type": 3,
+					"typeName": "BonusLevel",
+					"multiAttack": 2,
+					"multiDefence": 2
+				},
 				{
 					"type": 5,
 					"typeName": "BonusOnCellGroup",

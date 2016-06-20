@@ -127,6 +127,16 @@ public class UnitType implements Named, Numbered
 		return this;
 	}
 
+	public void addBonuses(Bonus... bonusesNew)
+	{
+		Bonus[] bonusesOld = this.bonuses;
+		bonuses = new Bonus[bonusesOld.length + bonusesNew.length];
+		for (int i = 0; i < bonusesOld.length; i++)
+			bonuses[i] = bonusesOld[i];
+		for (int i = 0; i < bonusesNew.length; i++)
+			bonuses[bonusesOld.length + i] = bonusesNew[i];
+	}
+
 	public String getName()
 	{
 		return name;
