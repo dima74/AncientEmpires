@@ -1,5 +1,6 @@
 package ru.ancientempires.activities;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -11,7 +12,13 @@ public class MainActivity extends BaseListActivity
 	public static int     skirmish    = 5;
 	public static int     campaign    = 0;
 	public static String  gameToStart = "campaign";
-	public static boolean firstStart  = true;
+	public static boolean firstStart  = false;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	public MenuActions[] getStrings()
@@ -32,6 +39,7 @@ public class MainActivity extends BaseListActivity
 		switch (getStrings()[position])
 		{
 			case PLAY:
+				System.out.println(1 / 0);
 				moveTo(PlayMenuActivity.class);
 				break;
 			case MAP_EDITOR:
