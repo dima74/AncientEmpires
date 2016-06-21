@@ -203,7 +203,9 @@ public class CampaignImmediately implements IDrawCampaign
 	
 	@Override
 	public void disableActiveGame(ScriptDisableActiveGame script)
-	{}
+	{
+		script.performAction();
+	}
 	
 	@Override
 	public void hideInfoImmediately(Script script)

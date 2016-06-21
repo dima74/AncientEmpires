@@ -17,6 +17,7 @@ import java.util.Scanner;
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.FileLoader;
+import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
@@ -73,11 +74,11 @@ public class GamePath
 	*/
 
 	// transient для Gson.toJson()
-	transient public String     path;
+	public transient String     path;
 	public           String     gameID;
 	public           String     baseGameID; // ID игры, в которой хранятся campaign.json & strings.json, может быть равным gameID
 	public           String     nextGameID;
-	transient public String     name;
+	public transient String     name;
 	public           String     defaultLocalization;
 	public           String[]   localizations;
 	public           boolean    isBaseGame;
@@ -88,8 +89,21 @@ public class GamePath
 	public           int        w;
 	public           int        numberSnapshots;
 	public           int        numberActions;
-	//public           int        sizeActions;
-	transient public FileLoader loader;
+	public transient boolean    isInCampaign;
+	public transient int        indexActionDisableActiveGame;
+	public           int        sizeActions;
+	public transient FileLoader loader;
+
+	public void enterCampaign()
+	{
+		isInCampaign = true;
+		indexActionDisableActiveGame = numberActions;
+	}
+
+	public void leaveCampaign()
+	{
+		isInCampaign = false;
+	}
 
 	public static class PointScreenCenter
 	{
@@ -120,6 +134,11 @@ public class GamePath
 	// Создаёт новый объект GamePath представляющий собой копию info.json
 	public static GamePath get(String path, boolean addToAllGames) throws Exception
 	{
+		if (!Client.client.gamesLoader.exists(path + "info.json"))
+		{
+			MyLog.f("Can't load %s: info.json missing!", path);
+			return null;
+		}
 		GamePath gamePath = new Gson().fromJson(Client.client.gamesLoader.getReader(path + "info.json"), GamePath.class);
 		gamePath.path = path;
 		gamePath.loader = Client.client.gamesLoader.getLoader(path);
@@ -176,8 +195,9 @@ public class GamePath
 
 	public void loadName() throws IOException
 	{
-		if (getLoader().exists("strings.json"))
-			name = Client.client.localization.loadName(getLoader());
+		FileLoader loader = Client.client.gamesLoader.getLoader(baseGameID.replace('.', '/'));
+		if (loader.exists("strings.json"))
+			name = Client.client.localization.loadName(loader);
 	}
 
 	public FileLoader getLoader()
@@ -198,6 +218,8 @@ public class GamePath
 
 	public void save() throws IOException
 	{
+		if (isInCampaign)
+			numberActions = indexActionDisableActiveGame;
 		JsonWriter writer = getLoader().getWriter("info.json");
 		new Gson().toJson(this, GamePath.class, writer);
 		writer.close();
@@ -228,8 +250,9 @@ public class GamePath
 			scanner.close();
 		}
 
-		public SnapshotNote(Scanner scanner)
+		public SnapshotNote(GamePath path, Scanner scanner)
 		{
+			this.path = path;
 			load(scanner);
 		}
 		
@@ -263,7 +286,7 @@ public class GamePath
 			{
 				Scanner scanner = path.loader.getScanner(name);
 				while (scanner.hasNext())
-					notes.add(new SnapshotNote(scanner));
+					notes.add(new SnapshotNote(path, scanner));
 				scanner.close();
 			}
 			return notes;
@@ -314,20 +337,30 @@ public class GamePath
 		}
 		if (note.numberActions < numberActions)
 		{
+			{
+				FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
+				fis.getChannel().position(note.sizeActions);
+				byte[] b = new byte[100000];
+				int n = fis.read(b);
+				MyLog.l(b, n);
+				fis.close();
+			}
+
 			FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
 			fis.getChannel().position(note.sizeActions);
 			DataInputStream dis = new DataInputStream(fis);
+			ArrayList<Action> actions = new ArrayList<>();
 			for (int i = note.numberActions; i < numberActions; i++)
 			{
-				//Action action = Action.loadNew(dis);
 				Action action = game.getLoaderInfo().fromData(dis, Action.class);
-				//MyLog.l(i, action);
+				actions.add(action);
 				action.checkBase(game);
 				action.performQuickBase(game);
 				int c = 2;
 				if (loadCampaign && i == numberActions - c && (numberActions - note.numberActions) > 2 * c)
 					addNote(new SnapshotNote(this, i + 1, (int) fis.getChannel().position(), game));
 			}
+			sizeActions = (int) fis.getChannel().position();
 			dis.close();
 		}
 		return game;

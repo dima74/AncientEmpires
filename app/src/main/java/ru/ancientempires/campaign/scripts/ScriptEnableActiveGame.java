@@ -2,6 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
+import ru.ancientempires.actions.campaign.ActionCampaignLeaveCampaign;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptEnableActiveGame extends Script
@@ -17,6 +18,7 @@ public class ScriptEnableActiveGame extends Script
 	public void performAction()
 	{
 		campaign.needActionRewriteScriptsStatus = true;
+		new ActionCampaignLeaveCampaign().perform(game);
 	}
 	
 	// =/({||})\=

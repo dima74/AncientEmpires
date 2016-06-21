@@ -1,0 +1,1 @@
+{"scripts":[{"type":23,"typeName":"ScriptDisableActiveGame","previous":[]},{"type":55,"typeName":"ScriptUnitChangePosition","previous":[0],"i":3,"j":3,"targetI":5,"targetJ":5},{"type":24,"typeName":"ScriptEnableActiveGame","previous":[1]}]}

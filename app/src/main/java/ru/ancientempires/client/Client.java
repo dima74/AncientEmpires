@@ -37,7 +37,10 @@ public class Client
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
-		return Client.client.allGames.get(gameID);
+		MyAssert.a(Client.client.allGames.containsKey(gameID));
+		GamePath game = Client.client.allGames.get(gameID);
+		MyAssert.a(game != null);
+		return game;
 	}
 	
 	public GameInit init;

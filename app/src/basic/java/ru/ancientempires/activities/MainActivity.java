@@ -4,16 +4,13 @@ import android.view.View;
 import android.widget.ListView;
 
 import ru.ancientempires.MenuActions;
-import ru.ancientempires.campaign.scripts.Script;
-import ru.ancientempires.framework.MyLog;
-import ru.ancientempires.serializable.SerializableHelper;
 
 public class MainActivity extends BaseListActivity
 {
 
 	public static int     skirmish    = 5;
 	public static int     campaign    = 0;
-	public static String  gameToStart = "skirmish";
+	public static String  gameToStart = "campaign";
 	public static boolean firstStart  = true;
 
 	@Override
@@ -49,14 +46,17 @@ public class MainActivity extends BaseListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		for (Class<?> c : SerializableHelper.getSubclasses(Script.class))
-			MyLog.l(c.getSimpleName());
-		if (firstStart && "editor".equals(gameToStart))
-			moveTo(EditorBaseActivity.class);
-		else if (firstStart && "TestActivity".equals(gameToStart))
-			moveTo(TestActivity.class);
-		else if (firstStart && gameToStart != "")
-			moveTo(PlayMenuActivity.class);
+		if (firstStart)
+		{
+			if ("info".equals(gameToStart))
+				startApplicationDetailsActivity(this);
+			else if ("editor".equals(gameToStart))
+				moveTo(EditorBaseActivity.class);
+			else if ("TestActivity".equals(gameToStart))
+				moveTo(TestActivity.class);
+			else if (gameToStart != "")
+				moveTo(PlayMenuActivity.class);
+		}
 	}
 
 	@Override

@@ -1,8 +1,11 @@
 package ru.ancientempires.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,7 +15,16 @@ import ru.ancientempires.framework.Debug;
 
 public class BaseActivity extends AppCompatActivity
 {
-	
+
+	public static void startApplicationDetailsActivity(Context context)
+	{
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+		Uri uri = Uri.fromParts("package", "ru.ancientempires", null);
+		intent.setData(uri);
+		context.startActivity(intent);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

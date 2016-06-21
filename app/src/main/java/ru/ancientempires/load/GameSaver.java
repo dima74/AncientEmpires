@@ -31,7 +31,8 @@ public class GameSaver
 		thread.start();
 
 		loader = game.path.getLoader();
-		actionsFOS = loader.openFOS(GamePath.ACTIONS, true);
+		actionsFOS = loader.openFOS(GamePath.ACTIONS);
+		actionsFOS.getChannel().position(game.path.sizeActions);
 		actionsDOS = new DataOutputStream(actionsFOS);
 	}
 
@@ -109,7 +110,8 @@ public class GameSaver
 			{
 				//action.saveBase(actionsDOS);
 				action.toData(actionsDOS);
-				++game.path.numberActions;
+				game.path.numberActions++;
+				//game.path.sizeActions = (int) actionsFOS.getChannel().position();
 			}
 			return 0;
 		}
@@ -142,7 +144,6 @@ public class GameSaver
 		add(new SaveWithRC(1));
 		thread.reverseQueue.take();
 		actionsDOS.flush();
-		//snapshotsWriter.flush();
 	}
 
 	public void finishSave() throws Exception
@@ -151,7 +152,6 @@ public class GameSaver
 		thread.join();
 		actionsDOS.close();
 		game.path.save();
-		//snapshotsWriter.close();
 	}
 	
 	public void add(Save save)

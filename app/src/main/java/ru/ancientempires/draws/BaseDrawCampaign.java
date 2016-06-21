@@ -315,6 +315,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		DrawCameraMove.delta = 6;
 		if (main.infoY != 0)
 			main.infoMove.startShow();
+		main.saveScreenCenter();
 		script.performAction();
 	}
 	

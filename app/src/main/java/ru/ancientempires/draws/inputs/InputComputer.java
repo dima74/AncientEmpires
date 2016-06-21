@@ -11,6 +11,8 @@ public class InputComputer extends AbstractPlayerInput
 	@Override
 	public void beginTurn()
 	{
+		game.path.enterCampaign();
+
 		ArrayList<Action> actions = game.ii.turn(game);
 		ActionGameEndTurn actionGameEndTurn = (ActionGameEndTurn) actions.get(actions.size() - 1);
 		actions.remove(actions.size() - 1);
@@ -23,6 +25,8 @@ public class InputComputer extends AbstractPlayerInput
 		drawMain.cellsDual.update();
 		drawMain.info.update();
 		drawMain.postUpdateCampaign();
+
+		game.path.leaveCampaign();
 	}
 	
 	@Override

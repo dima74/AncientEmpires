@@ -153,16 +153,16 @@ public class AllGamesConverter
 		Player p1 = game.players[1];
 		p0.gold = 1000;
 		
-		new Unit(game, rules.getUnitType("ARCHER"), p0).setIJ(3, 3).setLevel(10).addToGame();
-		new Unit(game, rules.getUnitType("SOLDIER"), p1).setIJ(4, 4).addToGame();
+		new Unit(game, rules.getUnitType("ARCHER"), p0).setIJ(3, 3).addToGame();
+		//new Unit(game, rules.getUnitType("SOLDIER"), p1).setIJ(4, 4).addToGame();
 		
 		//
 		GamePath path = new GamePath(game, "test.0");
 		path.isBaseGame = true;
 		path.canChooseTeams = true;
 		
-		//new CampaignEditor(game).createTestGameCampaign();
-		game.campaign.isDefault = true;
+		new CampaignEditor(game).createTestGameCampaign();
+		//game.campaign.isDefault = true;
 
 		GameSaver.createBaseGame(game);
 		

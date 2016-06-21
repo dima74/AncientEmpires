@@ -68,7 +68,7 @@ public class LoaderInfo
 
 	public <T extends SerializableData> T fromData(DataInputStream input, Class<T> baseClass) throws Exception
 	{
-		MyAssert.a(input.readInt() == 0x76543210);
+		MyAssert.a(input.readInt(), 0x76543210);
 		int type = input.readInt();
 		T result = (T) SerializableHelper.loadMap.get(baseClass)[type].newInstance();
 		result.fromData(input, this);

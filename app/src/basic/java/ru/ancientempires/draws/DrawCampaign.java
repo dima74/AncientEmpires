@@ -28,7 +28,7 @@ import ru.ancientempires.draws.onframes.DrawSnakeMap;
 
 public class DrawCampaign extends BaseDrawCampaign
 {
-	
+
 	@Override
 	public void dialogIntro(Bitmap bitmap, String text, ScriptDialogIntro script)
 	{
@@ -93,6 +93,7 @@ public class DrawCampaign extends BaseDrawCampaign
 	{
 		main.isActiveGame = false;
 		BaseGameActivity.activity.invalidateOptionsMenu();
+		script.performAction();
 	}
 
 	@Override

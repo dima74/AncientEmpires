@@ -2,6 +2,7 @@ package ru.ancientempires.campaign.scripts;
 
 import com.google.gson.JsonObject;
 
+import ru.ancientempires.actions.campaign.ActionCampaignEnterCampaign;
 import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptDisableActiveGame extends Script
@@ -12,7 +13,13 @@ public class ScriptDisableActiveGame extends Script
 	{
 		campaign.iDrawCampaign.disableActiveGame(this);
 	}
-	
+
+	@Override
+	public void performAction()
+	{
+		new ActionCampaignEnterCampaign().perform(game);
+	}
+
 	// =/({||})\=
 	// from spoon
 

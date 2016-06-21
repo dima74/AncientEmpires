@@ -138,16 +138,9 @@ public class CampaignEditor
 	{
 		CampaignEditorGame.game = game;
 		
-		ContainerList c = addRoot(new ScriptSetMapPosition(20, 15));
-		c = c.add(new ScriptDelay(666));
-		c = c.add(new ScriptUnitMove(20, 15, 20, 25), new ScriptCameraMove(20, 25));
-
-		c = c.add(new ScriptSetMapPosition(20, 15));
-		c = c.add(new ScriptUnitChangePosition(20, 25, 20, 15));
-		c = c.add(new ScriptDelay(333));
-		
-		c = c.add(new ScriptSetUnitSpeed(24), new ScriptSetCameraSpeed(2));
-		c = c.add(new ScriptUnitMove(20, 15, 20, 25), new ScriptCameraMove(20, 25));
+		ContainerList c = addRoot(new ScriptDisableActiveGame());
+		c = c.add(new ScriptUnitChangePosition(3, 3, 5, 5));
+		c = c.add(new ScriptEnableActiveGame());
 
 		CampaignEditorGame.game = null;
 		save();

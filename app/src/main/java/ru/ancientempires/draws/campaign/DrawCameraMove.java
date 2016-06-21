@@ -10,18 +10,13 @@ public class DrawCameraMove extends DrawOnFramesGroup
 	
 	public static float delta = 6;
 
-	private float startOffsetY;
-	private float startOffsetX;
-	private float endOffsetY;
-	private float endOffsetX;
-
 	public void start(int iEnd, int jEnd)
 	{
-		startOffsetY = main.offsetY;
-		startOffsetX = main.offsetX;
+		float startOffsetY = main.offsetY;
+		float startOffsetX = main.offsetX;
 		
-		endOffsetY = -iEnd * A - A / 2 + main.visibleMapH / mapScale / 2;
-		endOffsetX = -jEnd * A - A / 2 + main.visibleMapW / mapScale / 2;
+		float endOffsetY = -iEnd * A - A / 2 + main.visibleMapH / mapScale / 2;
+		float endOffsetX = -jEnd * A - A / 2 + main.visibleMapW / mapScale / 2;
 		endOffsetY = Math.max(main.minOffsetY, Math.min(main.maxOffsetY, endOffsetY));
 		endOffsetX = Math.max(main.minOffsetX, Math.min(main.maxOffsetX, endOffsetX));
 		
@@ -53,8 +48,8 @@ public class DrawCameraMove extends DrawOnFramesGroup
 				}
 			}
 		}.animateRange(startOffsetX, endOffsetX, stepX));
-		
+
 		main.inputPlayer.tapWithoutAction(iEnd, jEnd);
 	}
-	
+
 }

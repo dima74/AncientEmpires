@@ -21,7 +21,6 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.swing.Swing;
 
 public class Main
 {
@@ -55,23 +54,11 @@ public class Main
 
 	private static void test() throws Exception
 	{
-		Game game = Client.client.startGame("campaign.1");
+		Game game = Client.client.startGame("campaign.0");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
-
-		for (int i = 0; !game.players[0].units.isEmpty(); i++)
-		{
-			//System.out.println("i = " + i);
-			new ActionGameEndTurn().perform(game);
-			game.campaign.update();
-			new II(game.rules).turnFull(game);
-			game.campaign.update();
-		}
-
-		System.out.println(game.toJsonPretty());
-
-		game.saver.finishSave();
-		testLoadGame(game.path.gameID, true);
+		Client.client.stopGame();
+		testLoadGame(game.path.gameID, false);
 		System.exit(0);
 	}
 
@@ -84,7 +71,7 @@ public class Main
 
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
-		//System.exit(0);
+		System.exit(0);
 		
 		client.loadPart1();
 		client.loadPart2();
@@ -92,9 +79,9 @@ public class Main
 		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
 		//testLoadGame("campaign.7", true);
 
-		new Swing("test.0");
+		//new Swing("test.0");
 		//testFull();
-		//test();
+		test();
 		//testII("skirmish.5");
 	}
 
