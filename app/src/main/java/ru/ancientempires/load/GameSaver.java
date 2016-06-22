@@ -27,12 +27,12 @@ public class GameSaver
 		if (isNewSave)
 			mainGame.path.addNoteInitial(mainGame);
 		game = mainGame.myClone();
+		game.isSaver = true;
 		thread = new GameSaverThread();
 		thread.start();
 
 		loader = game.path.getLoader();
-		actionsFOS = loader.openFOS(GamePath.ACTIONS);
-		actionsFOS.getChannel().position(game.path.sizeActions);
+		actionsFOS = loader.openFOS(GamePath.ACTIONS, true);
 		actionsDOS = new DataOutputStream(actionsFOS);
 	}
 
@@ -111,7 +111,7 @@ public class GameSaver
 				//action.saveBase(actionsDOS);
 				action.toData(actionsDOS);
 				game.path.numberActions++;
-				//game.path.sizeActions = (int) actionsFOS.getChannel().position();
+				game.path.sizeActions = (int) actionsFOS.getChannel().position();
 			}
 			return 0;
 		}

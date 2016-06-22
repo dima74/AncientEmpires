@@ -8,7 +8,8 @@ public class ActionCampaignLeaveCampaign extends Action
 	@Override
 	public void performQuick()
 	{
-		game.path.leaveCampaign();
+		if (game.isSaver)
+			game.path.leaveCampaign();
 	}
 
 }

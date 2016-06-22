@@ -1,22 +1,18 @@
 package ru.ancientempires;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import ru.ancientempires.actions.ActionGameEndTurn;
-import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.campaign.CampaignImmediately;
 import ru.ancientempires.client.Client;
-import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
@@ -27,38 +23,25 @@ public class Main
 
 	private static void test2() throws Exception
 	{
-		Game game = Client.client.startGame("skirmish.5");
-		BaseGameActivity.activity = new BaseGameActivity();
-		BaseGameActivity.activity.game = game;
-		BaseDrawMain mainBase = new BaseDrawMain()
-		{
-			@Override
-			public void setVisibleMapSize()
-			{}
-		};
-		mainBase.iMax = game.h;
-		mainBase.jMax = game.w;
+		FileOutputStream fos = new FileOutputStream("test.dat");
+		for (int i = 0; i < 7; i++)
+			fos.write(i);
+		fos.close();
 
-		int h = game.h * 24;
-		int w = game.w * 24;
-		Bitmap bitmap = Bitmap.createBitmap(w, h, null);
-		Canvas canvas = new Canvas(bitmap);
-
-		mainBase.cells.draw(canvas);
-		mainBase.cellsDual.draw(canvas);
-		mainBase.unitsDead.draw(canvas);
-		mainBase.units.draw(canvas);
-
-		ImageIO.write(bitmap.image, "png", new File("app/src/main/res/drawable/example-game.png"));
+		fos = new FileOutputStream("test.dat");
+		fos.getChannel().position(3);
+		fos.write(77);
+		fos.close();
+		System.exit(0);
 	}
 
 	private static void test() throws Exception
 	{
-		Game game = Client.client.startGame("campaign.0");
+		Game game = Client.client.startGame("skirmish.5");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
+
 		Client.client.stopGame();
-		testLoadGame(game.path.gameID, false);
 		System.exit(0);
 	}
 
@@ -71,17 +54,15 @@ public class Main
 
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
-		System.exit(0);
+		//System.exit(0);
 		
 		client.loadPart1();
 		client.loadPart2();
 
-		//new CampaignEditor(Client.client.startGame("campaign.7")).convert(7);
-		//testLoadGame("campaign.7", true);
-
-		//new Swing("test.0");
-		//testFull();
-		test();
+		//new Swing("save.0");
+		//new Swing("skirmish.5");
+		testFull();
+		//test();
 		//testII("skirmish.5");
 	}
 

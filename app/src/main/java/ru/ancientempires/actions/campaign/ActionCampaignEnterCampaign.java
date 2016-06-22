@@ -8,7 +8,8 @@ public class ActionCampaignEnterCampaign extends Action
 	@Override
 	public void performQuick()
 	{
-		game.path.enterCampaign();
+		if (game.isSaver)
+			game.path.enterCampaign();
 	}
 
 }

@@ -21,7 +21,7 @@ public class MyLog
 
 	public static void l(byte[] b, int n)
 	{
-		String s = "length: " + n + "data:";
+		String s = "length: " + n + ", data:";
 		for (int i = 0; i < n; i += 8)
 		{
 			s += " ";

@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import ru.ancientempires.Localization;
+import ru.ancientempires.actions.ActionCellBuy;
+import ru.ancientempires.actions.ActionUnitMove;
 import ru.ancientempires.actions.Checker;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
@@ -415,6 +417,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			object.addProperty("numberBuys", numberBuys);
 		object.addProperty("isMove", isMove);
 		object.addProperty("isTurn", isTurn);
+		//проверить!!! Через new ActionCellBuy(WISP), new ActionUnitMove(...)
 		object.add("bonuses", SerializableJsonHelper.toJsonArray(bonuses));
 		object.add("names", game.namedUnits.toJsonPart(this));
 		return object;

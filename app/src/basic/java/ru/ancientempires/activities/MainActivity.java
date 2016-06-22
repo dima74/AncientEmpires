@@ -1,10 +1,13 @@
 package ru.ancientempires.activities;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import ru.ancientempires.MenuActions;
+import ru.ancientempires.R;
 
 public class MainActivity extends BaseListActivity
 {
@@ -34,12 +37,27 @@ public class MainActivity extends BaseListActivity
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		final int itemId = item.getItemId();
+		if (itemId == R.id.action_show_application_details)
+			startApplicationDetailsActivity(this);
+		return true;
+	}
+
+	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
 		switch (getStrings()[position])
 		{
 			case PLAY:
-				System.out.println(1 / 0);
 				moveTo(PlayMenuActivity.class);
 				break;
 			case MAP_EDITOR:

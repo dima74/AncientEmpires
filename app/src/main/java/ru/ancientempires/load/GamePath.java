@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Scanner;
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.FileLoader;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
@@ -74,35 +76,46 @@ public class GamePath
 	*/
 
 	// transient для Gson.toJson()
-	public transient String     path;
-	public           String     gameID;
-	public           String     baseGameID; // ID игры, в которой хранятся campaign.json & strings.json, может быть равным gameID
-	public           String     nextGameID;
-	public transient String     name;
-	public           String     defaultLocalization;
-	public           String[]   localizations;
-	public           boolean    isBaseGame;
-	public           boolean    canChooseTeams;
-	public           int        numberPlayers;
-	public           int        numberTeams;
-	public           int        h;
-	public           int        w;
-	public           int        numberSnapshots;
-	public           int        numberActions;
-	public transient boolean    isInCampaign;
-	public transient int        indexActionDisableActiveGame;
+	public transient String   path;
+	public           String   gameID;
+	public           String   baseGameID; // ID игры, в которой хранятся campaign.json & strings.json, может быть равным gameID
+	public           String   nextGameID;
+	public transient String   name;
+	public           String   defaultLocalization;
+	public           String[] localizations;
+	public           boolean  isBaseGame;
+	public           boolean  canChooseTeams;
+	public           int      numberPlayers;
+	public           int      numberTeams;
+	public           int      h;
+	public           int      w;
+	public           int      numberSnapshots;
+	public           int      numberActions;
+	public transient boolean  isInCampaign;
+	public transient int indexActionDisableActiveGame      = -1;
+	public transient int sizeBeforeActionDisableActiveGame = -1;
 	public           int        sizeActions;
 	public transient FileLoader loader;
 
 	public void enterCampaign()
 	{
+		boolean d = isInCampaign;
+		MyAssert.a(!isInCampaign);
+		MyAssert.a(indexActionDisableActiveGame == -1);
+		MyAssert.a(sizeBeforeActionDisableActiveGame == -1);
 		isInCampaign = true;
 		indexActionDisableActiveGame = numberActions;
+		sizeBeforeActionDisableActiveGame = sizeActions;
 	}
 
 	public void leaveCampaign()
 	{
+		MyAssert.a(isInCampaign);
+		MyAssert.a(indexActionDisableActiveGame >= 0);
+		MyAssert.a(sizeBeforeActionDisableActiveGame >= 0);
 		isInCampaign = false;
+		indexActionDisableActiveGame = -1;
+		sizeBeforeActionDisableActiveGame = -1;
 	}
 
 	public static class PointScreenCenter
@@ -219,7 +232,12 @@ public class GamePath
 	public void save() throws IOException
 	{
 		if (isInCampaign)
+		{
 			numberActions = indexActionDisableActiveGame;
+			FileOutputStream fos = loader.openFOS(ACTIONS);
+			fos.getChannel().truncate(sizeBeforeActionDisableActiveGame);
+			fos.close();
+		}
 		JsonWriter writer = getLoader().getWriter("info.json");
 		new Gson().toJson(this, GamePath.class, writer);
 		writer.close();
@@ -337,15 +355,6 @@ public class GamePath
 		}
 		if (note.numberActions < numberActions)
 		{
-			{
-				FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
-				fis.getChannel().position(note.sizeActions);
-				byte[] b = new byte[100000];
-				int n = fis.read(b);
-				MyLog.l(b, n);
-				fis.close();
-			}
-
 			FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
 			fis.getChannel().position(note.sizeActions);
 			DataInputStream dis = new DataInputStream(fis);

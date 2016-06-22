@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.actions.ActionGameEndTurn;
+import ru.ancientempires.actions.campaign.ActionCampaignEnterCampaign;
+import ru.ancientempires.actions.campaign.ActionCampaignLeaveCampaign;
 
 public class InputComputer extends AbstractPlayerInput
 {
@@ -11,7 +13,7 @@ public class InputComputer extends AbstractPlayerInput
 	@Override
 	public void beginTurn()
 	{
-		game.path.enterCampaign();
+		new ActionCampaignEnterCampaign().perform(game);
 
 		ArrayList<Action> actions = game.ii.turn(game);
 		ActionGameEndTurn actionGameEndTurn = (ActionGameEndTurn) actions.get(actions.size() - 1);
@@ -26,7 +28,7 @@ public class InputComputer extends AbstractPlayerInput
 		drawMain.info.update();
 		drawMain.postUpdateCampaign();
 
-		game.path.leaveCampaign();
+		new ActionCampaignLeaveCampaign().perform(game);
 	}
 	
 	@Override

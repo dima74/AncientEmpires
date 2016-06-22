@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -21,10 +23,11 @@ import ru.ancientempires.model.PlayerType;
 
 public class Swing
 {
-	
+
 	public Swing(String gameID) throws Exception
 	{
 		Game game = Client.client.startGame(gameID);
+		System.out.println(game.path.gameID);
 		JFrame frame = new JFrame("Ancient Empires");
 		
 		// end turn
@@ -42,7 +45,23 @@ public class Swing
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent event)
+			{
+				try
+				{
+					Client.client.stopGame();
+					System.exit(0);
+				}
+				catch (Exception e)
+				{
+					MyAssert.a(false);
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		text.addMouseListener(new MouseAdapter()
 		{
