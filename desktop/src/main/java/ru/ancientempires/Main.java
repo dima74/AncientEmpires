@@ -60,8 +60,8 @@ public class Main
 		client.loadPart2();
 
 		//new Swing("save.0");
-		//new Swing("skirmish.5");
-		testFull();
+		//new Swing("campaign.4");
+		//testFull();
 		//test();
 		//testII("skirmish.5");
 	}

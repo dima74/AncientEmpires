@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableData;
-import ru.ancientempires.serializable.SerializableDataHelper;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
 public abstract class AbstractPoint extends AbstractGameHandler implements SerializableJson, SerializableData
@@ -74,9 +72,9 @@ public abstract class AbstractPoint extends AbstractGameHandler implements Seria
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
-		JsonObject object = SerializableJsonHelper.toJson(this);
+		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 
@@ -95,7 +93,7 @@ public abstract class AbstractPoint extends AbstractGameHandler implements Seria
 
 	public void toData(DataOutputStream output) throws Exception
 	{
-		SerializableDataHelper.toData(output, this);
+		ru.ancientempires.serializable.SerializableDataHelper.toData(output, this);
 	}
 
 	public AbstractPoint fromData(DataInputStream input, LoaderInfo info) throws Exception

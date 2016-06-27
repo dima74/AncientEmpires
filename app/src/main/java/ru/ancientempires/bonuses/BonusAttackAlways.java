@@ -43,7 +43,7 @@ public class BonusAttackAlways extends Bonus
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("bonusAttack", bonusAttack);

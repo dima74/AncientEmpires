@@ -32,7 +32,7 @@ public class BonusMoveToCellGroup extends Bonus
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("group", group.getNumber());

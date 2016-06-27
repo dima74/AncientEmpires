@@ -20,7 +20,7 @@ public abstract class TaskFrom extends Task
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);

@@ -40,7 +40,7 @@ public class ScriptCellAttackPartTwo extends ScriptFrom
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		return object;

@@ -31,7 +31,7 @@ public class Bounds extends AbstractBounds
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("iMin", iMin);

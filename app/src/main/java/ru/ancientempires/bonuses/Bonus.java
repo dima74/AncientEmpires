@@ -10,7 +10,6 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
 public abstract class Bonus implements SerializableJson
@@ -59,9 +58,9 @@ public abstract class Bonus implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
-		JsonObject object = SerializableJsonHelper.toJson(this);
+		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 

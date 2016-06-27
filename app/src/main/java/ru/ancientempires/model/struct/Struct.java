@@ -9,7 +9,6 @@ import org.atteo.classindex.IndexSubclasses;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
 public abstract class Struct implements SerializableJson
@@ -33,9 +32,9 @@ public abstract class Struct implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
-		JsonObject object = SerializableJsonHelper.toJson(this);
+		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 

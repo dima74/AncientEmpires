@@ -16,7 +16,7 @@ public interface SerializableJson
 			у сложных сначала надо найти класс по свойству type Json-объекта
 	*/
 
-	JsonObject toJson() throws Exception;
+	JsonObject toJson();
 
 	Object fromJson(JsonObject element, LoaderInfo info) throws Exception;
 	

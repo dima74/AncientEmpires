@@ -78,7 +78,7 @@ public class Player implements SerializableJson, Numbered
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("color", color.name());
@@ -86,8 +86,6 @@ public class Player implements SerializableJson, Numbered
 		object.addProperty("team", team.getNumber());
 		object.addProperty("gold", gold);
 		object.addProperty("unitsLimit", unitsLimit);
-		//object.addProperty("cursorI", cursorI);
-		//object.addProperty("cursorJ", cursorJ);
 		return object;
 	}
 
@@ -98,8 +96,6 @@ public class Player implements SerializableJson, Numbered
 		team = Team.newInstance(object.get("team").getAsInt(), info);
 		gold = object.get("gold").getAsInt();
 		unitsLimit = object.get("unitsLimit").getAsInt();
-		//cursorI = object.get("cursorI").getAsInt();
-		//cursorJ = object.get("cursorJ").getAsInt();
 		return this;
 	}
 

@@ -75,7 +75,12 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 
 	public CtBlock createMethod(CtClass ctClass, String name, Class returnType, Object... parametrs)
 	{
-		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, parametrs);
+		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, true, parametrs);
+	}
+
+	public CtBlock createMethodNoExcept(CtClass ctClass, String name, Class returnType, Object... parametrs)
+	{
+		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, false, parametrs);
 	}
 
 	public CtBlock createMethodStatic(CtClass ctClass, String name, Class returnType, Object... parametrs)
@@ -83,27 +88,21 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 		return createMethod(ctClass, new ModifierKind[] {
 				ModifierKind.PUBLIC,
 				ModifierKind.STATIC
-		}, name, returnType, parametrs);
+		}, name, returnType, true, parametrs);
 	}
 
-	public CtBlock createMethod(CtClass ctClass, ModifierKind[] modifiers, String name, Class returnType, Object... parametrs)
+	public CtBlock createMethod(CtClass ctClass, ModifierKind[] modifiers, String name, Class returnType, boolean exception, Object... parameters)
 	{
-		/*
-		MyAssert.a(ctClass.getMethodsByName(name).size() <= 1);
-		if (!ctClass.getMethodsByName(name).isEmpty())
-			ctClass.removeMethod((CtMethod) ctClass.getMethodsByName(name).get(0));
-		*/
-
 		Set<ModifierKind> modifiersPublic = new HashSet<>(Arrays.asList(modifiers));
 		CtTypeReference ctReturnType = getFactory().Type().createReference(returnType);
-		HashSet<CtTypeReference<? extends Throwable>> thrownTypes = new HashSet<>(Arrays.asList(getFactory().Type().createReference(Exception.class)));
+		HashSet<CtTypeReference<? extends Throwable>> thrownTypes = exception ? new HashSet<>(Arrays.asList(getFactory().Type().createReference(Exception.class))) : new HashSet<>();
 
-		assert parametrs.length % 2 == 0;
+		assert parameters.length % 2 == 0;
 		ArrayList<CtParameter<?>> ctParameters = new ArrayList<>();
-		for (int i = 0; i < parametrs.length; i += 2)
+		for (int i = 0; i < parameters.length; i += 2)
 		{
-			Class parametrClass = (Class) parametrs[i];
-			String parametrName = (String) parametrs[i + 1];
+			Class parametrClass = (Class) parameters[i];
+			String parametrName = (String) parameters[i + 1];
 			ctParameters.add(getFactory().Method().createParameter(null, getFactory().Type().createReference(parametrClass), parametrName));
 		}
 

@@ -14,7 +14,6 @@ import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Numbered;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
 public abstract class Script extends AbstractGameHandler implements SerializableJson, Numbered
@@ -96,10 +95,10 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
-		JsonObject object = SerializableJsonHelper.toJson(this);
-		object.add("previous", SerializableJsonHelper.toJsonArrayNumbered(previous));
+		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
+		object.add("previous", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArrayNumbered(previous));
 		return object;
 	}
 

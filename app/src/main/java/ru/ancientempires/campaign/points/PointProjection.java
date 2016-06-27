@@ -37,7 +37,7 @@ public class PointProjection extends PointFrom
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("projection", projection.name());

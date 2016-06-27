@@ -28,7 +28,7 @@ public abstract class TaskUnitWithValue extends Task
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("unit", game.numberedUnits.add(unit));

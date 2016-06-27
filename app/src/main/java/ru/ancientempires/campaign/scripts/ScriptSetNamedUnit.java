@@ -33,7 +33,7 @@ public class ScriptSetNamedUnit extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);

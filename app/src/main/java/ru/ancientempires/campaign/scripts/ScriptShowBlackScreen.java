@@ -22,7 +22,7 @@ public class ScriptShowBlackScreen extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		return object;

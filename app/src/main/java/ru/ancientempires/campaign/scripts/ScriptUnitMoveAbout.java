@@ -67,7 +67,7 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		return object;

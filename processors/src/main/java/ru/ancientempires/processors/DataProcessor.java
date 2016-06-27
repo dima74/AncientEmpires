@@ -55,7 +55,7 @@ public class DataProcessor extends MyAbstractManualProcessor
 	{
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethod(ctClass, "toData", void.class, DataOutputStream.class, "output");
-		String firstStatement = base ? "SerializableDataHelper.toData(output, this)" : "super.toData(output)";
+		String firstStatement = base ? "ru.ancientempires.serializable.SerializableDataHelper.toData(output, this)" : "super.toData(output)";
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(firstStatement));
 		for (Field field : actualClass.getDeclaredFields())
 			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()) && !field.getName().equals("result"))
@@ -72,7 +72,7 @@ public class DataProcessor extends MyAbstractManualProcessor
 				else if (Numbered.class.isAssignableFrom(fieldType))
 					statement = String.format("output.writeInt(%s.getNumber())", fieldName);
 				else if (fieldType == boolean[].class)
-					statement = String.format("SerializableDataHelper.toDataArray(output, %s)", fieldName);
+					statement = String.format("ru.ancientempires.serializable.SerializableDataHelper.toDataArray(output, %s)", fieldName);
 				else
 				{
 					MyAssert.a(SerializableData.class.isAssignableFrom(fieldType));
@@ -105,7 +105,7 @@ public class DataProcessor extends MyAbstractManualProcessor
 				else if (Numbered.class.isAssignableFrom(fieldType))
 					statement = String.format("%s = %s.newInstance(input.readInt(), info)", fieldName, fieldTypeName);
 				else if (fieldType == boolean[].class)
-					statement = String.format("%s = SerializableDataHelper.fromDataArrayBoolean(input)", fieldName);
+					statement = String.format("%s = ru.ancientempires.serializable.SerializableDataHelper.fromDataArrayBoolean(input)", fieldName);
 				else
 					statement = String.format("%s = info.fromData(input, %s.class)", fieldName, fieldTypeName);
 				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));

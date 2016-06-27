@@ -34,7 +34,7 @@ public class ScriptSetNamedPointFromUnit extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("pointName", pointName);

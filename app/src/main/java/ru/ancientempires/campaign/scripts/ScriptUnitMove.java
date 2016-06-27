@@ -8,7 +8,6 @@ import ru.ancientempires.actions.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.MyNullable;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class ScriptUnitMove extends Script
 {
@@ -109,12 +108,12 @@ public class ScriptUnitMove extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
-		object.add("points", SerializableJsonHelper.toJsonArray(points));
+		object.add("points", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(points));
 		if (handlers != null)
-			object.add("handlers", SerializableJsonHelper.toJsonArrayNumbered(handlers));
+			object.add("handlers", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArrayNumbered(handlers));
 		object.addProperty("makeSmoke", makeSmoke);
 		return object;
 	}

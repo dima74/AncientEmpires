@@ -26,7 +26,7 @@ public class ConditionNamedBoolean extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("name", name);

@@ -46,7 +46,7 @@ public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());

@@ -37,7 +37,7 @@ public class PointInteger extends AbstractPoint
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);

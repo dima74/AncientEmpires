@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class ConditionUnitIntoBounds extends Condition
 {
@@ -35,11 +34,11 @@ public class ConditionUnitIntoBounds extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());
-		object.add("bounds", SerializableJsonHelper.toJsonArray(bounds));
+		object.add("bounds", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bounds));
 		return object;
 	}
 

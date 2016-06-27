@@ -50,7 +50,7 @@ public class ScriptUnitCreateAndMove extends ScriptUnitMove
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("unitType", unitType.getName());

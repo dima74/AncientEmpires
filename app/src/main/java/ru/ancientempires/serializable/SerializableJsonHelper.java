@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class SerializableJsonHelper
 {
 
-	public static JsonObject toJson(SerializableJson object) throws Exception
+	public static JsonObject toJson(SerializableJson object)
 	{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("type", SerializableHelper.saveMap.get(object.getClass()).index);
@@ -16,7 +16,7 @@ public class SerializableJsonHelper
 		return jsonObject;
 	}
 
-	public static <T extends SerializableJson> JsonArray toJsonArray(Iterable<T> array) throws Exception
+	public static <T extends SerializableJson> JsonArray toJsonArray(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
 		for (SerializableJson object : array)
@@ -24,12 +24,12 @@ public class SerializableJsonHelper
 		return jsonArray;
 	}
 
-	public static <T extends SerializableJson> JsonArray toJsonArray(T[] array) throws Exception
+	public static <T extends SerializableJson> JsonArray toJsonArray(T[] array)
 	{
 		return toJsonArray(Arrays.asList(array));
 	}
 
-	public static <T extends Named> JsonArray toJsonArrayNamed(Iterable<T> array) throws Exception
+	public static <T extends Named> JsonArray toJsonArrayNamed(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
 		for (Named object : array)
@@ -37,12 +37,12 @@ public class SerializableJsonHelper
 		return jsonArray;
 	}
 
-	public static <T extends Named> JsonArray toJsonArrayNamed(T[] array) throws Exception
+	public static <T extends Named> JsonArray toJsonArrayNamed(T[] array)
 	{
 		return toJsonArrayNamed(Arrays.asList(array));
 	}
 
-	public static <T extends Numbered> JsonArray toJsonArrayNumbered(Iterable<T> array) throws Exception
+	public static <T extends Numbered> JsonArray toJsonArrayNumbered(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
 		for (Numbered object : array)
@@ -50,7 +50,7 @@ public class SerializableJsonHelper
 		return jsonArray;
 	}
 
-	public static <T extends Numbered> JsonArray toJsonArrayNumbered(T[] array) throws Exception
+	public static <T extends Numbered> JsonArray toJsonArrayNumbered(T[] array)
 	{
 		return toJsonArrayNumbered(Arrays.asList(array));
 	}

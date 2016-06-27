@@ -29,7 +29,7 @@ public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.add("point", point.toJson());

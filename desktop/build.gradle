@@ -36,6 +36,6 @@ apply plugin: 'spoon'
 spoon {
 	processors = ['ru.ancientempires.processors.JsonProcessor',
 	              'ru.ancientempires.processors.DataProcessor']
-	compileOriginalSources true
+	//compileOriginalSources true
 }
 //*/

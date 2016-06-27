@@ -37,7 +37,7 @@ public class PointOffset extends PointFrom
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("offsetI", offsetI);

@@ -37,7 +37,7 @@ public class ConditionUnitNumber extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());

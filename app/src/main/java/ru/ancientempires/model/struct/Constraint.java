@@ -32,7 +32,7 @@ public class Constraint implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("di", di);
@@ -53,7 +53,7 @@ public class Constraint implements SerializableJson
 	{
 		Constraint[] array = new Constraint[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
-			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Constraint.class);
+			array[i] = new Constraint().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
 

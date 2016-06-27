@@ -14,7 +14,6 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.LoaderInfo;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class StructCitadel extends Struct
 {
@@ -111,12 +110,12 @@ public class StructCitadel extends Struct
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("crystalType", crystalType.getName());
 		object.addProperty("crystalsRequired", crystalsRequired);
-		object.add("constraints", SerializableJsonHelper.toJsonArray(constraints));
+		object.add("constraints", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(constraints));
 		return object;
 	}
 

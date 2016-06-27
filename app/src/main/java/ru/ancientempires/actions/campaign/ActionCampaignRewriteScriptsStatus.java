@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import ru.ancientempires.actions.Action;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.serializable.LoaderInfo;
-import ru.ancientempires.serializable.SerializableDataHelper;
 
 public class ActionCampaignRewriteScriptsStatus extends Action
 {
@@ -46,15 +45,15 @@ public class ActionCampaignRewriteScriptsStatus extends Action
 	public void toData(DataOutputStream output) throws Exception
 	{
 		super.toData(output);
-		SerializableDataHelper.toDataArray(output, isStarting);
-		SerializableDataHelper.toDataArray(output, isFinishing);
+		ru.ancientempires.serializable.SerializableDataHelper.toDataArray(output, isStarting);
+		ru.ancientempires.serializable.SerializableDataHelper.toDataArray(output, isFinishing);
 	}
 
 	public ActionCampaignRewriteScriptsStatus fromData(DataInputStream input, LoaderInfo info) throws Exception
 	{
 		super.fromData(input, info);
-		isStarting = SerializableDataHelper.fromDataArrayBoolean(input);
-		isFinishing = SerializableDataHelper.fromDataArrayBoolean(input);
+		isStarting = ru.ancientempires.serializable.SerializableDataHelper.fromDataArrayBoolean(input);
+		isFinishing = ru.ancientempires.serializable.SerializableDataHelper.fromDataArrayBoolean(input);
 		return this;
 	}
 

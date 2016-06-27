@@ -7,7 +7,6 @@ import org.atteo.classindex.IndexSubclasses;
 
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 @IndexSubclasses
 public abstract class AbstractBounds implements SerializableJson
@@ -18,9 +17,9 @@ public abstract class AbstractBounds implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
-		JsonObject object = SerializableJsonHelper.toJson(this);
+		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 

@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import ru.ancientempires.Localization;
-import ru.ancientempires.actions.ActionCellBuy;
-import ru.ancientempires.actions.ActionUnitMove;
 import ru.ancientempires.actions.Checker;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
@@ -19,7 +17,6 @@ import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.OnlyIf;
 import ru.ancientempires.serializable.SerializableJson;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 import ru.ancientempires.serializable.WithNamed;
 
 @WithNamed("namedUnits")
@@ -403,7 +400,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("type", type.getName());
@@ -417,8 +414,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			object.addProperty("numberBuys", numberBuys);
 		object.addProperty("isMove", isMove);
 		object.addProperty("isTurn", isTurn);
-		//проверить!!! Через new ActionCellBuy(WISP), new ActionUnitMove(...)
-		object.add("bonuses", SerializableJsonHelper.toJsonArray(bonuses));
+		object.add("bonuses", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bonuses));
 		object.add("names", game.namedUnits.toJsonPart(this));
 		return object;
 	}
@@ -446,7 +442,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	{
 		Unit[] array = new Unit[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
-			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Unit.class);
+			array[i] = new Unit().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
 

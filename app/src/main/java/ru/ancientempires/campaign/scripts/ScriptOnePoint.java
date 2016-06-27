@@ -31,7 +31,7 @@ public abstract class ScriptOnePoint extends AbstractScriptOnePoint
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.add("point", point.toJson());

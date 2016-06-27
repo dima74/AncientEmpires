@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.struct.StructInfo;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
@@ -33,6 +34,12 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	public int        specialization;
 	@MyNullable
 	public StructInfo structInfo;
+
+	// Чтобы компилировался Cell.fromJsonArray, хотя он не используется
+	public Cell()
+	{
+		MyAssert.a(false);
+	}
 
 	// Для редактора карт
 	public Cell(Game game, CellType type)
@@ -128,7 +135,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("i", i);
@@ -156,7 +163,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	{
 		Cell[] array = new Cell[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
-			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Cell.class);
+			array[i] = new Cell().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
 

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import com.google.gson.JsonObject;
 
-import ru.ancientempires.client.Client;
 import ru.ancientempires.serializable.BitmapPath;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
@@ -41,7 +40,7 @@ public class ScriptDialogIntro extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("text", text);
@@ -54,7 +53,7 @@ public class ScriptDialogIntro extends Script
 		super.fromJson(object, info);
 		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
 		imagePath = object.get("imagePath").getAsString();
-		image = Client.client.imagesLoader.loadImage(imagePath);
+		image = ru.ancientempires.client.Client.client.imagesLoader.loadImage(imagePath);
 		return this;
 	}
 

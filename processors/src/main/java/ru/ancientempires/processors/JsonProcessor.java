@@ -112,9 +112,9 @@ public class JsonProcessor extends MyAbstractManualProcessor
 	public void createToJson(CtClass ctClass, boolean simple, boolean base) throws Exception
 	{
 		Class actualClass = ctClass.getActualClass();
-		CtBlock ctBlock = createMethod(ctClass, "toJson", JsonObject.class);
+		CtBlock ctBlock = createMethodNoExcept(ctClass, "toJson", JsonObject.class);
 
-		String firstStatement = String.format("JsonObject object = %s", simple ? "new JsonObject()" : base ? "SerializableJsonHelper.toJson(this)" : "super.toJson()");
+		String firstStatement = String.format("JsonObject object = %s", simple ? "new JsonObject()" : base ? "ru.ancientempires.serializable.SerializableJsonHelper.toJson(this)" : "super.toJson()");
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(firstStatement));
 
 		for (Field field : actualClass.getDeclaredFields())
@@ -142,11 +142,11 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				else if (Numbered.class.isAssignableFrom(fieldType))
 					statement = String.format("object.addProperty(\"%s\", %s.getNumber())", fieldName, fieldName);
 				else if (componentType != null && Named.class.isAssignableFrom(componentType))
-					statement = String.format("object.add(\"%s\", SerializableJsonHelper.toJsonArrayNamed(%s))", fieldName, fieldName);
+					statement = String.format("object.add(\"%s\", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArrayNamed(%s))", fieldName, fieldName);
 				else if (componentType != null && Numbered.class.isAssignableFrom(componentType))
-					statement = String.format("object.add(\"%s\", SerializableJsonHelper.toJsonArrayNumbered(%s))", fieldName, fieldName);
+					statement = String.format("object.add(\"%s\", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArrayNumbered(%s))", fieldName, fieldName);
 				else if (componentType != null)
-					statement = String.format("object.add(\"%s\", SerializableJsonHelper.toJsonArray(%s))", fieldName, fieldName);
+					statement = String.format("object.add(\"%s\", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(%s))", fieldName, fieldName);
 				else
 					statement = String.format("object.add(\"%s\", %s.toJson())", fieldName, fieldName);
 
@@ -191,7 +191,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				{
 					statement = String.format("%s = object.get(\"%s\").getAs%s()", fieldName, fieldName, classToSuffix.get(fieldType));
 					if (field.getAnnotation(BitmapPath.class) != null)
-						statement += String.format(";\n\timage = Client.client.imagesLoader.loadImage(%s)", fieldName);
+						statement += String.format(";\n\timage = ru.ancientempires.client.Client.client.imagesLoader.loadImage(%s)", fieldName);
 				}
 				else if (fieldType.isEnum())
 					statement = String.format("%s = %s.valueOf(object.get(\"%s\").getAsString())", fieldName, fieldTypeName, fieldName);

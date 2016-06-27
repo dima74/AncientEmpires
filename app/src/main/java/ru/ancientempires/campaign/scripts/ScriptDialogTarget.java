@@ -35,7 +35,7 @@ public class ScriptDialogTarget extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
 		object.addProperty("textTitle", textTitle);

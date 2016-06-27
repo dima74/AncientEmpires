@@ -14,7 +14,6 @@ import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableData;
-import ru.ancientempires.serializable.SerializableDataHelper;
 
 @IndexSubclasses
 public abstract class Action extends AbstractGameHandler implements SerializableData
@@ -133,7 +132,7 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 
 	public void toData(DataOutputStream output) throws Exception
 	{
-		SerializableDataHelper.toData(output, this);
+		ru.ancientempires.serializable.SerializableDataHelper.toData(output, this);
 	}
 
 	public Action fromData(DataInputStream input, LoaderInfo info) throws Exception

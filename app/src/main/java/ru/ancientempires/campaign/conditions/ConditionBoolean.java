@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.serializable.LoaderInfo;
-import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public abstract class ConditionBoolean extends Condition
 {
@@ -28,10 +27,10 @@ public abstract class ConditionBoolean extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = super.toJson();
-		object.add("scripts", SerializableJsonHelper.toJsonArrayNumbered(scripts));
+		object.add("scripts", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArrayNumbered(scripts));
 		return object;
 	}
 
