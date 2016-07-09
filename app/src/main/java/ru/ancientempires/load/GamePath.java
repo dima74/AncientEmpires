@@ -99,7 +99,6 @@ public class GamePath
 
 	public void enterCampaign()
 	{
-		boolean d = isInCampaign;
 		MyAssert.a(!isInCampaign);
 		MyAssert.a(indexActionDisableActiveGame == -1);
 		MyAssert.a(sizeBeforeActionDisableActiveGame == -1);
@@ -234,7 +233,7 @@ public class GamePath
 		if (isInCampaign)
 		{
 			numberActions = indexActionDisableActiveGame;
-			FileOutputStream fos = loader.openFOS(ACTIONS);
+			FileOutputStream fos = loader.openFOS(ACTIONS, true);
 			fos.getChannel().truncate(sizeBeforeActionDisableActiveGame);
 			fos.close();
 		}

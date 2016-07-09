@@ -87,10 +87,4 @@ public class SerializableHelper
 		return subclasses.toArray(new Class<?>[subclasses.size()]);
 	}
 
-	public static boolean equals(SerializableJson s0, SerializableJson s1)
-	{
-		//return s0.toJson().equals(s1.toJson());
-		return false;
-	}
-	
 }

@@ -55,4 +55,14 @@ public class SerializableJsonHelper
 		return toJsonArrayNumbered(Arrays.asList(array));
 	}
 
+	public static boolean equals(SerializableJson a, SerializableJson b)
+	{
+		return a.toJson().equals(b.toJson());
+	}
+
+	public static int hashCode(SerializableJson o)
+	{
+		return o.toJson().hashCode();
+	}
+
 }
