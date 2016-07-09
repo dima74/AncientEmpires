@@ -97,7 +97,10 @@ public class RulesLoader
 			context.deserialize(object.get("unitTypes"), UnitType[].class);
 			context.deserialize(object.get("cellGroups"), CellGroup[].class);
 			context.deserialize(object.get("cellTypes"), CellType[].class);
-			
+
+			rules.defaultGame = (JsonObject) object.get("defaultGame");
+			rules.defaultPlayer = (JsonObject) object.get("defaultPlayer");
+			rules.defaultPlayerComputer = (JsonObject) object.get("defaultPlayerComputer");
 			return rules;
 		}
 	}

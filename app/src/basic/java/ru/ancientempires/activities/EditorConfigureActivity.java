@@ -85,8 +85,6 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 			{
 				moveTo(EditorActivity.class, new Intent().putExtra(Extras.GAME_ID, gameID));
 			}
-
-			;
 		}.start();
 	}
 	
@@ -98,9 +96,10 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		int w = getIntValue(R.id.textWidthEdit);
 		
 		MyAssert.a(Client.client.rules != null);
+		// TODO new Game().fromJson(rules.defaultGame)
 		Game game = new Game(Client.client.rules)
 				.setSize(h, w)
-				.setNumberPlayers(4, 20);
+				.setNumberPlayers(4);
 		game.campaign.isDefault = true;
 		
 		gameID = "user." + Client.client.user.numberGames;

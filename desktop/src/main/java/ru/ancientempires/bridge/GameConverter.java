@@ -168,15 +168,16 @@ public class GameConverter
 		int numberPlayers = 2;
 		for (int iPlayer : unitPlayerBaseIs)
 			numberPlayers = Math.max(numberPlayers, iPlayer + 1);
-		game.setNumberPlayers(numberPlayers, 20);
+		game.setNumberPlayers(numberPlayers);
 
 		Player[] players = game.players;
+		/*
 		for (Player player : game.players)
 		{
 			int playerI = player.ordinal;
 			player.color = playerI == 0 ? MyColor.BLUE : playerI == 1 ? MyColor.RED : playerI == 2 ? MyColor.GREEN : MyColor.BLACK;
-			player.gold = isCampaign ? money[iMission][playerI] : 2000;
-		}
+			player.gold = isCampaign ? money[iMission][playerI] : null;
+		}*/
 		
 		for (int i = 0; i < numberUnits; i++)
 		{
@@ -207,13 +208,12 @@ public class GameConverter
 		{
 			game.players[0].type = PlayerType.PLAYER;
 			game.players[1].type = PlayerType.COMPUTER;
-		}
-		else
-		{
-			for (Player player : game.players)
-				player.type = PlayerType.PLAYER;
-			if (game.players.length == 2)
-				game.players[1].type = PlayerType.COMPUTER;
+			game.players[0].unitsLimit = -1;
+			game.players[1].unitsLimit = -1;
+			game.players[0].color = MyColor.BLUE;
+			game.players[1].color = MyColor.RED;
+			game.players[0].gold = money[iMission][0];
+			game.players[1].gold = money[iMission][1];
 		}
 		game.allowedUnits = isCampaign ? new int[]
 				{
@@ -225,7 +225,7 @@ public class GameConverter
 						8,
 						9,
 						9
-				}[iMission] : -1;
+				}[iMission] : null;
 
 		if (!isCampaign && iMission == 5 && false)
 		{

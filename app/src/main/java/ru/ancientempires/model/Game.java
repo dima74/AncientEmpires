@@ -27,12 +27,15 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.rules.Rules;
+import ru.ancientempires.serializable.DontGenerate;
 import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 import ru.ancientempires.tasks.Task;
 
 // Этот класс описывает снимок игры, кроме поля path, которое относится к сохранению
-public class Game
+@DontGenerate
+public class Game implements SerializableJson
 {
 	
 	// для отладки в ИИ
@@ -54,7 +57,7 @@ public class Game
 	public NumberedObjects<Unit>       numberedUnits   = new NumberedObjects<>();
 	public NumberedObjects<Bonus>      numberedBonuses = new NumberedObjects<>();
 
-	public Random random = new Random();
+	public Random random;
 
 	public Game(Rules rules)
 	{
@@ -101,14 +104,6 @@ public class Game
 		return this;
 	}
 
-	public Game setNumberPlayers(int number, int unitsLimit)
-	{
-		setNumberPlayers(number);
-		for (Player player : players)
-			player.unitsLimit = unitsLimit;
-		return this;
-	}
-
 	public Game setNumberPlayers(int number)
 	{
 		players = new Player[number];
@@ -117,16 +112,8 @@ public class Game
 		{
 			players[i] = new Player();
 			players[i].ordinal = i;
-			players[i].color = MyColor.playersColors()[i];
-			players[i].type = PlayerType.PLAYER;
 			players[i].units = new ArrayList<>();
-
-			teams[i] = new Team();
-			teams[i].ordinal = i;
-			teams[i].players = new Player[] {players[i]};
-			players[i].team = teams[i];
 		}
-		currentPlayer = players[0];
 
 		unitsStaticDead = new ArrayList[number];
 		for (int i = 0; i < unitsStaticDead.length; i++)
@@ -138,10 +125,7 @@ public class Game
 	{
 		teams = new Team[number];
 		for (int i = 0; i < teams.length; i++)
-		{
-			teams[i] = new Team();
-			teams[i].ordinal = i;
-		}
+			teams[i] = new Team(i);
 	}
 	
 	public long getSeed()
@@ -181,7 +165,7 @@ public class Game
 	public HashSet<Unit> unitsOutside = new HashSet<>();
 	public Unit[][]          fieldUnitsDead;
 	public ArrayList<Unit>[] unitsStaticDead;
-	public int               allowedUnits;
+	public Integer           allowedUnits;
 
 	// если на одной клетке стоят два война, то это задний
 	public Unit floatingUnit;
@@ -198,7 +182,7 @@ public class Game
 		return checkFloating() || unit != floatingUnit && unit.i == floatingUnit.i && unit.j == floatingUnit.j;
 	}
 	
-	public int currentTurn;
+	public Integer currentTurn;
 	public HashMap<Integer, ArrayList<Task>> tasks = new HashMap<>();
 
 	@Override
@@ -408,20 +392,22 @@ public class Game
 		return s + " " + path.gameID;
 	}
 
-	public String toJsonPretty() throws Exception
+	public String toJsonPretty()
 	{
 		return new GsonBuilder().setPrettyPrinting().create().toJson(toJson());
 	}
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("h", h);
 		object.addProperty("w", w);
-		object.addProperty("currentPlayer", currentPlayer.color.name());
+		if (currentPlayer != null)
+			object.addProperty("currentPlayer", currentPlayer.color.name());
 		object.addProperty("currentTurn", currentTurn);
 		object.addProperty("allowedUnits", allowedUnits);
-		object.addProperty("seed", getSeed());
+		if (random != null)
+			object.addProperty("seed", getSeed());
 
 		// tasks
 		// задачи должны быть первыми, так как они (возможно) добавят войнов и бонусов в numbered*
@@ -442,7 +428,8 @@ public class Game
 		object.add("namedPoints", namedPoints.toJson());
 
 		// players
-		object.add("players", SerializableJsonHelper.toJsonArray(players));
+		if (players != null)
+			object.add("players", SerializableJsonHelper.toJsonArray(players));
 
 		// cells types
 		JsonArray mapArray = new JsonArray();
@@ -476,21 +463,27 @@ public class Game
 		if (campaign.scripts != null /* для PlayersConfigureActivity */ && (!path.isBaseGame || !campaign.isDefault))
 			object.add("campaignState", campaign.toJsonState());
 
-		return object;
+		return SerializableJsonHelper.eraseNulls(object);
 	}
 
 	public Game fromJson(JsonObject object) throws Exception
 	{
-		LoaderInfo info = getLoaderInfo();
+		return fromJson(object, getLoaderInfo());
+	}
+
+	public Game fromJson(JsonObject object, LoaderInfo info) throws Exception
+	{
+		SerializableJsonHelper.insertDefaults(object, rules.defaultGame);
 
 		h = object.get("h").getAsInt();
 		w = object.get("w").getAsInt();
 		currentTurn = object.get("currentTurn").getAsInt();
 		allowedUnits = object.get("allowedUnits").getAsInt();
-		long seed = object.get("seed").getAsLong();
-		random = new Random(seed);
+		if (object.has("seed"))
+			random = new Random(object.get("seed").getAsLong());
 		if (path.isBaseGame)
 			random = new Random();
+		MyAssert.a(random != null);
 
 		namedBooleans.objects = new Gson().fromJson(object.get("namedBooleans"), new TypeToken<HashMap<String, Boolean>>() {}.getType());
 		namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
@@ -498,13 +491,11 @@ public class Game
 		// teams
 		teams = new Team[path.numberPlayers];
 		for (int i = 0; i < teams.length; i++)
-		{
-			teams[i] = new Team();
-			teams[i].ordinal = i;
-		}
+			teams[i] = new Team(i);
 
 		// players
-		players = Player.fromJsonArray((JsonArray) object.get("players"), info);
+		JsonArray playersJson = SerializableJsonHelper.insertDefaults((JsonArray) object.get("players"), rules.getDefaultsPlayers(path.numberPlayers));
+		players = Player.fromJsonArray(playersJson, info);
 		for (int i = 0; i < players.length; i++)
 		{
 			players[i].units = new ArrayList<>();

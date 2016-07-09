@@ -77,6 +77,10 @@ public class RulesSaver
 			result.add("unitTypes", context.serialize(rules.unitTypes));
 			result.add("cellGroups", context.serialize(rules.cellGroups));
 			result.add("cellTypes", context.serialize(rules.cellTypes));
+
+			result.add("defaultGame", rules.defaultGame);
+			result.add("defaultPlayer", rules.defaultPlayer);
+			result.add("defaultPlayerComputer", rules.defaultPlayerComputer);
 			return result;
 		}
 	}

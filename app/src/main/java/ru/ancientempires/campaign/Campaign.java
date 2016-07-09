@@ -144,7 +144,7 @@ public class Campaign
 		input.close();
 	}
 	
-	public JsonArray toJsonState() throws Exception
+	public JsonArray toJsonState()
 	{
 		JsonArray array = new JsonArray();
 		for (Script script : scripts)

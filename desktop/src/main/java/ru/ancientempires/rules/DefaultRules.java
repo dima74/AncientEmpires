@@ -1,5 +1,7 @@
 package ru.ancientempires.rules;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,9 +22,13 @@ import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellTemplate;
 import ru.ancientempires.model.CellTemplateType;
 import ru.ancientempires.model.CellType;
+import ru.ancientempires.model.Player;
+import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.model.Range;
+import ru.ancientempires.model.Team;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.model.struct.StructCitadel;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class DefaultRules
 {
@@ -44,11 +50,11 @@ public class DefaultRules
 		// printAll();
 		// printGroup("way", "way");
 		// printGroup("water", "water");
-		
+
 		rules.name = "DEFAULT";
 		rules.version = "1.0";
 		rules.author = "Macrospace";
-		
+
 		rules.preInitUnitTypes(unitTypes);
 		rules.preInitCellTypes(cellTypes);
 		rules.preInitCellGroups(cellGroups);
@@ -59,10 +65,12 @@ public class DefaultRules
 		createUnitTypes();
 		createCellGroups();
 		createCellTypes();
+		createDefaultGame();
+		createDefaultPlayers();
 		
 		return rules;
 	}
-	
+
 	public String[] ranges = new String[]
 			{
 					"EMPTY",
@@ -535,8 +543,9 @@ public class DefaultRules
 
 		way.template = new CellTemplate(CellTemplateType.WAY, way,
 				water_way_horizontal,
-				water_way_vertical)
-				.setFriendsUp(castle, temple);
+				water_way_vertical,
+				castle)
+				.setFriendsUp(temple);
 	}
 	
 	public UnitType[] getUnitTypes(String... names)
@@ -560,5 +569,35 @@ public class DefaultRules
 		defaultCellType.destroyingType = null;
 		defaultCellType.repairType = null;
 	}
-	
+
+	private void createDefaultGame()
+	{
+		JsonObject object = new JsonObject();
+		object.addProperty("currentTurn", 0);
+		object.addProperty("allowedUnits", -1);
+		object.addProperty("currentPlayer", "BLUE");
+		rules.defaultGame = object;
+	}
+
+	private void createDefaultPlayers()
+	{
+		String[] keys = {
+				"gold",
+				"unitsLimit",
+				"type"
+		};
+
+		Player player = new Player();
+		player.color = MyColor.BLUE;
+		player.team = new Team(0);
+		player.gold = 2000;
+		player.unitsLimit = 20;
+
+		player.type = PlayerType.PLAYER;
+		rules.defaultPlayer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
+
+		player.type = PlayerType.COMPUTER;
+		rules.defaultPlayerComputer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
+	}
+
 }

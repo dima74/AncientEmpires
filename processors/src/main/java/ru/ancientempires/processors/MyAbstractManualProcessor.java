@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import ru.ancientempires.serializable.DontGenerate;
 import spoon.processing.AbstractManualProcessor;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.declaration.CtClass;
@@ -37,6 +38,7 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 		indexesClasses.remove(interfaceClass);
 
 		serializableClasses.remove(interfaceClass);
+		serializableClasses.removeIf(c -> c.getAnnotation(DontGenerate.class) != null);
 		//serializableClasses.removeAll(indexesClasses);
 
 		for (Class indexesClass : indexesClasses)

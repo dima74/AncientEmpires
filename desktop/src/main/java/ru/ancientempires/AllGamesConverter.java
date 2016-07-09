@@ -147,7 +147,7 @@ public class AllGamesConverter
 	{
 		Game game = new Game(rules)
 				.setSize(7, 7)
-				.setNumberPlayers(2, 20);
+				.setNumberPlayers(2);
 		
 		Player p0 = game.players[0];
 		Player p1 = game.players[1];

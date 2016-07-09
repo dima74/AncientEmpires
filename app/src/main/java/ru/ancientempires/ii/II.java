@@ -73,7 +73,7 @@ public class II extends GameHandler
 		{
 			mainGame.saver.waitSave();
 			setGame(mainGame.path.loadGame(false));
-			MyAssert.a(game.equals(mainGame));
+			MyAssert.a(game, mainGame);
 			mainGame.equals(game);
 			
 			/*

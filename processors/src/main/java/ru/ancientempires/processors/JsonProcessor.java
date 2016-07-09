@@ -13,10 +13,12 @@ import java.util.HashSet;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.AbstractGameHandler;
 import ru.ancientempires.serializable.BitmapPath;
+import ru.ancientempires.serializable.EraseNulls;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Localize;
 import ru.ancientempires.serializable.MyNullable;
+import ru.ancientempires.serializable.MyNullableTo;
 import ru.ancientempires.serializable.Named;
 import ru.ancientempires.serializable.Numbered;
 import ru.ancientempires.serializable.OnlyIf;
@@ -150,7 +152,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				else
 					statement = String.format("object.add(\"%s\", %s.toJson())", fieldName, fieldName);
 
-				if (field.getAnnotation(MyNullable.class) != null)
+				if (field.getAnnotation(MyNullable.class) != null || field.getAnnotation(MyNullableTo.class) != null)
 					statement = String.format("if (%s != null)\n\t\t%s", fieldName, statement);
 				else if (field.getAnnotation(OnlyIf.class) != null)
 					statement = String.format("if (%s())\n\t\t%s", field.getAnnotation(OnlyIf.class).value(), statement);
@@ -163,6 +165,8 @@ public class JsonProcessor extends MyAbstractManualProcessor
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("object.add(\"names\", game.%s.toJsonPart(this))", annotation.value())));
 		}
+		if (ctClass.getAnnotation(EraseNulls.class) != null)
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("ru.ancientempires.serializable.SerializableJsonHelper.eraseNulls(object)"));
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return object"));
 	}
 

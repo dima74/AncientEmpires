@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.Scanner;
 
 import ru.ancientempires.actions.Action;
@@ -197,7 +196,6 @@ public class GamePath
 					screenCenters[i] = new PointScreenCenter(centerI, centerJ);
 				}
 		game.path = this;
-		game.random = new Random(gameID.hashCode());
 	}
 
 	public Rules getRules()
@@ -285,7 +283,7 @@ public class GamePath
 		{
 			numberActions = scanner.nextInt();
 			sizeActions = scanner.nextInt();
-			snapshot = scanner.nextLine();
+			snapshot = scanner.nextLine().trim();
 		}
 		
 		public Game getGame(String players) throws Exception
@@ -332,14 +330,11 @@ public class GamePath
 		return loadGame(numberActions, loadCampaign, players);
 	}
 
+	public static int t;
+
 	public Game loadGame(int numberActions, boolean loadCampaign, String players) throws Exception
 	{
-		SnapshotNote note = new SnapshotNote(this, LAST_SNAPSHOT);
-		if (note.numberActions > numberActions)
-			for (SnapshotNote noteMaybe : SnapshotNote.get(this, SNAPSHOTS))
-				if (noteMaybe.numberActions <= numberActions)
-					note = noteMaybe;
-
+		SnapshotNote note = getNoteBefore(numberActions);
 		Game game = note.getGame(players);
 		if (loadCampaign)
 		{
@@ -360,11 +355,12 @@ public class GamePath
 			ArrayList<Action> actions = new ArrayList<>();
 			for (int i = note.numberActions; i < numberActions; i++)
 			{
+				t = i;
 				Action action = game.getLoaderInfo().fromData(dis, Action.class);
 				actions.add(action);
 				action.checkBase(game);
 				action.performQuickBase(game);
-				int c = 2;
+				int c = 100;
 				if (loadCampaign && i == numberActions - c && (numberActions - note.numberActions) > 2 * c)
 					addNote(new SnapshotNote(this, i + 1, (int) fis.getChannel().position(), game));
 			}
@@ -372,6 +368,16 @@ public class GamePath
 			dis.close();
 		}
 		return game;
+	}
+
+	private SnapshotNote getNoteBefore(int numberActions) throws Exception
+	{
+		SnapshotNote note = new SnapshotNote(this, LAST_SNAPSHOT);
+		if (note.numberActions > numberActions)
+			for (SnapshotNote noteMaybe : SnapshotNote.get(this, SNAPSHOTS))
+				if (noteMaybe.numberActions <= numberActions)
+					note = noteMaybe;
+		return note;
 	}
 
 	private void addNote(SnapshotNote newNote) throws Exception
@@ -396,6 +402,10 @@ public class GamePath
 			for (SnapshotNote note : notes)
 				writer.println(note);
 			writer.close();
+		}
+		if (!newNote.toString().equals(getNoteBefore(newNote.numberActions).toString()))
+		{
+			MyAssert.a(newNote.toString(), getNoteBefore(newNote.numberActions).toString());
 		}
 		++numberSnapshots;
 	}

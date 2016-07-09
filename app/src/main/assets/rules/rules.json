@@ -167,9 +167,9 @@
 		{
 			"name": "KING",
 			"specializations": {
-				"RED": "KING_DEMONLORD",
-				"BLUE": "KING_GALAMAR",
 				"BLACK": "KING_SAETH",
+				"BLUE": "KING_GALAMAR",
+				"RED": "KING_DEMONLORD",
 				"GREEN": "KING_VALADORN"
 			},
 			"attackMin": 55,
@@ -550,12 +550,12 @@
 			"template": {
 				"type": "WAY",
 				"friends": [
+					"CASTLE",
 					"WATER_WAY_HORIZONTAL",
 					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": [
-					"TEMPLE",
-					"CASTLE"
+					"TEMPLE"
 				]
 			}
 		},
@@ -573,8 +573,8 @@
 			"template": {
 				"type": "WATER",
 				"friends": [
-					"WATER_WAY_HORIZONTAL",
 					"WATER_SPARKS",
+					"WATER_WAY_HORIZONTAL",
 					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": []
@@ -605,5 +605,20 @@
 			"name": "WATER_GROUP",
 			"steps": 3
 		}
-	]
+	],
+	"defaultGame": {
+		"currentTurn": 0,
+		"allowedUnits": -1,
+		"currentPlayer": "BLUE"
+	},
+	"defaultPlayer": {
+		"gold": 2000,
+		"unitsLimit": 20,
+		"type": "PLAYER"
+	},
+	"defaultPlayerComputer": {
+		"gold": 2000,
+		"unitsLimit": 20,
+		"type": "COMPUTER"
+	}
 }

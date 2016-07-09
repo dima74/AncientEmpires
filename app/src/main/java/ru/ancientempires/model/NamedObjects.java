@@ -42,7 +42,7 @@ public class NamedObjects<T>
 			objects.put(name.getAsString(), unit);
 	}
 
-	public JsonObject toJson() throws Exception
+	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
 		for (Entry<String, T> entry : objects.entrySet())

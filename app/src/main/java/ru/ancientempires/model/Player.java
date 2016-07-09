@@ -4,13 +4,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import ru.ancientempires.MyColor;
+import ru.ancientempires.serializable.EraseNulls;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
+import ru.ancientempires.serializable.MyNullableTo;
 import ru.ancientempires.serializable.Numbered;
 import ru.ancientempires.serializable.SerializableJson;
 
+@EraseNulls
 public class Player implements SerializableJson, Numbered
 {
 
@@ -21,20 +25,17 @@ public class Player implements SerializableJson, Numbered
 
 	@Exclude
 	public int     ordinal;
+	@MyNullableTo
 	public MyColor color;
 
+	@MyNullableTo
 	public PlayerType      type;
+	@MyNullableTo
 	public Team            team;
 	@Exclude
 	public ArrayList<Unit> units;
-	public int             gold;
-	public int             unitsLimit;
-
-	//public int cursorI;
-	//public int cursorJ;
-
-	public Player()
-	{}
+	public Integer         gold;
+	public Integer         unitsLimit;
 
 	@Override
 	public int getNumber()
@@ -57,15 +58,10 @@ public class Player implements SerializableJson, Numbered
 			return false;
 		if (type != player.type)
 			return false;
-		if (gold != player.gold)
+		if (!Objects.equals(gold, player.gold))
 			return false;
-		// ActionPlayerChangeCursorPosition
-		/*
-		if (cursorI != player.cursorI)
+		if (!Objects.equals(unitsLimit, player.unitsLimit))
 			return false;
-		if (cursorJ != player.cursorJ)
-			return false;
-		*/
 		return true;
 	}
 	
@@ -81,11 +77,15 @@ public class Player implements SerializableJson, Numbered
 	public JsonObject toJson()
 	{
 		JsonObject object = new JsonObject();
-		object.addProperty("color", color.name());
-		object.addProperty("type", type.name());
-		object.addProperty("team", team.getNumber());
+		if (color != null)
+			object.addProperty("color", color.name());
+		if (type != null)
+			object.addProperty("type", type.name());
+		if (team != null)
+			object.addProperty("team", team.getNumber());
 		object.addProperty("gold", gold);
 		object.addProperty("unitsLimit", unitsLimit);
+		ru.ancientempires.serializable.SerializableJsonHelper.eraseNulls(object);
 		return object;
 	}
 

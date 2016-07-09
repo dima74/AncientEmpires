@@ -1,13 +1,18 @@
 package ru.ancientempires.rules;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 
+import ru.ancientempires.MyColor;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class Rules
 {
@@ -25,12 +30,16 @@ public class Rules
 	public Range                  rangeMax;
 
 	public UnitType[] unitTypes;
-	public HashMap<String, UnitType> unitTypesMap = new HashMap<String, UnitType>();
+	public HashMap<String, UnitType> unitTypesMap = new HashMap<>();
 
 	public CellGroup[] cellGroups;
-	public HashMap<String, CellGroup> cellGroupsMap = new HashMap<String, CellGroup>();
+	public HashMap<String, CellGroup> cellGroupsMap = new HashMap<>();
 	public CellType[] cellTypes;
-	public HashMap<String, CellType> cellTypesMap = new HashMap<String, CellType>();
+	public HashMap<String, CellType> cellTypesMap = new HashMap<>();
+
+	public JsonObject defaultGame;
+	public JsonObject defaultPlayer;
+	public JsonObject defaultPlayerComputer;
 
 	public void preInitUnitTypes(String[] names)
 	{
@@ -83,7 +92,7 @@ public class Rules
 	{
 		this.ranges = ranges;
 		
-		rangesMap = new HashMap<String, Range>();
+		rangesMap = new HashMap<>();
 		for (Range range : ranges)
 			rangesMap.put(range.name, range);
 
@@ -138,4 +147,18 @@ public class Rules
 		return cellTypes.length;
 	}
 	
+	public JsonArray getDefaultsPlayers(int numberPlayers)
+	{
+		JsonArray array = new JsonArray();
+		for (int i = 0; i < numberPlayers; i++)
+			array.add(SerializableJsonHelper.deepCopy(numberPlayers == 2 && i == 1 ? defaultPlayer : defaultPlayerComputer));
+		for (int i = 0; i < array.size(); i++)
+		{
+			JsonObject object = (JsonObject) array.get(i);
+			object.addProperty("team", i);
+			object.addProperty("color", MyColor.playersColors()[i].name());
+		}
+		return array;
+	}
+
 }

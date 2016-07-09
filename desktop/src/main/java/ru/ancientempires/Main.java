@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
@@ -62,8 +63,20 @@ public class Main
 		//new Swing("save.0");
 		//new Swing("campaign.4");
 		//testFull();
+
 		//test();
-		//testII("skirmish.5");
+		TreeSet<Integer> numbers = new TreeSet<>();
+		for (int i = 0; i < 100; i++)
+			try
+			{
+				GamePath.t = 0;
+				testII("skirmish.2");
+			}
+			catch (Exception e)
+			{
+				numbers.add(GamePath.t);
+			}
+		System.out.println(numbers);
 	}
 
 	public static void testFull() throws Exception
