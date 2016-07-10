@@ -588,16 +588,18 @@ public class DefaultRules
 		};
 
 		Player player = new Player();
-		player.color = MyColor.BLUE;
-		player.team = new Team(0);
-		player.gold = 2000;
-		player.unitsLimit = 20;
+		Player computer = new Player();
+		player.color = computer.color = MyColor.BLUE;
+		player.team = computer.team = new Team(0);
+		player.gold = computer.gold = 2000;
+		player.unitsLimit = computer.unitsLimit = 20;
 
 		player.type = PlayerType.PLAYER;
-		rules.defaultPlayer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
+		computer.type = PlayerType.COMPUTER;
 
-		player.type = PlayerType.COMPUTER;
-		rules.defaultPlayerComputer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
+		rules.defaultPlayer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
+		rules.defaultPlayerComputer = SerializableJsonHelper.leaveOnly(computer.toJson(), keys);
 	}
 
 }
+

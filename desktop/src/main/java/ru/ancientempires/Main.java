@@ -18,6 +18,8 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.DefaultRules;
+import ru.ancientempires.rules.RulesSaver;
 
 public class Main
 {
@@ -53,7 +55,7 @@ public class Main
 		//new File(System.getenv("appdata") + "\\Ancient Empires\\");
 		Client client = new Client(new DesktopClientHelper());
 
-		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
+		new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
 		//System.exit(0);
 		

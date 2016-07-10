@@ -151,7 +151,7 @@ public class Rules
 	{
 		JsonArray array = new JsonArray();
 		for (int i = 0; i < numberPlayers; i++)
-			array.add(SerializableJsonHelper.deepCopy(numberPlayers == 2 && i == 1 ? defaultPlayer : defaultPlayerComputer));
+			array.add(SerializableJsonHelper.deepCopy(numberPlayers == 2 && i == 1 ? defaultPlayerComputer : defaultPlayer));
 		for (int i = 0; i < array.size(); i++)
 		{
 			JsonObject object = (JsonObject) array.get(i);
