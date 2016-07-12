@@ -43,7 +43,7 @@ public abstract class Task extends AbstractGameHandler implements SerializableJs
 		return this;
 	}
 
-	static public Task[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static Task[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Task[] array = new Task[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

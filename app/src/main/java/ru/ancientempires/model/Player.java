@@ -99,7 +99,7 @@ public class Player implements SerializableJson, Numbered
 		return this;
 	}
 
-	static public Player[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static Player[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Player[] array = new Player[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

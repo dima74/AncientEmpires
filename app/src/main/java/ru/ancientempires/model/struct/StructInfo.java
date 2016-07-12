@@ -26,7 +26,7 @@ public abstract class StructInfo implements SerializableJson
 		return this;
 	}
 
-	static public StructInfo[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static StructInfo[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		StructInfo[] array = new StructInfo[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

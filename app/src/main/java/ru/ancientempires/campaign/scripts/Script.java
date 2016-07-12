@@ -108,7 +108,7 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 		return this;
 	}
 
-	static public Script[] newInstanceArrayNumbered(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static Script[] newInstanceArrayNumbered(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Script[] array = new Script[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
@@ -116,7 +116,7 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 		return array;
 	}
 
-	static public Script[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static Script[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Script[] array = new Script[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

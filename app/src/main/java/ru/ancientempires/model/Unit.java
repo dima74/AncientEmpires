@@ -441,7 +441,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		return this;
 	}
 
-	static public Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	public static Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Unit[] array = new Unit[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
