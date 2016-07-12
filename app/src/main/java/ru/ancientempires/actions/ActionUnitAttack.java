@@ -126,7 +126,13 @@ public class ActionUnitAttack extends ActionFromTo
 			sign += create.bonus.getSign();
 		return sign;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return String.format("Attack (%d %d)->(%d %d) (%s %s)", i, j, targetI, targetJ, game.fieldUnits[i][j], game.fieldUnits[targetI][targetJ]);
+	}
+
 	// =/({||})\=
 	// from spoon
 

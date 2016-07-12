@@ -1,5 +1,6 @@
 package ru.ancientempires.serializable;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -124,6 +125,44 @@ public class SerializableJsonHelper
 	public static JsonObject deepCopy(JsonObject object)
 	{
 		return (JsonObject) new JsonParser().parse(object.toString());
+	}
+
+	public static String diff(SerializableJson one, SerializableJson two)
+	{
+		return diff(one.toJson(), two.toJson());
+	}
+
+	public static String diff(JsonObject one, JsonObject two)
+	{
+		String a = toJsonPretty(one);
+		String b = toJsonPretty(two);
+		String[] as = a.split("\n");
+		String[] bs = b.split("\n");
+		int n = Math.min(as.length, bs.length);
+		for (int i = 0; i < n; i++)
+			if (!as[i].equals(bs[i]))
+			{
+				String result = "";
+				for (int j = -3; j <= 3; j++)
+					if (0 <= i + j && i + j < as.length)
+						result += as[i + j] + "\n";
+				result += "\n";
+				for (int j = -3; j <= 3; j++)
+					if (0 <= i + j && i + j < bs.length)
+						result += bs[i + j] + "\n";
+				return result;
+			}
+		return String.format("%d %d", as.length, bs.length);
+	}
+
+	public static String toJsonPretty(SerializableJson object)
+	{
+		return toJsonPretty(object);
+	}
+
+	public static String toJsonPretty(JsonObject object)
+	{
+		return new GsonBuilder().setPrettyPrinting().create().toJson(object);
 	}
 
 }

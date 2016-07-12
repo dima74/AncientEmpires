@@ -1,7 +1,6 @@
 package ru.ancientempires.model;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -100,7 +99,7 @@ public class Game implements SerializableJson
 		fieldCells = new Cell[h][w];
 		for (int i = 0; i < h; i++)
 			for (int j = 0; j < w; j++)
-				fieldCells[i][j] = new Cell(this, types[random.nextInt(types.length)], i, j);
+				new Cell(this, types[random.nextInt(types.length)], i, j);
 		return this;
 	}
 
@@ -188,71 +187,11 @@ public class Game implements SerializableJson
 	@Override
 	public boolean equals(Object obj)
 	{
-		Game game = (Game) obj;
-		
-		// System.out.println(get());
-		// System.out.println();
-		// System.out.println(game.get());
-		
-		if (!Arrays.deepEquals(teams, game.teams))
-		{
-			Arrays.deepEquals(teams, game.teams);
-			return false;
-		}
-		if (!Arrays.deepEquals(players, game.players))
-		{
-			Arrays.deepEquals(players, game.players);
-			return false;
-		}
-		if (currentPlayer.ordinal != game.currentPlayer.ordinal)
-			return false;
-		if (h != game.h)
-			return false;
-		if (w != game.w)
-			return false;
-		if (!Arrays.deepEquals(fieldCells, game.fieldCells))
-			return false;
-		if (!Arrays.deepEquals(fieldUnits, game.fieldUnits))
-		{
-			for (int i = 0; i < h; i++)
-				for (int j = 0; j < w; j++)
-				{
-					Unit unit = fieldUnits[i][j];
-					Unit unit2 = game.fieldUnits[i][j];
-					
-					if (unit == null && unit2 != null || unit != null && !unit.equals(unit2))
-						MyAssert.a(false);
-				}
-			MyAssert.a(false);
-			return false;
-		}
-		if (!unitsOutside.equals(game.unitsOutside))
-			return false;
-		if (!Arrays.deepEquals(fieldUnitsDead, game.fieldUnitsDead))
-		{
-			for (int i = 0; i < h; i++)
-				for (int j = 0; j < w; j++)
-				{
-					Unit unit = fieldUnitsDead[i][j];
-					Unit unit2 = game.fieldUnitsDead[i][j];
-					if (unit == null && unit2 != null || unit != null && !unit.equals(unit2))
-						MyAssert.a(false);
-				}
-			MyAssert.a(false);
-			return false;
-		}
-		if (!Arrays.deepEquals(unitsStaticDead, game.unitsStaticDead))
-			return false;
-		if (floatingUnit == null)
-		{
-			if (game.floatingUnit != null)
-				return false;
-		}
-		else if (!floatingUnit.equals(game.floatingUnit))
-			return false;
-		if (getSeed() != game.getSeed())
-			return false;
-		return true;
+		JsonObject json1 = toJson();
+		JsonObject json2 = ((Game) obj).toJson();
+		json1.remove("campaignState");
+		json2.remove("campaignState");
+		return json1.equals(json2);
 	}
 	
 	public Player getPlayer(MyColor color)
@@ -394,11 +333,14 @@ public class Game implements SerializableJson
 
 	public String toJsonPretty()
 	{
-		return new GsonBuilder().setPrettyPrinting().create().toJson(toJson());
+		return SerializableJsonHelper.toJsonPretty(this);
 	}
 
 	public JsonObject toJson()
 	{
+		MyAssert.a(numberedUnits.objects.isEmpty());
+		MyAssert.a(numberedBonuses.objects.isEmpty());
+
 		JsonObject object = new JsonObject();
 		object.addProperty("h", h);
 		object.addProperty("w", w);
@@ -463,6 +405,8 @@ public class Game implements SerializableJson
 		if (campaign.scripts != null /* для PlayersConfigureActivity */ && (!path.isBaseGame || !campaign.isDefault))
 			object.add("campaignState", campaign.toJsonState());
 
+		numberedUnits.objects.clear();
+		numberedBonuses.objects.clear();
 		return SerializableJsonHelper.eraseNulls(object);
 	}
 
@@ -473,6 +417,8 @@ public class Game implements SerializableJson
 
 	public Game fromJson(JsonObject object, LoaderInfo info) throws Exception
 	{
+		MyAssert.a(numberedUnits.objects.isEmpty());
+		MyAssert.a(numberedBonuses.objects.isEmpty());
 		SerializableJsonHelper.insertDefaults(object, rules.defaultGame);
 
 		h = object.get("h").getAsInt();
@@ -482,7 +428,8 @@ public class Game implements SerializableJson
 		if (object.has("seed"))
 			random = new Random(object.get("seed").getAsLong());
 		if (path.isBaseGame)
-			random = new Random();
+			//random = new Random();
+			random = new Random(24266003334260L);
 		MyAssert.a(random != null);
 
 		namedBooleans.objects = new Gson().fromJson(object.get("namedBooleans"), new TypeToken<HashMap<String, Boolean>>() {}.getType());
@@ -524,22 +471,6 @@ public class Game implements SerializableJson
 		for (int i = 0; i < this.teams.length; i++)
 			this.teams[i].ordinal = i;
 
-		// tasks
-		JsonArray tasksArray = (JsonArray) object.get("tasks");
-		for (int i = 0; i < tasksArray.size(); i++)
-		{
-			JsonElement element = tasksArray.get(i);
-			MyAssert.a(element.isJsonPrimitive());
-			//if (element.isJsonPrimitive())
-			{
-				ArrayList<Task> tasksList = new ArrayList<>();
-				tasks.put(element.getAsInt(), tasksList);
-				int size = tasksArray.get(++i).getAsInt();
-				while (tasksList.size() < size)
-					tasksList.add(info.fromJson((JsonObject) tasksArray.get(++i), Task.class));
-			}
-		}
-
 		// cells types
 		JsonArray mapArray = (JsonArray) object.get("map");
 		fieldCells = new Cell[h][w];
@@ -549,7 +480,7 @@ public class Game implements SerializableJson
 			for (int j = 0; j < w; j++)
 			{
 				int type = lineArray.get(j).getAsInt();
-				fieldCells[i][j] = new Cell(this, rules.cellTypes[type], i, j);
+				new Cell(this, rules.cellTypes[type], i, j);
 			}
 		}
 
@@ -577,6 +508,22 @@ public class Game implements SerializableJson
 		for (int i = 0; i < players.length; i++)
 			unitsStaticDead[i] = new ArrayList(fromJsonUnits((JsonArray) unitsStaticDeadArray.get(i), info, false));
 
+		// tasks (таски после войнов --- войны добавляют записи в Numbered*)
+		JsonArray tasksArray = (JsonArray) object.get("tasks");
+		for (int i = 0; i < tasksArray.size(); i++)
+		{
+			JsonElement element = tasksArray.get(i);
+			MyAssert.a(element.isJsonPrimitive());
+			//if (element.isJsonPrimitive())
+			{
+				ArrayList<Task> tasksList = new ArrayList<>();
+				tasks.put(element.getAsInt(), tasksList);
+				int size = tasksArray.get(++i).getAsInt();
+				while (tasksList.size() < size)
+					tasksList.add(info.fromJson((JsonObject) tasksArray.get(++i), Task.class));
+			}
+		}
+
 		campaign.arrayState = (JsonArray) object.get("campaignState");
 
 		//
@@ -597,6 +544,9 @@ public class Game implements SerializableJson
 			for (Cell cell : line)
 				if (cell.player != null)
 					currentEarns[cell.player.ordinal] += cell.type.earn;
+
+		numberedUnits.objects.clear();
+		numberedBonuses.objects.clear();
 		return this;
 	}
 
@@ -631,6 +581,11 @@ public class Game implements SerializableJson
 	public LoaderInfo getLoaderInfo()
 	{
 		return new LoaderInfo(this);
+	}
+
+	public String diff(Game game)
+	{
+		return SerializableJsonHelper.diff(this, game);
 	}
 
 }

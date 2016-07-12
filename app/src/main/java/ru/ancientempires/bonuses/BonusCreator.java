@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import java.util.Arrays;
 import java.util.List;
 
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
@@ -48,5 +49,19 @@ public abstract class BonusCreator
 	
 	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
 	{}
+
+	public static Bonus copy(Bonus bonus, Game game)
+	{
+		try
+		{
+			return game.getLoaderInfo().fromJson(bonus.toJson(), Bonus.class);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			MyAssert.a(false);
+			return null;
+		}
+	}
 	
 }

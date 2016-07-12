@@ -39,8 +39,9 @@ public class BonusCreatorWisp extends BonusCreator
 			public boolean check(Unit targetUnit)
 			{
 				if (targetUnit != null && unit.player == targetUnit.player)
-					for (Bonus bonus : bonuses)
+					for (Bonus bonus0 : bonuses)
 					{
+						Bonus bonus = copy(bonus0, game);
 						creates.add(new BonusCreate(targetUnit, bonus));
 						targetUnit.bonuses.add(bonus);
 						new TaskRemoveBonus(game)

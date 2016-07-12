@@ -52,7 +52,7 @@ public class II extends GameHandler
 		System.out.println(game.fieldUnits[5][7] == null ? "" : game.fieldUnits[5][7].isMove + " " + action);
 		action.game = null;
 		// */
-		
+
 		ActionResult result = action.perform(game);
 		action.game = null;
 		actions.add(action);
@@ -74,8 +74,7 @@ public class II extends GameHandler
 			mainGame.saver.waitSave();
 			setGame(mainGame.path.loadGame(false));
 			MyAssert.a(game, mainGame);
-			mainGame.equals(game);
-			
+
 			/*
 			System.out.println();
 			System.out.println();
@@ -105,7 +104,7 @@ public class II extends GameHandler
 			MyAssert.a(i == j);
 			// System.out.println(allUnits.get(i).equals(allUnits.get(j)));
 			// MyLog.l(var1, this.var_381f);
-			
+
 			this.turn(var1);
 		}
 		
@@ -335,6 +334,8 @@ public class II extends GameHandler
 		else
 			return;
 
+		if (var1.isTurn)
+			return;
 		perform(new ActionUnitMove()
 				.setIJ(currentSelectedUnit.i, currentSelectedUnit.j)
 				.setTargetIJ(var_3781, var_3733));

@@ -26,10 +26,11 @@ public class BonusCreatorDireWolf extends BonusCreator
 	{
 		this.bonus = bonus;
 	}
-	
+
 	@Override
 	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
 	{
+		Bonus bonus = copy(this.bonus, game);
 		targetUnit.bonuses.add(bonus);
 		new TaskRemoveBonus(game)
 				.setUnit(targetUnit)

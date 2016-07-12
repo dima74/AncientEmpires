@@ -18,8 +18,10 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.OnlyIf;
 import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.WithNamed;
+import ru.ancientempires.serializable.WithNumbered;
 
 @WithNamed("namedUnits")
+@WithNumbered("numberedUnits")
 public class Unit extends AbstractGameHandler implements SerializableJson
 {
 
@@ -416,6 +418,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		object.addProperty("isTurn", isTurn);
 		object.add("bonuses", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bonuses));
 		object.add("names", game.namedUnits.toJsonPart(this));
+		object.add("indexes", game.numberedUnits.toJsonPart(this));
 		return object;
 	}
 
@@ -435,6 +438,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		isTurn = object.get("isTurn").getAsBoolean();
 		bonuses = new HashSet<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
 		game.namedUnits.fromJsonPart(((JsonArray) object.get("names")), this);
+		game.numberedUnits.fromJsonPart(((JsonArray) object.get("indexes")), this);
 		return this;
 	}
 

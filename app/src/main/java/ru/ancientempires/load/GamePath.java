@@ -293,20 +293,15 @@ public class GamePath
 				gameJson.add("players", new JsonParser().parse(players));
 			return new Game(path).fromJson(gameJson);
 		}
-		
-		public static ArrayList<SnapshotNote> get(GamePath path, String name) throws Exception
-		{
-			ArrayList<SnapshotNote> notes = new ArrayList<>();
-			if (path.loader.exists(name))
-			{
-				Scanner scanner = path.loader.getScanner(name);
-				while (scanner.hasNext())
-					notes.add(new SnapshotNote(path, scanner));
-				scanner.close();
-			}
-			return notes;
-		}
 
+		// for debug
+		public Game getGame(int numberActions) throws Exception
+		{
+			Game game = getGame(null);
+			performActions(game, this, numberActions, true);
+			return game;
+		}
+		
 		@Override
 		public int compareTo(SnapshotNote note)
 		{
@@ -320,6 +315,75 @@ public class GamePath
 		}
 	}
 
+	public ArrayList<SnapshotNote> getNotes(String name) throws Exception
+	{
+		ArrayList<SnapshotNote> notes = new ArrayList<>();
+		if (loader.exists(name))
+		{
+			Scanner scanner = loader.getScanner(name);
+			while (scanner.hasNext())
+				notes.add(new SnapshotNote(this, scanner));
+			scanner.close();
+		}
+		return notes;
+	}
+
+	public static Game performActions(Game game, SnapshotNote note, int numberActions, boolean dontAddNote) throws Exception
+	{
+		GamePath path = note.path;
+		MyAssert.a(note.numberActions <= numberActions);
+		if (note.numberActions < numberActions)
+		{
+			FileInputStream fis = path.loader.openFIS(GamePath.ACTIONS);
+			fis.getChannel().position(note.sizeActions);
+			DataInputStream dis = new DataInputStream(fis);
+			ArrayList<Action> actions = new ArrayList<>();
+			for (int i = note.numberActions; i < numberActions; i++)
+			{
+				Action action = game.getLoaderInfo().fromData(dis, Action.class);
+				if (!action.checkBase(game))
+					path.findBug(numberActions, i);
+				action.performQuickBase(game);
+				int c = 100;
+				if (i == numberActions - c && (numberActions - note.numberActions) > 2 * c && !dontAddNote)
+					path.addNote(new SnapshotNote(path, i + 1, (int) fis.getChannel().position(), game));
+			}
+			//sizeActions = (int) fis.getChannel().position();
+			dis.close();
+		}
+		return game;
+	}
+
+	public Action[] getAllActions() throws Exception
+	{
+		SnapshotNote note = getNoteBefore(0);
+		Game game = note.getGame(null);
+		FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
+		fis.getChannel().position(note.sizeActions);
+		DataInputStream dis = new DataInputStream(fis);
+		Action[] actions = new Action[numberActions];
+		for (int i = 0; i < actions.length; i++)
+			actions[i] = game.getLoaderInfo().fromData(dis, Action.class);
+		return actions;
+	}
+
+	private void findBug(int numberActions, int lastI) throws Exception
+	{
+		SnapshotNote note0 = getNoteBefore(0);
+		SnapshotNote note1 = getNoteBefore(numberActions);
+
+		for (int i = 0; i < lastI; i++)
+			MyAssert.a(note0.getGame(i), new Game(this).fromJson(note0.getGame(i).toJson()));
+
+		note0.getGame(191).fieldUnits[5][7].bonuses.size();
+		note1.getGame(191).fieldUnits[5][7].bonuses.size();
+		note1.getGame(192);
+
+		for (int i = note1.numberActions; i < lastI; i++)
+			MyAssert.a(note0.getGame(i), note1.getGame(i));
+		System.out.print("");
+	}
+
 	public Game loadGame(boolean loadCampaign) throws Exception
 	{
 		return loadGame(loadCampaign, null);
@@ -330,9 +394,12 @@ public class GamePath
 		return loadGame(numberActions, loadCampaign, players);
 	}
 
-	public static int t;
-
 	public Game loadGame(int numberActions, boolean loadCampaign, String players) throws Exception
+	{
+		return loadGame(numberActions, loadCampaign, players, false);
+	}
+
+	public Game loadGame(int numberActions, boolean loadCampaign, String players, boolean dontAddNote) throws Exception
 	{
 		SnapshotNote note = getNoteBefore(numberActions);
 		Game game = note.getGame(players);
@@ -347,40 +414,21 @@ public class GamePath
 			game.campaign.isDefault = !loader.exists("campaign.json");
 			game.campaign.load(game.campaign.isDefault ? Client.client.defaultGameLoader : loader);
 		}
-		if (note.numberActions < numberActions)
-		{
-			FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
-			fis.getChannel().position(note.sizeActions);
-			DataInputStream dis = new DataInputStream(fis);
-			ArrayList<Action> actions = new ArrayList<>();
-			for (int i = note.numberActions; i < numberActions; i++)
-			{
-				t = i;
-				Action action = game.getLoaderInfo().fromData(dis, Action.class);
-				actions.add(action);
-				action.checkBase(game);
-				action.performQuickBase(game);
-				int c = 100;
-				if (loadCampaign && i == numberActions - c && (numberActions - note.numberActions) > 2 * c)
-					addNote(new SnapshotNote(this, i + 1, (int) fis.getChannel().position(), game));
-			}
-			sizeActions = (int) fis.getChannel().position();
-			dis.close();
-		}
+		performActions(game, note, numberActions, !loadCampaign || dontAddNote);
 		return game;
 	}
 
-	private SnapshotNote getNoteBefore(int numberActions) throws Exception
+	public SnapshotNote getNoteBefore(int numberActions) throws Exception
 	{
 		SnapshotNote note = new SnapshotNote(this, LAST_SNAPSHOT);
 		if (note.numberActions > numberActions)
-			for (SnapshotNote noteMaybe : SnapshotNote.get(this, SNAPSHOTS))
+			for (SnapshotNote noteMaybe : getNotes(SNAPSHOTS))
 				if (noteMaybe.numberActions <= numberActions)
 					note = noteMaybe;
 		return note;
 	}
 
-	private void addNote(SnapshotNote newNote) throws Exception
+	public void addNote(SnapshotNote newNote) throws Exception
 	{
 		SnapshotNote lastNote = new SnapshotNote(this, LAST_SNAPSHOT);
 		if (lastNote.numberActions < newNote.numberActions)
@@ -395,17 +443,13 @@ public class GamePath
 		}
 		else
 		{
-			ArrayList<SnapshotNote> notes = SnapshotNote.get(this, SNAPSHOTS);
+			ArrayList<SnapshotNote> notes = getNotes(SNAPSHOTS);
 			notes.add(newNote);
 			Collections.sort(notes);
 			PrintWriter writer = loader.getPrintWriter(SNAPSHOTS);
 			for (SnapshotNote note : notes)
 				writer.println(note);
 			writer.close();
-		}
-		if (!newNote.toString().equals(getNoteBefore(newNote.numberActions).toString()))
-		{
-			MyAssert.a(newNote.toString(), getNoteBefore(newNote.numberActions).toString());
 		}
 		++numberSnapshots;
 	}

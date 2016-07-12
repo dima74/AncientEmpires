@@ -61,13 +61,16 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		}
 	}
 	
-	public final void checkBase(Game game)
+	public final boolean checkBase(Game game)
 	{
 		setGame(game);
 		boolean successfully = /*isCampaign() || */check();
-		MyAssert.a(successfully);
 		if (!successfully)
+		{
+			MyAssert.a(false);
 			check();
+		}
+		return successfully;
 	}
 	
 	public boolean check()

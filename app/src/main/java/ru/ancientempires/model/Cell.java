@@ -3,9 +3,6 @@ package ru.ancientempires.model;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.struct.StructInfo;
 import ru.ancientempires.serializable.Exclude;
@@ -55,17 +52,23 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		player = cell.player;
 	}
 	
-	// в принципе можно прямо тут обновлять fieldCells
 	public Cell(Game game, CellType type, int i, int j)
 	{
 		this(game, type);
 		this.i = i;
 		this.j = j;
+		game.fieldCells[i][j] = this;
+	}
+
+	public Cell setPlayer(int player)
+	{
+		this.player = game.players[player];
+		return this;
 	}
 	
 	public void destroy()
 	{
-		game.fieldCells[i][j] = new Cell(game, type.destroyingType, i, j);
+		new Cell(game, type.destroyingType, i, j);
 	}
 	
 	public void repair()
@@ -76,20 +79,6 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	public boolean needSave()
 	{
 		return isCapture();
-	}
-	
-	public void save(DataOutputStream output, Game game) throws Exception
-	{
-		output.writeBoolean(isCapture());
-		if (isCapture())
-			output.write(player.ordinal);
-	}
-	
-	public void load(DataInputStream input, LoaderInfo info) throws Exception
-	{
-		boolean isCapture = input.readBoolean();
-		if (isCapture)
-			player = game.players[input.read()];
 	}
 	
 	public int getSteps()
@@ -125,13 +114,13 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return String.format("%s (%d %d)", type.name, i, j);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

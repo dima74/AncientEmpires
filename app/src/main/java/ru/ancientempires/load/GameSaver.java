@@ -112,6 +112,7 @@ public class GameSaver
 				action.toData(actionsDOS);
 				game.path.numberActions++;
 				game.path.sizeActions = (int) actionsFOS.getChannel().position();
+				MyAssert.a(game, game.path.loadGame(game.path.numberActions, false, null, true));
 			}
 			return 0;
 		}

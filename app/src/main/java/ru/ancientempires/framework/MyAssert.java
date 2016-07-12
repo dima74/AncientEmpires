@@ -1,9 +1,12 @@
 package ru.ancientempires.framework;
 
+import com.google.gson.JsonObject;
+
 import java.io.DataOutputStream;
 import java.io.PrintWriter;
 
 import ru.ancientempires.serializable.SerializableJson;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class MyAssert
 {
@@ -22,8 +25,8 @@ public class MyAssert
 		{
 			MyLog.l("!!!");
 			new Exception().printStackTrace();
-			//System.exit(1);
 			System.out.print("");
+			//System.exit(1);
 			throw new RuntimeException();
 		}
 	}
@@ -34,23 +37,15 @@ public class MyAssert
 	public static void a(Object one, Object two)
 	{
 		boolean equals = one.equals(two);
-		String a = one instanceof SerializableJson ? ((SerializableJson) one).toJson().toString() : one.toString();
-		String b = two instanceof SerializableJson ? ((SerializableJson) two).toJson().toString() : two.toString();
-		MyAssert.a(equals, !equals ? diff(a, b) : null);
+		String message = null;
+		if (!equals)
+		{
+			if (one instanceof SerializableJson)
+				message = SerializableJsonHelper.diff(((SerializableJson) one), (SerializableJson) two);
+			if (one instanceof JsonObject)
+				message = SerializableJsonHelper.diff(((JsonObject) one), ((JsonObject) two));
+		}
+		MyAssert.a(equals, message);
 	}
 
-	public static String diff(String a, String b)
-	{
-		int n = Math.min(a.length(), b.length());
-		for (int i = 0; i <= n; i++)
-			if (i == n || a.charAt(i) != b.charAt(i))
-			{
-				int length = 40;
-				String partA = a.substring(i, i + length);
-				String partB = b.substring(i, i + length);
-				return String.format("1: %s\n2: %s\n\n1: %s\n2: %s", a.substring(0, length), b.substring(0, length), partA, partB);
-			}
-		return null;
-	}
-	
 }

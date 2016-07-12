@@ -19,10 +19,9 @@ import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.load.GamesFolder;
+import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Player;
 import ru.ancientempires.model.PlayerType;
-import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.DefaultRules;
 import ru.ancientempires.rules.Rules;
 
@@ -146,23 +145,20 @@ public class AllGamesConverter
 	public void createTestGame() throws Exception
 	{
 		Game game = new Game(rules)
-				.setSize(7, 7)
-				.setNumberPlayers(2);
-		
-		Player p0 = game.players[0];
-		Player p1 = game.players[1];
-		p0.gold = 1000;
-		
-		new Unit(game, rules.getUnitType("ARCHER"), p0).setIJ(3, 3).addToGame();
-		//new Unit(game, rules.getUnitType("SOLDIER"), p1).setIJ(4, 4).addToGame();
+				.setSize(3, 3)
+				.setNumberPlayers(3);
+
+		new Cell(game, rules.getCellType("CASTLE"), 0, 0).setPlayer(0);
+		new Cell(game, rules.getCellType("CASTLE"), 0, 1).setPlayer(1);
+		new Cell(game, rules.getCellType("CASTLE"), 1, 0).setPlayer(2);
 		
 		//
 		GamePath path = new GamePath(game, "test.0");
 		path.isBaseGame = true;
 		path.canChooseTeams = true;
 		
-		new CampaignEditor(game).createTestGameCampaign();
-		//game.campaign.isDefault = true;
+		//new CampaignEditor(game).createTestGameCampaign();
+		game.campaign.isDefault = true;
 
 		GameSaver.createBaseGame(game);
 		

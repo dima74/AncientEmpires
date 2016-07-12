@@ -99,7 +99,10 @@ public class Campaign
 		
 		isUpdate = false;
 		if (needActionRewriteScriptsStatus)
+		{
 			new ActionCampaignRewriteScriptsStatus(game.campaign.scripts).perform(game);
+			needActionRewriteScriptsStatus = false;
+		}
 		/*
 		if (needSaveSnapshot)
 		{

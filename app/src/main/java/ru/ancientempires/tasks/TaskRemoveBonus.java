@@ -42,7 +42,7 @@ public class TaskRemoveBonus extends Task
 	public void run()
 	{
 		if (unit != null)
-			unit.bonuses.remove(bonus);
+			MyAssert.a(unit.bonuses.remove(bonus));
 	}
 	
 	// =/({||})\=

@@ -167,9 +167,9 @@
 		{
 			"name": "KING",
 			"specializations": {
-				"BLACK": "KING_SAETH",
 				"BLUE": "KING_GALAMAR",
 				"RED": "KING_DEMONLORD",
+				"BLACK": "KING_SAETH",
 				"GREEN": "KING_VALADORN"
 			},
 			"attackMin": 55,
@@ -550,9 +550,9 @@
 			"template": {
 				"type": "WAY",
 				"friends": [
+					"WATER_WAY_VERTICAL",
 					"CASTLE",
-					"WATER_WAY_HORIZONTAL",
-					"WATER_WAY_VERTICAL"
+					"WATER_WAY_HORIZONTAL"
 				],
 				"friendsUp": [
 					"TEMPLE"
@@ -573,9 +573,9 @@
 			"template": {
 				"type": "WATER",
 				"friends": [
+					"WATER_WAY_VERTICAL",
 					"WATER_SPARKS",
-					"WATER_WAY_HORIZONTAL",
-					"WATER_WAY_VERTICAL"
+					"WATER_WAY_HORIZONTAL"
 				],
 				"friendsUp": []
 			}

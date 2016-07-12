@@ -4,38 +4,42 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
+import ru.ancientempires.actions.ActionCellBuy;
 import ru.ancientempires.actions.ActionGameEndTurn;
+import ru.ancientempires.actions.ActionUnitMove;
 import ru.ancientempires.campaign.CampaignImmediately;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.rules.DefaultRules;
-import ru.ancientempires.rules.RulesSaver;
 
 public class Main
 {
 
-	private static void test2() throws Exception
+	public static void main(String[] args) throws Exception
 	{
-		FileOutputStream fos = new FileOutputStream("test.dat");
-		for (int i = 0; i < 7; i++)
-			fos.write(i);
-		fos.close();
+		//test2();
+		Client client = new Client(new DesktopClientHelper());
+		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
+		new AllGamesConverter().create();
+		//System.exit(0);
 
-		fos = new FileOutputStream("test.dat");
-		fos.getChannel().position(3);
-		fos.write(77);
-		fos.close();
-		System.exit(0);
+		client.loadPart1();
+		client.loadPart2();
+
+		//new Swing("save.0");
+		//new Swing("campaign.4");
+		//testFull();
+		//test();
+
+		//for (int i = 0; i < 100; i++)
+		testII("skirmish.0");
 	}
 
 	private static void test() throws Exception
@@ -44,46 +48,29 @@ public class Main
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
+		new ActionCellBuy().setUnit(4).setIJ(3, 7).perform(game);
+		new ActionUnitMove().setIJ(3, 7).setTargetIJ(4, 7).perform(game);
+		System.out.println(game.numberedUnits.objects);
+		for (int i = 0; i < 5; i++)
+		{
+			new ActionGameEndTurn().perform(game);
+			System.out.println(game.numberedUnits.objects);
+		}
+
 		Client.client.stopGame();
 		System.exit(0);
 	}
 
-	public static void main(String[] args) throws Exception
+	private static void test2() throws Exception
 	{
-		//test2();
-
-		//new File(System.getenv("appdata") + "\\Ancient Empires\\");
-		Client client = new Client(new DesktopClientHelper());
-
-		new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
-		new AllGamesConverter().create();
-		//System.exit(0);
-		
-		client.loadPart1();
-		client.loadPart2();
-
-		//new Swing("save.0");
-		//new Swing("campaign.4");
-		//testFull();
-
-		//test();
-		TreeSet<Integer> numbers = new TreeSet<>();
-		for (int i = 0; i < 100; i++)
-			try
-			{
-				GamePath.t = 0;
-				testII("skirmish.2");
-			}
-			catch (Exception e)
-			{
-				numbers.add(GamePath.t);
-			}
-		System.out.println(numbers);
+		GamePath path = Client.client.allGames.get("save.0");
+		path.getNotes(GamePath.SNAPSHOTS).get(0).getGame(path.numberActions);
+		System.exit(0);
 	}
 
 	public static void testFull() throws Exception
 	{
-		List<GamesFolder> gamesFolders = Arrays.asList(Client.client.campaign, Client.client.skirmish);
+		List<GamesFolder> gamesFolders = Arrays.asList(Client.client.skirmish, Client.client.campaign);
 		for (GamesFolder gamesFolder : gamesFolders)
 			for (GamePath path : gamesFolder.games)
 				testLoadGame(path.gameID, true);
@@ -99,10 +86,13 @@ public class Main
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
-		for (int i = 0; !game.players[0].units.isEmpty() && i < 100; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			//System.out.println("i = " + i);
-			new ActionGameEndTurn().perform(game);
+			if (game.campaign.isDefault)
+				new II(game.rules).turnFull(game);
+			else
+				new ActionGameEndTurn().perform(game);
 			game.campaign.update();
 			new II(game.rules).turnFull(game);
 			game.campaign.update();

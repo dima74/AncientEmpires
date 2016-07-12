@@ -13,7 +13,9 @@ import ru.ancientempires.serializable.SerializableJson;
 
 public class NamedObjects<T>
 {
-	
+
+	public HashMap<String, T> objects = new HashMap<>();
+
 	public T get(String name)
 	{
 		MyAssert.a(objects.containsKey(name));
@@ -24,8 +26,6 @@ public class NamedObjects<T>
 	{
 		objects.put(name, object);
 	}
-	
-	public HashMap<String, T> objects = new HashMap<>();
 
 	public JsonArray toJsonPart(T unit)
 	{

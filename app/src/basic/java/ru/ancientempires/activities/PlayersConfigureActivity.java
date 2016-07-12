@@ -117,6 +117,7 @@ public class PlayersConfigureActivity extends BaseActivity
 			setTitle(path.name);
 
 			String lastPlayers = getIntent().getStringExtra(Extras.LAST_PLAYERS);
+			Client.client.finishPart2();
 			Game game = path.loadGame(false);
 			game.setNumberTeams(game.numberPlayers());
 			JsonArray playersJson = (JsonArray) (lastPlayers != null ? new JsonParser().parse(lastPlayers) : game.toJson().get("players"));

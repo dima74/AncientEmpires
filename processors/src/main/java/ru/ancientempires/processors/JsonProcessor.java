@@ -39,6 +39,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 	{
 		initStatic(SerializableJson.class);
 		classToSuffix.put(int.class, "Int");
+		classToSuffix.put(Integer.class, "Int");
 		classToSuffix.put(String.class, "String");
 		classToSuffix.put(boolean.class, "Boolean");
 	}
@@ -165,6 +166,14 @@ public class JsonProcessor extends MyAbstractManualProcessor
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("object.add(\"names\", game.%s.toJsonPart(this))", annotation.value())));
 		}
+		if (ctClass.getAnnotation(WithNumbered.class) != null)
+		{
+			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
+			String statement = String.format("object.add(\"indexes\", game.%s.toJsonPart(this))", annotation.value());
+			if (annotation.checkGameForNull())
+				statement = "if (game != null)\n\t\t" + statement;
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
+		}
 		if (ctClass.getAnnotation(EraseNulls.class) != null)
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("ru.ancientempires.serializable.SerializableJsonHelper.eraseNulls(object)"));
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return object"));
@@ -245,6 +254,14 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		{
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.fromJsonPart(((JsonArray) object.get(\"names\")), this)", annotation.value())));
+		}
+		if (ctClass.getAnnotation(WithNumbered.class) != null)
+		{
+			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
+			String statement = String.format("game.%s.fromJsonPart(((JsonArray) object.get(\"indexes\")), this)", annotation.value());
+			if (annotation.checkGameForNull())
+				statement = "if (game != null)\n\t\t" + statement;
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 		}
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return this"));
 	}
