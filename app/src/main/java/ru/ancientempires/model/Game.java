@@ -394,6 +394,8 @@ public class Game implements SerializableJson
 		object.add("cells", SerializableJsonHelper.toJsonArray(cells));
 
 		// units
+		if (floatingUnit != null)
+			object.add("floatingUnit", floatingUnit.toJson());
 		object.add("units", SerializableJsonHelper.toJsonArray(convertFieldToList(fieldUnits)));
 		object.add("unitsOutside", SerializableJsonHelper.toJsonArray(unitsOutside));
 		object.add("unitsDead", SerializableJsonHelper.toJsonArray(convertFieldToList(fieldUnitsDead)));
@@ -428,8 +430,8 @@ public class Game implements SerializableJson
 		if (object.has("seed"))
 			random = new Random(object.get("seed").getAsLong());
 		if (path.isBaseGame)
-			//random = new Random();
-			random = new Random(24266003334260L);
+			random = new Random();
+		//random = new Random(49950377336979L);
 		MyAssert.a(random != null);
 
 		namedBooleans.objects = new Gson().fromJson(object.get("namedBooleans"), new TypeToken<HashMap<String, Boolean>>() {}.getType());
@@ -500,6 +502,11 @@ public class Game implements SerializableJson
 					cell.type.template.update(cell);
 
 		// units
+		if (object.has("floatingUnit"))
+		{
+			floatingUnit = new Unit().fromJson((JsonObject) object.get("floatingUnit"), info);
+			floatingUnit.player.units.add(floatingUnit);
+		}
 		fieldUnits = fromJsonUnitsField((JsonArray) object.get("units"), info, true);
 		unitsOutside = new HashSet<>(fromJsonUnits((JsonArray) object.get("unitsOutside"), info, true));
 		fieldUnitsDead = fromJsonUnitsField((JsonArray) object.get("unitsDead"), info, false);

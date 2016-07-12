@@ -38,8 +38,9 @@ public class Main
 		//testFull();
 		//test();
 
-		//for (int i = 0; i < 100; i++)
-		testII("skirmish.0");
+		for (int i = 0; i < 10000; i++)
+			for (int iGame = 0; iGame < 12; iGame++)
+				testII("skirmish." + iGame);
 	}
 
 	private static void test() throws Exception

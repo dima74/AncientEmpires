@@ -27,7 +27,7 @@ public class MyAssert
 			new Exception().printStackTrace();
 			System.out.print("");
 			//System.exit(1);
-			throw new RuntimeException();
+			//throw new RuntimeException();
 		}
 	}
 

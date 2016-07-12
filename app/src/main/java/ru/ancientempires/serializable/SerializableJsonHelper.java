@@ -143,11 +143,12 @@ public class SerializableJsonHelper
 			if (!as[i].equals(bs[i]))
 			{
 				String result = "";
-				for (int j = -3; j <= 3; j++)
+				int x = 15;
+				for (int j = -x; j <= x; j++)
 					if (0 <= i + j && i + j < as.length)
 						result += as[i + j] + "\n";
-				result += "\n";
-				for (int j = -3; j <= 3; j++)
+				result += "\n=====================\n\n";
+				for (int j = -x; j <= x; j++)
 					if (0 <= i + j && i + j < bs.length)
 						result += bs[i + j] + "\n";
 				return result;
@@ -157,7 +158,7 @@ public class SerializableJsonHelper
 
 	public static String toJsonPretty(SerializableJson object)
 	{
-		return toJsonPretty(object);
+		return toJsonPretty(object.toJson());
 	}
 
 	public static String toJsonPretty(JsonObject object)

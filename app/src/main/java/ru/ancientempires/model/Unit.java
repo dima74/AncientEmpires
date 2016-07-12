@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
 
 import ru.ancientempires.Localization;
@@ -45,7 +44,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	public boolean isMove;
 	public boolean isTurn;
 
-	public HashSet<Bonus> bonuses = new HashSet<>();
+	public ArrayList<Bonus> bonuses = new ArrayList<>();
 
 	// Локализованное, с учётом уровня
 	@Exclude
@@ -436,7 +435,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			numberBuys = object.get("numberBuys").getAsInt();
 		isMove = object.get("isMove").getAsBoolean();
 		isTurn = object.get("isTurn").getAsBoolean();
-		bonuses = new HashSet<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
+		bonuses = new ArrayList<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
 		game.namedUnits.fromJsonPart(((JsonArray) object.get("names")), this);
 		game.numberedUnits.fromJsonPart(((JsonArray) object.get("indexes")), this);
 		return this;

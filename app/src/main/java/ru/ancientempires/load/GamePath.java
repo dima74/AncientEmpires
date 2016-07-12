@@ -375,10 +375,6 @@ public class GamePath
 		for (int i = 0; i < lastI; i++)
 			MyAssert.a(note0.getGame(i), new Game(this).fromJson(note0.getGame(i).toJson()));
 
-		note0.getGame(191).fieldUnits[5][7].bonuses.size();
-		note1.getGame(191).fieldUnits[5][7].bonuses.size();
-		note1.getGame(192);
-
 		for (int i = note1.numberActions; i < lastI; i++)
 			MyAssert.a(note0.getGame(i), note1.getGame(i));
 		System.out.print("");
