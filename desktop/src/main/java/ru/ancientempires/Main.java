@@ -34,8 +34,10 @@ public class Main
 		client.loadPart2();
 
 		//new Swing("save.0");
-		//new Swing("campaign.4");
-		//testFull();
+		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
+		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
+		//new Swing("skirmish.5");
+		testFull();
 		//test();
 
 		for (int i = 0; i < 10000; i++)
@@ -45,6 +47,13 @@ public class Main
 
 	private static void test() throws Exception
 	{
+		{
+			Game game = Client.client.allGames.get("skirmish.5").loadGame(true);
+			game.path.isBaseGame = false;
+			game.ii.turnFull(game);
+			System.exit(0);
+		}
+
 		Game game = Client.client.startGame("skirmish.5");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();

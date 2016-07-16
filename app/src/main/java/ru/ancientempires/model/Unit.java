@@ -187,18 +187,23 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	{
 		return game.fieldCells[i][j];
 	}
-	
+
+	/*
+	оказывается этот метод довольно медленный
 	public Bonus[] getBonuses()
 	{
 		ArrayList<Bonus> bonuses = new ArrayList<>(this.bonuses);
 		bonuses.addAll(Arrays.asList(type.bonuses));
 		return bonuses.toArray(new Bonus[bonuses.size()]);
 	}
+	*/
 	
 	public int getMoveRadius()
 	{
 		int moveRadius = type.moveRadius;
-		for (Bonus bonus : getBonuses())
+		for (Bonus bonus : bonuses)
+			moveRadius += bonus.getBonusMoveStart(game, this);
+		for (Bonus bonus : type.bonuses)
 			moveRadius += bonus.getBonusMoveStart(game, this);
 		return moveRadius;
 	}
@@ -219,7 +224,9 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		if (type.isFly)
 			return 1;
 		int steps = targetCell.getSteps();
-		for (Bonus bonus : getBonuses())
+		for (Bonus bonus : bonuses)
+			steps += bonus.getBonusMove(game, this, cell, targetCell);
+		for (Bonus bonus : type.bonuses)
 			steps += bonus.getBonusMove(game, this, cell, targetCell);
 		return steps;
 	}
@@ -237,7 +244,9 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	public int getBonusAttack(Cell cell, Unit targetUnit)
 	{
 		int attackBonus = 0;
-		for (Bonus bonus : getBonuses())
+		for (Bonus bonus : bonuses)
+			attackBonus += bonus.getBonusAttack(game, this, cell, targetUnit);
+		for (Bonus bonus : type.bonuses)
 			attackBonus += bonus.getBonusAttack(game, this, cell, targetUnit);
 		return attackBonus;
 	}
@@ -255,7 +264,9 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	public int getBonusDefence(Cell cell, Unit fromUnit)
 	{
 		int defenceBonus = cell.type.defense;
-		for (Bonus bonus : getBonuses())
+		for (Bonus bonus : bonuses)
+			defenceBonus += bonus.getBonusDefence(game, this, cell, fromUnit);
+		for (Bonus bonus : type.bonuses)
 			defenceBonus += bonus.getBonusDefence(game, this, cell, fromUnit);
 		return defenceBonus;
 	}
@@ -263,7 +274,9 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	public int getCost()
 	{
 		int cost = type.cost;
-		for (Bonus bonus : getBonuses())
+		for (Bonus bonus : bonuses)
+			cost += bonus.getBonusCost(game, this);
+		for (Bonus bonus : type.bonuses)
 			cost += bonus.getBonusCost(game, this);
 		return cost;
 	}

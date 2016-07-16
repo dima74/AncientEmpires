@@ -19,7 +19,6 @@ public class GameSaver
 	public FileLoader       loader;
 	public FileOutputStream actionsFOS;
 	public DataOutputStream actionsDOS;
-	//public PrintWriter      snapshotsWriter;
 
 	public GameSaver(Game mainGame, boolean isNewSave) throws Exception
 	{
@@ -28,12 +27,13 @@ public class GameSaver
 			mainGame.path.addNoteInitial(mainGame);
 		game = mainGame.myClone();
 		game.isSaver = true;
-		thread = new GameSaverThread();
-		thread.start();
 
 		loader = game.path.getLoader();
 		actionsFOS = loader.openFOS(GamePath.ACTIONS, true);
 		actionsDOS = new DataOutputStream(actionsFOS);
+
+		thread = new GameSaverThread();
+		thread.start();
 	}
 
 	// всё, кроме strings

@@ -1,11 +1,9 @@
 package ru.ancientempires.model;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -183,6 +181,7 @@ public class Game implements SerializableJson
 	
 	public Integer currentTurn;
 	public HashMap<Integer, ArrayList<Task>> tasks = new HashMap<>();
+	public Unit[][][] buyUnits;
 
 	@Override
 	public boolean equals(Object obj)
@@ -366,7 +365,7 @@ public class Game implements SerializableJson
 		object.add("tasks", tasksArray);
 
 		// named
-		object.add("namedBooleans", new Gson().toJsonTree(namedBooleans.objects));
+		object.add("namedBooleans", namedBooleans.toJsonBoolean());
 		object.add("namedPoints", namedPoints.toJson());
 
 		// players
@@ -434,7 +433,7 @@ public class Game implements SerializableJson
 		//random = new Random(49950377336979L);
 		MyAssert.a(random != null);
 
-		namedBooleans.objects = new Gson().fromJson(object.get("namedBooleans"), new TypeToken<HashMap<String, Boolean>>() {}.getType());
+		namedPoints.fromJsonBoolean((JsonObject) object.get("namedBooleans"), info);
 		namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
 
 		// teams
@@ -534,17 +533,20 @@ public class Game implements SerializableJson
 		campaign.arrayState = (JsonArray) object.get("campaignState");
 
 		//
+		buyUnits = new Unit[players.length][rules.cellTypes.length][];
 		for (CellType cellType : rules.cellTypes)
 		{
-			cellType.buyUnits = new Unit[players.length][];
-			for (int iPlayer = 0; iPlayer < players.length; iPlayer++)
-			{
-				cellType.buyUnits[iPlayer] = new Unit[cellType.buyTypes.length];
-				for (int i = 0; i < cellType.buyTypes.length; i++)
-					cellType.buyUnits[iPlayer][i] = new Unit(this, cellType.buyTypes[i], players[iPlayer]);
-			}
+			//cellType.buyUnits = new Unit[players.length][];
+			if (cellType.buyTypes.length > 0)
+				for (int iPlayer = 0; iPlayer < players.length; iPlayer++)
+				{
+					//cellType.buyUnits[iPlayer] = new Unit[cellType.buyTypes.length];
+					buyUnits[iPlayer][cellType.ordinal] = new Unit[cellType.buyTypes.length];
+					for (int i = 0; i < cellType.buyTypes.length; i++)
+						buyUnits[iPlayer][cellType.ordinal][i] = new Unit(this, cellType.buyTypes[i], players[iPlayer]);
+				}
 		}
-		
+
 		//
 		currentEarns = new int[players.length];
 		for (Cell[] line : fieldCells)

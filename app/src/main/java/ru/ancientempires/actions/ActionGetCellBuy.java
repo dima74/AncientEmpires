@@ -37,9 +37,9 @@ public class ActionGetCellBuy extends ActionFrom
 	{
 		Cell cell = game.fieldCells[i][j];
 		CellType cellType = cell.type;
-		
-		List<Unit> cellUnits = Arrays.asList(cellType.buyUnits[cell.player.ordinal]);
-		ArrayList<Unit> units = new ArrayList<Unit>(game.allowedUnits == -1 ? cellUnits : cellUnits.subList(0, game.allowedUnits));
+
+		List<Unit> cellUnits = Arrays.asList(game.buyUnits[cell.player.ordinal][cellType.ordinal]);
+		ArrayList<Unit> units = new ArrayList<>(game.allowedUnits == -1 ? cellUnits : cellUnits.subList(0, game.allowedUnits));
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
 		result = new ActionResultGetCellBuy(units);
 		

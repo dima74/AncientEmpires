@@ -71,8 +71,8 @@ public class II extends GameHandler
 		actions = new ArrayList<>();
 		try
 		{
-			mainGame.saver.waitSave();
-			setGame(mainGame.path.loadGame(false));
+			//mainGame.saver.waitSave();
+			setGame(mainGame.myClone());
 			MyAssert.a(game, mainGame);
 
 			/*
@@ -989,7 +989,7 @@ public class II extends GameHandler
 		
 		return relI >= 0 && relI < size && relJ >= 0 && relJ < size && field[relI][relJ];
 	}
-	
+
 	private void fillMoveRangeDataEx(int[][] alphaData, int x, int y, int stepsCount, Unit unit)
 	{
 		for (int x2 = 0; x2 < w; x2++)

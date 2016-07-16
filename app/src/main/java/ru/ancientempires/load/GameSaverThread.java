@@ -10,6 +10,11 @@ public class GameSaverThread extends Thread
 	public LinkedBlockingQueue<Save>    queue        = new LinkedBlockingQueue<>();
 	public LinkedBlockingQueue<Boolean> reverseQueue = new LinkedBlockingQueue<>(); // Void нельзя, ибо нельзя null
 
+	public GameSaverThread()
+	{
+		setName("Saver Thread");
+	}
+
 	@Override
 	public void run()
 	{

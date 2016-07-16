@@ -146,11 +146,11 @@ public class SerializableJsonHelper
 				int x = 15;
 				for (int j = -x; j <= x; j++)
 					if (0 <= i + j && i + j < as.length)
-						result += as[i + j] + "\n";
+						result += (j == 0 ? "!!! \t\t" : "") + as[i + j] + "\n";
 				result += "\n=====================\n\n";
 				for (int j = -x; j <= x; j++)
 					if (0 <= i + j && i + j < bs.length)
-						result += bs[i + j] + "\n";
+						result += (j == 0 ? "!!! \t\t" : "") + bs[i + j] + "\n";
 				return result;
 			}
 		return String.format("%d %d", as.length, bs.length);

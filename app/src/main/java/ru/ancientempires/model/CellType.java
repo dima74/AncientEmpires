@@ -23,7 +23,7 @@ public class CellType implements Numbered
 	public int defense;
 
 	public UnitType[] buyTypes;
-	public Unit[][]   buyUnits;
+	//public Unit[][]   buyUnits;
 
 	public boolean  isHealing;
 	public boolean  isCapturing;

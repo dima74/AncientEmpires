@@ -55,4 +55,19 @@ public class NamedObjects<T>
 		for (Entry<String, JsonElement> entry : object.entrySet())
 			objects.put(entry.getKey(), (T) info.fromJson((JsonObject) entry.getValue(), c));
 	}
+	
+	public JsonObject toJsonBoolean()
+	{
+		JsonObject object = new JsonObject();
+		for (Entry<String, T> entry : objects.entrySet())
+			object.addProperty(entry.getKey(), ((Boolean) entry.getValue()));
+		return object;
+	}
+	
+	public void fromJsonBoolean(JsonObject object, LoaderInfo info)
+	{
+		for (Entry<String, JsonElement> entry : object.entrySet())
+			objects.put(entry.getKey(), (T) (Object) entry.getValue().getAsBoolean());
+	}
+
 }
