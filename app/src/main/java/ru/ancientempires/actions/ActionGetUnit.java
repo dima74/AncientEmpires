@@ -128,7 +128,7 @@ public class ActionGetUnit extends ActionFrom
 
 				int currentIAbsolute = unit.i + minDistanceI - radius;
 				int currentJAbsolute = unit.j + minDistanceJ - radius;
-				int steps = unit.getSteps(currentIAbsolute, currentJAbsolute, game.fieldCells[nextIAbsolute][nextJAbsolute]);
+				int steps = unit.getSteps(nextIAbsolute, nextJAbsolute);
 				int nextDistance = distance[minDistanceI][minDistanceJ] + steps;
 				if (nextDistance < distance[nextI][nextJ])
 				{

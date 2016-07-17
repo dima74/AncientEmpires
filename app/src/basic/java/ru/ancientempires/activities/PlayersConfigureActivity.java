@@ -260,7 +260,7 @@ public class PlayersConfigureActivity extends BaseActivity
 				teamNumbers[i] = ((Spinner) views[i].findViewById(R.id.spinnerTeam)).getSelectedItemPosition();
 			Integer[] teamNumbersSorted = new TreeSet<>(Arrays.asList(teamNumbers)).toArray(new Integer[0]);
 			int[] teamNumbersToOrdinals = new int[players.length];
-			for (int i = 0; i < players.length; i++)
+			for (int i = 0; i < teamNumbersSorted.length; i++)
 				teamNumbersToOrdinals[teamNumbersSorted[i]] = i;
 
 			for (int i = 0; i < players.length; i++)

@@ -24,7 +24,7 @@ public class BonusMoveToCellGroup extends Bonus
 	}
 	
 	@Override
-	public int getBonusMove(Game game, Unit unit, Cell cell, Cell targetCell)
+	public int getBonusMove(Game game, Unit unit, Cell targetCell)
 	{
 		return group.contains(targetCell.type) ? bonus : 0;
 	}

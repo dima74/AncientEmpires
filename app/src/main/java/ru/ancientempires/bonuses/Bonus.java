@@ -38,7 +38,7 @@ public abstract class Bonus extends AbstractGameHandler implements SerializableJ
 		return getBonusDefence(game, unit, unit.getCell(), fromUnit);
 	}
 	
-	public int getBonusMove(Game game, Unit unit, Cell cell, Cell targetCell)
+	public int getBonusMove(Game game, Unit unit, Cell targetCell)
 	{
 		return 0;
 	}

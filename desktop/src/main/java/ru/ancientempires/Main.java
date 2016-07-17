@@ -9,15 +9,14 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import ru.ancientempires.actions.ActionCellBuy;
 import ru.ancientempires.actions.ActionGameEndTurn;
-import ru.ancientempires.actions.ActionUnitMove;
 import ru.ancientempires.campaign.CampaignImmediately;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Player;
 
 public class Main
 {
@@ -36,36 +35,25 @@ public class Main
 		//new Swing("save.0");
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
-		//new Swing("skirmish.5");
-		testFull();
+		//new Swing("campaign.5");
+		//testFull();
 		//test();
 
-		for (int i = 0; i < 10000; i++)
-			for (int iGame = 0; iGame < 12; iGame++)
-				testII("skirmish." + iGame);
+		if (false)
+			for (int i = 0; i < 10000; i++)
+				for (int iGame = 0; iGame < 12; iGame++)
+					testII("skirmish." + iGame);
 	}
 
 	private static void test() throws Exception
 	{
-		{
-			Game game = Client.client.allGames.get("skirmish.5").loadGame(true);
-			game.path.isBaseGame = false;
-			game.ii.turnFull(game);
-			System.exit(0);
-		}
-
-		Game game = Client.client.startGame("skirmish.5");
+		Game game = Client.client.startGame("skirmish.2");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
-		new ActionCellBuy().setUnit(4).setIJ(3, 7).perform(game);
-		new ActionUnitMove().setIJ(3, 7).setTargetIJ(4, 7).perform(game);
-		System.out.println(game.numberedUnits.objects);
-		for (int i = 0; i < 5; i++)
-		{
-			new ActionGameEndTurn().perform(game);
-			System.out.println(game.numberedUnits.objects);
-		}
+		System.out.println(Arrays.toString(game.path.screenCenters));
+		for (Player player : game.players)
+			System.out.println(player.color);
 
 		Client.client.stopGame();
 		System.exit(0);

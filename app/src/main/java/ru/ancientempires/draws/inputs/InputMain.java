@@ -59,7 +59,8 @@ public class InputMain extends AbstractInput
 	{
 		if (!drawMain.isActiveGame)
 			return;
-		currentInput.endTurn();
+		if (currentInput != null) // первый игрок --- NONE
+			currentInput.endTurn();
 		if (performEndTurn)
 			performEndTurn();
 		beginTurn();

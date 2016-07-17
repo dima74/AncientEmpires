@@ -93,7 +93,7 @@ public class Game implements SerializableJson
 		fieldUnitsDead = new Unit[h][w];
 
 		CellType[] types = getTypes("HILL", "TWO_TREES", "THREE_TREES");
-		Random random = new Random();
+		Random random = new Random(0);
 		fieldCells = new Cell[h][w];
 		for (int i = 0; i < h; i++)
 			for (int j = 0; j < w; j++)
@@ -433,7 +433,7 @@ public class Game implements SerializableJson
 		//random = new Random(49950377336979L);
 		MyAssert.a(random != null);
 
-		namedPoints.fromJsonBoolean((JsonObject) object.get("namedBooleans"), info);
+		namedBooleans.fromJsonBoolean((JsonObject) object.get("namedBooleans"), info);
 		namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
 
 		// teams

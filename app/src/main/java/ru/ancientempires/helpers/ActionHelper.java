@@ -140,7 +140,7 @@ public class ActionHelper extends AbstractGameHandler
 	
 	private boolean tryDfs(int i, int j, int targetI, int targetJ, Unit unit, int moveRadius)
 	{
-		return game.checkCoordinates(targetI, targetJ) && dfs(targetI, targetJ, unit, moveRadius - unit.getSteps(i, j, targetI, targetJ));
+		return game.checkCoordinates(targetI, targetJ) && dfs(targetI, targetJ, unit, moveRadius - unit.getSteps(targetI, targetJ));
 	}
 	
 	public void clearUnitState(Unit unit)

@@ -209,25 +209,20 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	}
 	
 	// TODO кристаллы не должны мочь ходить на горы
-	public int getSteps(int i, int j, int targetI, int targetJ)
+	public int getSteps(int targetI, int targetJ)
 	{
-		return getSteps(game.fieldCells[i][j], game.fieldCells[targetI][targetJ]);
+		return getSteps(game.fieldCells[targetI][targetJ]);
 	}
-	
-	public int getSteps(int i, int j, Cell targetCell)
-	{
-		return getSteps(game.fieldCells[i][j], targetCell);
-	}
-	
-	public int getSteps(Cell cell, Cell targetCell)
+
+	public int getSteps(Cell targetCell)
 	{
 		if (type.isFly)
 			return 1;
 		int steps = targetCell.getSteps();
 		for (Bonus bonus : bonuses)
-			steps += bonus.getBonusMove(game, this, cell, targetCell);
+			steps += bonus.getBonusMove(game, this, targetCell);
 		for (Bonus bonus : type.bonuses)
-			steps += bonus.getBonusMove(game, this, cell, targetCell);
+			steps += bonus.getBonusMove(game, this, targetCell);
 		return steps;
 	}
 	
