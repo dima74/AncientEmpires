@@ -17,6 +17,7 @@ import ru.ancientempires.bonuses.BonusCreatorDireWolf;
 import ru.ancientempires.bonuses.BonusCreatorWisp;
 import ru.ancientempires.bonuses.BonusLevel;
 import ru.ancientempires.bonuses.BonusMoveToCellGroup;
+import ru.ancientempires.bonuses.BonusMoveToCellType;
 import ru.ancientempires.bonuses.BonusOnCellGroup;
 import ru.ancientempires.model.CellGroup;
 import ru.ancientempires.model.CellTemplate;
@@ -394,6 +395,7 @@ public class DefaultRules
 		crystal.defence = 15;
 		crystal.attackRange = emptyRange;
 		crystal.moveRadius = 3;
+		crystal.addBonuses(new BonusMoveToCellType(mount, +3));
 		
 		king.specializations = new HashMap<>();
 		king.addSpecialization(MyColor.BLUE, king_galamar);

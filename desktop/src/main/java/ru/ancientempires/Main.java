@@ -16,7 +16,8 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.model.Player;
+import ru.ancientempires.rules.DefaultRules;
+import ru.ancientempires.rules.RulesSaver;
 
 public class Main
 {
@@ -25,7 +26,7 @@ public class Main
 	{
 		//test2();
 		Client client = new Client(new DesktopClientHelper());
-		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
+		new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
 		//System.exit(0);
 
@@ -37,7 +38,7 @@ public class Main
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
 		//new Swing("campaign.5");
 		//testFull();
-		//test();
+		test();
 
 		if (false)
 			for (int i = 0; i < 10000; i++)
@@ -50,10 +51,6 @@ public class Main
 		Game game = Client.client.startGame("skirmish.2");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
-
-		System.out.println(Arrays.toString(game.path.screenCenters));
-		for (Player player : game.players)
-			System.out.println(player.color);
 
 		Client.client.stopGame();
 		System.exit(0);

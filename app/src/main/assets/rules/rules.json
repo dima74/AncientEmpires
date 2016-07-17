@@ -167,10 +167,10 @@
 		{
 			"name": "KING",
 			"specializations": {
-				"BLUE": "KING_GALAMAR",
-				"RED": "KING_DEMONLORD",
 				"BLACK": "KING_SAETH",
-				"GREEN": "KING_VALADORN"
+				"GREEN": "KING_VALADORN",
+				"RED": "KING_DEMONLORD",
+				"BLUE": "KING_GALAMAR"
 			},
 			"attackMin": 55,
 			"attackMax": 65,
@@ -241,7 +241,7 @@
 					"multiDefence": 2
 				},
 				{
-					"type": 5,
+					"type": 6,
 					"typeName": "BonusOnCellGroup",
 					"group": 4,
 					"bonusAttack": 10,
@@ -345,7 +345,21 @@
 			"attackMax": 0,
 			"defence": 15,
 			"moveRadius": 3,
-			"attackRange": "EMPTY"
+			"attackRange": "EMPTY",
+			"bonuses": [
+				{
+					"type": 3,
+					"typeName": "BonusLevel",
+					"multiAttack": 2,
+					"multiDefence": 2
+				},
+				{
+					"type": 5,
+					"typeName": "BonusMoveToCellType",
+					"group": 1,
+					"bonus": 3
+				}
+			]
 		},
 		{
 			"baseType": "KING",
@@ -550,9 +564,9 @@
 			"template": {
 				"type": "WAY",
 				"friends": [
-					"WATER_WAY_VERTICAL",
+					"WATER_WAY_HORIZONTAL",
 					"CASTLE",
-					"WATER_WAY_HORIZONTAL"
+					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": [
 					"TEMPLE"
@@ -573,9 +587,9 @@
 			"template": {
 				"type": "WATER",
 				"friends": [
-					"WATER_WAY_VERTICAL",
+					"WATER_WAY_HORIZONTAL",
 					"WATER_SPARKS",
-					"WATER_WAY_HORIZONTAL"
+					"WATER_WAY_VERTICAL"
 				],
 				"friendsUp": []
 			}

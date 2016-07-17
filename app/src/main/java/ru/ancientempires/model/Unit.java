@@ -208,7 +208,6 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		return moveRadius;
 	}
 	
-	// TODO кристаллы не должны мочь ходить на горы
 	public int getSteps(int targetI, int targetJ)
 	{
 		return getSteps(game.fieldCells[targetI][targetJ]);
