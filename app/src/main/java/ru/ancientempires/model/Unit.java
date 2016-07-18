@@ -5,13 +5,14 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 import ru.ancientempires.Localization;
 import ru.ancientempires.actions.Checker;
 import ru.ancientempires.bonuses.Bonus;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.helpers.ActionHelper;
+import ru.ancientempires.serializable.AfterFromJson;
+import ru.ancientempires.serializable.CheckForNullAndEmpty;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.OnlyIf;
@@ -23,10 +24,10 @@ import ru.ancientempires.serializable.WithNumbered;
 @WithNumbered("numberedUnits")
 public class Unit extends AbstractGameHandler implements SerializableJson
 {
-
+	
 	public UnitType type;
 	public Player   player;
-
+	
 	public int i;
 	public int j;
 	public int health;
@@ -35,16 +36,49 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	// только для статичных войнов
 	@OnlyIf("isStatic")
 	public int numberBuys;
-
+	
 	private boolean isStatic()
 	{
 		return type.isStatic;
 	}
-
+	
 	public boolean isMove;
 	public boolean isTurn;
+	
+	@CheckForNullAndEmpty
+	private ArrayList<Bonus> bonuses;
+	private Bonus[] bonusesCache = new Bonus[0];
 
-	public ArrayList<Bonus> bonuses = new ArrayList<>();
+	public void removeBonus(Bonus bonus)
+	{
+		if (bonuses == null)
+			bonuses = new ArrayList<>();
+		MyAssert.a(bonuses.remove(bonus));
+		createBonusesCache();
+	}
+
+	public void addBonus(Bonus bonus)
+	{
+		if (bonuses == null)
+			bonuses = new ArrayList<>();
+		bonuses.add(bonus);
+		createBonusesCache();
+	}
+
+	@AfterFromJson
+	private void createBonusesCache()
+	{
+		if (bonuses == null)
+		{
+			bonusesCache = type.bonuses;
+			return;
+		}
+		bonusesCache = new Bonus[type.bonuses.length + bonuses.size()];
+		for (int i = 0; i < type.bonuses.length; i++)
+			bonusesCache[i] = type.bonuses[i];
+		for (int i = 0; i < bonuses.size(); i++)
+			bonusesCache[type.bonuses.length + i] = bonuses.get(i);
+	}
 
 	// Локализованное, с учётом уровня
 	@Exclude
@@ -55,37 +89,37 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		isMove = true;
 		isTurn = true;
 	}
-	
+
 	public int getQualitySum()
 	{
 		return type.attackMin + type.attackMax + type.defence;
 	}
-	
+
 	public final int getNextRankExperience()
 	{
 		return getQualitySum() * 100 * 2 / 3;
 	}
-	
+
 	public boolean isLevelUp()
 	{
 		int nextLevelExperience = getNextRankExperience();
 		return experience >= nextLevelExperience;
 	}
-	
+
 	public boolean levelUp()
 	{
 		experience -= getNextRankExperience();
 		level++;
 		return updateName();
 	}
-	
+
 	public boolean updateName()
 	{
 		boolean result = updateName(this, type, level);
 		MyAssert.a(name != null);
 		return result;
 	}
-	
+
 	public static boolean updateName(Unit unit, UnitType type, int level)
 	{
 		for (int levelCopy = level; levelCopy >= 0; levelCopy--)
@@ -103,12 +137,12 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			return false;
 		return updateName(unit, type.baseType, level);
 	}
-	
+
 	public String getDescription()
 	{
 		return getDescription(type);
 	}
-	
+
 	public static String getDescription(UnitType type)
 	{
 		String description = Localization.get(type.name + ".description");
@@ -121,13 +155,13 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		}
 		return getDescription(type.baseType);
 	}
-	
+
 	/* Два варианта создания нового объекта
 	 1. При загрузке игры:
 	 	экземпляр
 	 -> свойства из unitType
 	 -> загружаем оставшиеся свойства
-	 
+
 	 2. При покупки в замке/воскрешении:
 	 	экземпляр
 	 -> свойства из unitType
@@ -137,12 +171,6 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	public Unit()
 	{}
 
-	// используется при загрузки игры
-	public Unit(Game game)
-	{
-		setGame(game);
-	}
-	
 	// используется при покупки войнов
 	public Unit(Game game, UnitType type, Player player)
 	{
@@ -151,63 +179,71 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		this.player = player;
 		initFromType();
 	}
-	
+
 	public Unit(Unit unit)
 	{
 		this(unit.game, unit.type, unit.player);
 	}
-	
+
 	public void initFromType()
 	{
 		type = type.trySpecialize(player);
 		health = type.healthDefault;
+		createBonusesCache();
 	}
-	
+
 	public Unit setIJ(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 		return this;
 	}
-	
+
 	public Unit addToGame()
 	{
 		game.setUnit(i, j, this);
 		player.units.add(this);
 		return this;
 	}
-	
+
 	public Unit setLevel(int level)
 	{
 		this.level = level;
 		return this;
 	}
-	
+
 	public Cell getCell()
 	{
 		return game.fieldCells[i][j];
 	}
 
 	/*
-	оказывается этот метод довольно медленный
+	// оказывается этот метод довольно медленный
 	public Bonus[] getBonuses()
 	{
-		ArrayList<Bonus> bonuses = new ArrayList<>(this.bonuses);
-		bonuses.addAll(Arrays.asList(type.bonuses));
+		ArrayList<Bonus> bonuses = new ArrayList<>(Arrays.asList(type.bonuses));
+		if (this.bonuses != null)
+			bonuses.addAll(this.bonuses);
 		return bonuses.toArray(new Bonus[bonuses.size()]);
 	}
-	*/
-	
+
+	public Bonus[] bonusesCache()
+	{
+		Bonus[] bonuses = getBonuses();
+		for (int i = 0; i < bonuses.length; i++)
+			MyAssert.a(bonuses[i] == bonusesCache[i]);
+		return bonusesCache;
+	}
+	//*/
+
 	public int getMoveRadius()
 	{
 		int moveRadius = type.moveRadius;
-		for (Bonus bonus : bonuses)
-			moveRadius += bonus.getBonusMoveStart(game, this);
-		for (Bonus bonus : type.bonuses)
+		for (Bonus bonus : bonusesCache)
 			moveRadius += bonus.getBonusMoveStart(game, this);
 		return moveRadius;
 	}
-	
+
 	public int getSteps(int targetI, int targetJ)
 	{
 		return getSteps(game.fieldCells[targetI][targetJ]);
@@ -218,63 +254,55 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		if (type.isFly)
 			return 1;
 		int steps = targetCell.getSteps();
-		for (Bonus bonus : bonuses)
-			steps += bonus.getBonusMove(game, this, targetCell);
-		for (Bonus bonus : type.bonuses)
+		for (Bonus bonus : bonusesCache)
 			steps += bonus.getBonusMove(game, this, targetCell);
 		return steps;
 	}
-	
+
 	public int getBonusAttack(Unit targetUnit)
 	{
 		return getBonusAttack(getCell(), targetUnit);
 	}
-	
+
 	public int getBonusAttack(int i, int j, Unit targetUnit)
 	{
 		return getBonusAttack(game.fieldCells[i][j], targetUnit);
 	}
-	
+
 	public int getBonusAttack(Cell cell, Unit targetUnit)
 	{
 		int attackBonus = 0;
-		for (Bonus bonus : bonuses)
-			attackBonus += bonus.getBonusAttack(game, this, cell, targetUnit);
-		for (Bonus bonus : type.bonuses)
+		for (Bonus bonus : bonusesCache)
 			attackBonus += bonus.getBonusAttack(game, this, cell, targetUnit);
 		return attackBonus;
 	}
-	
+
 	public int getBonusDefence(Unit fromUnit)
 	{
 		return getBonusDefence(getCell(), fromUnit);
 	}
-	
+
 	public int getBonusDefence(int i, int j, Unit fromUnit)
 	{
 		return getBonusDefence(game.fieldCells[i][j], fromUnit);
 	}
-	
+
 	public int getBonusDefence(Cell cell, Unit fromUnit)
 	{
 		int defenceBonus = cell.type.defense;
-		for (Bonus bonus : bonuses)
-			defenceBonus += bonus.getBonusDefence(game, this, cell, fromUnit);
-		for (Bonus bonus : type.bonuses)
+		for (Bonus bonus : bonusesCache)
 			defenceBonus += bonus.getBonusDefence(game, this, cell, fromUnit);
 		return defenceBonus;
 	}
-	
+
 	public int getCost()
 	{
 		int cost = type.cost;
-		for (Bonus bonus : bonuses)
-			cost += bonus.getBonusCost(game, this);
-		for (Bonus bonus : type.bonuses)
+		for (Bonus bonus : bonusesCache)
 			cost += bonus.getBonusCost(game, this);
 		return cost;
 	}
-	
+
 	public boolean hasPositiveBonus()
 	{
 		for (Bonus bonus : bonuses)
@@ -282,7 +310,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 				return true;
 		return false;
 	}
-	
+
 	public boolean hasNegativeBonus()
 	{
 		for (Bonus bonus : bonuses)
@@ -290,68 +318,45 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 				return true;
 		return false;
 	}
-	
+
 	// Пожалуй, эти две функции - единственное место,
 	// которое делается не за логарифм, хотя можно было бы соптимайзить)))
 	public boolean canCapture(CellType cellType)
 	{
 		return Arrays.asList(type.captureTypes).contains(cellType);
 	}
-	
+
 	public boolean canRepair(CellType cellType)
 	{
 		return Arrays.asList(type.repairTypes).contains(cellType);
 	}
-	
+
 	public boolean canDestroy(CellType cellType)
 	{
 		return Arrays.asList(type.destroyingTypes).contains(cellType);
 	}
-	
+
 	@Override
-	public boolean equals(Object o)
+	public int hashCode()
 	{
-		Unit unit = (Unit) o;
-		if (type != unit.type)
-			return false;
-		if (player.ordinal != unit.player.ordinal)
-			return false;
-		if (i != unit.i)
-			return false;
-		if (j != unit.j)
-			return false;
-		if (health != unit.health)
-			return false;
-		if (level != unit.level)
-			return false;
-		if (experience != unit.experience)
-			return false;
-		if (!bonuses.equals(unit.bonuses))
-			return false;
-		if (numberBuys != unit.numberBuys)
-			return false;
-		if (isMove != unit.isMove)
-			return false;
-		if (isTurn != unit.isTurn)
-			return false;
-		return true;
+		return 31 * i + j;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return String.format("%15s (%2d %2d) %d %d (%b %b)", type.name, i, j, player.ordinal, health, isMove, isTurn);
 	}
-	
+
 	// II
 	@Exclude
 	public int var_8f7;
-	
+
 	public int sub_462(Unit targetUnit)
 	{
 		return this.sub_462(j, i, targetUnit);
 	}
-	
+
 	// некоторая характеристика того состояния, которое будет если этот войн сходит на клеточку (i, j) и атакует targetUnit
 	public int sub_462(int j, int i, Unit targetUnit)
 	{
@@ -361,7 +366,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		return (type.attackMin + type.attackMax + getBonusAttack(i, j, targetUnit)
 		        + type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
 	}
-	
+
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)
 	{
 		Range type = new Range(null, minRange, maxRange);
@@ -374,7 +379,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			}
 		}).toArray(new Unit[0]);
 	}
-	
+
 	public Unit[] getUnitsToAttack(int x, int y)
 	{
 		return new ActionHelper(game).getInRange(game.fieldUnits, y, x, type.attackRange, new Checker<Unit>()
@@ -386,7 +391,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			}
 		}).toArray(new Unit[0]);
 	}
-	
+
 	public Unit[] getUnitsToRaise(int x, int y)
 	{
 		return new ActionHelper(game).getInRange(game.fieldUnitsDead, y, x, type.raiseRange, new Checker<Unit>()
@@ -397,12 +402,6 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 				return true;
 			}
 		}).toArray(new Unit[0]);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(type.ordinal, player.ordinal, i, j, health, level, experience, numberBuys, isMove, isTurn, bonuses.size());
 	}
 
 	// =/({||})\=
@@ -422,7 +421,8 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			object.addProperty("numberBuys", numberBuys);
 		object.addProperty("isMove", isMove);
 		object.addProperty("isTurn", isTurn);
-		object.add("bonuses", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bonuses));
+		if (bonuses != null && !bonuses.isEmpty())
+			object.add("bonuses", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bonuses));
 		object.add("names", game.namedUnits.toJsonPart(this));
 		object.add("indexes", game.numberedUnits.toJsonPart(this));
 		return object;
@@ -442,12 +442,14 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			numberBuys = object.get("numberBuys").getAsInt();
 		isMove = object.get("isMove").getAsBoolean();
 		isTurn = object.get("isTurn").getAsBoolean();
-		bonuses = new ArrayList<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
+		if (object.has("bonuses"))
+			bonuses = new ArrayList<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
 		game.namedUnits.fromJsonPart(((JsonArray) object.get("names")), this);
 		game.numberedUnits.fromJsonPart(((JsonArray) object.get("indexes")), this);
+		createBonusesCache();
 		return this;
 	}
-
+	
 	public static Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Unit[] array = new Unit[jsonArray.size()];
@@ -455,5 +457,5 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 			array[i] = new Unit().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-
+	
 }

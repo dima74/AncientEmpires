@@ -31,7 +31,7 @@ public class BonusCreatorDireWolf extends BonusCreator
 	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
 	{
 		Bonus bonus = copy(this.bonus, game);
-		targetUnit.bonuses.add(bonus);
+		targetUnit.addBonus(bonus);
 		new TaskRemoveBonus(game)
 				.setUnit(targetUnit)
 				.setBonus(bonus)

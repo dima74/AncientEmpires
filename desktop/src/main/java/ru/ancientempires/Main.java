@@ -36,8 +36,8 @@ public class Main
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
 		//new Swing("campaign.5");
-		//testFull();
-		test();
+		testFull();
+		//test();
 
 		if (false)
 			for (int i = 0; i < 10000; i++)

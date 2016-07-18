@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -12,7 +13,9 @@ import java.util.HashSet;
 
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.AbstractGameHandler;
+import ru.ancientempires.serializable.AfterFromJson;
 import ru.ancientempires.serializable.BitmapPath;
+import ru.ancientempires.serializable.CheckForNullAndEmpty;
 import ru.ancientempires.serializable.EraseNulls;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
@@ -155,8 +158,10 @@ public class JsonProcessor extends MyAbstractManualProcessor
 
 				if (field.getAnnotation(MyNullable.class) != null || field.getAnnotation(MyNullableTo.class) != null)
 					statement = String.format("if (%s != null)\n\t\t%s", fieldName, statement);
-				else if (field.getAnnotation(OnlyIf.class) != null)
+				if (field.getAnnotation(OnlyIf.class) != null)
 					statement = String.format("if (%s())\n\t\t%s", field.getAnnotation(OnlyIf.class).value(), statement);
+				if (field.getAnnotation(CheckForNullAndEmpty.class) != null)
+					statement = String.format("if (%s != null && !%s.isEmpty())\n\t\t%s", fieldName, statement);
 
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
@@ -242,9 +247,9 @@ public class JsonProcessor extends MyAbstractManualProcessor
 					statement = String.format("%s = info.fromJson((JsonObject) object.get(\"%s\"), %s.class)", fieldName, fieldName, fieldTypeName);
 				}
 
-				if (field.getAnnotation(MyNullable.class) != null)
+				if (field.getAnnotation(MyNullable.class) != null || field.getAnnotation(CheckForNullAndEmpty.class) != null)
 					statement = String.format("if (object.has(\"%s\"))\n\t\t%s", fieldName, statement);
-				else if (field.getAnnotation(OnlyIf.class) != null)
+				if (field.getAnnotation(OnlyIf.class) != null)
 					statement = String.format("if (%s())\n\t\t%s", field.getAnnotation(OnlyIf.class).value(), statement);
 
 				if (statement != null)
@@ -263,6 +268,9 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				statement = "if (game != null)\n\t\t" + statement;
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 		}
+		for (Method method : actualClass.getDeclaredMethods())
+			if (method.getAnnotation(AfterFromJson.class) != null)
+				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(method.getName() + "()"));
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return this"));
 	}
 

@@ -90,7 +90,7 @@ public class II extends GameHandler
 		init();
 		initTurn();
 		
-		ArrayList<Unit> allUnits = new ArrayList<Unit>(var_3aad);
+		ArrayList<Unit> allUnits = new ArrayList<>(var_3aad);
 		for (Unit unit : allUnits)
 			MyAssert.a(!unit.isMove && !unit.isTurn);
 		while (!var_3aad.isEmpty())
@@ -140,7 +140,7 @@ public class II extends GameHandler
 					
 					int var10;
 					
-					Vector<Unit> units = new Vector<Unit>();
+					Vector<Unit> units = new Vector<>();
 					for (Unit[] line : fieldUnits)
 						for (Unit unit : line)
 							if (unit != null)
@@ -291,7 +291,7 @@ public class II extends GameHandler
 							}
 							//*/
 							
-							ArrayList<Integer> unitsToBuy = new ArrayList<Integer>();
+							ArrayList<Integer> unitsToBuy = new ArrayList<>();
 							for (int i = 0; i < units.length; i++)
 								if (statuses[i] == BuyStatus.SUCCESS)
 								{
@@ -425,12 +425,12 @@ public class II extends GameHandler
 	
 	public void init()
 	{
-		ArrayList<Cell> cells = new ArrayList<Cell>();
+		ArrayList<Cell> cells = new ArrayList<>();
 		for (Cell[] line : fieldCells)
 			for (Cell cell : line)
 				if (cell.type.isCapturing || cell.type.repairType != null || cell.type.destroyingType != null)
 					cells.add(cell);
-		buildings = cells.toArray(new Cell[0]);
+		buildings = cells.toArray(new Cell[cells.size()]);
 		mapAlphaData = new int[w][h];
 		var_39e3 = new int[w][h];
 	}
@@ -482,7 +482,7 @@ public class II extends GameHandler
 		priority[rules.getUnitType("WISP").ordinal] = 2;
 		priority[rules.getUnitType("ARCHER").ordinal] = 1;
 		
-		var_3aad = new Vector<Unit>(game.currentPlayer.units);
+		var_3aad = new Vector<>(game.currentPlayer.units);
 		Collections.sort(var_3aad, new Comparator<Unit>()
 		{
 			public boolean less(Unit a, Unit b)
@@ -515,8 +515,6 @@ public class II extends GameHandler
 		var_36e4 = 0;
 	}
 	
-	ArrayList<Unit> nextMove = new ArrayList<Unit>();
-	
 	public final void sub_109f(Unit var1)
 	{
 		currentSelectedUnit = var1;
@@ -545,10 +543,10 @@ public class II extends GameHandler
 				var7 = this.getKing(var6 - var_38d5.length);
 				if (var7 != null)
 					if (var7.player.team != game.currentPlayer.team && !isKingLive)
-						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, (Unit) null) * 2;
+						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, null) * 2;
 					else if (game.currentTurn >= 15 && var7.player.team != game.currentPlayer.team && var7.player.units.size() < 4
 					         && game.currentPlayer.units.size() >= 8)
-						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, (Unit) null) * 2;
+						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, null) * 2;
 					else if (var7.player != game.currentPlayer)
 						var7 = null;
 			}
@@ -569,7 +567,7 @@ public class II extends GameHandler
 				
 				if (var_395f[var2][2] > 0)
 				{
-					var_395f[var2][4] += var7.sub_462(var7.j, var7.i, (Unit) null);
+					var_395f[var2][4] += var7.sub_462(var7.j, var7.i, null);
 					var_395f[var2][4] += var7.var_8f7;
 					if (var_395f[var2][2] > var_39d0)
 						var_39d0 = var_395f[var2][2];
@@ -617,10 +615,10 @@ public class II extends GameHandler
 				
 				for (var16 = 0; var16 < var15.length; ++var16)
 					if (var_3903[var10] != null && !var14)
-						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, (Unit) null);
+						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, null);
 						// else if (var13 == 8 && var15[var16].hasProperty((short) 8) || var13 == 9 && var15[var16].hasProperty((short) 16))
 					else if (var15[var16].canCapture(cell.type) || var15[var16].canRepair(cell.type))
-						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, (Unit) null);
+						var_395f[var2][2] += var15[var16].sub_462(var15[var16].j, var15[var16].i, null);
 				
 				if (var_395f[var2][2] == 0)
 					if (var_3903[var10] != null && !var14)
@@ -716,7 +714,7 @@ public class II extends GameHandler
 			
 			if (var10 != -1)
 			{
-				var25 = var1.sub_462(var1.j, var1.i, (Unit) null);
+				var25 = var1.sub_462(var1.j, var1.i, null);
 				if (var10 < var_38d5.length)
 					var_38d5[var10].var_8f7 += var25;
 				else if (var10 < numberPlayers + var_38d5.length)
@@ -751,7 +749,7 @@ public class II extends GameHandler
 						
 						var16 = 0;
 						for (Unit element : var17)
-							if ((var16 = sub_10cb(var1, var21, var23, element, (Unit) null)) > var10)
+							if ((var16 = sub_10cb(var1, var21, var23, element, null)) > var10)
 							{
 								var_37e4 = null;
 								var_37c2 = element;
@@ -768,7 +766,7 @@ public class II extends GameHandler
 						Unit[] unitsToRaise = var1.getUnitsToRaise(var21, var23);
 						
 						for (Unit unit : unitsToRaise)
-							if ((var16 = sub_10cb(var1, var21, var23, (Unit) null, unit)) > var10)
+							if ((var16 = sub_10cb(var1, var21, var23, null, unit)) > var10)
 							{
 								var_37c2 = null;
 								var_37e4 = unit;
@@ -778,7 +776,7 @@ public class II extends GameHandler
 							}
 					}
 					
-					if ((var16 = sub_10cb(var1, var21, var23, (Unit) null, (Unit) null)) > var10)
+					if ((var16 = sub_10cb(var1, var21, var23, null, null)) > var10)
 					{
 						var_37c2 = null;
 						var_37e4 = null;
@@ -1128,11 +1126,11 @@ public class II extends GameHandler
 	
 	private Unit[] getSoldiers()
 	{
-		ArrayList<Unit> soldiers = new ArrayList<Unit>();
+		ArrayList<Unit> soldiers = new ArrayList<>();
 		for (Unit unit : game.currentPlayer.units)
 			if (unit.type.name == "SOLDIER")
 				soldiers.add(unit);
-		return soldiers.toArray(new Unit[0]);
+		return soldiers.toArray(new Unit[soldiers.size()]);
 	}
 	
 }

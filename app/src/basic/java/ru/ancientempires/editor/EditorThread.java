@@ -66,6 +66,7 @@ public class EditorThread extends BaseThread
 	{
 		game.currentTurn = null;
 		game.allowedUnits = null;
+		game.random = null;
 		for (Player player : game.players)
 		{
 			player.color = null;

@@ -370,7 +370,15 @@ public class Game implements SerializableJson
 
 		// players
 		if (players != null)
-			object.add("players", SerializableJsonHelper.toJsonArray(players));
+		{
+			JsonArray array = SerializableJsonHelper.toJsonArray(players);
+			for (JsonElement element : array)
+				if (!((JsonObject) element).entrySet().isEmpty())
+				{
+					object.add("players", array);
+					break;
+				}
+		}
 
 		// cells types
 		JsonArray mapArray = new JsonArray();
@@ -444,7 +452,7 @@ public class Game implements SerializableJson
 			teams[i] = new Team(i);
 
 		// players
-		JsonArray playersJson = SerializableJsonHelper.insertDefaults((JsonArray) object.get("players"), rules.getDefaultsPlayers(path.numberPlayers));
+		JsonArray playersJson = SerializableJsonHelper.insertDefaults(object.has("players") ? (JsonArray) object.get("players") : null, rules.getDefaultsPlayers(path.numberPlayers));
 		players = Player.fromJsonArray(playersJson, info);
 		for (int i = 0; i < players.length; i++)
 		{

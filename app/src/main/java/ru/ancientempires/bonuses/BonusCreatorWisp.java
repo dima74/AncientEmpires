@@ -43,7 +43,7 @@ public class BonusCreatorWisp extends BonusCreator
 					{
 						Bonus bonus = copy(bonus0, game);
 						creates.add(new BonusCreate(targetUnit, bonus));
-						targetUnit.bonuses.add(bonus);
+						targetUnit.addBonus(bonus);
 						new TaskRemoveBonus(game)
 								.setUnit(targetUnit)
 								.setBonus(bonus)
