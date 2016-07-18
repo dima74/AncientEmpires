@@ -76,7 +76,7 @@ public abstract class Bonus extends AbstractGameHandler implements SerializableJ
 		return this;
 	}
 
-	public static Bonus[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public Bonus[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Bonus[] array = new Bonus[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

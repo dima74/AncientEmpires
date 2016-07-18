@@ -49,7 +49,7 @@ public class Constraint implements SerializableJson
 		return this;
 	}
 
-	public static Constraint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public Constraint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Constraint[] array = new Constraint[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

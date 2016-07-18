@@ -83,7 +83,7 @@ public abstract class AbstractPoint extends AbstractGameHandler implements Seria
 		return this;
 	}
 
-	public static AbstractPoint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public AbstractPoint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		AbstractPoint[] array = new AbstractPoint[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

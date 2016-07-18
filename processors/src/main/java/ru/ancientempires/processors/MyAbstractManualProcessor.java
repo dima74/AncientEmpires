@@ -75,22 +75,22 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 
 	public static HashSet<CtMethod> newMethods = new HashSet<>();
 
-	public CtBlock createMethod(CtClass ctClass, String name, Class returnType, Object... parametrs)
+	public CtBlock createMethod(CtClass ctClass, String name, Class returnType, Object... parameters)
 	{
-		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, true, parametrs);
+		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, true, parameters);
 	}
 
-	public CtBlock createMethodNoExcept(CtClass ctClass, String name, Class returnType, Object... parametrs)
+	public CtBlock createMethodNoExcept(CtClass ctClass, String name, Class returnType, Object... parameters)
 	{
-		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, false, parametrs);
+		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, false, parameters);
 	}
 
-	public CtBlock createMethodStatic(CtClass ctClass, String name, Class returnType, Object... parametrs)
+	public CtBlock createMethodStatic(CtClass ctClass, String name, Class returnType, Object... parameters)
 	{
 		return createMethod(ctClass, new ModifierKind[] {
 				ModifierKind.PUBLIC,
 				ModifierKind.STATIC
-		}, name, returnType, true, parametrs);
+		}, name, returnType, true, parameters);
 	}
 
 	public CtBlock createMethod(CtClass ctClass, ModifierKind[] modifiers, String name, Class returnType, boolean exception, Object... parameters)

@@ -161,7 +161,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				if (field.getAnnotation(OnlyIf.class) != null)
 					statement = String.format("if (%s())\n\t\t%s", field.getAnnotation(OnlyIf.class).value(), statement);
 				if (field.getAnnotation(CheckForNullAndEmpty.class) != null)
-					statement = String.format("if (%s != null && !%s.isEmpty())\n\t\t%s", fieldName, statement);
+					statement = String.format("if (%s != null && !%s.isEmpty())\n\t\t%s", fieldName, fieldName, statement);
 
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));

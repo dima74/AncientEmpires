@@ -47,6 +47,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	
 	@CheckForNullAndEmpty
 	private ArrayList<Bonus> bonuses;
+	@Exclude
 	private Bonus[] bonusesCache = new Bonus[0];
 
 	public void removeBonus(Bonus bonus)
@@ -449,13 +450,13 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		createBonusesCache();
 		return this;
 	}
-	
-	public static Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+
+	static public Unit[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Unit[] array = new Unit[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = new Unit().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-	
+
 }

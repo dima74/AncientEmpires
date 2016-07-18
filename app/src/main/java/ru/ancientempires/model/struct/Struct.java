@@ -43,7 +43,7 @@ public abstract class Struct implements SerializableJson
 		return this;
 	}
 
-	public static Struct[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public Struct[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Struct[] array = new Struct[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

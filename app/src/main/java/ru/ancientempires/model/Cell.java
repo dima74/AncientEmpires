@@ -148,7 +148,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		return this;
 	}
 
-	public static Cell[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public Cell[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		Cell[] array = new Cell[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)

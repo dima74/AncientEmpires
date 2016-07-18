@@ -28,7 +28,7 @@ public abstract class AbstractBounds implements SerializableJson
 		return this;
 	}
 
-	public static AbstractBounds[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
+	static public AbstractBounds[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
 	{
 		AbstractBounds[] array = new AbstractBounds[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
