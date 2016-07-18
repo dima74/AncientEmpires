@@ -48,6 +48,8 @@ public class EditorThread extends BaseThread
 		// thread = null;
 		try
 		{
+			activity.game.trimPlayers();
+			activity.game.currentPlayer = null;
 			GameSaver.createBaseGame(activity.game);
 		}
 		catch (Exception e)

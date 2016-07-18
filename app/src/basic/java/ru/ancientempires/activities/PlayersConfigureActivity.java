@@ -137,12 +137,12 @@ public class PlayersConfigureActivity extends BaseActivity
 			textGold.setText(Strings.GOLD.toString());
 			EditText textGoldEdit = (EditText) findViewById(R.id.textGoldEdit);
 			textGoldEdit.setHint(String.valueOf(players[0].gold));
-			textGoldEdit.addTextChangedListener(new MyTextWatcher(999999));
+			textGoldEdit.addTextChangedListener(new MyTextWatcher(700000));
 
 			TextView textUnitsLimit = (TextView) findViewById(R.id.textUnitsLimit);
 			textUnitsLimit.setText(Strings.UNITS_LIMIT.toString());
 			EditText textUnitsLimitEdit = (EditText) findViewById(R.id.textUnitsLimitEdit);
-			new MyTextWatcher(1000).addTo(textUnitsLimitEdit, players[0].unitsLimit);
+			new MyTextWatcher(700).addTo(textUnitsLimitEdit, players[0].unitsLimit);
 
 			if (MainActivity.firstStart)
 				onClick();

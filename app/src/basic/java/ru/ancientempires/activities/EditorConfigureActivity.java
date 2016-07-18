@@ -57,14 +57,7 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		
 		((Button) findViewById(R.id.button)).setOnClickListener(this);
 	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		onClick(null);
-	}
-	
+
 	@Override
 	public void onClick(View v)
 	{
@@ -79,7 +72,7 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 				Client.client.finishPart2();
 				createGame();
 			}
-			
+
 			@Override
 			public void onPostExecute()
 			{
@@ -87,21 +80,21 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 			}
 		}.start();
 	}
-	
+
 	// сохраняем игру, в GameEditorActivity передаём только её gameId
 	private void createGame() throws Exception
 	{
 		String name = getValue(R.id.textNameEdit);
 		int h = getIntValue(R.id.textHeightEdit);
 		int w = getIntValue(R.id.textWidthEdit);
-		
+
 		MyAssert.a(Client.client.rules != null);
 		// TODO new Game().fromJson(rules.defaultGame)
 		Game game = new Game(Client.client.rules)
 				.setSize(h, w)
 				.setNumberPlayers(4);
 		game.campaign.isDefault = true;
-		
+
 		gameID = "user." + Client.client.user.numberGames;
 		GamePath path = new GamePath(game, gameID);
 		path.isBaseGame = true;
@@ -111,14 +104,14 @@ public class EditorConfigureActivity extends BaseActivity implements OnClickList
 		path.name = name;
 		Client.client.allGames.put(gameID, path);
 		GameSaver.createBaseGame(game);
-		
+
 		HashMap<String, String> strings = new HashMap<>();
 		strings.put("name", name);
 		JsonWriter writer = path.getLoader().getWriter("strings.json");
 		new Gson().toJson(strings, Map.class, writer);
 		writer.close();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

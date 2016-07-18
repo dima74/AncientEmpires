@@ -354,7 +354,6 @@ public class Game implements SerializableJson
 		// задачи должны быть первыми, так как они (возможно) добавят войнов и бонусов в numbered*
 		JsonArray tasksArray = new JsonArray();
 		for (Map.Entry<Integer, ArrayList<Task>> entry : tasks.entrySet())
-		//if (!entry.getValue().isEmpty())
 		{
 			MyAssert.a(!entry.getValue().isEmpty());
 			tasksArray.add(new JsonPrimitive(entry.getKey()));
@@ -362,7 +361,8 @@ public class Game implements SerializableJson
 			for (Task task : entry.getValue())
 				tasksArray.add(task.toJson());
 		}
-		object.add("tasks", tasksArray);
+		if (tasksArray.size() > 0)
+			object.add("tasks", tasksArray);
 
 		// named
 		object.add("namedBooleans", namedBooleans.toJsonBoolean());
@@ -433,8 +433,10 @@ public class Game implements SerializableJson
 		//random = new Random(49950377336979L);
 		MyAssert.a(random != null);
 
-		namedBooleans.fromJsonBoolean((JsonObject) object.get("namedBooleans"), info);
-		namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
+		if (object.has("namedBooleans"))
+			namedBooleans.fromJsonBoolean((JsonObject) object.get("namedBooleans"), info);
+		if (object.has("namedPoints"))
+			namedPoints.fromJson((JsonObject) object.get("namedPoints"), info, AbstractPoint.class);
 
 		// teams
 		teams = new Team[path.numberPlayers];
@@ -449,7 +451,7 @@ public class Game implements SerializableJson
 			players[i].units = new ArrayList<>();
 			players[i].ordinal = i;
 		}
-		currentPlayer = getPlayer(MyColor.valueOf(object.get("currentPlayer").getAsString()));
+		currentPlayer = object.has("currentPlayer") ? getPlayer(MyColor.valueOf(object.get("currentPlayer").getAsString())) : players[0];
 
 		// shrink number teams
 		int numberTeams = 0;
@@ -515,13 +517,13 @@ public class Game implements SerializableJson
 			unitsStaticDead[i] = new ArrayList(fromJsonUnits((JsonArray) unitsStaticDeadArray.get(i), info, false));
 
 		// tasks (таски после войнов --- войны добавляют записи в Numbered*)
-		JsonArray tasksArray = (JsonArray) object.get("tasks");
-		for (int i = 0; i < tasksArray.size(); i++)
+		if (object.has("tasks"))
 		{
-			JsonElement element = tasksArray.get(i);
-			MyAssert.a(element.isJsonPrimitive());
-			//if (element.isJsonPrimitive())
+			JsonArray tasksArray = (JsonArray) object.get("tasks");
+			for (int i = 0; i < tasksArray.size(); i++)
 			{
+				JsonElement element = tasksArray.get(i);
+				MyAssert.a(element.isJsonPrimitive());
 				ArrayList<Task> tasksList = new ArrayList<>();
 				tasks.put(element.getAsInt(), tasksList);
 				int size = tasksArray.get(++i).getAsInt();
@@ -554,9 +556,52 @@ public class Game implements SerializableJson
 				if (cell.player != null)
 					currentEarns[cell.player.ordinal] += cell.type.earn;
 
+		removeNonePlayersData();
+
 		numberedUnits.objects.clear();
 		numberedBonuses.objects.clear();
 		return this;
+	}
+
+	public void removeNonePlayersData()
+	{
+		for (Player player : players)
+			if (player.type == PlayerType.NONE)
+			{
+				for (Unit unit : player.units)
+				{
+					MyAssert.a(fieldUnits[unit.i][unit.j] == unit);
+					fieldUnits[unit.i][unit.j] = null;
+				}
+				player.units.clear();
+				for (Cell[] line : fieldCells)
+				{
+					for (Cell cell : line)
+						if (cell.player == player)
+							cell.player = null;
+				}
+			}
+	}
+
+	public void trimPlayers()
+	{
+		ArrayList<Player> activePlayers = new ArrayList<>();
+		for (Player player : players)
+			if (isPlayerActive(player))
+				activePlayers.add(player);
+		players = activePlayers.toArray(new Player[activePlayers.size()]);
+		path.numberPlayers = players.length;
+	}
+
+	private boolean isPlayerActive(Player player)
+	{
+		if (!player.units.isEmpty())
+			return true;
+		for (Cell[] line : fieldCells)
+			for (Cell cell : line)
+				if (cell.player == player)
+					return true;
+		return false;
 	}
 
 	private Unit[][] fromJsonUnitsField(JsonArray array, LoaderInfo info, boolean addToPlayer) throws Exception

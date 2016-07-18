@@ -50,7 +50,6 @@ public class ClientServer extends Server
 					.copyTo(newPath, newID);
 			newGamePath.isBaseGame = false;
 			newGamePath.canChooseTeams = false;
-			newGamePath.numberTeams = game.numberTeams();
 			game.path = newGamePath;
 		}
 		client.images.load(client.imagesLoader, game);

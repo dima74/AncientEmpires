@@ -85,7 +85,6 @@ public class GamePath
 	public           boolean  isBaseGame;
 	public           boolean  canChooseTeams;
 	public           int      numberPlayers;
-	public           int      numberTeams;
 	public           int      h;
 	public           int      w;
 	public           int      numberSnapshots;
@@ -169,7 +168,6 @@ public class GamePath
 		this.gameID = gameID;
 		baseGameID = gameID;
 		numberPlayers = game.players.length;
-		numberTeams = game.teams.length;
 		path = gameID.replace('.', '/') + "/";
 		loader = Client.client.gamesLoader.getLoader(path);
 		h = game.h;

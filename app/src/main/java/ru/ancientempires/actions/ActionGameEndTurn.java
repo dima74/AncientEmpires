@@ -56,7 +56,7 @@ public class ActionGameEndTurn extends Action
 		for (Unit unit : game.currentPlayer.units)
 		{
 			Cell cell = game.fieldCells[unit.i][unit.j];
-			if (cell.type.isHealing && (cell.player == unit.player || !cell.type.isCapturing))
+			if (cell.type.isHealing && (cell.getTeam() == unit.player.team || !cell.type.isCapturing))
 			{
 				int oldHealth = unit.health;
 				unit.health = Math.min(unit.type.healthDefault, unit.health + 20);

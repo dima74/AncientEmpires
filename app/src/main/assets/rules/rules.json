@@ -622,8 +622,7 @@
 	],
 	"defaultGame": {
 		"currentTurn": 0,
-		"allowedUnits": -1,
-		"currentPlayer": "BLUE"
+		"allowedUnits": -1
 	},
 	"defaultPlayer": {
 		"gold": 2000,

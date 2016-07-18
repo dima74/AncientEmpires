@@ -54,9 +54,7 @@ public class EditorActivity extends BaseGameActivity
 				view = new EditorView(EditorActivity.this);
 				setContentView(view);
 			}
-
-			;
 		}.start();
 	}
-	
+
 }

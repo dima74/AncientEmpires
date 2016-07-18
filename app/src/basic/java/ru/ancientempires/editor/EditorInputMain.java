@@ -78,7 +78,9 @@ public class EditorInputMain implements Callback
 			if (game.fieldUnits[i][j] != null)
 				game.fieldUnits[i][j] = null;
 			else
-				game.setUnit(i, j, new Unit(((EditorStructUnit) struct).unit));
+				new Unit(((EditorStructUnit) struct).unit)
+						.setIJ(i, j)
+						.addToGame();
 		}
 		else
 		{

@@ -17,7 +17,8 @@
 		<TextView
 			android:id="@+id/textName"
 			style="@style/Text"
-			android:labelFor="@+id/textNameEdit" />
+			android:labelFor="@+id/textNameEdit"
+			android:text="Название уровня" />
 
 		<EditText
 			android:id="@+id/textNameEdit"
@@ -26,7 +27,8 @@
 		<TextView
 			android:id="@+id/textHeight"
 			style="@style/Text"
-			android:labelFor="@+id/textHeightEdit" />
+			android:labelFor="@+id/textHeightEdit"
+			android:text="Высота карты" />
 
 		<EditText
 			android:id="@+id/textHeightEdit"
@@ -35,7 +37,8 @@
 		<TextView
 			android:id="@+id/textWidth"
 			style="@style/Text"
-			android:labelFor="@+id/textWidthEdit" />
+			android:labelFor="@+id/textWidthEdit"
+			android:text="Ширина карты" />
 
 		<EditText
 			android:id="@+id/textWidthEdit"
@@ -44,7 +47,7 @@
 		<Button
 			android:id="@+id/button"
 			style="@style/Button"
-			android:text="@string/button_create" />
+			android:text="Создать" />
 	</LinearLayout>
 
 </ScrollView>

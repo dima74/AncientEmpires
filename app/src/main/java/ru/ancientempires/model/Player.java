@@ -47,6 +47,11 @@ public class Player implements SerializableJson, Numbered
 	{
 		return units.size();
 	}
+
+	public int unitsLimit()
+	{
+		return unitsLimit == -1 ? Integer.MAX_VALUE : unitsLimit;
+	}
 	
 	@Override
 	public boolean equals(Object o)

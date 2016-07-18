@@ -16,8 +16,6 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
-import ru.ancientempires.rules.DefaultRules;
-import ru.ancientempires.rules.RulesSaver;
 
 public class Main
 {
@@ -26,7 +24,7 @@ public class Main
 	{
 		//test2();
 		Client client = new Client(new DesktopClientHelper());
-		new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
+		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
 		//System.exit(0);
 
@@ -37,8 +35,8 @@ public class Main
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
 		//new Swing("campaign.5");
-		//testFull();
-		test();
+		testFull();
+		//test();
 
 		if (false)
 			for (int i = 0; i < 10000; i++)

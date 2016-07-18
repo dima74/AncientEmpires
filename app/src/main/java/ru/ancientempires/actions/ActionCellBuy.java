@@ -42,7 +42,7 @@ public class ActionCellBuy extends ActionFrom
 	private boolean checkPlayer()
 	{
 		Player player = game.fieldCells[i][j].player;
-		return player == game.currentPlayer && player.numberUnits() < player.unitsLimit;
+		return player == game.currentPlayer && player.numberUnits() < player.unitsLimit();
 	}
 	
 	private Unit getUnit()

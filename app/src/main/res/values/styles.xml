@@ -8,7 +8,7 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
-	<style name="BaseText" parent="@android:style/TextAppearance.DeviceDefault.Medium"></style>
+	<style name="BaseText" parent="@android:style/TextAppearance.DeviceDefault.Medium" />
 
 	<style name="Text" parent="@style/BaseText">
 		<item name="android:layout_width">wrap_content</item>

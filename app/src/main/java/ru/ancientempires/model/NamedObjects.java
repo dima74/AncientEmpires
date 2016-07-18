@@ -44,6 +44,8 @@ public class NamedObjects<T>
 
 	public JsonObject toJson()
 	{
+		if (objects.isEmpty())
+			return null;
 		JsonObject object = new JsonObject();
 		for (Entry<String, T> entry : objects.entrySet())
 			object.add(entry.getKey(), ((SerializableJson) entry.getValue()).toJson());
@@ -58,6 +60,8 @@ public class NamedObjects<T>
 	
 	public JsonObject toJsonBoolean()
 	{
+		if (objects.isEmpty())
+			return null;
 		JsonObject object = new JsonObject();
 		for (Entry<String, T> entry : objects.entrySet())
 			object.addProperty(entry.getKey(), ((Boolean) entry.getValue()));

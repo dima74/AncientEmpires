@@ -577,7 +577,7 @@ public class DefaultRules
 		JsonObject object = new JsonObject();
 		object.addProperty("currentTurn", 0);
 		object.addProperty("allowedUnits", -1);
-		object.addProperty("currentPlayer", "BLUE");
+		//object.addProperty("currentPlayer", "BLUE");
 		rules.defaultGame = object;
 	}
 
