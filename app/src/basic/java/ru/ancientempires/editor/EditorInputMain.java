@@ -62,7 +62,7 @@ public class EditorInputMain implements Callback
 			if (i == 0)
 				colors = MyColor.playersColors();
 			if (i == 1)
-				colors = MyColor.values();
+				colors = MyColor.playersColorsWithGrey();
 			if (i == 2)
 				colors = new MyColor[0];
 			new EditorChooseDialog().show(activity, structs[i], colors, colorsSelected[selected]);

@@ -16,6 +16,7 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class Main
 {
@@ -35,8 +36,8 @@ public class Main
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
 		//new Swing("campaign.5");
-		testFull();
-		//test();
+		//testFull();
+		test();
 
 		if (false)
 			for (int i = 0; i < 10000; i++)
@@ -49,6 +50,8 @@ public class Main
 		Game game = Client.client.startGame("skirmish.2");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
+
+		System.out.println(SerializableJsonHelper.toJsonPretty(Client.client.allGames.get("skirmish.2").getSnapshotJsonDebug()));
 
 		Client.client.stopGame();
 		System.exit(0);

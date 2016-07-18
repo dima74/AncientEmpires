@@ -300,6 +300,11 @@ public class GamePath
 			return game;
 		}
 		
+		public JsonObject getGameJsonDebug() throws Exception
+		{
+			return (JsonObject) new JsonParser().parse(snapshot);
+		}
+
 		@Override
 		public int compareTo(SnapshotNote note)
 		{
@@ -311,6 +316,7 @@ public class GamePath
 		{
 			return String.format("%d %d %s", numberActions, sizeActions, snapshot);
 		}
+
 	}
 
 	public ArrayList<SnapshotNote> getNotes(String name) throws Exception
@@ -376,6 +382,16 @@ public class GamePath
 		for (int i = note1.numberActions; i < lastI; i++)
 			MyAssert.a(note0.getGame(i), note1.getGame(i));
 		System.out.print("");
+	}
+
+	public JsonObject getSnapshotJsonDebug() throws Exception
+	{
+		return getNoteBefore(numberActions).getGameJsonDebug();
+	}
+
+	public Game loadGameDebug() throws Exception
+	{
+		return loadGame(numberActions, false, null, true);
 	}
 
 	public Game loadGame(boolean loadCampaign) throws Exception

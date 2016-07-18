@@ -574,10 +574,10 @@ public class DefaultRules
 
 	private void createDefaultGame()
 	{
+		// при изменении также проверять EditorThread.eraseDefaults()
 		JsonObject object = new JsonObject();
 		object.addProperty("currentTurn", 0);
 		object.addProperty("allowedUnits", -1);
-		//object.addProperty("currentPlayer", "BLUE");
 		rules.defaultGame = object;
 	}
 

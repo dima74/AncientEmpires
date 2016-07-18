@@ -6,6 +6,8 @@ import ru.ancientempires.BaseThread;
 import ru.ancientempires.activities.EditorActivity;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.load.GameSaver;
+import ru.ancientempires.model.Game;
+import ru.ancientempires.model.Player;
 
 public class EditorThread extends BaseThread
 {
@@ -50,12 +52,27 @@ public class EditorThread extends BaseThread
 		{
 			activity.game.trimPlayers();
 			activity.game.currentPlayer = null;
+			eraseDefaults(activity.game);
 			GameSaver.createBaseGame(activity.game);
 		}
 		catch (Exception e)
 		{
 			MyAssert.a(false);
 			e.printStackTrace();
+		}
+	}
+
+	private void eraseDefaults(Game game)
+	{
+		game.currentTurn = null;
+		game.allowedUnits = null;
+		for (Player player : game.players)
+		{
+			player.color = null;
+			player.type = null;
+			player.gold = null;
+			player.unitsLimit = null;
+			player.team = null;
 		}
 	}
 	
