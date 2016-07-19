@@ -13,9 +13,9 @@ import ru.ancientempires.serializable.SerializableJson;
 
 public class NamedObjects<T>
 {
-
+	
 	public HashMap<String, T> objects = new HashMap<>();
-
+	
 	public T get(String name)
 	{
 		MyAssert.a(objects.containsKey(name));
@@ -26,20 +26,23 @@ public class NamedObjects<T>
 	{
 		objects.put(name, object);
 	}
-
-	public JsonArray toJsonPart(T unit)
+	
+	public void toJsonPart(JsonObject json, T unit)
 	{
 		JsonArray array = new JsonArray();
 		for (Entry<String, T> entry : objects.entrySet())
 			if (entry.getValue() == unit)
 				array.add(entry.getKey());
-		return array;
+		if (array.size() > 0)
+			json.add("names", array);
 	}
-
-	public void fromJsonPart(JsonArray names, T unit)
+	
+	public void fromJsonPart(JsonObject json, T unit)
 	{
-		for (JsonElement name : names)
-			objects.put(name.getAsString(), unit);
+		JsonArray names = (JsonArray) json.get("names");
+		if (names != null)
+			for (JsonElement name : names)
+				objects.put(name.getAsString(), unit);
 	}
 
 	public JsonObject toJson()
@@ -51,7 +54,7 @@ public class NamedObjects<T>
 			object.add(entry.getKey(), ((SerializableJson) entry.getValue()).toJson());
 		return object;
 	}
-
+	
 	public <ActualT extends SerializableJson> void fromJson(JsonObject object, LoaderInfo info, Class<ActualT> c) throws Exception
 	{
 		for (Entry<String, JsonElement> entry : object.entrySet())
@@ -73,5 +76,5 @@ public class NamedObjects<T>
 		for (Entry<String, JsonElement> entry : object.entrySet())
 			objects.put(entry.getKey(), (T) (Object) entry.getValue().getAsBoolean());
 	}
-
+	
 }

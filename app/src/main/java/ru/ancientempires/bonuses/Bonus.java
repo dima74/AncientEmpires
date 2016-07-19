@@ -65,14 +65,14 @@ public abstract class Bonus extends AbstractGameHandler implements SerializableJ
 	{
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		if (game != null)
-			object.add("indexes", game.numberedBonuses.toJsonPart(this));
+			game.numberedBonuses.toJsonPart(object, this);
 		return object;
 	}
 
 	public Bonus fromJson(JsonObject object, LoaderInfo info) throws Exception
 	{
 		if (game != null)
-			game.numberedBonuses.fromJsonPart(((JsonArray) object.get("indexes")), this);
+			game.numberedBonuses.fromJsonPart(object, this);
 		return this;
 	}
 

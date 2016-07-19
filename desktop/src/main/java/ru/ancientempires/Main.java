@@ -33,9 +33,9 @@ public class Main
 		client.loadPart2();
 
 		//new Swing("save.0");
-		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 100000);
-		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 100);
-		//new Swing("campaign.5");
+		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 700000);
+		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 700);
+		//new Swing("skirmish.5");
 		testFull();
 		//test();
 

@@ -50,6 +50,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 	@Override
 	public void process()
 	{
+		newMethods.clear();
 		try
 		{
 			initStatic();
@@ -169,12 +170,12 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		if (ctClass.getAnnotation(WithNamed.class) != null)
 		{
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
-			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("object.add(\"names\", game.%s.toJsonPart(this))", annotation.value())));
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.toJsonPart(object, this)", annotation.value())));
 		}
 		if (ctClass.getAnnotation(WithNumbered.class) != null)
 		{
 			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
-			String statement = String.format("object.add(\"indexes\", game.%s.toJsonPart(this))", annotation.value());
+			String statement = String.format("game.%s.toJsonPart(object, this)", annotation.value());
 			if (annotation.checkGameForNull())
 				statement = "if (game != null)\n\t\t" + statement;
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
@@ -258,12 +259,12 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		if (ctClass.getAnnotation(WithNamed.class) != null)
 		{
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
-			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.fromJsonPart(((JsonArray) object.get(\"names\")), this)", annotation.value())));
+			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.fromJsonPart(object, this)", annotation.value())));
 		}
 		if (ctClass.getAnnotation(WithNumbered.class) != null)
 		{
 			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
-			String statement = String.format("game.%s.fromJsonPart(((JsonArray) object.get(\"indexes\")), this)", annotation.value());
+			String statement = String.format("game.%s.fromJsonPart(object, this)", annotation.value());
 			if (annotation.checkGameForNull())
 				statement = "if (game != null)\n\t\t" + statement;
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));

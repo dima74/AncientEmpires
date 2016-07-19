@@ -306,17 +306,19 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 
 	public boolean hasPositiveBonus()
 	{
-		for (Bonus bonus : bonuses)
-			if (bonus.getSign() > 0)
-				return true;
+		if (bonuses != null)
+			for (Bonus bonus : bonuses)
+				if (bonus.getSign() > 0)
+					return true;
 		return false;
 	}
 
 	public boolean hasNegativeBonus()
 	{
-		for (Bonus bonus : bonuses)
-			if (bonus.getSign() < 0)
-				return true;
+		if (bonuses != null)
+			for (Bonus bonus : bonuses)
+				if (bonus.getSign() < 0)
+					return true;
 		return false;
 	}
 
@@ -424,8 +426,8 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		object.addProperty("isTurn", isTurn);
 		if (bonuses != null && !bonuses.isEmpty())
 			object.add("bonuses", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bonuses));
-		object.add("names", game.namedUnits.toJsonPart(this));
-		object.add("indexes", game.numberedUnits.toJsonPart(this));
+		game.namedUnits.toJsonPart(object, this);
+		game.numberedUnits.toJsonPart(object, this);
 		return object;
 	}
 
@@ -445,8 +447,8 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		isTurn = object.get("isTurn").getAsBoolean();
 		if (object.has("bonuses"))
 			bonuses = new ArrayList<>(Arrays.asList(Bonus.fromJsonArray(object.get("bonuses").getAsJsonArray(), info)));
-		game.namedUnits.fromJsonPart(((JsonArray) object.get("names")), this);
-		game.numberedUnits.fromJsonPart(((JsonArray) object.get("indexes")), this);
+		game.namedUnits.fromJsonPart(object, this);
+		game.numberedUnits.fromJsonPart(object, this);
 		createBonusesCache();
 		return this;
 	}
