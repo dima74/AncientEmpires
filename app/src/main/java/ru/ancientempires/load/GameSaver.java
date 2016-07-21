@@ -106,14 +106,10 @@ public class GameSaver
 		{
 			action.checkBase(game);
 			action.performQuickBase(game);
-			//if (!action.isCampaign())
-			{
-				//action.saveBase(actionsDOS);
-				action.toData(actionsDOS);
-				game.path.numberActions++;
-				game.path.sizeActions = (int) actionsFOS.getChannel().position();
-				MyAssert.a(game, game.path.loadGame(game.path.numberActions, false, null, true));
-			}
+			action.toData(actionsDOS);
+			game.path.numberActions++;
+			game.path.sizeActions = (int) actionsFOS.getChannel().position();
+			//MyAssert.a(game, game.path.loadGame(game.path.numberActions, false, null, true));
 			return 0;
 		}
 	}

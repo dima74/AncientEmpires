@@ -134,6 +134,10 @@ public class CellImages extends AbstractImages
 			for (int colorI = 0; colorI < colors.length; colorI++)
 				if (player.color == colors[colorI])
 					playerToColorI[player.ordinal] = colorI;
+		for (Cell[] line : game.fieldCells)
+			for (Cell cell : line)
+				if (cell.type.template != null)
+					cell.type.template.update(cell);
 	}
 	
 }

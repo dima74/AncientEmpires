@@ -54,6 +54,8 @@ public class GameThread extends BaseThread
 	@Override
 	public void afterRun()
 	{
+		if (drawMain.isActiveGame())
+			drawMain.saveScreenCenter();
 		// thread = null;
 		try
 		{

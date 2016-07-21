@@ -20,7 +20,6 @@ import ru.ancientempires.campaign.scripts.ScriptOnePoint;
 import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
 import ru.ancientempires.campaign.scripts.ScriptSetCursorPosition;
-import ru.ancientempires.campaign.scripts.ScriptSetMapPosition;
 import ru.ancientempires.campaign.scripts.ScriptSetUnitSpeed;
 import ru.ancientempires.campaign.scripts.ScriptShowBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptShowCursor;
@@ -69,7 +68,7 @@ public interface IDrawCampaign
 	
 	void cameraMove(AbstractScriptOnePoint script);
 	
-	void setMapPosition(int i, int j, ScriptSetMapPosition script);
+	void setMapPosition(float i, float j);
 	
 	//
 	void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script);

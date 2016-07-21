@@ -98,6 +98,9 @@ public class DrawMain extends BaseDrawMain
 	public DrawMain()
 	{
 		initOffset();
+		focusOnCurrentPlayerCenter();
+		offsetY = nextOffsetY;
+		offsetX = nextOffsetX;
 		actionY = (visibleMapH - action.h) / 2;
 		
 		for (DrawLevel level : DrawLevel.values())

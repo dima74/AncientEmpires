@@ -51,6 +51,7 @@ public class DrawCampaign extends BaseDrawCampaign implements IDrawCampaign
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
 		main.isActiveGame = false;
+		main.saveScreenCenter();
 		script.performAction();
 	}
 	

@@ -57,8 +57,8 @@ public abstract class BaseDrawMain extends Draw
 		setVisibleMapSize();
 		mapH = game.h * A;
 		mapW = game.w * A;
-		offsetY = nextOffsetY = minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
-		offsetX = nextOffsetX = minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
+		minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
+		minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
 		if (minOffsetY < 0)
 		{
 			minOffsetY = -(mapH - visibleMapH / mapScale);
@@ -127,10 +127,8 @@ public abstract class BaseDrawMain extends Draw
 	
 	synchronized public void setNextOffset(float offsetY, float offsetX)
 	{
-		nextOffsetY = offsetY;
-		nextOffsetX = offsetX;
-		nextOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, nextOffsetY));
-		nextOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, nextOffsetX));
+		nextOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, offsetY));
+		nextOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, offsetX));
 	}
 	
 	// Обрабатывает только тап по клеточке
@@ -153,7 +151,7 @@ public abstract class BaseDrawMain extends Draw
 	public void tap(int i, int j)
 	{}
 
-	public void focusOnCell(int i, int j)
+	public void focusOnCell(float i, float j)
 	{
 		float nextOffsetY = -i * A - A / 2 + visibleMapH / mapScale / 2;
 		float nextOffsetX = -j * A - A / 2 + visibleMapW / mapScale / 2;

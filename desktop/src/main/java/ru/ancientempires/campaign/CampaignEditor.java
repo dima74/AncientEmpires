@@ -44,6 +44,7 @@ import ru.ancientempires.campaign.scripts.ScriptRemoveUnit;
 import ru.ancientempires.campaign.scripts.ScriptSetCameraSpeed;
 import ru.ancientempires.campaign.scripts.ScriptSetCursorPosition;
 import ru.ancientempires.campaign.scripts.ScriptSetMapPosition;
+import ru.ancientempires.campaign.scripts.ScriptSetMapPositionToCenter;
 import ru.ancientempires.campaign.scripts.ScriptSetNamedBoolean;
 import ru.ancientempires.campaign.scripts.ScriptSetNamedPoint;
 import ru.ancientempires.campaign.scripts.ScriptSetNamedPointFromUnit;
@@ -126,6 +127,7 @@ public class CampaignEditor
 		CampaignEditorGame.game = game;
 		
 		ContainerList c = addRoot(new ScriptDisableActiveGame());
+		c = c.add(new ScriptSetMapPositionToCenter());
 		c = c.add(new ScriptHideInfoImmediately());
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());

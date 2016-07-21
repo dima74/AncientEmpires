@@ -17,6 +17,7 @@ import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.serializable.SerializableJsonHelper;
+import ru.ancientempires.swing.Swing;
 
 public class Main
 {
@@ -27,7 +28,7 @@ public class Main
 		Client client = new Client(new DesktopClientHelper());
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
-		//System.exit(0);
+		System.exit(0);
 
 		client.loadPart1();
 		client.loadPart2();
@@ -35,14 +36,14 @@ public class Main
 		//new Swing("save.0");
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 700000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 700);
-		//new Swing("skirmish.5");
-		testFull();
+		new Swing("campaign.3");
+		//testFull();
 		//test();
 
-		if (false)
-			for (int i = 0; i < 10000; i++)
-				for (int iGame = 0; iGame < 12; iGame++)
-					testII("skirmish." + iGame);
+		System.exit(0);
+		for (int i = 0; i < 700; i++)
+			for (int iGame = 0; iGame < 12; iGame++)
+				testII("skirmish." + iGame);
 	}
 
 	private static void test() throws Exception
@@ -59,8 +60,11 @@ public class Main
 
 	private static void test2() throws Exception
 	{
-		GamePath path = Client.client.allGames.get("save.0");
-		path.getNotes(GamePath.SNAPSHOTS).get(0).getGame(path.numberActions);
+		Game game = Client.client.allGames.get("skirmish.5").loadGame(true);
+		game.path.isBaseGame = false;
+		for (int i = 0; i < 10; i++)
+			game.ii.turnFull(game);
+		game.path.isBaseGame = true;
 		System.exit(0);
 	}
 

@@ -1,7 +1,6 @@
 package ru.ancientempires.activities;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,11 +84,11 @@ public class MainActivity extends BaseListActivity
 							game.path.isBaseGame = false;
 							//Thread.sleep(1000);
 
-							Debug.startMethodTracing();
+							//Debug.startMethodTracing();
 							for (int i = 0; i < 10; i++)
 								game.ii.turnFull(game);
 							game.path.isBaseGame = true;
-							Debug.stopMethodTracing();
+							//Debug.stopMethodTracing();
 
 							//сделать method tracing, пока что всегда только "try to exit form method ... while in method ...", мб попробовать в эмуляторе
 							//или просто поискать method profiling на десктопе

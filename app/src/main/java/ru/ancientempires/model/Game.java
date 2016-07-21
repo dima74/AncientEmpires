@@ -3,7 +3,6 @@ package ru.ancientempires.model;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -356,8 +355,8 @@ public class Game implements SerializableJson
 		for (Map.Entry<Integer, ArrayList<Task>> entry : tasks.entrySet())
 		{
 			MyAssert.a(!entry.getValue().isEmpty());
-			tasksArray.add(new JsonPrimitive(entry.getKey()));
-			tasksArray.add(new JsonPrimitive(entry.getValue().size()));
+			tasksArray.add(entry.getKey());
+			tasksArray.add(entry.getValue().size());
 			for (Task task : entry.getValue())
 				tasksArray.add(task.toJson());
 		}
@@ -505,11 +504,6 @@ public class Game implements SerializableJson
 			fieldCells[i][j].fromJson(cellObject, info);
 		}
 
-		for (Cell[] line : fieldCells)
-			for (Cell cell : line)
-				if (cell.type.template != null)
-					cell.type.template.update(cell);
-
 		// units
 		if (object.has("floatingUnit"))
 		{
@@ -648,6 +642,28 @@ public class Game implements SerializableJson
 	public String diff(Game game)
 	{
 		return SerializableJsonHelper.diff(this, game);
+	}
+
+	public void setScreenCenters()
+	{
+		for (Player player : players)
+		{
+			path.screenCenters[player.ordinal] = null;
+			for (Unit unit : player.units)
+				if (unit.type.isStatic)
+				{
+					path.screenCenters[player.ordinal] = new GamePath.PointScreenCenter(unit.i, unit.j);
+					break;
+				}
+			if (path.screenCenters[player.ordinal] == null)
+				for (Cell[] line : fieldCells)
+					for (Cell cell : line)
+						if (cell.player == player && cell.type.buyTypes.length > 0)
+						{
+							path.screenCenters[player.ordinal] = new GamePath.PointScreenCenter(cell.i, cell.j);
+							break;
+						}
+		}
 	}
 
 }

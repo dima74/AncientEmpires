@@ -37,8 +37,8 @@ public abstract class MyAsyncTask extends Thread
 			@Override
 			public void run()
 			{
-				dialog.dismiss();
 				onPostExecute();
+				dialog.dismiss();
 			}
 		});
 	}

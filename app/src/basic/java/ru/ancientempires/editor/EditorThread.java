@@ -53,6 +53,7 @@ public class EditorThread extends BaseThread
 			activity.game.trimPlayers();
 			activity.game.currentPlayer = null;
 			eraseDefaults(activity.game);
+			activity.game.setScreenCenters();
 			GameSaver.createBaseGame(activity.game);
 		}
 		catch (Exception e)

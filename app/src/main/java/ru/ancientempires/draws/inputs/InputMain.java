@@ -31,6 +31,8 @@ public class InputMain extends AbstractInput
 	
 	public void beginTurn()
 	{
+		if (currentInput != null)
+			drawMain.focusOnCurrentPlayerCenter();
 		drawMain.isDrawCursor = false;
 		switch (game.currentPlayer.type)
 		{
@@ -59,6 +61,7 @@ public class InputMain extends AbstractInput
 	{
 		if (!drawMain.isActiveGame)
 			return;
+		drawMain.saveScreenCenter();
 		if (currentInput != null) // первый игрок --- NONE
 			currentInput.endTurn();
 		if (performEndTurn)

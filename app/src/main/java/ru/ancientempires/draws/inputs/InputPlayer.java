@@ -17,26 +17,19 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 
 	public InputUnit inputUnit = new InputUnit(this);
 
-	@Override
-	public void beginTurn()
-	{
-		//tapWithoutAction(game.currentPlayer.cursorI, game.currentPlayer.cursorJ);
-		drawMain.focusOnCurrentPlayerCenter();
-	}
-	
 	/*
-	 Тап:
-	 	Поле не активно:
-	 		Получить поле хода+атаки+воскрешения. Отобразить вместе.
-	 		Если оно пусто и на этой клеточке можно что-нибудь купить, то вызвать диалог.
-	 	Поле активно:
-	 		тап на ту же клетку:
-	 			захватываем/чиним если можем
-	 			если можем что-нибудь купить, то вызываем диалог.
-	 			(завершить ход виспом стоя на месте в крепости можно будет из контекстного меню)
-	 		на другую: атакуем/ходим/воскрешаем если можем и то и другое, то вызываем диалог
-	 Конец хода будет в контекстном меню.
-	 */
+		 Тап:
+			 Поле не активно:
+				 Получить поле хода+атаки+воскрешения. Отобразить вместе.
+				 Если оно пусто и на этой клеточке можно что-нибудь купить, то вызвать диалог.
+			 Поле активно:
+				 тап на ту же клетку:
+					 захватываем/чиним если можем
+					 если можем что-нибудь купить, то вызываем диалог.
+					 (завершить ход виспом стоя на месте в крепости можно будет из контекстного меню)
+				 на другую: атакуем/ходим/воскрешаем если можем и то и другое, то вызываем диалог
+		 Конец хода будет в контекстном меню.
+		 */
 	@Override
 	public void tap(int i, int j)
 	{
@@ -131,7 +124,6 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	{
 		if (inputUnit.isActive)
 			inputUnit.destroy();
-		drawMain.saveScreenCenter();
 	}
 	
 }
