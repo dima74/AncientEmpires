@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import ru.ancientempires.R;
-import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 
@@ -51,9 +50,7 @@ public abstract class BaseListActivity extends BaseActivity
 	}
 
 	public void loadBackground() throws Exception
-	{
-		Client.client.loadPart0();
-	}
+	{}
 
 	public static class MyFragment extends ListFragment
 	{

@@ -46,7 +46,7 @@ public class ClientServer extends Server
 			client.gamesLoader.getLoader(newPath).mkdirs();
 			
 			GamePath newGamePath = GamePath
-					.get(path.path, false)
+					.get(client, path.path, false)
 					.copyTo(newPath, newID);
 			newGamePath.isBaseGame = false;
 			newGamePath.canChooseTeams = false;

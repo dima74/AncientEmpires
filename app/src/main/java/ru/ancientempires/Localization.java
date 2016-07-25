@@ -56,7 +56,7 @@ public class Localization
 	{
 		JsonReader reader = getReader(loader);
 		reader.beginObject();
-		MyAssert.a("name".equals(reader.nextName()));
+		MyAssert.a("name", reader.nextName());
 		String name = reader.nextString();
 		reader.close();
 		return name;

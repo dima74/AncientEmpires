@@ -148,9 +148,9 @@ public class FileLoader
 		return new FileLoader(this, name);
 	}
 
-	public void loadLocalization() throws IOException
+	public void loadLocalization(Client client) throws IOException
 	{
-		Client.client.localization.loadFull(this);
+		client.localization.loadFull(this);
 	}
 	
 	public String[] list(String name) throws IOException

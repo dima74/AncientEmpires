@@ -21,7 +21,7 @@ public class GameInit
 	public Thread foldersInitThread;
 	public Thread initThread;
 
-	public void init()
+	public void init(final Client client)
 	{
 		MyLog.l("GameInit.init()");
 		foldersInitThread = new Thread()
@@ -31,7 +31,7 @@ public class GameInit
 			{
 				try
 				{
-					Client.client.loadPart1();
+					client.loadPart1();
 				}
 				catch (Exception e)
 				{
@@ -51,7 +51,7 @@ public class GameInit
 				{
 					foldersInitThread.join();
 					// Debug.startMethodTracing("traces/client");
-					Client.client.loadPart2();
+					client.loadPart2();
 					// Debug.stopMethodTracing();
 				}
 				catch (Exception e)

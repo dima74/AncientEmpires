@@ -102,7 +102,7 @@ public class Client
 		if (part0)
 			return;
 		part0 = true;
-		fileLoader.loadLocalization();
+		fileLoader.loadLocalization(this);
 		MyLog.l("done loadPart0");
 	}
 	
@@ -112,11 +112,11 @@ public class Client
 		MyLog.l("loadPart1");
 		GamesFolder[] folders = new GamesFolder[]
 				{
-						user = new GamesFolder("user"),
-						campaign = new GamesFolder("campaign"),
-						skirmish = new GamesFolder("skirmish"),
-						save = new GamesFolder("save"),
-						new GamesFolder("test")
+						user = new GamesFolder(this, "user"),
+						campaign = new GamesFolder(this, "campaign"),
+						skirmish = new GamesFolder(this, "skirmish"),
+						save = new GamesFolder(this, "save"),
+						new GamesFolder(this, "test")
 				};
 		for (GamesFolder folder : folders)
 			allFolders.put(folder.folderID, folder);
@@ -138,7 +138,7 @@ public class Client
 	public void startLoadParts12()
 	{
 		init = new GameInit();
-		init.init();
+		init.init(this);
 	}
 	
 	public boolean isFinishPart1()

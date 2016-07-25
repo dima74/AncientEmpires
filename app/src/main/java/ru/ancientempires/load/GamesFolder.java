@@ -13,11 +13,12 @@ import ru.ancientempires.client.Client;
 
 public class GamesFolder
 {
-	
-	public ArrayList<GamePath> games;
-	public String              folderID;
-	public String              name;
-	public String              path;
+
+	private Client              client;
+	public  ArrayList<GamePath> games;
+	public  String              folderID;
+	public  String              name;
+	public  String              path;
 
 	public int     numberGames;
 	public boolean isCampaign;
@@ -30,7 +31,7 @@ public class GamesFolder
 			name = i + 1 + ". " + name;
 		return name;
 	}
-	
+
 	// для AllGamesConverter
 	public GamesFolder(String folderID, int numberGames)
 	{
@@ -38,13 +39,14 @@ public class GamesFolder
 		path = folderID.replace('.', '/') + "/";
 		this.numberGames = numberGames;
 	}
-	
-	public GamesFolder(String folderID) throws Exception
+
+	public GamesFolder(Client client, String folderID) throws Exception
 	{
+		this.client = client;
 		this.folderID = folderID;
 		path = folderID.replace('.', '/') + "/";
-		name = Client.client.localization.loadName(Client.client.gamesLoader.getLoader(path));
-		
+		name = client.localization.loadName(client.gamesLoader.getLoader(path));
+
 		load();
 		if ("save".equals(folderID) && false)
 		{
@@ -53,28 +55,28 @@ public class GamesFolder
 		}
 		games = new ArrayList<>();
 		for (int i = 0; i < numberGames; i++)
-			games.add(GamePath.get(path + i + "/", true));
+			games.add(GamePath.get(client, path + i + "/", true));
 	}
-	
+
 	public void load() throws IOException
 	{
-		JsonReader reader = Client.client.gamesLoader.getReader(path + "info.json");
+		JsonReader reader = client.gamesLoader.getReader(path + "info.json");
 		JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
 		reader.close();
-		
+
 		numberGames = object.get("numberGames").getAsInt();
 		isCampaign = object.get("isCampaign").getAsBoolean();
 		isSave = object.get("isSave").getAsBoolean();
 	}
-	
+
 	public void save() throws IOException
 	{
 		JsonObject object = new JsonObject();
 		object.addProperty("numberGames", numberGames);
 		object.addProperty("isCampaign", isCampaign);
 		object.addProperty("isSave", isSave);
-		
-		JsonWriter writer = Client.client.gamesLoader.getWriter(path + "info.json");
+
+		JsonWriter writer = client.gamesLoader.getWriter(path + "info.json");
 		new Gson().toJson(object, writer);
 		writer.close();
 	}

@@ -37,8 +37,8 @@ public class Debug
 			try
 			{
 				MyAssert.a(activity instanceof Activity);
-				Client.client = new Client(new AndroidClientHelper((Activity) activity));
-				Client.client.startLoadParts12();
+				Client client = new Client(new AndroidClientHelper((Activity) activity));
+				client.startLoadParts12();
 			}
 			catch (Exception e)
 			{
