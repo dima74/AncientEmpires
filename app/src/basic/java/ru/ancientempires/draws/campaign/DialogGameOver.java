@@ -10,9 +10,9 @@ import ru.ancientempires.activities.MainActivity;
 public class DialogGameOver
 {
 	
-	public void createDialog()
+	public static void createDialog(final GameActivity activity)
 	{
-		final Builder builder = new Builder(GameActivity.activity);
+		final Builder builder = new Builder(activity);
 		builder.setCancelable(false);
 		builder.setTitle("Поражение!");
 		builder.setPositiveButton("Заново", new OnClickListener()
@@ -20,7 +20,7 @@ public class DialogGameOver
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				GameActivity.activity.restartGame();
+				activity.restartGame();
 			}
 		});
 		builder.setNegativeButton("В главное меню", new OnClickListener()
@@ -28,10 +28,10 @@ public class DialogGameOver
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				GameActivity.activity.moveTo(MainActivity.class);
+				activity.moveTo(MainActivity.class);
 			}
 		});
-		GameActivity.activity.runOnUiThread(new Runnable()
+		activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()

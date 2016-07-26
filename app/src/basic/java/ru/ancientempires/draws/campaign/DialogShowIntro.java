@@ -13,11 +13,11 @@ import ru.ancientempires.campaign.scripts.ScriptDialogIntro;
 public class DialogShowIntro extends MyDialogFragment
 {
 	
-	public void showDialog(Bitmap bitmap, String text, ScriptDialogIntro script)
+	public void showDialog(GameActivity activity, Bitmap bitmap, String text, ScriptDialogIntro script)
 	{
-		Builder builder = new Builder(GameActivity.activity);
+		Builder builder = new Builder(activity);
 		
-		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.layout_intro, null);
+		View view = activity.getLayoutInflater().inflate(R.layout.layout_intro, null);
 		ImageView imageView = (ImageView) view.findViewById(R.id.imageUnit);
 		TextView textView = (TextView) view.findViewById(R.id.textUnitName);
 		
@@ -25,7 +25,7 @@ public class DialogShowIntro extends MyDialogFragment
 		textView.setText(text);
 		builder.setView(view);
 		
-		showDialog(builder, script);
+		showDialog(activity, builder, script);
 	}
 	
 }

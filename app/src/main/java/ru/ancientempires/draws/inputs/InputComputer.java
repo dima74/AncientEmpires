@@ -10,6 +10,11 @@ import ru.ancientempires.actions.campaign.ActionCampaignLeaveCampaign;
 public class InputComputer extends AbstractPlayerInput
 {
 	
+	public InputComputer(InputMain inputMain)
+	{
+		super(inputMain);
+	}
+
 	@Override
 	public void beginTurn()
 	{

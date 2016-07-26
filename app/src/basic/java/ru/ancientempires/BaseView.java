@@ -25,8 +25,9 @@ public abstract class BaseView extends SurfaceView implements SurfaceHolder.Call
 	public BaseView(BaseGameActivity activity)
 	{
 		super(activity);
-		this.activity = activity;
 		Debug.onCreate(this);
+		this.activity = activity;
+		activity.view = this;
 		getHolder().addCallback(this);
 		detector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener()
 		{

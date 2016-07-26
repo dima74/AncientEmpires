@@ -2,6 +2,8 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawBitmapsMoving extends DrawBitmaps
 {
 	
@@ -9,6 +11,11 @@ public class DrawBitmapsMoving extends DrawBitmaps
 	public int startX;
 	public int endY;
 	public int endX;
+
+	public DrawBitmapsMoving(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawBitmapsMoving setLineYX(int startY, int startX, int endY, int endX)
 	{

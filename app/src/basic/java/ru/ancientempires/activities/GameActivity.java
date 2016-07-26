@@ -1,10 +1,8 @@
 package ru.ancientempires.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,8 +26,6 @@ import ru.ancientempires.model.Unit;
 
 public class GameActivity extends BaseGameActivity
 {
-	
-	public static GameActivity activity;
 
 	public String baseGameID;
 	public String gameID;
@@ -37,24 +33,24 @@ public class GameActivity extends BaseGameActivity
 	@Override
 	public GameView getView()
 	{
-		return (GameView) super.getView();
+		return (GameView) view;
 	}
-	
+
 	@Override
 	public GameThread getThread()
 	{
-		return (GameThread) super.getThread();
+		return (GameThread) thread;
 	}
-	
+
 	@Override
 	public DrawMain getDrawMain()
 	{
-		return (DrawMain) super.getDrawMain();
+		return (DrawMain) drawMain;
 	}
-	
+
 	public InputMain getInputMain()
 	{
-		return getThread() == null ? null : getThread().inputMain;
+		return getDrawMain().inputMain;
 	}
 	
 	public void postUpdateCampaign()
@@ -62,32 +58,10 @@ public class GameActivity extends BaseGameActivity
 		getThread().needUpdateCampaign = true;
 	}
 	
-	public void restartGame()
-	{
-		try
-		{
-			String lastTeams = game.path.loadGame(0, false, null).toJson().get("players").toString();
-			startGame(BaseGameActivity.activity, game.path.baseGameID, lastTeams);
-		}
-		catch (Exception e)
-		{
-			MyAssert.a(false);
-			e.printStackTrace();
-		}
-	}
-
-	public static void startGame(String gameID, String lastTeams)
-	{
-		startGame(activity, gameID, lastTeams);
-	}
-
 	public static boolean startGame(Activity activity, String gameID, String lastTeams)
 	{
-		if (BaseGameActivity.activity != null)
-			BaseGameActivity.activity.finish();
-
 		GamePath path = Client.getGame(gameID);
-		
+
 		Intent intent = new Intent();
 		if (!path.canChooseTeams)
 			intent.setClass(activity, GameActivity.class);
@@ -98,7 +72,27 @@ public class GameActivity extends BaseGameActivity
 		activity.startActivity(intent);
 		return path.canChooseTeams;
 	}
-	
+
+	public void startGame(String gameID, String lastTeams)
+	{
+		startGame(this, gameID, lastTeams);
+		finish();
+	}
+
+	public void restartGame()
+	{
+		try
+		{
+			String lastTeams = game.path.loadGame(0, false, null).toJson().get("players").toString();
+			startGame(game.path.baseGameID, lastTeams);
+		}
+		catch (Exception e)
+		{
+			MyAssert.a(false);
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -125,8 +119,6 @@ public class GameActivity extends BaseGameActivity
 			public void doInBackground() throws Exception
 			{
 				Client.client.finishPart2();
-				if (BaseGameActivity.activity != null)
-					BaseGameActivity.activity.view.thread.join();
 				String players = getIntent().getStringExtra(Extras.PLAYERS);
 				game = Client.client.startGame(gameID == null ? baseGameID : gameID, players);
 				gameID = game.path.gameID;
@@ -136,8 +128,6 @@ public class GameActivity extends BaseGameActivity
 			public void onPostExecute()
 			{
 				setTitle(game.path.name);
-				activity = GameActivity.this;
-				BaseGameActivity.activity = GameActivity.this;
 				view = new GameView(GameActivity.this);
 				setContentView(view);
 			}
@@ -228,12 +218,6 @@ public class GameActivity extends BaseGameActivity
 			view.thread.runOnGameThread(runnable);
 		}
 		return true;
-	}
-	
-	public static void vibrate()
-	{
-		Vibrator v = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(400);
 	}
 	
 }

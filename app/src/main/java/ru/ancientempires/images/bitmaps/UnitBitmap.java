@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import ru.ancientempires.Point;
 import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.campaign.scripts.ScriptUnitMoveHandler;
-import ru.ancientempires.draws.DrawMain;
+import ru.ancientempires.draws.Draw;
 import ru.ancientempires.images.SmallNumberImages;
 import ru.ancientempires.images.StatusesImages;
 import ru.ancientempires.images.UnitImages;
@@ -81,7 +81,7 @@ public class UnitBitmap
 	{
 		idleAnimationFrameLeft = frameCount;
 	}
-	
+
 	public void draw(Canvas canvas, int iFrame)
 	{
 		float y = this.y;
@@ -89,7 +89,7 @@ public class UnitBitmap
 		if (idleAnimationFrameLeft > 0)
 		{
 			x += (iFrame / 2 % 2 - 1) * 2;
-			y += DrawMain.main.rnd.nextBoolean() ? 1 : 0;
+			y += Draw.random.nextBoolean() ? 1 : 0;
 			--idleAnimationFrameLeft;
 		}
 		

@@ -20,17 +20,17 @@ public class MyDialogFragment
 	public View        viewOverlay;
 	public Script      script;
 	
-	public void showDialog(final Builder builder, Script script)
+	public void showDialog(final GameActivity activity, final Builder builder, Script script)
 	{
 		this.script = script;
 		builder.setCancelable(false);
-		GameActivity.activity.runOnUiThread(new Runnable()
+		activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				dialog = builder.show();
-				GameActivity.activity.dialog = dialog;
+				activity.dialog = dialog;
 				
 				WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 						1, 1,
@@ -39,17 +39,17 @@ public class MyDialogFragment
 						// | LayoutParams.FLAG_NOT_TOUCH_MODAL
 						| LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 						PixelFormat.TRANSPARENT);
-				viewOverlay = new View(GameActivity.activity);
-				WindowManager windowManager = (WindowManager) GameActivity.activity.getSystemService(Context.WINDOW_SERVICE);
+				viewOverlay = new View(activity);
+				WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
 				windowManager.addView(viewOverlay, params);
 				viewOverlay.setOnTouchListener(new OnTouchListener()
 				{
 					@Override
 					public boolean onTouch(View v, MotionEvent event)
 					{
-						GameActivity.activity.dialog = null;
+						activity.dialog = null;
 						dialog.dismiss();
-						((WindowManager) GameActivity.activity.getSystemService(Context.WINDOW_SERVICE)).removeView(viewOverlay);
+						((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).removeView(viewOverlay);
 						MyDialogFragment.this.script.finish();
 						return false;
 					}

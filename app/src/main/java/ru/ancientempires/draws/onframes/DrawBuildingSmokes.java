@@ -2,13 +2,19 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.Draw;
 
 public class DrawBuildingSmokes extends Draw
 {
 	
 	private DrawOnFrames[][] field = new DrawOnFrames[game.h][game.w];
-	
+
+	public DrawBuildingSmokes(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public void update()
 	{
 		for (int i = 0; i < field.length; i++)
@@ -19,7 +25,7 @@ public class DrawBuildingSmokes extends Draw
 					int startX = (j + 1) * A - SmokeImages().wSmall;
 					int endY = (int) (i * A - a * 21);
 					int endX = (j + 1) * A - SmokeImages().wSmall;
-					field[i][j] = new DrawBitmapsMoving()
+					field[i][j] = new DrawBitmapsMoving(mainBase)
 							.setLineYX(startY, startX, endY, endX)
 							.setBitmaps(SmokeImages().bitmapsSmall)
 							.setFramesForBitmap(10)
@@ -37,7 +43,7 @@ public class DrawBuildingSmokes extends Draw
 				if (draw != null)
 				{
 					draw.draw(canvas);
-					if (iFrame() % 2 == 0 && draw.isEndDrawing && main.rnd.nextInt() % 8 == 0)
+					if (iFrame() % 2 == 0 && draw.isEndDrawing && random.nextInt() % 8 == 0)
 						draw.reAnimate();
 				}
 	}

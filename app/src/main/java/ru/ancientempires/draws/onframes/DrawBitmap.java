@@ -3,12 +3,19 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawBitmap extends DrawOnFrames
 {
 	
 	private Bitmap bitmap;
 	private int    y;
 	private int    x;
+
+	public DrawBitmap(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawBitmap setBitmap(Bitmap bitmap)
 	{

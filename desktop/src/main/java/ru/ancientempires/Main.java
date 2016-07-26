@@ -28,7 +28,7 @@ public class Main
 		Client client = new Client(new DesktopClientHelper());
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
 		new AllGamesConverter().create();
-		System.exit(0);
+		//System.exit(0);
 
 		client.loadPart1();
 		client.loadPart2();
@@ -36,7 +36,7 @@ public class Main
 		//new Swing("save.0");
 		//Client.client.rules.defaultPlayerComputer.addProperty("gold", 700000);
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 700);
-		new Swing("campaign.3");
+		new Swing("skirmish.5");
 		//testFull();
 		//test();
 

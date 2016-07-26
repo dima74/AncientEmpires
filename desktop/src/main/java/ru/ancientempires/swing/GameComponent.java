@@ -14,7 +14,6 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.inputs.InputMain;
@@ -59,13 +58,12 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 	{
 		this.frame = frame;
 		setPreferredSize(new Dimension(w, h));
-		BaseGameActivity.activity = GameActivity.activity = new GameActivity();
-		BaseGameActivity.activity.view = this;
-		this.game = BaseGameActivity.activity.game = game;
+		GameActivity activity = new GameActivity();
+		activity.view = this;
+		this.game = activity.game = game;
 		
-		drawMain = new DrawMain();
-		inputMain = new InputMain(drawMain);
-		drawMain.setInputMain(inputMain);
+		drawMain = new DrawMain(activity);
+		inputMain = new InputMain(activity, drawMain);
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);

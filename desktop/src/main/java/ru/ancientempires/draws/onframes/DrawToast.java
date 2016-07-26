@@ -2,12 +2,14 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawToast extends DrawOnFrames
 {
 	
-	public DrawToast(String text)
+	public DrawToast(BaseDrawMain mainBase, String text)
 	{
-		// TODO Auto-generated constructor stub
+		super(mainBase);
 	}
 	
 	@Override

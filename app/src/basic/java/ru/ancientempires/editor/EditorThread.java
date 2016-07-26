@@ -11,19 +11,15 @@ import ru.ancientempires.model.Player;
 
 public class EditorThread extends BaseThread
 {
-	
-	// public static EditorThread thread;
-	
-	public EditorInputMain  inputMain;
+
 	public EditorChooseView view;
+	public EditorInputMain  inputMain;
 
 	public EditorThread(EditorActivity activity, SurfaceHolder surfaceHolder)
 	{
 		super(activity, surfaceHolder);
-		
-		drawMain = new EditorDrawMain();
+		drawMain = new EditorDrawMain(activity);
 		inputMain = new EditorInputMain(activity, (EditorDrawMain) drawMain);
-		((EditorDrawMain) drawMain).setInputMain(inputMain);
 		
 		drawMain.cells.update();
 		drawMain.cellsDual.update();

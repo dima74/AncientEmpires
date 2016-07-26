@@ -3,24 +3,17 @@ package ru.ancientempires.draws;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
+import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.load.GamePath;
 
-public abstract class BaseDrawMain extends Draw
+public class BaseDrawMain extends Draw
 {
-	
-	public static BaseDrawMain mainBase;
 
-	{
-		mainBase = this;
-		setupStatic();
-	}
-	
-	public void setupStatic()
-	{}
-	
+	public BaseGameActivity activity;
+
 	public int mapH;
 	public int mapW;
 	public int visibleMapH;
@@ -44,13 +37,27 @@ public abstract class BaseDrawMain extends Draw
 	public float minOffsetY;
 	public float minOffsetX;
 
-	public DrawCells          cells          = new DrawCells();
-	public DrawCells          cellsDual      = new DrawCells().setDual();
-	public DrawUnitsDead      unitsDead      = new DrawUnitsDead();
-	public DrawUnits          units          = new DrawUnits();
-	public DrawBuildingSmokes buildingSmokes = new DrawBuildingSmokes();
+	public DrawCells          cells;
+	public DrawCells          cellsDual;
+	public DrawUnitsDead      unitsDead;
+	public DrawUnits          units;
+	public DrawBuildingSmokes buildingSmokes;
 
-	public abstract void setVisibleMapSize();
+	public BaseDrawMain(BaseGameActivity activity)
+	{
+		super(null);
+		mainBase = this;
+		this.activity = activity;
+		game = activity.game;
+		activity.drawMain = this;
+		cells = new DrawCells(this);
+		cellsDual = new DrawCells(this).setDual();
+		unitsDead = new DrawUnitsDead(this);
+		units = new DrawUnits(this);
+		buildingSmokes = new DrawBuildingSmokes(this);
+	}
+
+	public void setVisibleMapSize() {}
 	
 	public final void initOffset()
 	{

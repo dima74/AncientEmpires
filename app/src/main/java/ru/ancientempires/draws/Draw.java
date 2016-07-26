@@ -2,9 +2,12 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 
+import java.util.Random;
+
 import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.ActionImages;
 import ru.ancientempires.images.ArrowsImages;
 import ru.ancientempires.images.BigNumberImages;
@@ -20,78 +23,102 @@ import ru.ancientempires.model.Game;
 
 public class Draw
 {
-	
-	public Images Images()
+
+	public static final Random random = new Random();
+
+	public static Images Images()
 	{
 		return Client.client.images;
 	}
-	
-	public CellImages CellImages()
+
+	public static CellImages CellImages()
 	{
 		return Client.client.images.cell;
 	}
-	
-	public UnitImages UnitImages()
+
+	public static UnitImages UnitImages()
 	{
 		return Client.client.images.unit;
 	}
-	
-	public ActionImages ActionImages()
+
+	public static ActionImages ActionImages()
 	{
 		return Client.client.images.action;
 	}
-	
-	public SmallNumberImages SmallNumberImages()
+
+	public static SmallNumberImages SmallNumberImages()
 	{
 		return Client.client.images.smallNumber;
 	}
-	
-	public BigNumberImages BigNumberImages()
+
+	public static BigNumberImages BigNumberImages()
 	{
 		return Client.client.images.bigNumber;
 	}
-	
-	public SparksImages SparksImages()
+
+	public static SparksImages SparksImages()
 	{
 		return Client.client.images.sparks;
 	}
-	
-	public CursorImages CursorImages()
+
+	public static CursorImages CursorImages()
 	{
 		return Client.client.images.cursor;
 	}
-	
-	public ArrowsImages ArrowsImages()
+
+	public static ArrowsImages ArrowsImages()
 	{
 		return Client.client.images.arrows;
 	}
-	
-	public StatusesImages StatusesImages()
+
+	public static StatusesImages StatusesImages()
 	{
 		return Client.client.images.statuses;
 	}
-	
-	public SmokeImages SmokeImages()
+
+	public static SmokeImages SmokeImages()
 	{
 		return Client.client.images.smoke;
 	}
-	
-	public DrawMain     main     = DrawMain.main;
-	public BaseDrawMain mainBase = BaseDrawMain.mainBase;
-	public Game         game     = BaseGameActivity.activity.game;
-	public float        mapScale = 2;
-	public int          A        = Images().bitmapSize;
-	public float        fA       = Images().bitmapSize * mapScale;
-	public float        a        = A / 24.0f;
+
+	public static final int   A = 24;
+	public static final float a = 1.0f;
+
+	public DrawMain     main;
+	public BaseDrawMain mainBase;
+	public Game         game;
+	public float mapScale = 2;
+	public float fA       = 24 * mapScale;
+
+	public Draw(BaseDrawMain mainBase)
+	{
+		this.mainBase = mainBase;
+		if (mainBase != null)
+		{
+			game = mainBase.game;
+			main = mainBase.main;
+			MyAssert.a(game != null);
+		}
+	}
+
+	public BaseGameActivity getActivity()
+	{
+		return main.activity;
+	}
+
+	public GameActivity getGameActivity()
+	{
+		return (GameActivity) main.activity;
+	}
 
 	public int h()
 	{
-		return BaseGameActivity.activity.getView().h;
+		return mainBase.activity.getView().h;
 	}
 	
 	public int w()
 	{
-		return BaseGameActivity.activity.getView().w;
+		return mainBase.activity.getView().w;
 	}
 	
 	public int iFrame()
@@ -101,7 +128,7 @@ public class Draw
 	
 	public void postUpdateCampaign()
 	{
-		GameActivity.activity.postUpdateCampaign();
+		((GameActivity) mainBase.activity).postUpdateCampaign();
 	}
 	
 	public boolean isEnd()

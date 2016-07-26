@@ -26,6 +26,7 @@ public class BaseThread extends Thread
 	public BaseThread(BaseGameActivity activity, SurfaceHolder surfaceHolder)
 	{
 		Debug.onCreate(this);
+		activity.thread = this;
 		setName("Game Thread");
 		this.surfaceHolder = surfaceHolder;
 		this.activity = activity;

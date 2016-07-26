@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.actions.result.ActionResultUnitAttack;
 import ru.ancientempires.actions.result.AttackResult;
+import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawUnitAttackMain extends DrawOnFramesGroup
 {
@@ -19,10 +20,11 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup
 	public int frameToStartPartTwo;
 	public int framesBeforePartTwo;
 
-	public DrawUnitAttackMain()
+	public DrawUnitAttackMain(BaseDrawMain mainBase)
 	{
-		drawDirect = new DrawUnitAttack().setDirect();
-		drawReverse = new DrawUnitAttack();
+		super(mainBase);
+		drawDirect = new DrawUnitAttack(mainBase).setDirect();
+		drawReverse = new DrawUnitAttack(mainBase);
 	}
 	
 	public DrawUnitAttackMain start(ActionResultUnitAttack result)

@@ -2,27 +2,15 @@ package ru.ancientempires.editor;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.activities.EditorActivity;
 import ru.ancientempires.draws.BaseDrawMain;
 
 public class EditorDrawMain extends BaseDrawMain
 {
-	
-	public static EditorDrawMain main;
-	
-	@Override
-	public void setupStatic()
-	{
-		main = this;
-	}
-	
+
 	public EditorInputMain inputMain;
-	
-	public void setInputMain(EditorInputMain inputMain)
-	{
-		this.inputMain = inputMain;
-	}
-	
-	public DrawChoose choose = new DrawChoose();
+
+	public DrawChoose choose;
 	
 	@Override
 	public void setVisibleMapSize()
@@ -31,8 +19,10 @@ public class EditorDrawMain extends BaseDrawMain
 		visibleMapW = w();
 	}
 	
-	public EditorDrawMain()
+	public EditorDrawMain(EditorActivity activity)
 	{
+		super(activity);
+		choose = new DrawChoose(this);
 		initOffset();
 	}
 	

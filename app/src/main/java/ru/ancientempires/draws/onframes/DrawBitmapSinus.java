@@ -3,6 +3,8 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 {
 	
@@ -62,6 +64,11 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 	private int y = 0;
 	private int x = 0;
 	private Bitmap bitmap;
+
+	public DrawBitmapSinus(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawBitmapSinus animate(int y, int x, Bitmap bitmap, int valuesForFrame)
 	{

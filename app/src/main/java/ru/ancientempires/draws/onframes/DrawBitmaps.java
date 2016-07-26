@@ -3,6 +3,8 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawBitmaps extends DrawOnFramesWithRangeValues
 {
 	
@@ -13,6 +15,11 @@ public class DrawBitmaps extends DrawOnFramesWithRangeValues
 
 	public int y;
 	public int x;
+
+	public DrawBitmaps(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 
 	public DrawBitmaps setFramesForBitmap(int framesForBitmap)
 	{

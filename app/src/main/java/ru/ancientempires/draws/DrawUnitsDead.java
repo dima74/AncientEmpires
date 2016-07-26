@@ -7,7 +7,12 @@ public class DrawUnitsDead extends Draw
 	
 	public boolean[][] isTombstone = new boolean[game.h][game.w];
 	public boolean[][] keep        = new boolean[game.h][game.w];
-	
+
+	public DrawUnitsDead(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	@Override
 	public void draw(Canvas canvas)
 	{

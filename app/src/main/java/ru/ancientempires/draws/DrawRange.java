@@ -16,8 +16,9 @@ public class DrawRange extends Draw
 	
 	private Bitmap[][] field;
 	
-	public DrawRange(int startI, int startJ, ActionResultGetUnit result)
+	public DrawRange(BaseDrawMain mainBase, int startI, int startJ, ActionResultGetUnit result)
 	{
+		super(mainBase);
 		this.startI = startI;
 		this.startJ = startJ;
 		diameter = result.fieldMoveReal.length;

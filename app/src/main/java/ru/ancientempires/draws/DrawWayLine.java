@@ -17,6 +17,11 @@ public class DrawWayLine extends Draw
 	}
 	
 	private float[] wayPoints;
+
+	public DrawWayLine(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public void update(Point[] points)
 	{

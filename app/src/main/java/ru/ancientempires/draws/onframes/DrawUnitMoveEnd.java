@@ -3,6 +3,7 @@ package ru.ancientempires.draws.onframes;
 import android.graphics.Canvas;
 
 import ru.ancientempires.actions.result.ActionResultUnitMove;
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.model.Unit;
 
 public class DrawUnitMoveEnd extends DrawOnFramesGroup
@@ -11,15 +12,16 @@ public class DrawUnitMoveEnd extends DrawOnFramesGroup
 	private int    frameUpdateBonus;
 	private Unit[] units;
 
-	public DrawUnitMoveEnd(ActionResultUnitMove result, int frameToStart)
+	public DrawUnitMoveEnd(BaseDrawMain mainBase, ActionResultUnitMove result, int frameToStart)
 	{
+		super(mainBase);
 		draws.clear();
 		if (result.sign > 0)
 		{
 			units = result.units;
 			for (Unit unit : result.units)
 			{
-				DrawOnFrames draw = new DrawBitmaps()
+				DrawOnFrames draw = new DrawBitmaps(mainBase)
 						.setYX(unit.i * A, unit.j * A)
 						.setBitmaps(SparksImages().bitmapsDefault)
 						.animateRepeat(1)

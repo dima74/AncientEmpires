@@ -1,9 +1,16 @@
 package ru.ancientempires.draws.onframes;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawNumberSinus extends DrawBitmapSinus
 {
 	
 	public static final int FRAMES_ANIMATE = DrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES * 3 / 2; // 48 // GameDrawDecreaseHealth.ys.length / 2;
+
+	public DrawNumberSinus(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawNumberSinus animate(int y, int x, int sign, int number)
 	{

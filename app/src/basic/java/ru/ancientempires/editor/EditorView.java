@@ -1,6 +1,5 @@
 package ru.ancientempires.editor;
 
-import ru.ancientempires.BaseThread;
 import ru.ancientempires.BaseView;
 import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.activities.EditorActivity;
@@ -14,7 +13,7 @@ public class EditorView extends BaseView
 	}
 	
 	@Override
-	public BaseThread createThread()
+	public EditorThread createThread()
 	{
 		return new EditorThread((EditorActivity) activity, getHolder());
 	}

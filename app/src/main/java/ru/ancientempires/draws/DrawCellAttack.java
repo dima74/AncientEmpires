@@ -31,20 +31,21 @@ public class DrawCellAttack extends DrawOnFramesGroup
 	
 	*/
 	
-	public DrawCellAttack(ActionResultUnitAttack result, int targetI, int targetJ)
+	public DrawCellAttack(BaseDrawMain mainBase, ActionResultUnitAttack result, int targetI, int targetJ)
 	{
+		super(mainBase);
 		this.targetI = targetI;
 		this.targetJ = targetJ;
 		int y = targetI * A;
 		int x = targetJ * A;
 		
-		add(new DrawBitmaps()
+		add(new DrawBitmaps(mainBase)
 				.setYX(y, x)
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(1));
 		frameUpdateTargetCell = frameEnd;
 		
-		add(new DrawCellAttackPartTwo(targetI, targetJ)
+		add(new DrawCellAttackPartTwo(mainBase, targetI, targetJ)
 				.increaseFrameStart(frameCount));
 
 		main.cells.keep[targetI][targetJ] = true;

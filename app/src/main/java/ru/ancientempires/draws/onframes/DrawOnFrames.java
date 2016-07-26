@@ -2,6 +2,7 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.Draw;
 
 public abstract class DrawOnFrames extends Draw
@@ -13,6 +14,11 @@ public abstract class DrawOnFrames extends Draw
 	public int     frameStart;
 	public int     frameEnd;
 	public boolean isEndDrawing;
+
+	public DrawOnFrames(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 
 	public DrawOnFrames animate(int frameCount)
 	{

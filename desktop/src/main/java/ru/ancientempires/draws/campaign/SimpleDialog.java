@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
@@ -14,7 +15,7 @@ import ru.ancientempires.campaign.scripts.Script;
 public class SimpleDialog
 {
 	
-	public static void create(String text, Script script)
+	public static void create(GameActivity activity, String text, Script script)
 	{
 		if (1 == 1)
 		{
@@ -37,7 +38,7 @@ public class SimpleDialog
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.toFront();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		textArea.addMouseListener(new MouseAdapter()
 		{
@@ -46,7 +47,7 @@ public class SimpleDialog
 			{
 				frame.dispose();
 				script.finish();
-				GameActivity.activity.getView().needUpdateCampaign = true;
+				activity.getView().needUpdateCampaign = true;
 			}
 		});
 	}

@@ -4,10 +4,17 @@ import android.graphics.Canvas;
 
 import java.util.ArrayList;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawOnFramesGroup extends DrawOnFrames
 {
 	
-	public ArrayList<DrawOnFrames> draws = new ArrayList<DrawOnFrames>();
+	public ArrayList<DrawOnFrames> draws = new ArrayList<>();
+
+	public DrawOnFramesGroup(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public void add(DrawOnFrames gameDraw)
 	{

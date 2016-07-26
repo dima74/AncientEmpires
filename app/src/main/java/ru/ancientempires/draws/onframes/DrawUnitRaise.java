@@ -2,6 +2,7 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.images.SparksImages;
 
 public class DrawUnitRaise extends DrawOnFramesGroup
@@ -14,8 +15,9 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 
 	private int frameUpdateTargetUnit = -1;
 
-	public DrawUnitRaise(int targetI, int targetJ)
+	public DrawUnitRaise(BaseDrawMain mainBase, int targetI, int targetJ)
 	{
+		super(mainBase);
 		this.targetI = targetI;
 		this.targetJ = targetJ;
 		int y = targetI * A - SparksImages().hDefault / 2;
@@ -30,7 +32,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 		draws.clear();
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
-				add(new DrawBitmapsMoving()
+				add(new DrawBitmapsMoving(mainBase)
 						.setLineYX(y + array[i], x + array[j], y + A - array[i], x + A - array[j])
 						.setBitmaps(SparksImages().bitmapsDefault)
 						.animateRepeat(3));

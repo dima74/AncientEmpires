@@ -7,6 +7,11 @@ import ru.ancientempires.draws.onframes.DrawOnFrames;
 public class DrawInfoMove extends DrawOnFrames
 {
 	
+	public DrawInfoMove(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public void startShow()
 	{
 		int frameCount = 0;

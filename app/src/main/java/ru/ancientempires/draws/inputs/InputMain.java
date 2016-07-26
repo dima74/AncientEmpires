@@ -2,25 +2,30 @@ package ru.ancientempires.draws.inputs;
 
 import ru.ancientempires.actions.ActionGameEndTurn;
 import ru.ancientempires.actions.result.ActionResultGameEndTurn;
+import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.DrawUnitsHeal;
 
 public class InputMain extends AbstractInput
 {
 	
-	public static InputMain main;
-
 	public InputPlayer         inputPlayer;
 	public InputComputer       inputComputer;
 	public AbstractPlayerInput currentInput;
+	public GameActivity        activity;
 
-	public InputMain(DrawMain drawMain)
+	public InputMain(GameActivity activity, DrawMain drawMain)
 	{
-		InputMain.main = this;
+		super(null);
+		this.activity = activity;
 		this.drawMain = drawMain;
+		game = activity.game;
 		
-		inputPlayer = new InputPlayer();
-		inputComputer = new InputComputer();
+		inputPlayer = new InputPlayer(this);
+		inputComputer = new InputComputer(this);
+
+		drawMain.inputMain = this;
+		drawMain.inputPlayer = inputPlayer;
 		
 		drawMain.info.update();
 		drawMain.cells.update();
@@ -77,7 +82,7 @@ public class InputMain extends AbstractInput
 	public void performEndTurn(ActionGameEndTurn action)
 	{
 		ActionResultGameEndTurn result = action.perform(game);
-		drawMain.add(new DrawUnitsHeal().start(result));
+		drawMain.add(new DrawUnitsHeal(drawMain).start(result));
 	}
 	
 }

@@ -40,8 +40,9 @@ public class DrawInfo extends Draw
 	private Bitmap goldBitmap;
 	private Bitmap amountBitmap;
 
-	public DrawInfo()
+	public DrawInfo(BaseDrawMain mainBase)
 	{
+		super(mainBase);
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(backgroundBitmap);
 		drawLeftPart(canvas, h, mW);

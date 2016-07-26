@@ -25,8 +25,9 @@ public class InputUnit extends AbstractInput
 	
 	public InputPlayer inputPlayer;
 	
-	public InputUnit(InputPlayer inputPlayer)
+	public InputUnit(InputMain inputMain, InputPlayer inputPlayer)
 	{
+		super(inputMain);
 		this.inputPlayer = inputPlayer;
 	}
 	
@@ -66,7 +67,7 @@ public class InputUnit extends AbstractInput
 		radius = diameter / 2;
 		isActive = true;
 		
-		drawRange = new DrawRange(i, j, result);
+		drawRange = new DrawRange(drawMain, i, j, result);
 		drawMain.add(drawRange);
 		return true;
 	}
@@ -79,7 +80,7 @@ public class InputUnit extends AbstractInput
 		int relativeJ = radius + targetJ - j;
 		boolean isBoundsNormal = relativeI >= 0 && relativeI < diameter && relativeJ >= 0 && relativeJ < diameter;
 		
-		ArrayList<ActionFromTo> actions = new ArrayList<ActionFromTo>();
+		ArrayList<ActionFromTo> actions = new ArrayList<>();
 		if (isBoundsNormal)
 		{
 			if (result.fieldMoveReal[relativeI][relativeJ])
@@ -110,7 +111,7 @@ public class InputUnit extends AbstractInput
 		if (action.getClass() == ActionUnitMove.class)
 		{
 			ActionResultUnitMove result = ((ActionUnitMove) action).perform(game);
-			DrawUnitMove draw = new DrawUnitMove();
+			DrawUnitMove draw = new DrawUnitMove(drawMain);
 			draw.start(InputUnit.getPoints(i, j, targetI, targetJ, this.result.previousMoveI, this.result.previousMoveJ), result, true);
 			drawMain.add(draw);
 			destroy();
@@ -120,11 +121,11 @@ public class InputUnit extends AbstractInput
 			ActionResultUnitAttack result = ((ActionUnitAttack) action).perform(game);
 			inputPlayer.tapWithoutAction(targetI, targetJ);
 			if (result.isAttackUnit)
-				drawMain.add(new DrawUnitAttackMain().start(result));
+				drawMain.add(new DrawUnitAttackMain(drawMain).start(result));
 			else
 			{
 				drawMain.buildingSmokes.update();
-				drawMain.add(new DrawCellAttack(result, targetI, targetJ));
+				drawMain.add(new DrawCellAttack(drawMain, result, targetI, targetJ));
 			}
 			destroy();
 		}
@@ -132,7 +133,7 @@ public class InputUnit extends AbstractInput
 		{
 			action.perform(game);
 			drawMain.info.update();
-			drawMain.add(new DrawUnitRaise(targetI, targetJ));
+			drawMain.add(new DrawUnitRaise(drawMain, targetI, targetJ));
 			destroy();
 		}
 		else
@@ -145,7 +146,7 @@ public class InputUnit extends AbstractInput
 		int relativeToAbsoluteI = -radius + startI;
 		int relativeToAbsoluteJ = -radius + startJ;
 		
-		ArrayList<Point> points = new ArrayList<Point>();
+		ArrayList<Point> points = new ArrayList<>();
 		Point p = new Point(targetI - relativeToAbsoluteI, targetJ - relativeToAbsoluteJ);
 		while (!p.equals(Point.NULL_POINT))
 		{
@@ -153,7 +154,7 @@ public class InputUnit extends AbstractInput
 			p = new Point(previousMoveI[p.i][p.j], previousMoveJ[p.i][p.j]);
 		}
 		Collections.reverse(points);
-		return points.toArray(new Point[0]);
+		return points.toArray(new Point[points.size()]);
 	}
 	
 	public void destroy()

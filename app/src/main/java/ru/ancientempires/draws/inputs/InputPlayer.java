@@ -15,7 +15,13 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	public int lastTapI;
 	public int lastTapJ;
 
-	public InputUnit inputUnit = new InputUnit(this);
+	public InputUnit inputUnit;
+
+	public InputPlayer(InputMain inputMain)
+	{
+		super(inputMain);
+		inputUnit = new InputUnit(inputMain, this);
+	}
 
 	/*
 		 Тап:
@@ -102,7 +108,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
 				.setIJ(i, j)
 				.perform(game);
-		new UnitBuyDialog().showDialog(this, result);
+		new UnitBuyDialog().showDialog(inputMain.activity, this, result);
 		return true;
 	}
 	

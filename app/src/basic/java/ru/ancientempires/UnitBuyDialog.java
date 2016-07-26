@@ -20,14 +20,16 @@ import ru.ancientempires.model.Unit;
 public class UnitBuyDialog
 {
 	
-	public AlertDialog dialog;
+	public  AlertDialog  dialog;
+	private GameActivity activity;
 	
-	public void showDialog(final InputPlayer input, ActionResultGetCellBuy result)
+	public void showDialog(final GameActivity activity, final InputPlayer input, ActionResultGetCellBuy result)
 	{
+		this.activity = activity;
 		Unit[] units = result.units;
 		BuyStatus[] statuses = result.statuses;
 		
-		View scrollView = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_linear_layout, null);
+		View scrollView = activity.getLayoutInflater().inflate(R.layout.unit_buy_linear_layout, null);
 		LinearLayout layout = (LinearLayout) scrollView.findViewById(R.id.linear_layout);
 		for (int i = 0; i < units.length; i++)
 		{
@@ -42,27 +44,27 @@ public class UnitBuyDialog
 				{
 					if (status == BuyStatus.SUCCESS)
 					{
-						GameActivity.activity.dialog = null;
+						activity.dialog = null;
 						input.onUnitBuy(finalI);
 						dialog.hide();
 					}
 					else
-						Toast.makeText(GameActivity.activity, status.toString(), Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, status.toString(), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
 		
-		final AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.activity);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setView(scrollView);
-		builder.setTitle(GameActivity.activity.getString(R.string.buy));
+		builder.setTitle(activity.getString(R.string.buy));
 		
-		GameActivity.activity.runOnUiThread(new Runnable()
+		activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				dialog = builder.show();
-				GameActivity.activity.dialog = dialog;
+				activity.dialog = dialog;
 			}
 		});
 	}
@@ -72,7 +74,7 @@ public class UnitBuyDialog
 
 	private View getView(Unit unit, BuyStatus status)
 	{
-		View view = GameActivity.activity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
+		View view = activity.getLayoutInflater().inflate(R.layout.unit_buy_list_item, null);
 		
 		TextView textUnitName = (TextView) view.findViewById(R.id.textUnitName);
 		TextView textUnitCost = (TextView) view.findViewById(R.id.textUnitCost);

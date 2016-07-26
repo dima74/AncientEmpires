@@ -14,8 +14,9 @@ public class DrawInfoNull extends Draw
 
 	private Bitmap backgroundBitmap;
 
-	public DrawInfoNull()
+	public DrawInfoNull(BaseDrawMain mainBase)
 	{
+		super(mainBase);
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(backgroundBitmap);
 		drawRect(canvas, 0, 0, w, h, DrawInfo.color4);
@@ -30,7 +31,7 @@ public class DrawInfoNull extends Draw
 		// 5 1
 		// 4 h
 	}
-	
+
 	public void drawRect(Canvas canvas, int x, int y, int w, int h, Paint paint)
 	{
 		canvas.drawRect(x, y, x + w, y + h, paint);

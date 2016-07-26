@@ -13,6 +13,11 @@ public class DrawCursor extends Draw
 	
 	public int cursorI;
 	public int cursorJ;
+
+	public DrawCursor(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawCursor setCursor(FewBitmaps cursor)
 	{

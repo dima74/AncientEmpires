@@ -1,14 +1,23 @@
 package ru.ancientempires.draws.inputs;
 
-import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.model.Game;
 
 public class AbstractInput
 {
+
+	public Game      game;
+	public InputMain inputMain;
+	public DrawMain  drawMain;
 	
-	public Game      game      = GameActivity.activity.game;
-	public InputMain inputMain = InputMain.main;
-	public DrawMain  drawMain  = DrawMain.main;
-	
+	public AbstractInput(InputMain inputMain)
+	{
+		this.inputMain = inputMain;
+		if (inputMain != null)
+		{
+			game = inputMain.game;
+			drawMain = inputMain.drawMain;
+		}
+	}
+
 }

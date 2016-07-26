@@ -26,8 +26,9 @@ public class EditorInputMain implements Callback
 	public EditorInputMain(EditorActivity activity, EditorDrawMain drawMain)
 	{
 		this.activity = activity;
-		game = activity.game;
 		this.drawMain = drawMain;
+		game = activity.game;
+		drawMain.inputMain = this;
 		createStructs();
 	}
 	

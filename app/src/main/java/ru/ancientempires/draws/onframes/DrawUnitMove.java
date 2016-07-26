@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.Point;
 import ru.ancientempires.actions.result.ActionResultUnitMove;
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.DrawLevel;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 
@@ -18,6 +19,11 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	public int        targetI;
 	public int        targetJ;
 	public boolean makeSmoke = true;
+
+	public DrawUnitMove(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 
 	private void initFromEnd()
 	{
@@ -52,7 +58,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 		
 		animateRange(0, (points.length - 1) * framesForCellMy);
 		if (result != null)
-			main.add(new DrawUnitMoveEnd(result, frameCount));
+			main.add(new DrawUnitMoveEnd(mainBase, result, frameCount));
 		return this;
 	}
 	
@@ -99,10 +105,10 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 				xSmoke += points[currentI].j < points[previousI].j ? 24 : -SmokeImages().hSmall;
 			}
 			
-			DrawBitmaps draw = new DrawBitmaps()
+			DrawBitmaps draw = new DrawBitmaps(mainBase)
 					.setYX(ySmoke, xSmoke)
 					.setBitmaps(SmokeImages().bitmapsSmall)
-					.setFramesForBitmap((main.rnd.nextInt(3) + 1) * 2)
+					.setFramesForBitmap((random.nextInt(3) + 1) * 2)
 					.animateRepeat(1);
 			main.add(draw, DrawLevel.BOTTOM);
 		}

@@ -38,6 +38,7 @@ public class GamesFolder
 		this.folderID = folderID;
 		path = folderID.replace('.', '/') + "/";
 		this.numberGames = numberGames;
+		client = Client.client;
 	}
 
 	public GamesFolder(Client client, String folderID) throws Exception

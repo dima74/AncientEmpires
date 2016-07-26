@@ -16,10 +16,9 @@ public class DrawCells extends Draw
 	public  FewBitmaps[][] field  = new FewBitmaps[game.h][game.w];
 	public  boolean[][]    keep   = new boolean[game.h][game.w];
 
-	public DrawCells()
+	public DrawCells(BaseDrawMain mainBase)
 	{
-		// availableY = h - main.info.h;
-		// availableX = w;
+		super(mainBase);
 	}
 	
 	public DrawCells setDual()

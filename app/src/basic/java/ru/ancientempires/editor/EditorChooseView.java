@@ -52,7 +52,7 @@ public class EditorChooseView extends View implements Callback
 		
 		if (myColors.length > 0)
 		{
-			choose = new DrawChoose();
+			choose = new DrawChoose(activity.getDrawMain());
 			EditorStruct[] colors = new EditorStructColor[myColors.length];
 			for (int i = 0; i < myColors.length; i++)
 				colors[i] = new EditorStructColor(A, myColors[i]);
@@ -86,7 +86,7 @@ public class EditorChooseView extends View implements Callback
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			int i = EditorStruct.getNearest(structs, event.getY() / mScale, event.getX() / mScale);
-			EditorDrawMain.main.inputMain.setStruct(i, choose == null ? 0 : choose.selected);
+			activity.getDrawMain().inputMain.setStruct(i, choose == null ? 0 : choose.selected);
 			activity.dialog.dismiss();
 			activity.dialog = null;
 			return true;
@@ -115,8 +115,8 @@ public class EditorChooseView extends View implements Callback
 		}
 		
 		canvas.scale(mScale, mScale);
-		for (int i = 0; i < structs.length; i++)
-			structs[i].drawBitmap(canvas);
+		for (EditorStruct struct : structs)
+			struct.drawBitmap(canvas);
 	}
 	
 }

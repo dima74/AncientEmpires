@@ -7,8 +7,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.ancientempires.BaseThread;
-import ru.ancientempires.activities.BaseGameActivity;
-import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.activities.MainActivity;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.campaign.scripts.ScriptDialog;
@@ -29,39 +27,44 @@ import ru.ancientempires.draws.onframes.DrawSnakeMap;
 public class DrawCampaign extends BaseDrawCampaign
 {
 
+	public DrawCampaign(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	@Override
 	public void dialogIntro(Bitmap bitmap, String text, ScriptDialogIntro script)
 	{
-		new DialogShowIntro().showDialog(bitmap, text, script);
+		new DialogShowIntro().showDialog(getGameActivity(), bitmap, text, script);
 	}
 	
 	@Override
 	public void dialog(Bitmap bitmap, String text, ScriptDialog script)
 	{
-		new MyDialog().showDialog(bitmap, text, script);
+		new MyDialog().showDialog(getGameActivity(), bitmap, text, script);
 	}
 	
 	@Override
 	public void dialog(String text, ScriptDialogWithoutImage script)
 	{
-		new MyDialogWithoutImage().showDialog(text, script);
+		new MyDialogWithoutImage().showDialog(getGameActivity(), text, script);
 	}
 	
 	@Override
 	public void dialogTarget(String textTitle, String textTarget, ScriptDialogTarget script)
 	{
-		new DialogShowTarget().showDialog(textTitle, textTarget, script);
+		new DialogShowTarget().showDialog(getGameActivity(), textTitle, textTarget, script);
 	}
 	
 	@Override
 	public void toastTitle(final String text, final Script script)
 	{
-		BaseGameActivity.activity.runOnUiThread(new Runnable()
+		main.activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				Toast toast = Toast.makeText(BaseGameActivity.activity, text, Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(main.activity, text, Toast.LENGTH_SHORT);
 				TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
 				if (v != null)
 					v.setGravity(Gravity.CENTER);
@@ -83,14 +86,14 @@ public class DrawCampaign extends BaseDrawCampaign
 	public void enableActiveGame(ScriptEnableActiveGame script)
 	{
 		super.enableActiveGame(script);
-		BaseGameActivity.activity.invalidateOptionsMenu();
+		main.activity.invalidateOptionsMenu();
 	}
 	
 	@Override
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
 		main.isActiveGame = false;
-		BaseGameActivity.activity.invalidateOptionsMenu();
+		main.activity.invalidateOptionsMenu();
 		script.performAction();
 	}
 
@@ -99,26 +102,26 @@ public class DrawCampaign extends BaseDrawCampaign
 	{
 		super.closeMission();
 		if (game.path.nextGameID == null)
-			GameActivity.activity.moveTo(MainActivity.class);
+			main.activity.moveTo(MainActivity.class);
 	}
 
 	@Override
 	public void gameOver(ScriptGameOver script)
 	{
-		new DialogGameOver().createDialog();
+		DialogGameOver.createDialog(getGameActivity());
 	}
-	
+
 	@Override
 	public void vibrate()
 	{
-		GameActivity.vibrate();
+		main.activity.vibrate();
 	}
 
 	@Override
 	public void snakeMap(ScriptSnakeMap script)
 	{
 		int frames = script.milliseconds / BaseThread.MILLISECONDS_BETWEEN_FRAMES;
-		add(new DrawSnakeMap().animate(frames), script);
+		add(new DrawSnakeMap(mainBase).animate(frames), script);
 	}
 	
 }

@@ -2,6 +2,8 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Bitmap;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawLevelUp extends DrawOnFramesGroup
 {
 	
@@ -11,6 +13,11 @@ public class DrawLevelUp extends DrawOnFramesGroup
 	private static final int FRAME_ANIMATE        = 48;
 	private static final int FRAME_ANIMATE_MOTION = 16;
 	private static final int FRAME_ANIMATE_STATIC = 32;
+
+	public DrawLevelUp(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawLevelUp animate(int y, int x)
 	{
@@ -20,7 +27,7 @@ public class DrawLevelUp extends DrawOnFramesGroup
 		
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
-			add(new DrawBitmapsMoving()
+			add(new DrawBitmapsMoving(mainBase)
 					.setLineYX(levelUpYStart, levelUpX, levelUpYEnd, levelUpX)
 					.setBitmaps(new Bitmap[]
 							{
@@ -29,7 +36,7 @@ public class DrawLevelUp extends DrawOnFramesGroup
 					.setFramesForBitmap(DrawLevelUp.FRAME_ANIMATE_MOTION)
 					.animateRepeat(1)
 					.increaseFrameStart((int) (i * 3 * a)));
-		add(new DrawBitmap()
+		add(new DrawBitmap(mainBase)
 				.setYX(levelUpYEnd, levelUpX)
 				.setBitmap(Images().levelUp)
 				.animate(DrawLevelUp.FRAME_ANIMATE_STATIC)

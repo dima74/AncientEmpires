@@ -25,6 +25,11 @@ public class DrawAction extends Draw
 	public int h = ActionImages().h * 2;
 	public int w = w();
 
+	public DrawAction(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public void start(ActionFromTo action1, ActionFromTo action2)
 	{
 		this.action1 = action1;

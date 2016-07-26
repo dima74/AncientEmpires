@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.Strings;
 import ru.ancientempires.actions.result.AttackResult;
+import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
@@ -18,6 +19,11 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 
 	private boolean isDirect = false;
 
+	public DrawUnitAttack(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public DrawUnitAttack setDirect()
 	{
 		isDirect = true;
@@ -31,9 +37,9 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		x = result.targetJ * A;
 		
 		draws.clear();
-		add(new DrawNumberSinus()
+		add(new DrawNumberSinus(mainBase)
 				.animate(y, x, -1, result.decreaseHealth));
-		add(new DrawBitmaps()
+		add(new DrawBitmaps(mainBase)
 				.setYX(y, x)
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(2));
@@ -43,7 +49,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 	{
 		if (result.effectSign == -1)
 		{
-			add(new DrawBitmaps()
+			add(new DrawBitmaps(mainBase)
 					.setYX(y, x)
 					.setBitmaps(SparksImages().bitmapsDefault)
 					.animateRepeat(1)
@@ -51,7 +57,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 
 			int offsetY = (int) (y - 22 * a);
 			int offsetX = x + (A - StatusesImages().w) / 2;
-			DrawOnFrames draw = new DrawBitmapSinus()
+			DrawOnFrames draw = new DrawBitmapSinus(mainBase)
 					.animate(offsetY, offsetX, StatusesImages().poison, 2)
 					.increaseFrameStart(framesBeforePartTwo);
 			add(draw);
@@ -61,12 +67,12 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		
 		if (result.isLevelUp)
 		{
-			DrawOnFrames levelUp = new DrawLevelUp()
+			DrawOnFrames levelUp = new DrawLevelUp(mainBase)
 					.animate(result.i * A, result.j * A)
 					.increaseFrameStart(framesBeforePartTwo + 4);
 			add(levelUp);
 			if (result.isPromotion)
-				add(new DrawToast(String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name))
+				add(new DrawToast(mainBase, String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name))
 						.setFrameStart(levelUp.frameEnd + 1));
 		}
 		
@@ -76,7 +82,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			main.unitsDead.keep[result.targetI][result.targetJ] = true;
 			main.units.keep[result.targetI][result.targetJ] = true;
 			
-			DrawOnFrames gameDrawBitmaps = new DrawBitmaps()
+			DrawOnFrames gameDrawBitmaps = new DrawBitmaps(mainBase)
 					.setYX(y, x)
 					.setBitmaps(SparksImages().bitmapsDefault)
 					.animateRepeat(1)
@@ -88,7 +94,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			int startX = x;
 			int endY = startY - 3 * 2 * SmokeImages().amountDefault;
 			int endX = startX;
-			add(new DrawBitmapsMoving()
+			add(new DrawBitmapsMoving(mainBase)
 					.setLineYX(startY, startX, endY, endX)
 					.setBitmaps(SmokeImages().bitmapsDefault)
 					.setFramesForBitmap(4)

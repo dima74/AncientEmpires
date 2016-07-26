@@ -166,14 +166,9 @@ public class PlayersConfigureActivity extends BaseActivity
 			e.printStackTrace();
 		}
 
-		BaseGameActivity.activity = new BaseGameActivity();
-		BaseGameActivity.activity.game = game;
-		BaseDrawMain mainBase = new BaseDrawMain()
-		{
-			@Override
-			public void setVisibleMapSize()
-			{}
-		};
+		BaseGameActivity activity = new BaseGameActivity();
+		activity.game = game;
+		BaseDrawMain mainBase = new BaseDrawMain(activity);
 		mainBase.iMax = game.h;
 		mainBase.jMax = game.w;
 
@@ -186,8 +181,6 @@ public class PlayersConfigureActivity extends BaseActivity
 		mainBase.cellsDual.draw(canvas);
 		mainBase.unitsDead.draw(canvas);
 		mainBase.units.draw(canvas);
-		BaseGameActivity.activity = null;
-		BaseDrawMain.mainBase = null;
 
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		int screenW = metrics.widthPixels;

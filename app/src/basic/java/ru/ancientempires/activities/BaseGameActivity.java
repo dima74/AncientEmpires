@@ -1,7 +1,9 @@
 package ru.ancientempires.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.ViewGroup;
 
 import ru.ancientempires.BaseThread;
@@ -13,11 +15,12 @@ import ru.ancientempires.model.Game;
 public class BaseGameActivity extends BaseActivity
 {
 	
-	public static BaseGameActivity activity;
+	public BaseView     view;
+	public Game         game;
+	public BaseThread   thread;
+	public BaseDrawMain drawMain;
 
-	public BaseView view;
-	public Dialog   dialog;
-	public Game     game;
+	public Dialog dialog;
 
 	public BaseView getView()
 	{
@@ -26,14 +29,14 @@ public class BaseGameActivity extends BaseActivity
 	
 	public BaseThread getThread()
 	{
-		return view == null ? null : view.thread;
+		return thread;
 	}
 	
 	public BaseDrawMain getDrawMain()
 	{
-		return getThread() == null ? null : getThread().drawMain;
+		return drawMain;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -69,6 +72,12 @@ public class BaseGameActivity extends BaseActivity
 		}
 		game = null;
 		// activity = null;
+	}
+
+	public void vibrate()
+	{
+		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		v.vibrate(400);
 	}
 	
 }

@@ -5,48 +5,32 @@ import android.graphics.Color;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Random;
 
 import ru.ancientempires.Paints;
+import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.draws.inputs.InputPlayer;
 import ru.ancientempires.draws.onframes.DrawBlackScreen;
 
 public class DrawMain extends BaseDrawMain
 {
-	
-	public static DrawMain main;
-	
-	@Override
-	public void setupStatic()
-	{
-		main = this;
-	}
-	
+
 	public InputMain   inputMain;
 	public InputPlayer inputPlayer;
 
-	public void setInputMain(InputMain inputMain)
-	{
-		this.inputMain = inputMain;
-		inputPlayer = inputMain.inputPlayer;
-	}
-	
-	public Random rnd = new Random();
+	private int          actionY;
+	public  DrawAction   action;
+	public  DrawInfoNull infoNull;
+	public  DrawInfo     info;
+	public  DrawInfoMove infoMove;
+	public          int     infoY        = 0;
+	volatile public boolean isActiveGame = true;
 
-	private int actionY;
-	public          DrawAction   action       = new DrawAction();
-	public          DrawInfoNull infoNull     = new DrawInfoNull();
-	public          DrawInfo     info         = new DrawInfo();
-	public          DrawInfoMove infoMove     = new DrawInfoMove();
-	public          int          infoY        = 0;
-	volatile public boolean      isActiveGame = true;
+	public DrawCampaign    campaign;
+	public DrawBlackScreen blackScreen;
 
-	public DrawCampaign    campaign    = new DrawCampaign();
-	public DrawBlackScreen blackScreen = new DrawBlackScreen();
-
-	public boolean    isDrawCursor  = false;
-	public DrawCursor cursorDefault = new DrawCursor().setCursor(CursorImages().cursor);
+	public boolean isDrawCursor = false;
+	public DrawCursor cursorDefault;
 
 	public LinkedHashSet<Draw>[] draws = new LinkedHashSet[DrawLevel.values().length];
 
@@ -94,15 +78,31 @@ public class DrawMain extends BaseDrawMain
 		visibleMapH = h() - info.h;
 		visibleMapW = w();
 	}
-	
-	public DrawMain()
+
 	{
+		main = this;
+		// Должно быть до super(), в частности чтобы у всех draws в BaseDrawMain был корректный Draw.main
+		// Хотя, казалось бы раз они в BaseDrawMain, то им main и не нужен...
+	}
+
+	public DrawMain(BaseGameActivity activity)
+	{
+		super(activity);
+
+		action = new DrawAction(this);
+		infoNull = new DrawInfoNull(this);
+		info = new DrawInfo(this);
+		infoMove = new DrawInfoMove(this);
+		campaign = new DrawCampaign(this);
+		blackScreen = new DrawBlackScreen(this);
+		cursorDefault = new DrawCursor(this).setCursor(CursorImages().cursor);
+
 		initOffset();
 		focusOnCurrentPlayerCenter();
 		offsetY = nextOffsetY;
 		offsetX = nextOffsetX;
 		actionY = (visibleMapH - action.h) / 2;
-		
+
 		for (DrawLevel level : DrawLevel.values())
 			draws[level.ordinal()] = new LinkedHashSet<>();
 

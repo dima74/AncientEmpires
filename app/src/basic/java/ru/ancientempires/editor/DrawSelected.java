@@ -3,6 +3,7 @@ package ru.ancientempires.editor;
 import android.graphics.Canvas;
 
 import ru.ancientempires.Paints;
+import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.Draw;
 
 public class DrawSelected extends Draw
@@ -13,8 +14,9 @@ public class DrawSelected extends Draw
 	public int x;        // координата центра полоски
 	public int targetX;
 
-	public DrawSelected(int y)
+	public DrawSelected(BaseDrawMain mainBase, int y)
 	{
+		super(mainBase);
 		this.y = y;
 	}
 	

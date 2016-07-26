@@ -2,9 +2,16 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public class DrawBlackScreen extends DrawOnFramesWithRangeValues
 {
 	
+	public DrawBlackScreen(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public void startShow()
 	{
 		animateRange(15, 255, 16);

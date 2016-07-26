@@ -164,14 +164,15 @@ public class GamePath
 	public GamePath()
 	{}
 	
-	// только для AllGamesConverter
+	// только для AllGamesConverter +оказывается для редактора карт
 	public GamePath(Game game, String gameID)
 	{
 		this.gameID = gameID;
+		client = Client.client;
 		baseGameID = gameID;
 		numberPlayers = game.players.length;
 		path = gameID.replace('.', '/') + "/";
-		loader = client.gamesLoader.getLoader(path);
+		loader = Client.client.gamesLoader.getLoader(path);
 		h = game.h;
 		w = game.w;
 		defaultLocalization = "en_US";

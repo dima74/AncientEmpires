@@ -8,11 +8,11 @@ import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
 public class MyDialogWithoutImage extends MyDialogFragment
 {
 	
-	public void showDialog(String text, ScriptDialogWithoutImage script)
+	public void showDialog(GameActivity activity, String text, ScriptDialogWithoutImage script)
 	{
-		Builder builder = new Builder(GameActivity.activity);
+		Builder builder = new Builder(activity);
 		builder.setMessage(text);
-		showDialog(builder, script);
+		showDialog(activity, builder, script);
 	}
 	
 }

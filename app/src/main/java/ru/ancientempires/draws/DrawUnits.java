@@ -12,6 +12,11 @@ public class DrawUnits extends Draw
 	public boolean[][]    keep  = new boolean[game.h][game.w];
 	public boolean[][]    move  = new boolean[game.h][game.w];
 
+	public DrawUnits(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public void update()
 	{
 		for (int i = 0; i < game.h; i++)

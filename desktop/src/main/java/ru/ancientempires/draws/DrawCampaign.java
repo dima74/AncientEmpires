@@ -16,34 +16,39 @@ import ru.ancientempires.draws.campaign.SimpleDialog;
 public class DrawCampaign extends BaseDrawCampaign implements IDrawCampaign
 {
 	
+	public DrawCampaign(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	@Override
 	public void dialogIntro(Bitmap bitmap, String text, ScriptDialogIntro script)
 	{
-		SimpleDialog.create(text, script);
+		SimpleDialog.create(getGameActivity(), text, script);
 	}
 	
 	@Override
 	public void dialog(Bitmap bitmap, String text, ScriptDialog script)
 	{
-		SimpleDialog.create(text, script);
+		SimpleDialog.create(getGameActivity(), text, script);
 	}
 	
 	@Override
 	public void dialog(String text, ScriptDialogWithoutImage script)
 	{
-		SimpleDialog.create(text, script);
+		SimpleDialog.create(getGameActivity(), text, script);
 	}
 	
 	@Override
 	public void dialogTarget(String textTitle, String textTarget, ScriptDialogTarget script)
 	{
-		SimpleDialog.create(textTitle + "\n\n" + textTarget, script);
+		SimpleDialog.create(getGameActivity(), textTitle + "\n\n" + textTarget, script);
 	}
 	
 	@Override
 	public void toastTitle(final String text, final Script script)
 	{
-		SimpleDialog.create(text, script);
+		SimpleDialog.create(getGameActivity(), text, script);
 	}
 	
 	//

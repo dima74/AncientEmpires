@@ -2,12 +2,19 @@ package ru.ancientempires.draws.onframes;
 
 import android.graphics.Canvas;
 
+import ru.ancientempires.draws.BaseDrawMain;
+
 public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 {
 	
 	private float start;
 	private float end;
 	private float step;
+
+	public DrawOnFramesWithRangeFloat(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
 	
 	public DrawOnFramesWithRangeFloat animateRange(float start, float end, float step)
 	{

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import ru.ancientempires.Extras;
 import ru.ancientempires.MyAsyncTask;
 import ru.ancientempires.client.Client;
+import ru.ancientempires.editor.EditorDrawMain;
+import ru.ancientempires.editor.EditorInputMain;
 import ru.ancientempires.editor.EditorThread;
 import ru.ancientempires.editor.EditorView;
 import ru.ancientempires.load.GamePath;
@@ -15,11 +17,26 @@ public class EditorActivity extends BaseGameActivity
 	// public static EditorActivity activity;
 	
 	public String gameID;
-	
+
 	@Override
+	public EditorView getView()
+	{
+		return (EditorView) view;
+	}
+
 	public EditorThread getThread()
 	{
-		return (EditorThread) super.getThread();
+		return (EditorThread) thread;
+	}
+
+	public EditorDrawMain getDrawMain()
+	{
+		return (EditorDrawMain) drawMain;
+	}
+
+	public EditorInputMain getInputMain()
+	{
+		return getDrawMain().inputMain;
 	}
 	
 	@Override
@@ -49,8 +66,6 @@ public class EditorActivity extends BaseGameActivity
 			@Override
 			public void onPostExecute()
 			{
-				// activity = EditorActivity.this;
-				BaseGameActivity.activity = EditorActivity.this;
 				view = new EditorView(EditorActivity.this);
 				setContentView(view);
 			}

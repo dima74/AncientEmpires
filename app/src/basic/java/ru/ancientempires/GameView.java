@@ -3,6 +3,7 @@ package ru.ancientempires;
 import android.view.SurfaceHolder;
 
 import ru.ancientempires.activities.BaseGameActivity;
+import ru.ancientempires.activities.GameActivity;
 
 public class GameView extends BaseView implements SurfaceHolder.Callback
 {
@@ -13,9 +14,9 @@ public class GameView extends BaseView implements SurfaceHolder.Callback
 	}
 	
 	@Override
-	public BaseThread createThread()
+	public GameThread createThread()
 	{
-		return new GameThread(activity, getHolder());
+		return new GameThread((GameActivity) activity, getHolder());
 	}
 	
 }

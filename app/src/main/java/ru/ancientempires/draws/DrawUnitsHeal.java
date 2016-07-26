@@ -10,6 +10,11 @@ import ru.ancientempires.model.Unit;
 public class DrawUnitsHeal extends DrawOnFramesGroup
 {
 	
+	public DrawUnitsHeal(BaseDrawMain mainBase)
+	{
+		super(mainBase);
+	}
+
 	public DrawUnitsHeal start(ActionResultGameEndTurn result)
 	{
 		ArrayList<Unit> unitsToHeal = result.unitsToHeal;
@@ -18,7 +23,7 @@ public class DrawUnitsHeal extends DrawOnFramesGroup
 		for (int i = 0; i < unitsToHeal.size(); i++)
 		{
 			Unit unit = unitsToHeal.get(i);
-			add(new DrawNumberSinus()
+			add(new DrawNumberSinus(mainBase)
 					.animate(unit.i * A, unit.j * A, +1, valueToHeal.get(i)));
 		}
 		return this;
