@@ -35,6 +35,7 @@ import ru.ancientempires.campaign.scripts.ScriptDialogTarget;
 import ru.ancientempires.campaign.scripts.ScriptDialogWithoutImage;
 import ru.ancientempires.campaign.scripts.ScriptDisableActiveGame;
 import ru.ancientempires.campaign.scripts.ScriptEnableActiveGame;
+import ru.ancientempires.campaign.scripts.ScriptFocusOnCurrentPlayerCenter;
 import ru.ancientempires.campaign.scripts.ScriptGameOver;
 import ru.ancientempires.campaign.scripts.ScriptHideBlackScreen;
 import ru.ancientempires.campaign.scripts.ScriptHideCursor;
@@ -130,6 +131,7 @@ public class CampaignEditor
 		c = c.add(new ScriptSetMapPositionToCenter());
 		c = c.add(new ScriptHideInfoImmediately());
 		c = c.add(new ScriptDialogTarget("name", "target"));
+		c = c.add(new ScriptFocusOnCurrentPlayerCenter());
 		c = c.add(new ScriptEnableActiveGame());
 		
 		CampaignEditorGame.game = null;

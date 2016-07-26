@@ -120,7 +120,11 @@ public class CampaignImmediately implements IDrawCampaign
 	@Override
 	public void setMapPosition(float i, float j)
 	{}
-	
+
+	@Override
+	public void focusOnCurrentPlayerCenter()
+	{}
+
 	@Override
 	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script)
 	{}

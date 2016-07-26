@@ -178,7 +178,13 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	{
 		main.focusOnCell(i, j);
 	}
-	
+
+	@Override
+	public void focusOnCurrentPlayerCenter()
+	{
+		main.focusOnCurrentPlayerCenter();
+	}
+
 	//
 	@Override
 	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script)

@@ -128,6 +128,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	@Override
 	public void endTurn()
 	{
+		drawMain.saveScreenCenter();
 		if (inputUnit.isActive)
 			inputUnit.destroy();
 	}

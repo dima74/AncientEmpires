@@ -66,7 +66,6 @@ public class InputMain extends AbstractInput
 	{
 		if (!drawMain.isActiveGame)
 			return;
-		drawMain.saveScreenCenter();
 		if (currentInput != null) // первый игрок --- NONE
 			currentInput.endTurn();
 		if (performEndTurn)

@@ -69,6 +69,8 @@ public interface IDrawCampaign
 	void cameraMove(AbstractScriptOnePoint script);
 	
 	void setMapPosition(float i, float j);
+
+	void focusOnCurrentPlayerCenter();
 	
 	//
 	void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script);
@@ -111,4 +113,5 @@ public interface IDrawCampaign
 	void updateCampaign();
 	
 	void snakeMap(ScriptSnakeMap script);
+
 }
