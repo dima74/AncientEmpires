@@ -15,8 +15,8 @@ import ru.ancientempires.load.GameInit;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.DefaultRules;
 import ru.ancientempires.rules.Rules;
-import ru.ancientempires.rules.RulesLoader;
 import ru.ancientempires.server.ClientServer;
 import ru.ancientempires.server.Server;
 
@@ -127,7 +127,8 @@ public class Client
 	public void loadPart2() throws Exception
 	{
 		MyLog.l("loadPart2");
-		rules = new RulesLoader(rulesLoader).load();
+		//rules = new RulesLoader(rulesLoader).load();
+		rules = new DefaultRules().create();
 		localization.loadFull(rulesLoader);
 		images.setRules(rules);
 		images.preload(imagesLoader);

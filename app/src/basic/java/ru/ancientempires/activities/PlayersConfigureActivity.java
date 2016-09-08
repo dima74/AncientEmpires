@@ -110,7 +110,7 @@ public class PlayersConfigureActivity extends BaseActivity
 		try
 		{
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.choose_view);
+			setContentView(R.layout.activity_players_configure);
 
 			String gameID = getIntent().getStringExtra(Extras.GAME_ID);
 			path = Client.getGame(gameID);
@@ -196,7 +196,7 @@ public class PlayersConfigureActivity extends BaseActivity
 	
 	private View getView(Player player, int team, int numberTeams)
 	{
-		View view = getLayoutInflater().inflate(R.layout.choose_item, null);
+		View view = getLayoutInflater().inflate(R.layout.players_configure_item, null);
 		TextView textColor = (TextView) view.findViewById(R.id.textColor);
 		Spinner spinnerType = (Spinner) view.findViewById(R.id.spinnerType);
 		Spinner spinnerTeam = (Spinner) view.findViewById(R.id.spinnerTeam);

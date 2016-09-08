@@ -126,13 +126,15 @@
 	},
 	"defaultCellType": {
 		"baseType": "DEFAULT",
+		"isDefault": true,
 		"name": "DEFAULT",
 		"steps": 1,
 		"earn": 0,
 		"defense": 0,
 		"buyTypes": [],
 		"isHealing": false,
-		"isCapturing": false
+		"isCapturing": false,
+		"mapEditorFrequency": 0
 	},
 	"unitTypes": [
 		{
@@ -167,10 +169,10 @@
 		{
 			"name": "KING",
 			"specializations": {
-				"BLACK": "KING_SAETH",
 				"GREEN": "KING_VALADORN",
-				"RED": "KING_DEMONLORD",
-				"BLUE": "KING_GALAMAR"
+				"BLUE": "KING_GALAMAR",
+				"BLACK": "KING_SAETH",
+				"RED": "KING_DEMONLORD"
 			},
 			"attackMin": 55,
 			"attackMax": 65,
@@ -386,7 +388,9 @@
 		{
 			"name": "DEFAULT",
 			"baseType": {
-				"name": "DEFAULT_GROUP"
+				"isDefault": true,
+				"name": "DEFAULT_GROUP",
+				"mapEditorFrequency": 0
 			},
 			"types": [
 				"MOUNT",
@@ -403,9 +407,11 @@
 		{
 			"name": "HEALING",
 			"baseType": {
+				"isDefault": true,
 				"name": "HEALING_GROUP",
 				"defense": 15,
-				"isHealing": true
+				"isHealing": true,
+				"mapEditorFrequency": 0
 			},
 			"types": [
 				"BUILDING",
@@ -419,8 +425,10 @@
 			"name": "BUILDINGS",
 			"baseType": {
 				"baseType": "HEALING_GROUP",
+				"isDefault": true,
 				"name": "BUILDINGS_GROUP",
-				"isCapturing": true
+				"isCapturing": true,
+				"mapEditorFrequency": 0
 			},
 			"types": [
 				"CASTLE",
@@ -430,8 +438,10 @@
 		{
 			"name": "WATER_WAY",
 			"baseType": {
+				"isDefault": true,
 				"name": "WATER_WAY_GROUP",
-				"defense": 5
+				"defense": 5,
+				"mapEditorFrequency": 0
 			},
 			"types": [
 				"WATER_WAY_HORIZONTAL",
@@ -441,8 +451,10 @@
 		{
 			"name": "WATER",
 			"baseType": {
+				"isDefault": true,
 				"name": "WATER_GROUP",
-				"steps": 3
+				"steps": 3,
+				"mapEditorFrequency": 0
 			},
 			"types": [
 				"WATER",
@@ -453,63 +465,86 @@
 	"cellTypes": [
 		{
 			"baseType": "DEFAULT",
+			"isDefault": true,
 			"name": "DEFAULT",
 			"steps": 1,
 			"earn": 0,
 			"defense": 0,
 			"buyTypes": [],
 			"isHealing": false,
-			"isCapturing": false
+			"isCapturing": false,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": false,
 			"name": "MOUNT",
 			"steps": 3,
-			"defense": 15
+			"defense": 15,
+			"mapEditorFrequency": 1
 		},
 		{
+			"isDefault": false,
 			"name": "HILL",
 			"steps": 2,
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 5
 		},
 		{
+			"isDefault": false,
 			"name": "TWO_TREES",
 			"steps": 2,
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 2
 		},
 		{
+			"isDefault": false,
 			"name": "THREE_TREES",
 			"steps": 2,
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 2
 		},
 		{
+			"isDefault": false,
 			"name": "PLAIN",
-			"defense": 5
+			"defense": 5,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": false,
 			"name": "CITADEL_LEFT",
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": false,
 			"name": "CITADEL_RIGHT",
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": false,
 			"name": "CITADEL_UP",
-			"defense": 10
+			"defense": 10,
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "BUILDINGS_GROUP",
+			"isDefault": false,
 			"name": "BUILDING",
 			"earn": 30,
-			"destroyingType": "BUILDING_DESTROYING"
+			"destroyingType": "BUILDING_DESTROYING",
+			"mapEditorFrequency": 1
 		},
 		{
+			"isDefault": false,
 			"name": "BUILDING_DESTROYING",
 			"defense": 15,
-			"repairType": "BUILDING"
+			"repairType": "BUILDING",
+			"mapEditorFrequency": 1
 		},
 		{
 			"baseType": "BUILDINGS_GROUP",
+			"isDefault": false,
 			"name": "CASTLE",
 			"earn": 50,
 			"buyTypes": [
@@ -522,19 +557,26 @@
 				"GOLEM",
 				"CATAPULT",
 				"DRAGON"
-			]
+			],
+			"mapEditorFrequency": 1
 		},
 		{
 			"baseType": "HEALING_GROUP",
-			"name": "CAMP"
+			"isDefault": false,
+			"name": "CAMP",
+			"mapEditorFrequency": 1
 		},
 		{
 			"baseType": "HEALING_GROUP",
-			"name": "TEMPLE"
+			"isDefault": false,
+			"name": "TEMPLE",
+			"mapEditorFrequency": 1
 		},
 		{
 			"baseType": "HEALING_GROUP",
+			"isDefault": false,
 			"name": "CITADEL",
+			"mapEditorFrequency": 0,
 			"struct": {
 				"type": 0,
 				"typeName": "StructCitadel",
@@ -560,6 +602,7 @@
 			}
 		},
 		{
+			"isDefault": false,
 			"name": "WAY",
 			"template": {
 				"type": "WAY",
@@ -571,53 +614,72 @@
 				"friendsUp": [
 					"TEMPLE"
 				]
-			}
+			},
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "WATER_WAY_GROUP",
-			"name": "WATER_WAY_HORIZONTAL"
+			"isDefault": false,
+			"name": "WATER_WAY_HORIZONTAL",
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "WATER_WAY_GROUP",
-			"name": "WATER_WAY_VERTICAL"
+			"isDefault": false,
+			"name": "WATER_WAY_VERTICAL",
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "WATER_GROUP",
+			"isDefault": false,
 			"name": "WATER",
 			"template": {
 				"type": "WATER",
 				"friends": [
 					"WATER_WAY_HORIZONTAL",
-					"WATER_SPARKS",
-					"WATER_WAY_VERTICAL"
+					"WATER_WAY_VERTICAL",
+					"WATER_SPARKS"
 				],
 				"friendsUp": []
-			}
+			},
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "WATER_GROUP",
-			"name": "WATER_SPARKS"
+			"isDefault": false,
+			"name": "WATER_SPARKS",
+			"mapEditorFrequency": 0
 		},
 		{
-			"name": "DEFAULT_GROUP"
+			"isDefault": true,
+			"name": "DEFAULT_GROUP",
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": true,
 			"name": "HEALING_GROUP",
 			"defense": 15,
-			"isHealing": true
+			"isHealing": true,
+			"mapEditorFrequency": 0
 		},
 		{
 			"baseType": "HEALING_GROUP",
+			"isDefault": true,
 			"name": "BUILDINGS_GROUP",
-			"isCapturing": true
+			"isCapturing": true,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": true,
 			"name": "WATER_WAY_GROUP",
-			"defense": 5
+			"defense": 5,
+			"mapEditorFrequency": 0
 		},
 		{
+			"isDefault": true,
 			"name": "WATER_GROUP",
-			"steps": 3
+			"steps": 3,
+			"mapEditorFrequency": 0
 		}
 	],
 	"defaultGame": {

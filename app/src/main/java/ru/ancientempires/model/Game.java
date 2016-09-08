@@ -75,23 +75,29 @@ public class Game implements SerializableJson
 		game.fromJson(toJson());
 		return game;
 	}
-	
-	private CellType[] getTypes(String... names)
-	{
-		CellType[] types = new CellType[names.length];
-		for (int i = 0; i < names.length; i++)
-			types[i] = rules.getCellType(names[i]);
-		return types;
-	}
-	
+
 	public Game setSize(int h, int w)
+	{
+		CellType[] cellTypes = rules.cellTypes;
+		int[] frequencies = new int[cellTypes.length];
+		for (int i = 0; i < cellTypes.length; i++)
+			frequencies[i] = cellTypes[i].mapEditorFrequency;
+		return setSize(h, w, frequencies);
+	}
+
+	public Game setSize(int h, int w, int[] frequencies)
 	{
 		this.h = h;
 		this.w = w;
 		fieldUnits = new Unit[h][w];
 		fieldUnitsDead = new Unit[h][w];
 
-		CellType[] types = getTypes("HILL", "TWO_TREES", "THREE_TREES");
+		ArrayList<CellType> typesList = new ArrayList<>();
+		for (int i = 0; i < frequencies.length; i++)
+			for (int j = 0; j < frequencies[i]; j++)
+				typesList.add(rules.cellTypes[i]);
+		CellType[] types = typesList.toArray(new CellType[typesList.size()]);
+
 		Random random = new Random(0);
 		fieldCells = new Cell[h][w];
 		for (int i = 0; i < h; i++)

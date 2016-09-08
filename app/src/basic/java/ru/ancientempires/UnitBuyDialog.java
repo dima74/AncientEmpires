@@ -3,6 +3,7 @@ package ru.ancientempires;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ public class UnitBuyDialog
 		
 		View scrollView = activity.getLayoutInflater().inflate(R.layout.unit_buy_linear_layout, null);
 		LinearLayout layout = (LinearLayout) scrollView.findViewById(R.id.linear_layout);
+		layout.removeAllViews();
 		for (int i = 0; i < units.length; i++)
 		{
 			View view = getView(units[i], statuses[i]);
@@ -85,7 +87,12 @@ public class UnitBuyDialog
 		int color = status == BuyStatus.SUCCESS ? UnitBuyDialog.BLACK : UnitBuyDialog.GREY;
 		textUnitName.setTextColor(color);
 		textUnitCost.setTextColor(color);
-		
+
+
+		// TODO AnimationDrawable
+		AnimationDrawable animation = new AnimationDrawable();
+		animation.f
+
 		Bitmap bitmap = UnitImages.get().getUnitBitmapBuy(unit);
 		((ImageView) view.findViewById(R.id.imageUnit)).setImageBitmap(bitmap);
 		

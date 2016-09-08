@@ -3,9 +3,7 @@ package ru.ancientempires.rules;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 import ru.ancientempires.MyColor;
 import ru.ancientempires.bonuses.Bonus;
@@ -68,6 +66,7 @@ public class DefaultRules
 		createCellTypes();
 		createDefaultGame();
 		createDefaultPlayers();
+		createMapEditorFrequencies();
 		
 		return rules;
 	}
@@ -138,6 +137,7 @@ public class DefaultRules
 					"WATER",
 			};
 
+	/*
 	private void printGroup(String group, String prefix)
 	{
 		String strings = Arrays
@@ -189,6 +189,7 @@ public class DefaultRules
 		System.out.println("}");
 		System.exit(0);
 	}
+	//*/
 	
 	// BEGIN AUTO GENERATE
 	public Range emptyRange;
@@ -601,6 +602,20 @@ public class DefaultRules
 
 		rules.defaultPlayer = SerializableJsonHelper.leaveOnly(player.toJson(), keys);
 		rules.defaultPlayerComputer = SerializableJsonHelper.leaveOnly(computer.toJson(), keys);
+	}
+
+	private void createMapEditorFrequencies()
+	{
+		plain.mapEditorFrequency = 100;
+		hill.mapEditorFrequency = 50;
+		three_trees.mapEditorFrequency = 50;
+		two_trees.mapEditorFrequency = 50;
+		mount.mapEditorFrequency = 20;
+		building.mapEditorFrequency = 7;
+		building_destroying.mapEditorFrequency = 7;
+		castle.mapEditorFrequency = 5;
+		camp.mapEditorFrequency = 2;
+		temple.mapEditorFrequency = 2;
 	}
 
 }

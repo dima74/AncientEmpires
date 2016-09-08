@@ -202,6 +202,7 @@ public class RulesSaver
 			JsonObject result = new JsonObject();
 			if (type == defaultType || type.baseType != defaultType.baseType)
 				result.addProperty("baseType", type.baseType.name);
+			result.addProperty("isDefault", type.isDefault);
 			result.addProperty("name", type.name);
 			if (type == defaultType || type.steps != defaultType.steps)
 				result.addProperty("steps", type.steps);
@@ -221,6 +222,7 @@ public class RulesSaver
 				result.addProperty("repairType", type.repairType.name);
 			if (type.template != null)
 				result.add("template", type.template.toJSON(RulesSaver.this));
+			result.addProperty("mapEditorFrequency", type.mapEditorFrequency);
 
 			//if (type.struct != null)
 			//	result.add("struct", type.struct.toJSON());

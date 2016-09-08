@@ -31,8 +31,7 @@
 			android:orientation="vertical"
 			android:showDividers="middle">
 
-			<include layout="@layout/choose_item" />
-
+			<include layout="@layout/players_configure_item" />
 		</LinearLayout>
 
 		<LinearLayout

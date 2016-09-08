@@ -16,6 +16,7 @@ import ru.ancientempires.ii.II;
 import ru.ancientempires.load.GamePath;
 import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
+import ru.ancientempires.rules.Rules;
 
 public class Main
 {
@@ -36,7 +37,7 @@ public class Main
 		//Client.client.rules.defaultPlayerComputer.addProperty("unitsLimit", 700);
 		//new Swing("skirmish.5");
 		//testFull();
-		test();
+		test2();
 
 		System.exit(0);
 		for (int i = 0; i < 700; i++)
@@ -58,11 +59,9 @@ public class Main
 
 	private static void test2() throws Exception
 	{
-		Game game = Client.client.allGames.get("skirmish.5").loadGame(true);
-		game.path.isBaseGame = false;
-		for (int i = 0; i < 10; i++)
-			game.ii.turnFull(game);
-		game.path.isBaseGame = true;
+		Rules rules = Client.client.rules;
+		System.out.println(Arrays.toString(rules.cellTypes));
+		System.out.println(rules.cellTypes[0].isDefault);
 		System.exit(0);
 	}
 

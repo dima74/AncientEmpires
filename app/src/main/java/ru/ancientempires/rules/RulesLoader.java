@@ -245,7 +245,8 @@ public class RulesLoader
 				type.setProperties(baseType);
 
 			JsonElement element;
-			
+
+			type.isDefault = object.get("isDefault").getAsBoolean();
 			if ((element = object.get("steps")) != null)
 				type.steps = element.getAsInt();
 			if ((element = object.get("earn")) != null)
@@ -264,6 +265,7 @@ public class RulesLoader
 				type.repairType = rules.getCellType(element.getAsString());
 			if ((element = object.get("template")) != null)
 				type.template = CellTemplate.fromJSON(element, RulesLoader.this, type);
+			type.mapEditorFrequency = object.get("mapEditorFrequency").getAsInt();
 
 			try
 			{

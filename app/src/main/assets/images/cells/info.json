@@ -110,6 +110,18 @@
 				"water_sparks1.png",
 				"water_sparks2.png"
 			]
+		},
+		{
+			"type": "WAY",
+			"images": [
+				"way.png"
+			]
+		},
+		{
+			"type": "WATER",
+			"images": [
+				"water.png"
+			]
 		}
 	]
 }

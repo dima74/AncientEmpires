@@ -22,7 +22,9 @@
 
 		<EditText
 			android:id="@+id/textNameEdit"
-			style="@style/EditText" />
+			style="@style/EditText"
+			android:hint="Игра 0"
+			android:inputType="text" />
 
 		<TextView
 			android:id="@+id/textHeight"
@@ -32,7 +34,8 @@
 
 		<EditText
 			android:id="@+id/textHeightEdit"
-			style="@style/EditTextNumber" />
+			style="@style/EditTextNumber"
+			android:hint="15" />
 
 		<TextView
 			android:id="@+id/textWidth"
@@ -42,12 +45,35 @@
 
 		<EditText
 			android:id="@+id/textWidthEdit"
-			style="@style/EditTextNumber" />
+			style="@style/EditTextNumber"
+			android:hint="15" />
 
-		<Button
-			android:id="@+id/button"
-			style="@style/Button"
-			android:text="Создать" />
+		<TextView
+			android:id="@+id/textFrequency"
+			style="@style/Text"
+			android:labelFor="@+id/textWidthEdit"
+			android:paddingTop="20dp"
+			android:text="Вероятности тайлов" />
+
+		<LinearLayout
+			android:id="@+id/frequencies"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<include layout="@layout/frequency_item" />
+
+			<include layout="@layout/frequency_item" />
+		</LinearLayout>
+
+		<ImageView
+			android:id="@+id/imageAdd"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="10dp"
+			android:src="@android:drawable/ic_input_add" />
+
 	</LinearLayout>
 
 </ScrollView>

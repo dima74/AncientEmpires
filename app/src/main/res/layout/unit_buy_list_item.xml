@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="48dp"
+              android:layout_height="40dp"
               android:orientation="vertical">
 
 	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="48dp">
+		android:layout_height="40dp">
 
 		<ImageView
 			android:id="@+id/imageUnit"
@@ -14,7 +14,7 @@
 			android:layout_height="48px"
 			android:layout_centerVertical="true"
 			android:layout_marginStart="8dp"
-			android:src="@drawable/ic_launcher" />
+			android:src="@drawable/example_unit" />
 
 		<TextView
 			android:id="@+id/textUnitName"
@@ -23,7 +23,7 @@
 			android:layout_centerVertical="true"
 			android:layout_marginStart="16dp"
 			android:layout_toEndOf="@+id/imageUnit"
-			android:text="SOLDIER"
+			android:text="СОЛДАТ"
 			android:textSize="20sp" />
 
 		<TextView

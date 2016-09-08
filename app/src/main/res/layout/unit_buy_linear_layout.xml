@@ -12,6 +12,14 @@
 		android:gravity="center_vertical"
 		android:orientation="vertical"
 		android:showDividers="middle">
+
+		<include layout="@layout/unit_buy_list_item" />
+
+		<include layout="@layout/unit_buy_list_item" />
+
+		<include layout="@layout/unit_buy_list_item" />
+
+		<include layout="@layout/unit_buy_list_item" />
 	</LinearLayout>
 
 </ScrollView>

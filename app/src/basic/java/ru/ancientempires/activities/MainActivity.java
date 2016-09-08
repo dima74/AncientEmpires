@@ -22,7 +22,7 @@ public class MainActivity extends BaseListActivity
 	public static int     skirmish    = 5;
 	public static int     campaign    = 0;
 	public static String  gameToStart = "skirmish";
-	public static boolean firstStart  = false;
+	public static boolean firstStart  = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

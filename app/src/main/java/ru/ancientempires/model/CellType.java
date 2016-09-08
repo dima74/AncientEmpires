@@ -33,6 +33,8 @@ public class CellType implements Numbered
 	public CellTemplate template;
 	public Struct       struct;
 
+	public int mapEditorFrequency;
+
 	// Эти поля используются только для копирования в клеточку
 	public boolean isCaptureDefault;
 
