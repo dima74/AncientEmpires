@@ -91,7 +91,7 @@ public class UnitBuyDialog
 
 		// TODO AnimationDrawable
 		AnimationDrawable animation = new AnimationDrawable();
-		animation.f
+		//animation.f
 
 		Bitmap bitmap = UnitImages.get().getUnitBitmapBuy(unit);
 		((ImageView) view.findViewById(R.id.imageUnit)).setImageBitmap(bitmap);

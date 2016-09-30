@@ -1,1 +1,1 @@
-0 0 {"h":3,"w":3,"map":[[11,11,3],[11,4,4],[4,2,2]],"cells":[{"i":0,"j":0,"player":0},{"i":0,"j":1,"player":1},{"i":1,"j":0,"player":2}],"units":[],"unitsOutside":[],"unitsDead":[],"unitsStaticDead":[[],[],[]]}
+0 0 {"h":3,"w":3,"map":[[11,11,4],[11,5,1],[5,11,2]],"cells":[{"i":0,"j":0,"player":0},{"i":0,"j":1,"player":1},{"i":1,"j":0,"player":2}],"units":[],"unitsOutside":[],"unitsDead":[],"unitsStaticDead":[[],[],[]]}

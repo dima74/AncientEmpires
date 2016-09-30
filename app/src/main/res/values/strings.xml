@@ -1,27 +1,23 @@
 <resources>
-	<!-- app information -->
-	<string name="app_name" translatable="false">Ancient Empires</string>
+	<string name="app_name">AncientEmpires</string>
 
-	<!-- options menu -->
-	<string name="action_settings">Settings</string>
-	<string name="action_end_turn">End turn</string>
-	<string name="action_reset">Restart</string>
-	<string name="action_wisp">Make move</string>
-	<string name="action_fight">Fight!</string>
+	<string name="action_settings">Настройки</string>
+	<string name="action_end_turn">Конец хода</string>
+	<string name="action_reset">Заново</string>
+	<string name="action_wisp">Сделать ход</string>
+	<string name="action_fight">В бой!</string>
 
-	<!-- other -->
-	<string name="loading">Loading</string>
-	<string name="buy">Buy</string>
+	<string name="loading">Загрузка</string>
+	<string name="buy">Купить</string>
 
-	<!-- buttons -->
-	<string name="button_fight">Fight!</string>
+	<string name="button_fight">Играть!</string>
+	<string name="button_create">Создать</string>
 
-	<!-- activities titles -->
-	<string name="title_activity_play_menu">Play</string>
-	<string name="title_activity_editor_base">Map Editor</string>
-	<string name="title_activity_editor_choose">Choose Settings</string>
-	<string name="title_activity_settings">Settings</string>
-	<string name="title_activity_editor">Map Editor</string>
+	<string name="title_activity_play_menu">Играть</string>
+	<string name="title_activity_editor_base">Редактор карт</string>
+	<string name="title_activity_editor_choose">Настройте параметры</string>
+	<string name="title_activity_settings">Настройки</string>
+	<string name="title_activity_editor">Редактор карт</string>
+
 	<string name="toast_crash">Ooooops! I crashed, but a report has been sent to my developer to help fix the issue!</string>
-	<string name="button_create">Create</string>
 </resources>
