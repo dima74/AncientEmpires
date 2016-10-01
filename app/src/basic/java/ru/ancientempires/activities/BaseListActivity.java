@@ -49,5 +49,4 @@ public abstract class BaseListActivity extends BaseActivity {
 			((BaseListActivity) getActivity()).onListItemClick(listView, view, position, id);
 		}
 	}
-
 }

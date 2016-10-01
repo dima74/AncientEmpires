@@ -44,5 +44,4 @@ public abstract class Task extends AbstractGameHandler implements SerializableJs
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Task.class);
 		return array;
 	}
-
 }

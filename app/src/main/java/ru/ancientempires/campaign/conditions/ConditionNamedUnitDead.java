@@ -35,5 +35,4 @@ public class ConditionNamedUnitDead extends Condition {
 		name = object.get("name").getAsString();
 		return this;
 	}
-
 }

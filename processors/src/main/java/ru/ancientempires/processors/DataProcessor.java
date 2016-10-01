@@ -100,5 +100,4 @@ public class DataProcessor extends MyAbstractManualProcessor {
 			}
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return this"));
 	}
-
 }

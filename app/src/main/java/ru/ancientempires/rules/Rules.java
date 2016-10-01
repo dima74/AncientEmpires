@@ -144,5 +144,4 @@ public class Rules {
 		}
 		return array;
 	}
-
 }

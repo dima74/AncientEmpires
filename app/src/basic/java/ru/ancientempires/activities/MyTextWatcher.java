@@ -53,5 +53,4 @@ public class MyTextWatcher implements TextWatcher {
 		editText.setHint("" + defaultValue);
 		editText.addTextChangedListener(this);
 	}
-
 }

@@ -167,5 +167,4 @@ public class DrawMain extends BaseDrawMain {
 	public void tap(int i, int j) {
 		inputMain.tap(i, j);
 	}
-
 }

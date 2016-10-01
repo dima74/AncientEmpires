@@ -24,5 +24,4 @@ public abstract class BasePreferenceActivity extends PreferenceActivity {
 		super.onStop();
 		Debug.onStop(this);
 	}
-
 }

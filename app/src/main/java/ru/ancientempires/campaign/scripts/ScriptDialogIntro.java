@@ -49,5 +49,4 @@ public class ScriptDialogIntro extends Script {
 		image = ru.ancientempires.client.Client.client.imagesLoader.loadImage(imagePath);
 		return this;
 	}
-
 }

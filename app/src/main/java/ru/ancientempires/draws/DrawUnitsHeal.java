@@ -24,5 +24,4 @@ public class DrawUnitsHeal extends DrawOnFramesGroup {
 		}
 		return this;
 	}
-
 }

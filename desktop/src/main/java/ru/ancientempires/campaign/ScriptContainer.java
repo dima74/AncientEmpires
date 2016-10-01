@@ -21,5 +21,4 @@ public class ScriptContainer {
 			container.prev.add(this);
 		}
 	}
-
 }

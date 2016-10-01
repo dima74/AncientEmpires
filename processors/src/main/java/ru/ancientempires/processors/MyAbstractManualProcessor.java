@@ -124,5 +124,4 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor 
 				});
 		output.close();
 	}
-
 }

@@ -14,5 +14,4 @@ public class DrawUnitAttack extends DrawOnFramesGroup {
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(2));
 	}
-
 }

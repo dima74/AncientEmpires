@@ -449,7 +449,6 @@ public class II extends GameHandler {
 			public int compare(Unit a, Unit b) {
 				return less(a, b) ? -1 : less(b, a) ? 1 : 0;
 			}
-
 		});
 
 		isKingsLive = new boolean[numberPlayers];
@@ -1021,5 +1020,4 @@ public class II extends GameHandler {
 				soldiers.add(unit);
 		return soldiers.toArray(new Unit[soldiers.size()]);
 	}
-
 }

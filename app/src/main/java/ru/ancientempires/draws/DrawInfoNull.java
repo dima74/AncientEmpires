@@ -38,5 +38,4 @@ public class DrawInfoNull extends Draw {
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 	}
-
 }

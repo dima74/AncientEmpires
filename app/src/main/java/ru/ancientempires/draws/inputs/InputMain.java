@@ -75,5 +75,4 @@ public class InputMain extends AbstractInput {
 		ActionResultGameEndTurn result = action.perform(game);
 		drawMain.add(new DrawUnitsHeal(drawMain).start(result));
 	}
-
 }

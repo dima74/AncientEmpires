@@ -23,5 +23,4 @@ public class DrawSnakeMap extends DrawOnFrames {
 		main.extraOffsetY = 0;
 		main.extraOffsetX = 0;
 	}
-
 }

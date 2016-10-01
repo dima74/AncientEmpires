@@ -34,5 +34,4 @@ public class ScriptUnitAttack extends ScriptFrom {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

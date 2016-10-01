@@ -101,5 +101,4 @@ public class Player implements SerializableJson, Numbered {
 			array[i] = new Player().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-
 }

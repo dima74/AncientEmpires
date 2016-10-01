@@ -52,5 +52,4 @@ public class DrawUnitRaise extends DrawOnFramesGroup {
 	public void onEnd() {
 		postUpdateCampaign();
 	}
-
 }

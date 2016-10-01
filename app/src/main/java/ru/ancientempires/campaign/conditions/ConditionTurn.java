@@ -33,5 +33,4 @@ public class ConditionTurn extends Condition {
 		turn = object.get("turn").getAsInt();
 		return this;
 	}
-
 }

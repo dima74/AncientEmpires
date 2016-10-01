@@ -30,5 +30,4 @@ public class DrawBitmap extends DrawOnFrames {
 	public void drawOnFrames(Canvas canvas) {
 		canvas.drawBitmap(bitmap, x, y, null);
 	}
-
 }

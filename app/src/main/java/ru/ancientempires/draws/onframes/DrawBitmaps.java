@@ -44,5 +44,4 @@ public class DrawBitmaps extends DrawOnFramesWithRangeValues {
 	public void draw(Canvas canvas, int value) {
 		canvas.drawBitmap(bitmaps[value / framesForBitmap % bitmaps.length], x, y, null);
 	}
-
 }

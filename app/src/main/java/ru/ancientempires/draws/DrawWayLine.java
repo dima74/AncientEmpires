@@ -62,5 +62,4 @@ public class DrawWayLine extends Draw {
 		if (wayPoints != null)
 			canvas.drawLines(wayPoints, DrawWayLine.LINE_PAINT);
 	}
-
 }

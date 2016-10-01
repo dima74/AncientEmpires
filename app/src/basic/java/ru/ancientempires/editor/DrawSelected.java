@@ -23,5 +23,4 @@ public class DrawSelected extends Draw {
 		x += (targetX - x) / 2;
 		canvas.drawRect(x, y, x + DrawChoose.mA, y + h, Paints.RED);
 	}
-
 }

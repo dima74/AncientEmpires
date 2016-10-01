@@ -48,5 +48,4 @@ public class ActionCampaignRewriteScriptsStatus extends Action {
 		isFinishing = ru.ancientempires.serializable.SerializableDataHelper.fromDataArrayBoolean(input);
 		return this;
 	}
-
 }

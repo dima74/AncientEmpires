@@ -85,5 +85,4 @@ public class UnitHelper extends GameHandler {
 				return unit;
 		return null;
 	}
-
 }

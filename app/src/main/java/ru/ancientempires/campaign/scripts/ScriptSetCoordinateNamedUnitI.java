@@ -38,5 +38,4 @@ public class ScriptSetCoordinateNamedUnitI extends Script {
 		unit = object.get("unit").getAsString();
 		return this;
 	}
-
 }

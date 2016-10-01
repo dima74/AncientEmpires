@@ -80,5 +80,4 @@ public class ActionCellBuy extends ActionFrom {
 		iUnit = input.readInt();
 		return this;
 	}
-
 }

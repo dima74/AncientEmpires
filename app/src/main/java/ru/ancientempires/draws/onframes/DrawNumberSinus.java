@@ -14,5 +14,4 @@ public class DrawNumberSinus extends DrawBitmapSinus {
 		animate(y, x + (A - BigNumberImages().getBitmap(number, sign).getWidth()) / 2, BigNumberImages().getBitmap(number, sign), 1);
 		return this;
 	}
-
 }

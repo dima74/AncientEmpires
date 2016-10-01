@@ -54,5 +54,4 @@ public class Localization {
 		reader.close();
 		return name;
 	}
-
 }

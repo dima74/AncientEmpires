@@ -19,5 +19,4 @@ public abstract class InputAlgorithm {
 	public void end() {
 		destroy();
 	}
-
 }

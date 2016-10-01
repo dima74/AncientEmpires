@@ -29,5 +29,4 @@ public class DrawBlackScreen extends DrawOnFramesWithRangeValues {
 		if (end == 255)
 			main.isBlackScreen = true;
 	}
-
 }

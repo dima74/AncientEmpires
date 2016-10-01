@@ -36,5 +36,4 @@ public class DrawToast extends DrawOnFrames {
 
 	@Override
 	public void drawOnFrames(Canvas canvas) {}
-
 }

@@ -38,5 +38,4 @@ public abstract class MyAsyncTask extends Thread {
 	public abstract void doInBackground() throws Exception;
 
 	public void onPostExecute() {}
-
 }

@@ -33,5 +33,4 @@ public class Bitmap {
 	public static Bitmap createBitmap(Bitmap source, int x, int y, int w, int h) {
 		return new Bitmap(source.image.getSubimage(x, y, w, h));
 	}
-
 }

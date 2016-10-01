@@ -94,5 +94,4 @@ public class EditorInputMain implements Callback {
 		drawMain.choose.setStruct(selected, structs[selected][i]);
 		colorsSelected[selected] = color;
 	}
-
 }

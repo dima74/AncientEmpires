@@ -13,5 +13,4 @@ public class DialogShowTarget extends MyDialogFragment {
 		builder.setMessage(textTarget);
 		showDialog(activity, builder, script);
 	}
-
 }

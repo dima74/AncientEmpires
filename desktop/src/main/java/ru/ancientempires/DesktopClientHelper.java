@@ -22,5 +22,4 @@ public class DesktopClientHelper implements IClientHelper {
 	public String getID() {
 		return "null";
 	}
-
 }

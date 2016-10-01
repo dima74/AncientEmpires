@@ -27,5 +27,4 @@ public class EditorStructColor extends EditorStruct {
 	public EditorStruct createCopy() {
 		return new EditorStructColor(A, color).setYX(y, x);
 	}
-
 }

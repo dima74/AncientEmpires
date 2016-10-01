@@ -15,5 +15,4 @@ public class SimplePlayer {
 		this.type = type;
 		this.gold = gold;
 	}
-
 }

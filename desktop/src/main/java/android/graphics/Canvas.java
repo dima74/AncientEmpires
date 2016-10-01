@@ -80,5 +80,4 @@ public class Canvas {
 		transforms.remove(transforms.size() - 1);
 		g.setTransform(t);
 	}
-
 }

@@ -76,5 +76,4 @@ public class SerializableHelper {
 		});
 		return subclasses.toArray(new Class<?>[subclasses.size()]);
 	}
-
 }

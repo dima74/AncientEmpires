@@ -40,5 +40,4 @@ public class DrawBuildingSmokes extends Draw {
 						draw.reAnimate();
 				}
 	}
-
 }

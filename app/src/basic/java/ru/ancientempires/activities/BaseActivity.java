@@ -83,5 +83,4 @@ public class BaseActivity extends AppCompatActivity {
 	public int getIntValue(View view, int id) {
 		return Integer.valueOf(getValue(view, id));
 	}
-
 }

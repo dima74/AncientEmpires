@@ -80,5 +80,4 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues {
 	public void draw(Canvas canvas, int value) {
 		canvas.drawBitmap(bitmap, x, (int) (y + DrawBitmapSinus.YS[value] * a), null);
 	}
-
 }

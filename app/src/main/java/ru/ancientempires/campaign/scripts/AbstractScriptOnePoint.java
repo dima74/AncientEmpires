@@ -22,5 +22,4 @@ public abstract class AbstractScriptOnePoint extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

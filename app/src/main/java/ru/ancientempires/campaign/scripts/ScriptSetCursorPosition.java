@@ -37,5 +37,4 @@ public class ScriptSetCursorPosition extends Script {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

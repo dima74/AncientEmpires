@@ -72,5 +72,4 @@ public class PlayMenuActivity extends BaseListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }

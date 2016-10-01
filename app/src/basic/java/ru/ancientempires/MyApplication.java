@@ -23,5 +23,4 @@ public class MyApplication extends Application {
 		super.onCreate();
 		ACRA.init(this);
 	}
-
 }

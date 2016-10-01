@@ -42,5 +42,4 @@ public class ScriptSetCoordinateFromOther extends Script {
 		delta = object.get("delta").getAsInt();
 		return this;
 	}
-
 }

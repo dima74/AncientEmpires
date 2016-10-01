@@ -29,5 +29,4 @@ public abstract class StructInfo implements SerializableJson {
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), StructInfo.class);
 		return array;
 	}
-
 }

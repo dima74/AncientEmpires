@@ -21,5 +21,4 @@ public class DrawUnitsDead extends Draw {
 					canvas.drawBitmap(Images().tombstone.getBitmap(), j * A, i * A, null);
 			}
 	}
-
 }

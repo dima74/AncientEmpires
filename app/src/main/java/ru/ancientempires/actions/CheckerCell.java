@@ -6,5 +6,4 @@ public interface CheckerCell extends Checker<Cell> {
 
 	@Override
 	public boolean check(Cell target);
-
 }

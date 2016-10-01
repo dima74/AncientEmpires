@@ -131,5 +131,4 @@ public class ActionUnitAttack extends ActionFromTo {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

@@ -48,5 +48,4 @@ public class DrawCells extends Draw {
 				canvas.drawBitmap(bitmap.getBitmap(), x, y, null);
 			}
 	}
-
 }

@@ -32,5 +32,4 @@ public abstract class ScriptFrom extends Script {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

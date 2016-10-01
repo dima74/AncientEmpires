@@ -61,5 +61,4 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup {
 		if (isUnitDie)
 			postUpdateCampaign();
 	}
-
 }

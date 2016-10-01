@@ -33,5 +33,4 @@ public class ConditionNamedBoolean extends Condition {
 		name = object.get("name").getAsString();
 		return this;
 	}
-
 }

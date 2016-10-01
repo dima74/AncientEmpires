@@ -45,5 +45,4 @@ public class BonusLevel extends Bonus {
 		multiDefence = object.get("multiDefence").getAsInt();
 		return this;
 	}
-
 }

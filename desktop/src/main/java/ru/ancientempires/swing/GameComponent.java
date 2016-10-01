@@ -151,5 +151,4 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 
 	@Override
 	public void mouseMoved(MouseEvent e) {}
-
 }

@@ -174,5 +174,4 @@ public class EditorConfigureActivity extends BaseActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }

@@ -13,5 +13,4 @@ public class BaseGameActivity {
 	public GameComponent getView() {
 		return view;
 	}
-
 }

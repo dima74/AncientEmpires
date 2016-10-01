@@ -43,5 +43,4 @@ public class ConditionUnitIntoBounds extends Condition {
 		bounds = AbstractBounds.fromJsonArray(object.get("bounds").getAsJsonArray(), info);
 		return this;
 	}
-
 }

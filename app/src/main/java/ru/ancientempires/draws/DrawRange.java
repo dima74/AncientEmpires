@@ -45,5 +45,4 @@ public class DrawRange extends Draw {
 					canvas.drawBitmap(field[relativeI][relativeJ], j * A, i * A, null);
 			}
 	}
-
 }

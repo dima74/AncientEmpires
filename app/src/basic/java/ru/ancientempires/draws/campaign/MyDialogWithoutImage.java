@@ -12,5 +12,4 @@ public class MyDialogWithoutImage extends MyDialogFragment {
 		builder.setMessage(text);
 		showDialog(activity, builder, script);
 	}
-
 }

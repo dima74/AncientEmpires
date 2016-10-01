@@ -40,5 +40,4 @@ public class MyAssert {
 		}
 		MyAssert.a(equals, message);
 	}
-
 }

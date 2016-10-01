@@ -20,5 +20,4 @@ public class GameActivity extends BaseGameActivity {
 	public void postUpdateCampaign() {
 		view.needUpdateCampaign = true;
 	}
-
 }

@@ -150,5 +150,4 @@ public class ActionHelper extends AbstractGameHandler {
 	public boolean canUnitCapture(int i, int j) {
 		return isUnitActive(i, j) && game.checkFloating() && canUnitCapture(game.fieldUnits[i][j]);
 	}
-
 }

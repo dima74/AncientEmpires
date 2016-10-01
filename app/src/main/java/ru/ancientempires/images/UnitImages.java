@@ -90,5 +90,4 @@ public class UnitImages extends AbstractImages {
 			for (int typeI = 1; typeI < unitBitmapsBuy.length; typeI++)
 				unitBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
-
 }

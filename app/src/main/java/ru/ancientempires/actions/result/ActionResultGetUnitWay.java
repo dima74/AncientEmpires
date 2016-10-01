@@ -6,5 +6,4 @@ public class ActionResultGetUnitWay extends ActionResult {
 	public boolean[][] realField;
 	public int[][]     prevI;
 	public int[][]     prevJ;
-
 }

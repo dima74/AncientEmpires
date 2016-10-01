@@ -31,5 +31,4 @@ public class AssetsHelper {
 			name = name.substring(0, name.length() - 1);
 		return assets.list(name);
 	}
-
 }

@@ -54,5 +54,4 @@ public class BonusOnCellGroup extends Bonus {
 		bonusDefence = object.get("bonusDefence").getAsInt();
 		return this;
 	}
-
 }

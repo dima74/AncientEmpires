@@ -32,5 +32,4 @@ public class ActionCampaignRemoveUnit extends ActionFrom {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

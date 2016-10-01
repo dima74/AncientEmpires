@@ -63,5 +63,4 @@ public class DrawCellAttack extends DrawOnFramesGroup {
 	public void onEnd() {
 		postUpdateCampaign();
 	}
-
 }

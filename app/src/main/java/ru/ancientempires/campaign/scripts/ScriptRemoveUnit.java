@@ -37,5 +37,4 @@ public class ScriptRemoveUnit extends ScriptOnePoint {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

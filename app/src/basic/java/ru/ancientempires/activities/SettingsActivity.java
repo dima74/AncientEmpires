@@ -75,5 +75,4 @@ public class SettingsActivity extends BasePreferenceActivity {
 			e.printStackTrace();
 		}
 	}
-
 }

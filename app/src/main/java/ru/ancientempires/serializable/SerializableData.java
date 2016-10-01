@@ -11,5 +11,4 @@ public interface SerializableData {
 	void toData(DataOutputStream output) throws Exception;
 
 	SerializableData fromData(DataInputStream input, LoaderInfo info) throws Exception;
-
 }

@@ -258,5 +258,4 @@ public class GameConverter {
 		} else
 			return names[unitType];
 	}
-
 }

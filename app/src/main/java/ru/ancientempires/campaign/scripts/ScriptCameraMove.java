@@ -34,5 +34,4 @@ public class ScriptCameraMove extends ScriptOnePoint {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

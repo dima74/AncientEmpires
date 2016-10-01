@@ -39,5 +39,4 @@ public class ScriptDelay extends Script {
 		milliseconds = object.get("milliseconds").getAsInt();
 		return this;
 	}
-
 }

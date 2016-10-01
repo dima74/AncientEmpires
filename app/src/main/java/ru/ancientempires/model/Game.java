@@ -603,5 +603,4 @@ public class Game implements SerializableJson {
 						}
 		}
 	}
-
 }

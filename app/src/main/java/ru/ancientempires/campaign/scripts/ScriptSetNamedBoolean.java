@@ -39,5 +39,4 @@ public class ScriptSetNamedBoolean extends Script {
 		bool = object.get("bool").getAsBoolean();
 		return this;
 	}
-
 }

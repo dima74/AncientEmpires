@@ -22,5 +22,4 @@ public class StructInfoCitadel extends StructInfo {
 		crystalsReceived = object.get("crystalsReceived").getAsInt();
 		return this;
 	}
-
 }

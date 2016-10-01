@@ -126,5 +126,4 @@ public class CellImages extends AbstractImages {
 				if (cell.type.template != null)
 					cell.type.template.update(cell);
 	}
-
 }

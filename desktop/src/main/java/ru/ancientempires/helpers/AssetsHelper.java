@@ -40,5 +40,4 @@ public class AssetsHelper {
 	public String[] list(String prefix) {
 		return null;
 	}
-
 }

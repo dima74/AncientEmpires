@@ -35,5 +35,4 @@ public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames {
 	}
 
 	public abstract void draw(Canvas canvas, float value);
-
 }

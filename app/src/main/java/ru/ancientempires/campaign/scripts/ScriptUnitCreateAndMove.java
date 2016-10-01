@@ -57,5 +57,4 @@ public class ScriptUnitCreateAndMove extends ScriptUnitMove {
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		return this;
 	}
-
 }

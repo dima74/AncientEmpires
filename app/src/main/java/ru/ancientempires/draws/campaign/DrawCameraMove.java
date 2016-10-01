@@ -48,5 +48,4 @@ public class DrawCameraMove extends DrawOnFramesGroup {
 
 		main.inputPlayer.tapWithoutAction(iEnd, jEnd);
 	}
-
 }

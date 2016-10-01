@@ -71,5 +71,4 @@ public class ClientServer extends Server {
 			e.printStackTrace();
 		}
 	}
-
 }

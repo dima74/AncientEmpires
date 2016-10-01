@@ -22,5 +22,4 @@ public class SmallNumberImages extends NumberImages {
 		defenceBitmap = loader.loadImage("defence.png");
 		asterisk = loader.loadImage("asterisk.png");
 	}
-
 }

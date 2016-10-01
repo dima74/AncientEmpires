@@ -37,5 +37,4 @@ public abstract class ScriptOnePoint extends AbstractScriptOnePoint {
 		point = info.fromJson((JsonObject) object.get("point"), AbstractPoint.class);
 		return this;
 	}
-
 }

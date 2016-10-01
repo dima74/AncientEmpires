@@ -23,5 +23,4 @@ public class ScriptBlackScreen extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

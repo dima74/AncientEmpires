@@ -64,5 +64,4 @@ public class DrawCampaign extends BaseDrawCampaign implements IDrawCampaign {
 	public void snakeMap(ScriptSnakeMap script) {
 		script.finish();
 	}
-
 }

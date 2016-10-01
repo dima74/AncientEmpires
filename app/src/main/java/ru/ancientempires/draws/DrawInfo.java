@@ -164,5 +164,4 @@ public class DrawInfo extends Draw {
 		canvas.drawBitmap(amountBitmap, xUnits + Images().amountUnitsW + a, yUnits, null);
 		canvas.restore();
 	}
-
 }

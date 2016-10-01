@@ -152,5 +152,4 @@ public class MainActivity extends BaseListActivity {
 	public void onBackPressed() {
 		finish();
 	}
-
 }

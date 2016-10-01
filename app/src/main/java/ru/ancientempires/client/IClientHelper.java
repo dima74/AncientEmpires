@@ -11,5 +11,4 @@ public interface IClientHelper {
 	AssetsHelper getAssets();
 
 	String getID();
-
 }

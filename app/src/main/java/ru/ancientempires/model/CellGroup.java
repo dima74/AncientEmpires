@@ -76,5 +76,4 @@ public class CellGroup implements Numbered {
 			return false;
 		return true;
 	}
-
 }

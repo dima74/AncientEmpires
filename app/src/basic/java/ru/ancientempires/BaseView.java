@@ -94,5 +94,4 @@ public abstract class BaseView extends SurfaceView implements SurfaceHolder.Call
 			thread.start();
 		}
 	}
-
 }

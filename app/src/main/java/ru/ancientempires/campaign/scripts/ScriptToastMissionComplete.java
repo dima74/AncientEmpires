@@ -39,5 +39,4 @@ public class ScriptToastMissionComplete extends Script {
 		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
 		return this;
 	}
-
 }

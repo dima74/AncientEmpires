@@ -142,5 +142,4 @@ public class SerializableJsonHelper {
 	public static String toJsonPretty(JsonObject object) {
 		return new GsonBuilder().setPrettyPrinting().create().toJson(object);
 	}
-
 }

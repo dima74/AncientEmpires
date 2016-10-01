@@ -41,5 +41,4 @@ public class BonusMoveToCellGroup extends Bonus {
 		bonus = object.get("bonus").getAsInt();
 		return this;
 	}
-
 }

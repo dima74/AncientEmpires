@@ -53,5 +53,4 @@ public class PointNamed extends AbstractPoint {
 		name = input.readUTF();
 		return this;
 	}
-
 }

@@ -29,5 +29,4 @@ public class ScriptDisableActiveGame extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

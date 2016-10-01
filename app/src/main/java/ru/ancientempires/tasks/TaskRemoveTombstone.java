@@ -30,5 +30,4 @@ public class TaskRemoveTombstone extends TaskFrom {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

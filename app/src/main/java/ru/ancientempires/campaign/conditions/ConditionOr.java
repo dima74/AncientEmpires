@@ -33,5 +33,4 @@ public class ConditionOr extends ConditionBoolean {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

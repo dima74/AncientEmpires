@@ -36,5 +36,4 @@ public class DrawUnitMoveEnd extends DrawOnFramesGroup {
 			for (Unit unit : units)
 				main.units.field[unit.i][unit.j].canUpdatePositiveBonus = true;
 	}
-
 }

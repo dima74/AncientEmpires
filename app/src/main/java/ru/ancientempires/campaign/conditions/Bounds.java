@@ -44,5 +44,4 @@ public class Bounds extends AbstractBounds {
 		jMax = object.get("jMax").getAsInt();
 		return this;
 	}
-
 }

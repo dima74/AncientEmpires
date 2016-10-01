@@ -32,5 +32,4 @@ public class ScriptRemoveAllUnits extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

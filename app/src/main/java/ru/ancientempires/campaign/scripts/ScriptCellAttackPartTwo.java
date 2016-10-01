@@ -43,5 +43,4 @@ public class ScriptCellAttackPartTwo extends ScriptFrom {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

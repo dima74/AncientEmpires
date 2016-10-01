@@ -136,5 +136,4 @@ public class Cell extends AbstractGameHandler implements SerializableJson {
 			array[i] = new Cell().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-
 }

@@ -36,5 +36,4 @@ public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler {
 		point = info.fromJson((JsonObject) object.get("point"), AbstractPoint.class);
 		return this;
 	}
-
 }

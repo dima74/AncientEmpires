@@ -296,5 +296,4 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign {
 		if (game.path.nextGameID != null)
 			((GameActivity) main.activity).startGame(game.path.nextGameID, null);
 	}
-
 }

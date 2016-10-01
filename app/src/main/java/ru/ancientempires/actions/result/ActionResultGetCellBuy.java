@@ -14,5 +14,4 @@ public class ActionResultGetCellBuy extends ActionResult {
 		this.units = units.toArray(new Unit[0]);
 		statuses = new BuyStatus[units.size()];
 	}
-
 }

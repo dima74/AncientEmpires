@@ -603,6 +603,5 @@ public class DefaultRules {
 		camp.mapEditorFrequency = 2;
 		temple.mapEditorFrequency = 2;
 	}
-
 }
 

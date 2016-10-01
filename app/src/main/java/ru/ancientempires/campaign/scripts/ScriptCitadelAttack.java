@@ -34,5 +34,4 @@ public class ScriptCitadelAttack extends ScriptOnePoint {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

@@ -38,5 +38,4 @@ public class InputComputer extends AbstractPlayerInput {
 
 	@Override
 	public void endTurn() {}
-
 }

@@ -35,5 +35,4 @@ public class BonusCost extends Bonus {
 		multi = object.get("multi").getAsInt();
 		return this;
 	}
-
 }

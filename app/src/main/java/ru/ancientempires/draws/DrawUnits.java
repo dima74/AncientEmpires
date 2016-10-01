@@ -43,5 +43,4 @@ public class DrawUnits extends Draw {
 			else if (field[i][j] == null || field[i][j].unit != game.fieldUnits[i][j])
 				field[i][j] = new UnitBitmap(game.fieldUnits[i][j]);
 	}
-
 }

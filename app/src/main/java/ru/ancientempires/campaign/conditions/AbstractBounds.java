@@ -31,5 +31,4 @@ public abstract class AbstractBounds implements SerializableJson {
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), AbstractBounds.class);
 		return array;
 	}
-
 }

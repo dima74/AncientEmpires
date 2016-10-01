@@ -49,5 +49,4 @@ public class DrawOnFramesGroup extends DrawOnFrames {
 		for (DrawOnFrames gameDrawOnFrames : draws)
 			gameDrawOnFrames.draw(canvas);
 	}
-
 }

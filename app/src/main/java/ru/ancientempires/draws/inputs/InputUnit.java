@@ -144,5 +144,4 @@ public class InputUnit extends AbstractInput {
 		isActive = false;
 		drawMain.remove(drawRange);
 	}
-
 }

@@ -78,7 +78,6 @@ public class UnitBuyDialog {
 		textUnitName.setTextColor(color);
 		textUnitCost.setTextColor(color);
 
-
 		// TODO AnimationDrawable
 		AnimationDrawable animation = new AnimationDrawable();
 		//animation.f
@@ -88,5 +87,4 @@ public class UnitBuyDialog {
 
 		return view;
 	}
-
 }

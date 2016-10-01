@@ -23,5 +23,4 @@ public class ScriptHideInfoImmediately extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

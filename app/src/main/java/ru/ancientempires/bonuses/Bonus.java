@@ -71,5 +71,4 @@ public abstract class Bonus extends AbstractGameHandler implements SerializableJ
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Bonus.class);
 		return array;
 	}
-
 }

@@ -19,5 +19,4 @@ public class CellBitmap {
 		else
 			return defaultBitmap;
 	}
-
 }

@@ -15,5 +15,4 @@ public class GameView extends BaseView implements SurfaceHolder.Callback {
 	public GameThread createThread() {
 		return new GameThread((GameActivity) activity, getHolder());
 	}
-
 }

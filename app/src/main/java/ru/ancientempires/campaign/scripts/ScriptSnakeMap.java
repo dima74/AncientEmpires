@@ -38,5 +38,4 @@ public class ScriptSnakeMap extends Script {
 		milliseconds = object.get("milliseconds").getAsInt();
 		return this;
 	}
-
 }

@@ -142,5 +142,4 @@ public class GameSaver {
 	public void add(Save save) {
 		thread.queue.add(save);
 	}
-
 }

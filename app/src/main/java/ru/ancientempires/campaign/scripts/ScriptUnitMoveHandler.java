@@ -37,5 +37,4 @@ public abstract class ScriptUnitMoveHandler extends Script {
 		complete = object.get("complete").getAsBoolean();
 		return this;
 	}
-
 }

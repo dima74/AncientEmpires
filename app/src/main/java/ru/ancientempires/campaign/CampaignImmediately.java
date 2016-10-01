@@ -204,5 +204,4 @@ public class CampaignImmediately implements IDrawCampaign {
 	public void updateCampaign() {
 		game.campaign.update();
 	}
-
 }

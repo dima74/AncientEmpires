@@ -9,5 +9,4 @@ public class ActionResultUnitAttack extends ActionResult {
 	public boolean      isReverseAttack;
 	public AttackResult attackResultReverse;
 	public Unit[]       unitsToUpdate;
-
 }

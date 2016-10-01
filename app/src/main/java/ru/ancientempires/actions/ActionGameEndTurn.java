@@ -81,5 +81,4 @@ public class ActionGameEndTurn extends Action {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

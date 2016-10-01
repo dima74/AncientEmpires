@@ -97,5 +97,4 @@ public abstract class NumberImages extends AbstractImages {
 		canvas.drawBitmap(b4, w * 3, 0, null);
 		return bitmap;
 	}
-
 }

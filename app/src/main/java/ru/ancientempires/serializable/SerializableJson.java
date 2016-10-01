@@ -18,5 +18,4 @@ public interface SerializableJson {
 	JsonObject toJson();
 
 	Object fromJson(JsonObject element, LoaderInfo info) throws Exception;
-
 }

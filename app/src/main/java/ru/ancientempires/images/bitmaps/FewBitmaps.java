@@ -24,5 +24,4 @@ public class FewBitmaps {
 	public Bitmap getBitmap() {
 		return bitmaps[FewBitmaps.ordinal % bitmaps.length];
 	}
-
 }

@@ -23,5 +23,4 @@ public class ScriptHideCursor extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

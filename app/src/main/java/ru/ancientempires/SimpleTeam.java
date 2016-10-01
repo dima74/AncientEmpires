@@ -10,5 +10,4 @@ public class SimpleTeam {
 	public SimpleTeam(SimplePlayer[] players) {
 		this.players = players;
 	}
-
 }

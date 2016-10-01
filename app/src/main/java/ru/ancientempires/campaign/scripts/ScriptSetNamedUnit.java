@@ -44,5 +44,4 @@ public class ScriptSetNamedUnit extends Script {
 		name = object.get("name").getAsString();
 		return this;
 	}
-
 }

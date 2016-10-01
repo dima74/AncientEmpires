@@ -159,5 +159,4 @@ public class BaseDrawMain extends Draw {
 		float j = (-offsetX + visibleMapW / mapScale / 2 - maxOffsetX) / A;
 		return new GamePath.PointScreenCenter(i, j);
 	}
-
 }

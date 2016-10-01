@@ -50,5 +50,4 @@ public class ScriptUnitDie extends Script {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

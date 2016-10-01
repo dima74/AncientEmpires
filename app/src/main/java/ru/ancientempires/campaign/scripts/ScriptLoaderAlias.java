@@ -35,5 +35,4 @@ public class ScriptLoaderAlias extends Script {
 		i = object.get("i").getAsInt();
 		return this;
 	}
-
 }

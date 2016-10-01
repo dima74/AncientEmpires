@@ -41,5 +41,4 @@ public class DrawCellAttackPartTwo extends DrawOnFramesGroup {
 				.setFramesForBitmap(4)
 				.animateRepeat(1));
 	}
-
 }

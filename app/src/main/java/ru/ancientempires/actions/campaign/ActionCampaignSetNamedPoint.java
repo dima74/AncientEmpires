@@ -39,5 +39,4 @@ public class ActionCampaignSetNamedPoint extends Action {
 		point = info.fromData(input, AbstractPoint.class);
 		return this;
 	}
-
 }

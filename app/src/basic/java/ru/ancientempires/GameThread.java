@@ -50,5 +50,4 @@ public class GameThread extends BaseThread {
 			e.printStackTrace();
 		}
 	}
-
 }

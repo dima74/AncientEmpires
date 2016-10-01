@@ -59,5 +59,4 @@ public class BonusAttackForUnit extends Bonus {
 		bonusDefence = object.get("bonusDefence").getAsInt();
 		return this;
 	}
-
 }

@@ -34,5 +34,4 @@ public abstract class ConditionBoolean extends Condition {
 		scripts = Script.newInstanceArrayNumbered(object.get("scripts").getAsJsonArray(), info);
 		return this;
 	}
-
 }

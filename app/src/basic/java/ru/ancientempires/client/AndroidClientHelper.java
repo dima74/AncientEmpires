@@ -29,5 +29,4 @@ public class AndroidClientHelper implements IClientHelper {
 	public String getID() {
 		return Secure.getString(activity.getContentResolver(), Secure.ANDROID_ID);
 	}
-
 }

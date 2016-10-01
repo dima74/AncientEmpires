@@ -21,5 +21,4 @@ public abstract class GameHandler extends AbstractGameHandler {
 		w = game.w;
 		numberPlayers = game.players.length;
 	}
-
 }

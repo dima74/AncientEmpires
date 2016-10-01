@@ -67,5 +67,4 @@ public class NamedObjects<T> {
 		for (Entry<String, JsonElement> entry : object.entrySet())
 			objects.put(entry.getKey(), (T) (Object) entry.getValue().getAsBoolean());
 	}
-
 }

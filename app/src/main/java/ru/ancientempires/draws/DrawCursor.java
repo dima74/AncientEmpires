@@ -35,5 +35,4 @@ public class DrawCursor extends Draw {
 		int cursorX = cursorJ * A + (A - cursorW) / 2;
 		canvas.drawBitmap(cursor.getBitmap(), cursorX, cursorY, null);
 	}
-
 }

@@ -111,5 +111,4 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues {
 		postUpdateCampaign();
 		destroy();
 	}
-
 }

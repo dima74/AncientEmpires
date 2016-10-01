@@ -25,5 +25,4 @@ public class DialogShowIntro extends MyDialogFragment {
 
 		showDialog(activity, builder, script);
 	}
-
 }

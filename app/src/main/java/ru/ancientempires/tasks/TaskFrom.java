@@ -31,5 +31,4 @@ public abstract class TaskFrom extends Task {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

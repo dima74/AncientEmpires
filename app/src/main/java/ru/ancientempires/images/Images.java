@@ -92,5 +92,4 @@ public class Images extends AbstractImages {
 		cell.load(loader.getLoader("cells"), game);
 		unit.load(loader.getLoader("units"), game);
 	}
-
 }

@@ -32,5 +32,4 @@ public class ScriptUnitActivateStruct extends ScriptOnePoint {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

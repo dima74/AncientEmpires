@@ -32,5 +32,4 @@ public class ActionCampaignActivateStruct extends ActionActivateStruct {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

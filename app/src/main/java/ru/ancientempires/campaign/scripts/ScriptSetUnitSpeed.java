@@ -33,5 +33,4 @@ public class ScriptSetUnitSpeed extends Script {
 		framesForCell = object.get("framesForCell").getAsInt();
 		return this;
 	}
-
 }

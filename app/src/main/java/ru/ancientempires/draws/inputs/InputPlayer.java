@@ -117,5 +117,4 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy {
 		if (inputUnit.isActive)
 			inputUnit.destroy();
 	}
-
 }

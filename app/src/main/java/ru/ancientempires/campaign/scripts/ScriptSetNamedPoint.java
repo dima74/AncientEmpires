@@ -40,5 +40,4 @@ public class ScriptSetNamedPoint extends Script {
 		point = info.fromJson((JsonObject) object.get("point"), AbstractPoint.class);
 		return this;
 	}
-
 }

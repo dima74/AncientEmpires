@@ -52,5 +52,4 @@ public class ActionCampaignUnitCreate extends ActionFrom {
 		player = input.readInt();
 		return this;
 	}
-
 }

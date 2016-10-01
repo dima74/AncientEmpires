@@ -23,5 +23,4 @@ public class ScriptVibrate extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

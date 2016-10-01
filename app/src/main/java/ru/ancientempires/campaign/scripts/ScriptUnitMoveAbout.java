@@ -67,5 +67,4 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

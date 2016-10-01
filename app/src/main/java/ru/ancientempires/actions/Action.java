@@ -118,5 +118,4 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 	public Action fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		return this;
 	}
-
 }

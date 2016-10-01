@@ -8,5 +8,4 @@ public class ScriptFocusOnCurrentPlayerCenter extends Script {
 	public void start() {
 		campaign.iDrawCampaign.focusOnCurrentPlayerCenter();
 	}
-
 }

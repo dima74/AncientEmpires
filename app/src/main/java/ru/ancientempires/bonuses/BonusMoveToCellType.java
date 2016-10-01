@@ -41,5 +41,4 @@ public class BonusMoveToCellType extends Bonus {
 		bonus = object.get("bonus").getAsInt();
 		return this;
 	}
-
 }

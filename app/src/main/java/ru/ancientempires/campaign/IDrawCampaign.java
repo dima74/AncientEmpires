@@ -112,5 +112,4 @@ public interface IDrawCampaign {
 	void updateCampaign();
 
 	void snakeMap(ScriptSnakeMap script);
-
 }

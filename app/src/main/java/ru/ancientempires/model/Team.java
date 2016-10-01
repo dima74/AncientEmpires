@@ -31,5 +31,4 @@ public class Team implements Numbered {
 				return false;
 		return true;
 	}
-
 }

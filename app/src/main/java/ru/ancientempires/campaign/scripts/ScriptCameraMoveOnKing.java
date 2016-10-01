@@ -50,5 +50,4 @@ public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint {
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		return this;
 	}
-
 }

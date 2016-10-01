@@ -36,5 +36,4 @@ public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames {
 	}
 
 	public abstract void draw(Canvas canvas, int value);
-
 }

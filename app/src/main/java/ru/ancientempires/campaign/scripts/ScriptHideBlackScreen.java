@@ -28,5 +28,4 @@ public class ScriptHideBlackScreen extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

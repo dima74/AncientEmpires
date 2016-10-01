@@ -54,5 +54,4 @@ public class PointProjection extends PointFrom {
 		projection = projection.values()[input.readByte()];
 		return this;
 	}
-
 }

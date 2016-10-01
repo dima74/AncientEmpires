@@ -39,5 +39,4 @@ public class ScriptDialogWithoutImage extends Script {
 		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
 		return this;
 	}
-
 }

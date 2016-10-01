@@ -58,5 +58,4 @@ public class PointInteger extends AbstractPoint {
 		j = input.readInt();
 		return this;
 	}
-
 }

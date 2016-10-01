@@ -43,5 +43,4 @@ public class SmokeImages extends AbstractImages {
 		hSmall = bitmapsSmall[0].getHeight();
 		wSmall = bitmapsSmall[0].getWidth();
 	}
-
 }

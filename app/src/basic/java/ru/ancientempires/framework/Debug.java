@@ -78,5 +78,4 @@ public class Debug {
 	private static String getName(Object activity) {
 		return String.format("%2d %s", indexes.get(activity), activity.getClass().getSimpleName().replace("Activity", ""));
 	}
-
 }

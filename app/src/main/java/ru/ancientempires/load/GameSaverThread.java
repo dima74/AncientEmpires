@@ -29,5 +29,4 @@ public class GameSaverThread extends Thread {
 		}
 		MyAssert.a(queue.isEmpty());
 	}
-
 }

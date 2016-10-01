@@ -39,5 +39,4 @@ public class ScriptToast extends Script {
 		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
 		return this;
 	}
-
 }

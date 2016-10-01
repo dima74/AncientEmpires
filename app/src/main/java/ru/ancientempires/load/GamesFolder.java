@@ -93,5 +93,4 @@ public class GamesFolder {
 		numberGames = 0;
 		save();
 	}
-
 }

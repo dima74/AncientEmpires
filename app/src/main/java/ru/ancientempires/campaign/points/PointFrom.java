@@ -52,5 +52,4 @@ public class PointFrom extends AbstractPoint {
 		point = info.fromData(input, AbstractPoint.class);
 		return this;
 	}
-
 }

@@ -644,7 +644,6 @@ public class CampaignEditor {
 		c = c0.add(new ConditionCastleNumber(0, 0, 0),
 				new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
-
 	}
 
 	public void mission6() throws IOException {
@@ -2814,5 +2813,4 @@ public class CampaignEditor {
 		save(endScripts, file);
 	}
 	//*/
-
 }

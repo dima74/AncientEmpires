@@ -36,5 +36,4 @@ public class DrawBitmapsMoving extends DrawBitmaps {
 		x = (frameLeft * startX + framePass * endX) / (frameCount - 1);
 		super.draw(canvas, value);
 	}
-
 }

@@ -106,5 +106,4 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Script.class);
 		return array;
 	}
-
 }

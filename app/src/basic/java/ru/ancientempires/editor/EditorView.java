@@ -14,5 +14,4 @@ public class EditorView extends BaseView {
 	public EditorThread createThread() {
 		return new EditorThread((EditorActivity) activity, getHolder());
 	}
-
 }

@@ -18,5 +18,4 @@ public class ArrowsImages extends AbstractImages {
 		more = loader.loadImage("more.png");
 		less = loader.loadImage("less.png");
 	}
-
 }

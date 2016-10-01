@@ -54,5 +54,4 @@ public class ScriptUnitChangePosition extends Script {
 		targetJ = object.get("targetJ").getAsInt();
 		return this;
 	}
-
 }

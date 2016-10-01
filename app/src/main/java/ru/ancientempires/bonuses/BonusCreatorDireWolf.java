@@ -48,5 +48,4 @@ public class BonusCreatorDireWolf extends BonusCreator {
 	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context) {
 		bonus = context.deserialize(object.get("bonus"), Bonus.class);
 	}
-
 }

@@ -72,5 +72,4 @@ public class DrawChoose extends Draw {
 		updateSelectedDraw();
 		return true;
 	}
-
 }

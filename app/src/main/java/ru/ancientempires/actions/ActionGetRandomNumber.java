@@ -42,5 +42,4 @@ public class ActionGetRandomNumber extends Action {
 		bound = input.readInt();
 		return this;
 	}
-
 }

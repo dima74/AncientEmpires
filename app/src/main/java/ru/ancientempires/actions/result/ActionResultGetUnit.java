@@ -14,5 +14,4 @@ public class ActionResultGetUnit extends ActionResult {
 	public boolean[][] fieldRaiseReal;
 	public int[][]     previousMoveI;
 	public int[][]     previousMoveJ;
-
 }

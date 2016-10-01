@@ -16,5 +16,4 @@ public class BigNumberImages extends NumberImages {
 		slashBitmap = loader.loadImage("slash.png");
 		preloadBase(loader);
 	}
-
 }

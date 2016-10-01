@@ -7,5 +7,4 @@ public class Extras {
 	public static final String FOCUS_ON     = "ru.ancientempires.FOCUS_ON";
 	public static final String LAST_PLAYERS = "ru.ancientempires.LAST_PLAYERS";
 	public static final String PLAYERS      = "ru.ancientempires.PLAYERS";
-
 }

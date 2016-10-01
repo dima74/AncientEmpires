@@ -39,5 +39,4 @@ public class NumberedObjects<T> {
 			objects.set(index, object);
 		}
 	}
-
 }

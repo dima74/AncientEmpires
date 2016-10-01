@@ -288,7 +288,6 @@ public class GamePath {
 		public String toString() {
 			return String.format("%d %d %s", numberActions, sizeActions, snapshot);
 		}
-
 	}
 
 	public ArrayList<SnapshotNote> getNotes(String name) throws Exception {
@@ -427,5 +426,4 @@ public class GamePath {
 	public String toString() {
 		return String.format("%s (%s)", gameID, name);
 	}
-
 }

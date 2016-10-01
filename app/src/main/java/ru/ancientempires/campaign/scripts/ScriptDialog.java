@@ -58,5 +58,4 @@ public class ScriptDialog extends Script {
 		align = object.get("align").getAsString();
 		return this;
 	}
-
 }

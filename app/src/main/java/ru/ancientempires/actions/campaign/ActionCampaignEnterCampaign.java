@@ -25,5 +25,4 @@ public class ActionCampaignEnterCampaign extends Action {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

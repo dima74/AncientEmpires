@@ -37,5 +37,4 @@ public class ScriptSetMapPosition extends Script {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

@@ -43,5 +43,4 @@ public class ScriptSetNamedPointFromUnit extends Script {
 		unitName = object.get("unitName").getAsString();
 		return this;
 	}
-
 }

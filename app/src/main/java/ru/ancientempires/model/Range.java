@@ -46,5 +46,4 @@ public class Range {
 		}
 		return "RangeType [" + name + "]\n" + s;
 	}
-
 }

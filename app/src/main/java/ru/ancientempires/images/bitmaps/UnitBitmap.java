@@ -114,5 +114,4 @@ public class UnitBitmap {
 	public boolean exactlyOn(AbstractPoint point) {
 		return point.getI() * 24 == y && point.getJ() * 24 == x;
 	}
-
 }

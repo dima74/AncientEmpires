@@ -67,5 +67,4 @@ public class LoaderInfo {
 			((AbstractGameHandler) result).game = game;
 		return result;
 	}
-
 }

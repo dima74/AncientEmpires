@@ -116,5 +116,4 @@ public class Draw {
 	}
 
 	public void draw(Canvas canvas) {}
-
 }

@@ -79,5 +79,4 @@ public class ActionUnitMove extends ActionFromTo {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

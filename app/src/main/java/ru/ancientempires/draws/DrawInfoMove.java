@@ -15,12 +15,10 @@ public class DrawInfoMove extends DrawOnFrames {
 		for (int y = main.infoY; y != 0; y /= 2)
 			frameCount++;
 		animate(frameCount);
-
 	}
 
 	@Override
 	public void drawOnFrames(Canvas canvas) {
 		main.infoY /= 2;
 	}
-
 }

@@ -16,5 +16,4 @@ public class AbstractInput {
 			drawMain = inputMain.drawMain;
 		}
 	}
-
 }

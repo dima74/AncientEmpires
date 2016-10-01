@@ -112,5 +112,4 @@ public class DrawUnitAttack extends DrawOnFramesGroup {
 		if (iFrame() == frameUpdateBonus)
 			main.units.field[result.targetI][result.targetJ].canUpdateNegativeBonus = true;
 	}
-
 }

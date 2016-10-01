@@ -11,5 +11,4 @@ public class BonusCreate {
 		this.unit = unit;
 		this.bonus = bonus;
 	}
-
 }

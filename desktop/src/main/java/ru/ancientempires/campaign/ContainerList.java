@@ -67,5 +67,4 @@ public class ContainerList extends ArrayList<ScriptContainer> {
 	public ContainerList last() {
 		return new ContainerList(get(size() - 1));
 	}
-
 }

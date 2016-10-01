@@ -27,5 +27,4 @@ public class StatusesImages extends AbstractImages {
 		h = poison.getHeight();
 		w = poison.getWidth();
 	}
-
 }

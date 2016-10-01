@@ -101,5 +101,4 @@ public class BaseThread extends Thread {
 	public void onRun() {}
 
 	public void afterRun() {}
-
 }

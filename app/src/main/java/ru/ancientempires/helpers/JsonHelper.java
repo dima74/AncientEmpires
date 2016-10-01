@@ -27,5 +27,4 @@ public class JsonHelper {
 		MyAssert.a(name, reader.nextName());
 		return reader.nextLong();
 	}
-
 }

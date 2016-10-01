@@ -34,5 +34,4 @@ public class ScriptCloseMission extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

@@ -33,5 +33,4 @@ public class ScriptSetCameraSpeed extends Script {
 		delta = object.get("delta").getAsInt();
 		return this;
 	}
-
 }

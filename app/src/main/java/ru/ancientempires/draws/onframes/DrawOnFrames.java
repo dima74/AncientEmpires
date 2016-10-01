@@ -68,5 +68,4 @@ public abstract class DrawOnFrames extends Draw {
 	public void reAnimate() {
 		animate(frameCount);
 	}
-
 }

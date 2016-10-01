@@ -43,5 +43,4 @@ public class ScriptDialogTarget extends Script {
 		textTarget = ru.ancientempires.Localization.get(object.get("textTarget").getAsString());
 		return this;
 	}
-
 }

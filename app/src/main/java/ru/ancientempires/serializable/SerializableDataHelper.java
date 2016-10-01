@@ -22,5 +22,4 @@ public class SerializableDataHelper {
 			array[i] = input.readBoolean();
 		return array;
 	}
-
 }

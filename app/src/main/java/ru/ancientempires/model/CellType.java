@@ -65,5 +65,4 @@ public class CellType implements Numbered {
 	public String toString() {
 		return name;
 	}
-
 }

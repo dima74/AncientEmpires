@@ -37,5 +37,4 @@ public class CursorImages extends AbstractImages {
 		cursorH = cursor.getBitmap().getHeight();
 		cursorW = cursor.getBitmap().getWidth();
 	}
-
 }

@@ -47,5 +47,4 @@ public class ConditionUnitNumber extends Condition {
 		number = object.get("number").getAsInt();
 		return this;
 	}
-
 }

@@ -14,5 +14,4 @@ public class AttackResult {
 	public boolean isPromotion;
 
 	public int effectSign;
-
 }

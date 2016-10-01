@@ -59,5 +59,4 @@ public class DrawAction extends Draw {
 		canvas.drawBitmap(ActionImages().getActionBitmap(action1), x1, y, null);
 		canvas.drawBitmap(ActionImages().getActionBitmap(action2), x2, y, null);
 	}
-
 }

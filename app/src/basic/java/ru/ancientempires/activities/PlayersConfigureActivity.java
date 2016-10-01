@@ -265,5 +265,4 @@ public class PlayersConfigureActivity extends BaseActivity {
 		//		.putExtra(Extras.FOLDER_ID, path.getFolderID())
 		//		.putExtra(Extras.FOCUS_ON, path.gameID));
 	}
-
 }

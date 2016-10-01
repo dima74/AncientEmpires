@@ -106,5 +106,4 @@ public class DrawCampaign extends BaseDrawCampaign {
 		int frames = script.milliseconds / BaseThread.MILLISECONDS_BETWEEN_FRAMES;
 		add(new DrawSnakeMap(mainBase).animate(frames), script);
 	}
-
 }

@@ -77,7 +77,6 @@ public class AllGamesConverter {
 				part.strings.put(name, mapper.apply(stringsAE[part.language.ordinal()][iAE]));
 			return this;
 		}
-
 	}
 
 	public class LocalizationPart {
@@ -322,5 +321,4 @@ public class AllGamesConverter {
 	}
 
 	private boolean printAllStrings = false;
-
 }

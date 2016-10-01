@@ -109,5 +109,4 @@ public class ScriptUnitMove extends Script {
 		makeSmoke = object.get("makeSmoke").getAsBoolean();
 		return this;
 	}
-
 }

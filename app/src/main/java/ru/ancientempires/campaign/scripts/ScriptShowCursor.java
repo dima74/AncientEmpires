@@ -23,5 +23,4 @@ public class ScriptShowCursor extends Script {
 		super.fromJson(object, info);
 		return this;
 	}
-
 }

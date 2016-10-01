@@ -192,5 +192,4 @@ public class GameActivity extends BaseGameActivity {
 		}
 		return true;
 	}
-
 }

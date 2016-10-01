@@ -39,5 +39,4 @@ public class ActionCampaignSetNamedUnit extends ActionFrom {
 		name = input.readUTF();
 		return this;
 	}
-
 }

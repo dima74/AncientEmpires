@@ -9,5 +9,4 @@ public class ClassInfo {
 		this.index = index;
 		this.size = size;
 	}
-
 }

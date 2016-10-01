@@ -59,5 +59,4 @@ public class PointOffset extends PointFrom {
 		offsetJ = input.readInt();
 		return this;
 	}
-
 }

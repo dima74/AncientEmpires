@@ -192,5 +192,4 @@ public class ActionGetUnit extends ActionFrom {
 		radius = input.readInt();
 		return this;
 	}
-
 }

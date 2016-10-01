@@ -56,5 +56,4 @@ public class ActionImages extends AbstractImages {
 		h = anyBitmap.getHeight();
 		w = anyBitmap.getWidth();
 	}
-
 }

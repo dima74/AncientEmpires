@@ -28,5 +28,4 @@ public class MyLog {
 	public static void f(String format, Object... args) {
 		l(String.format(format, args));
 	}
-
 }

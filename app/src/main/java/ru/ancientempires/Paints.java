@@ -19,5 +19,4 @@ public class Paints {
 			MY_COLORS[color.ordinal()] = paint;
 		}
 	}
-
 }

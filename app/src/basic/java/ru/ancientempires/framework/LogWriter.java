@@ -7,5 +7,4 @@ public class LogWriter {
 	public static void write(String s) {
 		Log.wtf("ru.ae", s);
 	}
-
 }

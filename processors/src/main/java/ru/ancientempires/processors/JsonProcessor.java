@@ -243,5 +243,4 @@ public class JsonProcessor extends MyAbstractManualProcessor {
 				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(method.getName() + "()"));
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return this"));
 	}
-
 }

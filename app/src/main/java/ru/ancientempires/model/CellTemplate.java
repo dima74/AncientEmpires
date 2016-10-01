@@ -176,5 +176,4 @@ public class CellTemplate {
 	public String toString() {
 		return String.format("%s %s", type, friends);
 	}
-
 }

@@ -14,5 +14,4 @@ public class NamedCoordinates {
 	public static void set(String name, Integer coordinate) {
 		NamedCoordinates.coordinates.put(name, coordinate);
 	}
-
 }

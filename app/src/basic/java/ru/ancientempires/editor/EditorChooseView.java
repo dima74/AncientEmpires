@@ -108,5 +108,4 @@ public class EditorChooseView extends View implements Callback {
 		for (EditorStruct struct : structs)
 			struct.drawBitmap(canvas);
 	}
-
 }

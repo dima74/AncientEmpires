@@ -10,5 +10,4 @@ public class ScriptSetMapPositionToCenter extends Script {
 		float jCenter = game.w / 2.0f - 0.5f;
 		campaign.iDrawCampaign.setMapPosition(iCenter, jCenter);
 	}
-
 }

@@ -86,5 +86,4 @@ public abstract class AbstractPoint extends AbstractGameHandler implements Seria
 	public AbstractPoint fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		return this;
 	}
-
 }

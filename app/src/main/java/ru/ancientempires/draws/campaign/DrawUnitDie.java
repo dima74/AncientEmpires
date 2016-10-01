@@ -35,5 +35,4 @@ public class DrawUnitDie extends DrawOnFramesGroup {
 		super.onEnd();
 		main.units.updateUnit(i, j);
 	}
-
 }

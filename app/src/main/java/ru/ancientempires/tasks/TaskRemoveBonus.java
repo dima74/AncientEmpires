@@ -55,5 +55,4 @@ public class TaskRemoveBonus extends Task {
 		bonus = game.numberedBonuses.get(object.get("bonus").getAsInt());
 		return this;
 	}
-
 }

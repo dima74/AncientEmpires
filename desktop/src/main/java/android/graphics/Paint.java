@@ -13,5 +13,4 @@ public class Paint {
 	public void setColor(int color) {
 		this.color = color;
 	}
-
 }

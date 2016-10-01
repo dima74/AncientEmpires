@@ -58,5 +58,4 @@ public class SparksImages extends AbstractImages {
 		for (int i = 0; i < amountAttack; i++)
 			bitmapsAttack[i] = loader.loadImage(i + ".png");
 	}
-
 }

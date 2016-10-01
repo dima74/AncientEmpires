@@ -53,5 +53,4 @@ public abstract class BonusCreator {
 			return null;
 		}
 	}
-
 }

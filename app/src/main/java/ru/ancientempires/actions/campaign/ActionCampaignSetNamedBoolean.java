@@ -38,5 +38,4 @@ public class ActionCampaignSetNamedBoolean extends Action {
 		bool = input.readBoolean();
 		return this;
 	}
-
 }

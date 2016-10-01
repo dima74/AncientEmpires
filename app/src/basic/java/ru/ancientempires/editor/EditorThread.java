@@ -63,5 +63,4 @@ public class EditorThread extends BaseThread {
 			player.team = null;
 		}
 	}
-
 }

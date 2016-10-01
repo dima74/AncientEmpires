@@ -49,5 +49,4 @@ public class Constraint implements SerializableJson {
 			array[i] = new Constraint().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-
 }

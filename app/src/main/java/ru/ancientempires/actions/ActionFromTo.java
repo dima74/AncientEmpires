@@ -36,5 +36,4 @@ public abstract class ActionFromTo extends ActionTo {
 		j = input.readInt();
 		return this;
 	}
-
 }

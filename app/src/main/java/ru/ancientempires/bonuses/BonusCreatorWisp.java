@@ -60,5 +60,4 @@ public class BonusCreatorWisp extends BonusCreator {
 		range = rules.getRange(object.get("range").getAsString());
 		bonuses = context.deserialize(object.get("bonuses"), Bonus[].class);
 	}
-
 }

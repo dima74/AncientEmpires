@@ -33,5 +33,4 @@ public class ActionCampaignCellAttack extends ActionFrom {
 		super.fromData(input, info);
 		return this;
 	}
-
 }

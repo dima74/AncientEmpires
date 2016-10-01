@@ -167,5 +167,4 @@ public class UnitType implements Named, Numbered {
 			return false;
 		return true;
 	}
-
 }

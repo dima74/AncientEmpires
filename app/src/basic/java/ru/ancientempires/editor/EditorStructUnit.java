@@ -34,5 +34,4 @@ public class EditorStructUnit extends EditorStruct {
 	public EditorStruct createCopy() {
 		return new EditorStructUnit(game, new Unit(unit)).setYX(y, x);
 	}
-
 }

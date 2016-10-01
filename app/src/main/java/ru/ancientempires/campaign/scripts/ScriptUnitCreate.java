@@ -47,5 +47,4 @@ public class ScriptUnitCreate extends ScriptOnePoint {
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		return this;
 	}
-
 }

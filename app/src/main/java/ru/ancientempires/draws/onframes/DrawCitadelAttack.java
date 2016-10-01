@@ -60,5 +60,4 @@ public class DrawCitadelAttack extends DrawOnFramesGroup {
 				// 50 * Renderer.randomToRange(4));
 			}
 	}
-
 }

@@ -40,5 +40,4 @@ public class DrawLevelUp extends DrawOnFramesGroup {
 				.increaseFrameStart(DrawLevelUp.FRAME_ANIMATE_MOTION));
 		return this;
 	}
-
 }

@@ -58,5 +58,4 @@ public abstract class EditorStruct {
 	}
 
 	public abstract EditorStruct createCopy();
-
 }

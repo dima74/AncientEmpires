@@ -14,5 +14,4 @@ public class Color {
 	public static final int CYAN        = 0xFF00FFFF;
 	public static final int MAGENTA     = 0xFFFF00FF;
 	public static final int TRANSPARENT = 0;
-
 }

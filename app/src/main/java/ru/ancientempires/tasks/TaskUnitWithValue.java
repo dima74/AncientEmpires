@@ -38,5 +38,4 @@ public abstract class TaskUnitWithValue extends Task {
 		value = object.get("value").getAsInt();
 		return this;
 	}
-
 }

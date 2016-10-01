@@ -43,5 +43,4 @@ public class EditorDrawMain extends BaseDrawMain {
 	public void tap(int i, int j) {
 		inputMain.tapMap(i, j);
 	}
-
 }

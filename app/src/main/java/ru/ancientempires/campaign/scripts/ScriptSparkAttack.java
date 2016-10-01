@@ -41,5 +41,4 @@ public class ScriptSparkAttack extends Script {
 		j = object.get("j").getAsInt();
 		return this;
 	}
-
 }

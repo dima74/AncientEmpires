@@ -403,5 +403,4 @@ public class Unit extends AbstractGameHandler implements SerializableJson {
 			array[i] = new Unit().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);
 		return array;
 	}
-
 }

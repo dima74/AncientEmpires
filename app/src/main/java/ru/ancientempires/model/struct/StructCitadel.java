@@ -76,7 +76,6 @@ public class StructCitadel extends Struct {
 		crystalsRequired = element.getAsJsonObject().get("crystalsRequired").getAsInt();
 
 		JsonArray constraints = object.get("constraints").getAsJsonArray();
-
 	}
 
 	@Override
@@ -115,5 +114,4 @@ public class StructCitadel extends Struct {
 		constraints = info.fromJsonArraySimple(object.get("constraints").getAsJsonArray(), Constraint.class);
 		return this;
 	}
-
 }
