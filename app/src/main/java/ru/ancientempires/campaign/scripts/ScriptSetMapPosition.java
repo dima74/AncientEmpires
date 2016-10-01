@@ -6,25 +6,25 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetMapPosition extends Script
 {
-	
+
 	private int i;
 	private int j;
-	
+
 	public ScriptSetMapPosition()
 	{}
-	
+
 	public ScriptSetMapPosition(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.setMapPosition(i, j);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

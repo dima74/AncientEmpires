@@ -12,20 +12,20 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitRepair extends ActionFrom
 {
-	
+
 	@Override
 	public ActionResult perform(Game game)
 	{
 		performBase(game);
 		return null;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return super.check() && new ActionHelper(game).canUnitRepair(i, j);
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -34,7 +34,7 @@ public class ActionUnitRepair extends ActionFrom
 		cell.repair();
 		unit.isTurn = true;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

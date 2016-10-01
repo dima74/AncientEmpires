@@ -9,7 +9,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignCellAttack extends ActionFrom
 {
-	
+
 	@Override
 	public void performQuick()
 	{

@@ -29,7 +29,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class RulesLoader
 {
-	
+
 	private FileLoader loader;
 	public Rules rules = new Rules();
 	public JsonDeserializationContext context;
@@ -40,7 +40,7 @@ public class RulesLoader
 		this.loader = loader;
 		info = new LoaderInfo(rules);
 	}
-	
+
 	public Rules load() throws IOException
 	{
 		JsonReader reader = loader.getReader("rules.json");
@@ -57,7 +57,7 @@ public class RulesLoader
 		reader.close();
 		return rules;
 	}
-	
+
 	public class RulesDeserializer implements JsonDeserializer<Rules>
 	{
 		@Override
@@ -69,7 +69,7 @@ public class RulesLoader
 			rules.name = object.get("name").getAsString();
 			rules.version = object.get("version").getAsString();
 			rules.author = object.get("author").getAsString();
-			
+
 			rules.preInitUnitTypes(getStrinsArray(object, "allUnitTypes", context));
 			rules.preInitCellTypes(getStrinsArray(object, "allCellTypes", context));
 			rules.preInitCellGroups(getStrinsArray(object, "allCellGroups", context));
@@ -90,10 +90,10 @@ public class RulesLoader
 				Имхо очень прикольно =)
 			*/
 			rules.setRanges(context.<Range[]>deserialize(object.get("ranges"), Range[].class));
-			
+
 			context.deserialize(object.get("defaultUnitType"), UnitType.class);
 			context.deserialize(object.get("defaultCellType"), CellType.class);
-			
+
 			context.deserialize(object.get("unitTypes"), UnitType[].class);
 			context.deserialize(object.get("cellGroups"), CellGroup[].class);
 			context.deserialize(object.get("cellTypes"), CellType[].class);
@@ -104,12 +104,12 @@ public class RulesLoader
 			return rules;
 		}
 	}
-	
+
 	public String[] getStrinsArray(JsonObject object, String name, JsonDeserializationContext context)
 	{
 		return context.deserialize(object.get(name), String[].class);
 	}
-	
+
 	public class RangeDeserializer implements JsonDeserializer<Range>
 	{
 		@Override
@@ -126,14 +126,14 @@ public class RulesLoader
 			return new Range(name, table);
 		}
 	}
-	
+
 	public class UnitTypeDeserializer implements JsonDeserializer<UnitType>
 	{
 		@Override
 		public UnitType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			JsonObject object = json.getAsJsonObject();
-			
+
 			JsonElement baseTypeJson = object.get("baseType");
 			UnitType baseType = baseTypeJson == null
 					? rules.defaultUnitType
@@ -143,7 +143,7 @@ public class RulesLoader
 				type.setProperties(baseType);
 
 			JsonElement element;
-			
+
 			if ((element = object.get("specializations")) != null)
 			{
 				JsonObject specializations = element.getAsJsonObject();
@@ -166,24 +166,24 @@ public class RulesLoader
 			type.moveRadius = element == null ? baseType.moveRadius : element.getAsInt();
 			element = object.get("cost");
 			type.cost = element == null ? baseType.cost : element.getAsInt();
-			
+
 			element = object.get("repairTypes");
 			type.repairTypes = element == null ? baseType.repairTypes : getCellTypes(element);
 			element = object.get("captureTypes");
 			type.captureTypes = element == null ? baseType.captureTypes : getCellTypes(element);
 			element = object.get("destroyingTypes");
 			type.destroyingTypes = element == null ? baseType.destroyingTypes : getCellTypes(element);
-			
+
 			element = object.get("attackRange");
 			type.attackRange = element == null ? baseType.attackRange : getRange(element);
 			element = object.get("attackRangeReverse");
 			type.attackRangeReverse = element == null ? baseType.attackRangeReverse : getRange(element);
-			
+
 			element = object.get("raiseRange");
 			type.raiseRange = element == null ? baseType.raiseRange : getRange(element);
 			element = object.get("raiseType");
 			type.raiseType = element == null ? baseType.raiseType : rules.getUnitType(element.getAsString());
-			
+
 			element = object.get("isStatic");
 			type.isStatic = element == null ? baseType.isStatic : element.getAsBoolean();
 			element = object.get("hasTombstone");
@@ -192,16 +192,16 @@ public class RulesLoader
 			type.canDoTwoActionAfterOne = element == null ? baseType.canDoTwoActionAfterOne : element.getAsBoolean();
 			element = object.get("isFly");
 			type.isFly = element == null ? baseType.isFly : element.getAsBoolean();
-			
+
 			element = object.get("bonuses");
 			type.bonuses = element == null ? baseType.bonuses : context.<Bonus[]>deserialize(element, Bonus[].class);
 			element = object.get("creators");
 			type.creators = element == null ? baseType.creators : context.<BonusCreator[]>deserialize(element, BonusCreator[].class);
-			
+
 			return type;
 		}
 	}
-	
+
 	public CellType[] getCellTypes(JsonElement element)
 	{
 		String[] names = context.deserialize(element, String[].class);
@@ -210,12 +210,12 @@ public class RulesLoader
 			types[i] = rules.getCellType(names[i]);
 		return types;
 	}
-	
+
 	public Range getRange(JsonElement element)
 	{
 		return rules.getRange(element.getAsString());
 	}
-	
+
 	public class CellGroupDeserializer implements JsonDeserializer<CellGroup>
 	{
 		@Override
@@ -228,14 +228,14 @@ public class RulesLoader
 			return group;
 		}
 	}
-	
+
 	public class CellTypeDeserializer implements JsonDeserializer<CellType>
 	{
 		@Override
 		public CellType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			JsonObject object = json.getAsJsonObject();
-			
+
 			JsonElement baseTypeJson = object.get("baseType");
 			CellType baseType = baseTypeJson == null
 					? rules.defaultCellType
@@ -282,7 +282,7 @@ public class RulesLoader
 			return type;
 		}
 	}
-	
+
 	public UnitType[] getUnitTypes(JsonElement element)
 	{
 		String[] names = context.deserialize(element, String[].class);
@@ -291,7 +291,7 @@ public class RulesLoader
 			types[i] = rules.getUnitType(names[i]);
 		return types;
 	}
-	
+
 	public class BonusDeserializer implements JsonDeserializer<Bonus>
 	{
 		@Override
@@ -309,7 +309,7 @@ public class RulesLoader
 			}
 		}
 	}
-	
+
 	public class BonusCreatorDeserializer implements JsonDeserializer<BonusCreator>
 	{
 		@Override
@@ -331,5 +331,5 @@ public class RulesLoader
 			}
 		}
 	}
-	
+
 }

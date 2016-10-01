@@ -8,24 +8,24 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitMoveHandlerPoint extends ScriptUnitMoveHandler
 {
-	
+
 	public AbstractPoint point;
-	
+
 	public ScriptUnitMoveHandlerPoint()
 	{}
-	
+
 	public ScriptUnitMoveHandlerPoint(Object... point)
 	{
 		this.point = AbstractPoint.createPoint(point);
 	}
-	
+
 	@Override
 	public void unitMove(UnitBitmap unit)
 	{
 		if (unit.exactlyOn(point))
 			complete();
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

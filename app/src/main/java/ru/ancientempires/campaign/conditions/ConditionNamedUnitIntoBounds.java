@@ -7,20 +7,20 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionNamedUnitIntoBounds extends Condition
 {
-	
+
 	private String           name;
 	private AbstractBounds[] bounds;
-	
+
 	public ConditionNamedUnitIntoBounds()
 	{
 	}
-	
+
 	public ConditionNamedUnitIntoBounds(String name, AbstractBounds... bounds)
 	{
 		this.name = name;
 		this.bounds = bounds;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
@@ -30,7 +30,7 @@ public class ConditionNamedUnitIntoBounds extends Condition
 				return true;
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

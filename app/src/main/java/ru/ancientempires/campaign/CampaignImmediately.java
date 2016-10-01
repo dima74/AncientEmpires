@@ -39,84 +39,84 @@ import ru.ancientempires.model.UnitType;
 
 public class CampaignImmediately implements IDrawCampaign
 {
-	
+
 	public Game game;
-	
+
 	public CampaignImmediately(Game game)
 	{
 		this.game = game;
 	}
-	
+
 	@Override
 	public void dialogIntro(Bitmap image, String text, ScriptDialogIntro script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void toastTitle(String text, Script script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void dialog(Bitmap image, String text, ScriptDialog script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void dialog(String text, ScriptDialogWithoutImage script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void dialogTarget(String textTitle, String textTarget, ScriptDialogTarget script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void delay(int milliseconds, ScriptDelay script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void showBlackScreen(ScriptShowBlackScreen script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void hideBlackScreen(ScriptHideBlackScreen script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void blackScreen(ScriptBlackScreen script)
 	{}
-	
+
 	@Override
 	public void hideCursor(ScriptHideCursor script)
 	{}
-	
+
 	@Override
 	public void showCursor(ScriptShowCursor script)
 	{}
-	
+
 	@Override
 	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script)
 	{}
-	
+
 	@Override
 	public void cameraMove(AbstractScriptOnePoint script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void setMapPosition(float i, float j)
 	{}
@@ -128,11 +128,11 @@ public class CampaignImmediately implements IDrawCampaign
 	@Override
 	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script)
 	{}
-	
+
 	@Override
 	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script)
 	{}
-	
+
 	@Override
 	public void unitMove(ScriptUnitMove script, boolean initFromStart)
 	{
@@ -166,7 +166,7 @@ public class CampaignImmediately implements IDrawCampaign
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void unitDie(int i, int j, ScriptUnitDie script)
 	{
@@ -185,47 +185,47 @@ public class CampaignImmediately implements IDrawCampaign
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void sparksAttack(int i, int j, ScriptSparkAttack script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void enableActiveGame(ScriptEnableActiveGame script)
 	{
 		script.performAction();
 	}
-	
+
 	@Override
 	public void disableActiveGame(ScriptDisableActiveGame script)
 	{
 		script.performAction();
 	}
-	
+
 	@Override
 	public void hideInfoImmediately(Script script)
 	{}
-	
+
 	@Override
 	public void gameOver(ScriptGameOver script)
 	{
 		script.finish();
 	}
-	
+
 	@Override
 	public void closeMission() throws Exception
 	{
 		Client.client.stopGame();
 	}
-	
+
 	@Override
 	public void vibrate()
 	{}

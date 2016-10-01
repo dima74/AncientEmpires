@@ -12,19 +12,19 @@ public abstract class TaskUnitWithValue extends Task
 	@WithNumbered("numberedUnits")
 	public Unit unit;
 	public int  value;
-	
+
 	public TaskUnitWithValue setUnit(Unit unit)
 	{
 		this.unit = unit;
 		return this;
 	}
-	
+
 	public TaskUnitWithValue setValue(int value)
 	{
 		this.value = value;
 		return this;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

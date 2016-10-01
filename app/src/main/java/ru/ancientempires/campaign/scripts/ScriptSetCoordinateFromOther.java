@@ -7,27 +7,27 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCoordinateFromOther extends Script
 {
-	
+
 	private String otherName;
 	private String name;
 	private int    delta;
-	
+
 	public ScriptSetCoordinateFromOther()
 	{}
-	
+
 	public ScriptSetCoordinateFromOther(String otherName, String name, int delta)
 	{
 		this.otherName = otherName;
 		this.name = name;
 		this.delta = delta;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		NamedCoordinates.set(name, NamedCoordinates.get(otherName) + delta);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

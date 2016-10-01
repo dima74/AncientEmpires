@@ -8,22 +8,22 @@ public class ScriptSparkAttack extends Script
 {
 	private int i;
 	private int j;
-	
+
 	public ScriptSparkAttack()
 	{}
-	
+
 	public ScriptSparkAttack(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.sparksAttack(i, j, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{

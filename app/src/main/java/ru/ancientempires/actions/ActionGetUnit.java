@@ -14,7 +14,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGetUnit extends ActionFrom
 {
-	
+
 	private ActionResultGetUnit result = new ActionResultGetUnit();
 	@Exclude
 	private Unit unit;
@@ -26,31 +26,31 @@ public class ActionGetUnit extends ActionFrom
 	{
 		return false;
 	}
-	
+
 	@Override
 	public ActionResultGetUnit perform(Game game)
 	{
 		performBase(game);
 		return result;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return super.check() && new ActionHelper(game).isUnitActive(i, j);
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
 		unit = game.fieldUnits[i][j];
-		
+
 		radius = 0;
 		radius = Math.max(radius, unit.getMoveRadius());
 		radius = Math.max(radius, unit.type.attackRange.radius);
 		radius = Math.max(radius, unit.type.raiseRange.radius);
 		diameter = radius * 2 + 1;
-		
+
 		result.fieldMove = new boolean[diameter][diameter];
 		result.fieldMoveReal = new boolean[diameter][diameter];
 		if (!unit.isMove && game.checkFloating(unit))
@@ -66,7 +66,7 @@ public class ActionGetUnit extends ActionFrom
 			createRaise(result.fieldRaise, result.fieldRaiseReal);
 		}
 	}
-	
+
 	private static final int[] addI =
 			{
 					-1,
@@ -81,7 +81,7 @@ public class ActionGetUnit extends ActionFrom
 					+1,
 					0
 			};
-	
+
 	public void createWay(boolean[][] fieldMove, boolean[][] fieldMoveReal)
 	{
 		int[][] distance = new int[diameter][diameter];
@@ -94,7 +94,7 @@ public class ActionGetUnit extends ActionFrom
 		distance[radius][radius] = 0;
 		previousMoveI[radius][radius] = -1;
 		previousMoveJ[radius][radius] = -1;
-		
+
 		while (true)
 		{
 			int minDistance = moveRadius + 1;
@@ -119,7 +119,7 @@ public class ActionGetUnit extends ActionFrom
 					continue;
 				int nextIAbsolute = unit.i + nextI - radius;
 				int nextJAbsolute = unit.j + nextJ - radius;
-				
+
 				if (!game.checkCoordinates(nextIAbsolute, nextJAbsolute))
 					continue;
 				Unit nextUnit = game.fieldUnits[nextIAbsolute][nextJAbsolute];
@@ -142,11 +142,11 @@ public class ActionGetUnit extends ActionFrom
 		}
 		fieldMove[radius][radius] = false;
 		fieldMoveReal[radius][radius] = false;
-		
+
 		result.previousMoveI = previousMoveI;
 		result.previousMoveJ = previousMoveJ;
 	}
-	
+
 	private void createAttack(boolean[][] fieldAttack, boolean[][] fieldAttackReal)
 	{
 		create(unit.type.attackRange, fieldAttack, fieldAttackReal, new CheckerCoordinates()
@@ -163,7 +163,7 @@ public class ActionGetUnit extends ActionFrom
 			}
 		});
 	}
-	
+
 	private void createRaise(boolean[][] fieldRaise, boolean[][] fieldRaiseReal)
 	{
 		create(unit.type.raiseRange, fieldRaise, fieldRaiseReal, new CheckerCoordinates()
@@ -177,7 +177,7 @@ public class ActionGetUnit extends ActionFrom
 			}
 		});
 	}
-	
+
 	// то же самое, что и в ACtionHelper
 	private void create(Range range, boolean[][] field, boolean[][] fieldReal, CheckerCoordinates checker)
 	{
@@ -195,7 +195,7 @@ public class ActionGetUnit extends ActionFrom
 					fieldReal[radius + relativeI][radius + relativeJ] = checker.check(targetI, targetJ);
 				}
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

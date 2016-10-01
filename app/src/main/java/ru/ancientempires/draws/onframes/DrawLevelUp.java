@@ -6,10 +6,10 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawLevelUp extends DrawOnFramesGroup
 {
-	
+
 	// 2 2 2 2 40
 	// 21 17 13 9 5
-	
+
 	private static final int FRAME_ANIMATE        = 48;
 	private static final int FRAME_ANIMATE_MOTION = 16;
 	private static final int FRAME_ANIMATE_STATIC = 32;
@@ -18,13 +18,13 @@ public class DrawLevelUp extends DrawOnFramesGroup
 	{
 		super(mainBase);
 	}
-	
+
 	public DrawLevelUp animate(int y, int x)
 	{
 		int levelUpX = x + (A - Images().levelUpW) / 2;
 		int levelUpYStart = (int) (y - A + 20 * a);
 		int levelUpYEnd = (int) (y - A + 5 * a);
-		
+
 		int amountLevelUps = 4;
 		for (int i = amountLevelUps; i >= 0; i--)
 			add(new DrawBitmapsMoving(mainBase)
@@ -43,5 +43,5 @@ public class DrawLevelUp extends DrawOnFramesGroup
 				.increaseFrameStart(DrawLevelUp.FRAME_ANIMATE_MOTION));
 		return this;
 	}
-	
+
 }

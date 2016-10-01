@@ -8,7 +8,7 @@ import ru.ancientempires.images.Images;
 
 public class DrawAction extends Draw
 {
-	
+
 	public static float mScale = 2.5f;
 	public static int   mA     = (int) (Images.get().bitmapSize * DrawAction.mScale);
 
@@ -18,7 +18,7 @@ public class DrawAction extends Draw
 	{
 		DrawAction.whiteAlphaPaint.setColor(0xDDFFFFFF);
 	}
-	
+
 	private ActionFromTo action1;
 	private ActionFromTo action2;
 
@@ -35,12 +35,12 @@ public class DrawAction extends Draw
 		this.action1 = action1;
 		this.action2 = action2;
 	}
-	
+
 	public boolean isActive()
 	{
 		return action1 != null;
 	}
-	
+
 	public boolean touch(float y, float x)
 	{
 		if (y < 0 || y > h)
@@ -50,12 +50,12 @@ public class DrawAction extends Draw
 		main.inputPlayer.inputUnit.performAction(action);
 		return true;
 	}
-	
+
 	private void destroy()
 	{
 		action1 = action2 = null;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -67,5 +67,5 @@ public class DrawAction extends Draw
 		canvas.drawBitmap(ActionImages().getActionBitmap(action1), x1, y, null);
 		canvas.drawBitmap(ActionImages().getActionBitmap(action2), x2, y, null);
 	}
-	
+
 }

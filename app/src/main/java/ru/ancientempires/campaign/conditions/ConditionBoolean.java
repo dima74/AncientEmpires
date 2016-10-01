@@ -9,21 +9,21 @@ public abstract class ConditionBoolean extends Condition
 {
 
 	public Script[] scripts;
-	
+
 	public ConditionBoolean()
 	{}
-	
+
 	public ConditionBoolean(Script... scripts)
 	{
 		this.scripts = scripts;
 	}
-	
+
 	public void resolveAliases(Script[] scripts)
 	{
 		super.resolveAliases(scripts);
 		resolveAliases(this.scripts, scripts);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

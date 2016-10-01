@@ -6,7 +6,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptBlackScreen extends Script
 {
-	
+
 	@Override
 	public void start()
 	{

@@ -14,7 +14,7 @@ import ru.ancientempires.campaign.scripts.Script;
 
 public class SimpleDialog
 {
-	
+
 	public static void create(GameActivity activity, String text, Script script)
 	{
 		if (1 == 1)
@@ -22,7 +22,7 @@ public class SimpleDialog
 			script.finish();
 			return;
 		}
-		
+
 		JTextArea textArea = new JTextArea(text);
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
@@ -30,7 +30,7 @@ public class SimpleDialog
 		Font font = new Font("Verdana", Font.PLAIN, 20);
 		textArea.setFont(font);
 		textArea.setMargin(new Insets(20, 20, 20, 20));
-		
+
 		JFrame frame = new JFrame("Toast");
 		frame.setUndecorated(true);
 		frame.add(textArea);
@@ -39,7 +39,7 @@ public class SimpleDialog
 		frame.setVisible(true);
 		frame.toFront();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
+
 		textArea.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -51,5 +51,5 @@ public class SimpleDialog
 			}
 		});
 	}
-	
+
 }

@@ -31,9 +31,9 @@ import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class DefaultRules
 {
-	
+
 	public Rules rules = new Rules();
-	
+
 	public Rules create() throws IOException
 	{
 		/*
@@ -58,16 +58,16 @@ public class DefaultRules
 		rules.preInitCellTypes(cellTypes);
 		rules.preInitCellGroups(cellGroups);
 		createRanges();
-		
+
 		initVariables();
-		
+
 		createUnitTypes();
 		createCellGroups();
 		createCellTypes();
 		createDefaultGame();
 		createDefaultPlayers();
 		createMapEditorFrequencies();
-		
+
 		return rules;
 	}
 
@@ -190,7 +190,7 @@ public class DefaultRules
 		System.exit(0);
 	}
 	//*/
-	
+
 	// BEGIN AUTO GENERATE
 	public Range emptyRange;
 	public Range defaultRange;
@@ -253,7 +253,7 @@ public class DefaultRules
 		defaultRange = rules.getRange("DEFAULT");
 		archerRange = rules.getRange("ARCHER");
 		catapultRange = rules.getRange("CATAPULT");
-		
+
 		defaultUnitType = rules.getUnitType("DEFAULT");
 		king = rules.getUnitType("KING");
 		soldier = rules.getUnitType("SOLDIER");
@@ -271,13 +271,13 @@ public class DefaultRules
 		king_valadorn = rules.getUnitType("KING_VALADORN");
 		king_demonlord = rules.getUnitType("KING_DEMONLORD");
 		king_saeth = rules.getUnitType("KING_SAETH");
-		
+
 		defaultGroup = rules.getCellGroup("DEFAULT");
 		healing = rules.getCellGroup("HEALING");
 		buildings = rules.getCellGroup("BUILDINGS");
 		water_way = rules.getCellGroup("WATER_WAY");
 		waterGroup = rules.getCellGroup("WATER");
-		
+
 		defaultCellType = rules.getCellType("DEFAULT");
 		mount = rules.getCellType("MOUNT");
 		hill = rules.getCellType("HILL");
@@ -304,9 +304,9 @@ public class DefaultRules
 		water_way_group = rules.getCellType("WATER_WAY_GROUP");
 		water_group = rules.getCellType("WATER_GROUP");
 	}
-	
+
 	// END AUTO GENERATE
-	
+
 	public void createRanges()
 	{
 		Range[] ranges = new Range[]
@@ -318,7 +318,7 @@ public class DefaultRules
 				};
 		rules.setRanges(ranges);
 	}
-	
+
 	public void createUnitTypes()
 	{
 		createDefaultUnitType();
@@ -328,23 +328,23 @@ public class DefaultRules
 		soldier.cost = 150;
 		soldier.captureTypes = getCellTypes("BUILDING");
 		soldier.repairTypes = getCellTypes("BUILDING_DESTROYING");
-		
+
 		archer.cost = 250;
 		archer.attackRange = archerRange;
 		archer.addBonuses(new BonusAttackForUnit(dragon, 15, 0));
-		
+
 		elemental.defence = 10;
 		elemental.cost = 300;
 		elemental.addBonuses(
 				new BonusOnCellGroup(waterGroup, 10, 15),
 				new BonusMoveToCellGroup(waterGroup, -2));
-		
+
 		sorceress.attackMin = 40;
 		sorceress.attackMax = 45;
 		sorceress.cost = 400;
 		sorceress.raiseRange = defaultRange;
 		sorceress.raiseType = skeleton;
-		
+
 		wisp.attackMin = 35;
 		wisp.attackMax = 40;
 		wisp.defence = 10;
@@ -353,7 +353,7 @@ public class DefaultRules
 				{
 						new BonusCreatorWisp(archerRange, new BonusAttackAlways(10, 0))
 				};
-		
+
 		dire_wolf.attackMin = 60;
 		dire_wolf.attackMax = 65;
 		dire_wolf.defence = 15;
@@ -363,12 +363,12 @@ public class DefaultRules
 				{
 						new BonusCreatorDireWolf(new BonusAttackAlways(-10, -10))
 				};
-		
+
 		golem.attackMin = 60;
 		golem.attackMax = 70;
 		golem.defence = 30;
 		golem.cost = 600;
-		
+
 		catapult.attackMin = 50;
 		catapult.attackMax = 70;
 		catapult.defence = 10;
@@ -378,26 +378,26 @@ public class DefaultRules
 		catapult.destroyingTypes = getCellTypes("BUILDING");
 		catapult.attackRangeReverse = emptyRange;
 		catapult.canDoTwoActionAfterOne = false;
-		
+
 		dragon.attackMin = 70;
 		dragon.attackMax = 80;
 		dragon.defence = 25;
 		dragon.moveRadius = 6;
 		dragon.cost = 1000;
 		dragon.isFly = true;
-		
+
 		skeleton.attackMin = 40;
 		skeleton.attackMax = 50;
 		skeleton.defence = 2;
 		skeleton.hasTombstone = false;
-		
+
 		crystal.attackMin = 0;
 		crystal.attackMax = 0;
 		crystal.defence = 15;
 		crystal.attackRange = emptyRange;
 		crystal.moveRadius = 3;
 		crystal.addBonuses(new BonusMoveToCellType(mount, +3));
-		
+
 		king.specializations = new HashMap<>();
 		king.addSpecialization(MyColor.BLUE, king_galamar);
 		king.addSpecialization(MyColor.GREEN, king_valadorn);
@@ -412,13 +412,13 @@ public class DefaultRules
 		king.isStatic = true;
 		king.hasTombstone = false;
 		king.addBonuses(new BonusCost(200));
-		
+
 		king_galamar.setProperties(king);
 		king_valadorn.setProperties(king);
 		king_demonlord.setProperties(king);
 		king_saeth.setProperties(king);
 	}
-	
+
 	public void createDefaultUnitType()
 	{
 		defaultUnitType.baseType = defaultUnitType;
@@ -447,7 +447,7 @@ public class DefaultRules
 				};
 		defaultUnitType.creators = new BonusCreator[0];
 	}
-	
+
 	public CellType[] getCellTypes(String... names)
 	{
 		CellType[] types = new CellType[names.length];
@@ -455,14 +455,14 @@ public class DefaultRules
 			types[i] = rules.getCellType(names[i]);
 		return types;
 	}
-	
+
 	public void createCellGroups()
 	{
 		defaultGroup.setTypes(mount, hill, two_trees, three_trees, plain, citadel_left, citadel_right, citadel_up, building_destroying);
 		buildings.setTypes(castle, building);
 		healing.setTypes(building, castle, camp, temple, citadel);
 		water_way.setTypes(water_way_horizontal, water_way_vertical);
-		
+
 		water_way.setTypes(
 				water_way_horizontal,
 				water_way_vertical);
@@ -471,7 +471,7 @@ public class DefaultRules
 				water,
 				water_sparks);
 	}
-	
+
 	public void createCellTypes()
 	{
 		createDefaultCellType();
@@ -483,22 +483,22 @@ public class DefaultRules
 		// default
 		mount.steps = 3;
 		mount.defense = 15;
-		
+
 		hill.steps = 2;
 		hill.defense = 10;
-		
+
 		two_trees.steps = 2;
 		two_trees.defense = 10;
-		
+
 		three_trees.steps = 2;
 		three_trees.defense = 10;
-		
+
 		plain.defense = 5;
-		
+
 		citadel_left.defense = 10;
 		citadel_right.defense = 10;
 		citadel_up.defense = 10;
-		
+
 		// healing
 		healing_group.defense = 15;
 		healing_group.isHealing = true;
@@ -509,18 +509,18 @@ public class DefaultRules
 				.addConstraint(0, -1, citadel_left)
 				.addConstraint(0, +1, citadel_right)
 				.addConstraint(-1, 0, citadel_up);
-		
+
 		// buildings
 		buildings_group.setProperties(healing_group);
 		buildings_group.isCapturing = true;
-		
+
 		building.setProperties(buildings_group);
 		building.earn = 30;
 		building.destroyingType = building_destroying;
-		
+
 		building_destroying.defense = 15;
 		building_destroying.repairType = building;
-		
+
 		castle.setProperties(buildings_group);
 		castle.earn = 50;
 		castle.buyTypes = getUnitTypes(
@@ -536,7 +536,7 @@ public class DefaultRules
 
 		water_way_group.defense = 5;
 		water_way.setBaseTypeToAll();
-		
+
 		water_group.steps = 3;
 		waterGroup.setBaseTypeToAll();
 		water.template = new CellTemplate(CellTemplateType.WATER, water,
@@ -550,7 +550,7 @@ public class DefaultRules
 				castle)
 				.setFriendsUp(temple);
 	}
-	
+
 	public UnitType[] getUnitTypes(String... names)
 	{
 		UnitType[] types = new UnitType[names.length];
@@ -558,7 +558,7 @@ public class DefaultRules
 			types[i] = rules.getUnitType(names[i]);
 		return types;
 	}
-	
+
 	public void createDefaultCellType()
 	{
 		defaultCellType.isDefault = true;

@@ -51,27 +51,27 @@ public class DrawMain extends BaseDrawMain
 	 * 
 	 * инфо
 	 */
-	
+
 	public void add(Draw draw)
 	{
 		add(draw, DrawLevel.MIDDLE);
 	}
-	
+
 	public void add(Draw draw, DrawLevel level)
 	{
 		draws[level.ordinal()].add(draw);
 	}
-	
+
 	public void remove(Draw draw)
 	{
 		remove(draw, DrawLevel.MIDDLE);
 	}
-	
+
 	public void remove(Draw draw, DrawLevel level)
 	{
 		draws[level.ordinal()].remove(draw);
 	}
-	
+
 	@Override
 	public void setVisibleMapSize()
 	{
@@ -108,7 +108,7 @@ public class DrawMain extends BaseDrawMain
 
 		add(campaign);
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -127,7 +127,7 @@ public class DrawMain extends BaseDrawMain
 
 		buildingSmokes.draw(canvas);
 		canvas.restore();
-		
+
 		if (minOffsetY == maxOffsetY && offsetY > 0)
 			canvas.drawRect(0, (maxOffsetY + mapH) * mapScale, w(), visibleMapH, Paints.WHITE);
 
@@ -138,7 +138,7 @@ public class DrawMain extends BaseDrawMain
 		canvas.translate(0, infoY);
 		info.draw(canvas);
 		canvas.restore();
-		
+
 		if (action.isActive())
 		{
 			canvas.save();
@@ -146,7 +146,7 @@ public class DrawMain extends BaseDrawMain
 			action.draw(canvas);
 			canvas.restore();
 		}
-		
+
 		if (minOffsetY == maxOffsetY && offsetY > 0)
 			canvas.drawRect(0, 0, w(), offsetY * mapScale, Paints.WHITE);
 
@@ -154,13 +154,13 @@ public class DrawMain extends BaseDrawMain
 		if (isBlackScreen)
 			canvas.drawColor(Color.BLACK);
 	}
-	
+
 	@Override
 	public boolean isActiveGame()
 	{
 		return isActiveGame;
 	}
-	
+
 	@Override
 	public void touch(float touchY, float touchX)
 	{
@@ -175,7 +175,7 @@ public class DrawMain extends BaseDrawMain
 		}
 		super.touch(touchY, touchX);
 	}
-	
+
 	@Override
 	public void tap(int i, int j)
 	{

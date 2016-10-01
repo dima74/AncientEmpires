@@ -5,7 +5,7 @@ import ru.ancientempires.swing.Swing;
 
 public class GameActivity extends BaseGameActivity
 {
-	
+
 	public void startGame(String gameID, String lastTeams)
 	{
 		new Thread(() -> {
@@ -21,10 +21,10 @@ public class GameActivity extends BaseGameActivity
 			}
 		}).start();
 	}
-	
+
 	public void postUpdateCampaign()
 	{
 		view.needUpdateCampaign = true;
 	}
-	
+
 }

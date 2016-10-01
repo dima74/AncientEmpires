@@ -9,7 +9,7 @@ import ru.ancientempires.framework.MyAssert;
 
 public class BitmapFactory
 {
-	
+
 	public static Bitmap decodeStream(InputStream is)
 	{
 		try
@@ -23,5 +23,5 @@ public class BitmapFactory
 			return null;
 		}
 	}
-	
+
 }

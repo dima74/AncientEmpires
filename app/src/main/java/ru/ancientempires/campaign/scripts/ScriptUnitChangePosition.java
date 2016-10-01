@@ -7,15 +7,15 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitChangePosition extends Script
 {
-	
+
 	private int i;
 	private int j;
 	private int targetI;
 	private int targetJ;
-	
+
 	public ScriptUnitChangePosition()
 	{}
-	
+
 	public ScriptUnitChangePosition(int i, int j, int targetI, int targetJ)
 	{
 		this.i = i;
@@ -23,13 +23,13 @@ public class ScriptUnitChangePosition extends Script
 		this.targetI = targetI;
 		this.targetJ = targetJ;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.unitChangePosition(i, j, targetI, targetJ, this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
@@ -38,7 +38,7 @@ public class ScriptUnitChangePosition extends Script
 				.setTargetIJ(targetI, targetJ)
 				.perform(game);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -16,7 +16,7 @@ import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class Rules
 {
-	
+
 	public String name;
 	public String version;
 	public String author;
@@ -50,7 +50,7 @@ public class Rules
 			unitTypesMap.put(type.name, type);
 		defaultUnitType = getUnitType("DEFAULT");
 	}
-	
+
 	public void preInitCellTypes(String[] names)
 	{
 		cellTypes = new CellType[names.length];
@@ -60,7 +60,7 @@ public class Rules
 			cellTypesMap.put(type.name, type);
 		defaultCellType = getCellType("DEFAULT");
 	}
-	
+
 	public void preInitCellGroups(String[] names)
 	{
 		cellGroups = new CellGroup[names.length];
@@ -69,29 +69,29 @@ public class Rules
 		for (CellGroup group : cellGroups)
 			cellGroupsMap.put(group.name, group);
 	}
-	
+
 	public UnitType getUnitType(String name)
 	{
 		MyAssert.a(unitTypesMap.containsKey(name));
 		return unitTypesMap.get(name);
 	}
-	
+
 	public CellType getCellType(String name)
 	{
 		MyAssert.a(cellTypesMap.containsKey(name));
 		return cellTypesMap.get(name);
 	}
-	
+
 	public CellGroup getCellGroup(String name)
 	{
 		MyAssert.a(cellGroupsMap.containsKey(name));
 		return cellGroupsMap.get(name);
 	}
-	
+
 	public void setRanges(Range[] ranges)
 	{
 		this.ranges = ranges;
-		
+
 		rangesMap = new HashMap<>();
 		for (Range range : ranges)
 			rangesMap.put(range.name, range);
@@ -107,12 +107,12 @@ public class Rules
 					table[maxRadius + i][maxRadius + j] |= range.table[range.radius + i][range.radius + j];
 		rangeMax = new Range("MAX_RANGE", table);
 	}
-	
+
 	public Range getRange(String name)
 	{
 		return rangesMap.get(name);
 	}
-	
+
 	public String[] getAllUnitTypes()
 	{
 		String[] names = new String[unitTypes.length];
@@ -120,7 +120,7 @@ public class Rules
 			names[i] = unitTypes[i].name;
 		return names;
 	}
-	
+
 	public String[] getAllCellTypes()
 	{
 		String[] names = new String[cellTypes.length];
@@ -128,7 +128,7 @@ public class Rules
 			names[i] = cellTypes[i].name;
 		return names;
 	}
-	
+
 	public String[] getAllCellGroups()
 	{
 		String[] names = new String[cellGroups.length];
@@ -136,17 +136,17 @@ public class Rules
 			names[i] = cellGroups[i].name;
 		return names;
 	}
-	
+
 	public int numberUnitTypes()
 	{
 		return unitTypes.length;
 	}
-	
+
 	public int numberCellTypes()
 	{
 		return cellTypes.length;
 	}
-	
+
 	public JsonArray getDefaultsPlayers(int numberPlayers)
 	{
 		JsonArray array = new JsonArray();

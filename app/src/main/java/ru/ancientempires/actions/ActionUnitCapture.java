@@ -12,20 +12,20 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitCapture extends ActionFrom
 {
-	
+
 	@Override
 	public ActionResult perform(Game game)
 	{
 		performBase(game);
 		return null;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return super.check() && new ActionHelper(game).canUnitCapture(i, j);
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -38,7 +38,7 @@ public class ActionUnitCapture extends ActionFrom
 		unit.setTurn();
 		game.currentEarns[unit.player.ordinal] += cell.type.earn;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

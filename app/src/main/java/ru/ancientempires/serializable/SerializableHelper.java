@@ -22,7 +22,7 @@ import ru.ancientempires.tasks.Task;
 
 public class SerializableHelper
 {
-	
+
 	private static Class<?>[] baseClasses = new Class<?>[] {
 			Script.class,
 			Task.class,
@@ -70,7 +70,7 @@ public class SerializableHelper
 			map.put(base, getSubclasses(base));
 		return map;
 	}
-	
+
 	public static Class<?>[] getSubclasses(Class<?> base)
 	{
 		ArrayList<Class<?>> subclasses = new ArrayList<>();

@@ -8,7 +8,7 @@ import ru.ancientempires.model.Unit;
 
 public class DrawUnitMoveEnd extends DrawOnFramesGroup
 {
-	
+
 	private int    frameUpdateBonus;
 	private Unit[] units;
 
@@ -32,7 +32,7 @@ public class DrawUnitMoveEnd extends DrawOnFramesGroup
 			}
 		}
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -41,5 +41,5 @@ public class DrawUnitMoveEnd extends DrawOnFramesGroup
 			for (Unit unit : units)
 				main.units.field[unit.i][unit.j].canUpdatePositiveBonus = true;
 	}
-	
+
 }

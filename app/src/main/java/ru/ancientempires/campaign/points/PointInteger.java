@@ -9,7 +9,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class PointInteger extends AbstractPoint
 {
-	
+
 	public int i, j;
 
 	public PointInteger()
@@ -21,13 +21,13 @@ public class PointInteger extends AbstractPoint
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public int getI()
 	{
 		return i;
 	}
-	
+
 	@Override
 	public int getJ()
 	{

@@ -15,7 +15,7 @@ import ru.ancientempires.rules.Rules;
 
 public class GameConverter
 {
-	
+
 	public  String[] cellStrings;
 	private Rules    rules;
 
@@ -24,7 +24,7 @@ public class GameConverter
 		this.rules = rules;
 		initCells();
 	}
-	
+
 	public void initCells()
 	{
 		cellStrings = new String[48];
@@ -74,7 +74,7 @@ public class GameConverter
 		cellStrings[45] = "BUILDING";
 		cellStrings[46] = "CASTLE";
 	}
-	
+
 	private static boolean imagesEquals(BufferedImage image1, BufferedImage image2)
 	{
 		if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight())
@@ -86,7 +86,7 @@ public class GameConverter
 					return false;
 		return true;
 	}
-	
+
 	public Game convertGame(InputStream in, int iMission, boolean isCampaign) throws IOException
 	{
 		int[][] money = new int[8][2];
@@ -106,7 +106,7 @@ public class GameConverter
 		money[6][1] = 600;
 		money[7][0] = 800;
 		money[7][1] = 200;
-		
+
 		DataInputStream dis = new DataInputStream(in);
 		int w = dis.readInt();
 		int h = dis.readInt();
@@ -178,7 +178,7 @@ public class GameConverter
 			player.color = playerI == 0 ? MyColor.BLUE : playerI == 1 ? MyColor.RED : playerI == 2 ? MyColor.GREEN : MyColor.BLACK;
 			player.gold = isCampaign ? money[iMission][playerI] : null;
 		}*/
-		
+
 		for (int i = 0; i < numberUnits; i++)
 		{
 			Unit unit = new Unit(game, rules.getUnitType(unitTypes[i]), players[unitPlayerBaseIs[i]]);
@@ -189,7 +189,7 @@ public class GameConverter
 			if (isCampaign && iMission == 7)
 				System.out.println(unit);
 		}
-		
+
 		for (int j = 0; j < w; j++)
 			for (int i = 0; i < h; i++)
 			{
@@ -231,21 +231,21 @@ public class GameConverter
 		{
 			game.fieldCells[9][7] = new Cell(game, rules.getCellType("CASTLE"), 9, 7);
 			game.fieldCells[9][7].player = game.players[0];
-			
+
 			game.fieldUnits[9][7] = game.fieldUnits[3][7];
 			game.fieldUnits[3][7] = null;
 			game.fieldUnits[9][7].i = 9;
 			game.fieldUnits[9][7].j = 7;
 			game.fieldUnits[9][7].health = 100;
-			
+
 			game.fieldUnits[10][7] = new Unit(game, rules.getUnitType("SOLDIER"), game.players[1]);
 			game.fieldUnits[10][7].i = 10;
 			game.fieldUnits[10][7].j = 7;
 		}
-		
+
 		return game;
 	}
-	
+
 	public static String getUnitTypeName(int unitType, int team)
 	{
 		String[] names = new String[12];
@@ -261,7 +261,7 @@ public class GameConverter
 		// names[9] = "KING";
 		names[10] = "SKELETON";
 		names[11] = "CRYSTAL";
-		
+
 		if (unitType == 9)
 		{
 			String[] kings =
@@ -276,5 +276,5 @@ public class GameConverter
 		else
 			return names[unitType];
 	}
-	
+
 }

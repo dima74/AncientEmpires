@@ -9,15 +9,15 @@ import ru.ancientempires.framework.MyAssert;
 
 public class AssetsHelper
 {
-	
+
 	private ClassLoader classLoader = getClass().getClassLoader();
-	
+
 	public InputStream openIS(String name) throws IOException
 	{
 		MyAssert.a(false);
 		return classLoader.getResourceAsStream(name);
 	}
-	
+
 	public boolean exists(String name)
 	{
 		if (true)
@@ -35,7 +35,7 @@ public class AssetsHelper
 			return false;
 		}
 	}
-	
+
 	private void print(Enumeration<URL> resources)
 	{
 		while (resources.hasMoreElements())
@@ -44,10 +44,10 @@ public class AssetsHelper
 			System.out.println(url);
 		}
 	}
-	
+
 	public String[] list(String prefix)
 	{
 		return null;
 	}
-	
+
 }

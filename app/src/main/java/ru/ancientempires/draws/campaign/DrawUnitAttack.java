@@ -6,7 +6,7 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
-	
+
 	public DrawUnitAttack(BaseDrawMain mainBase, int i, int j)
 	{
 		super(mainBase);
@@ -16,5 +16,5 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(2));
 	}
-	
+
 }

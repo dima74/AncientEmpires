@@ -23,12 +23,12 @@ import ru.ancientempires.rules.Rules;
 
 public class CellImages extends AbstractImages
 {
-	
+
 	public static CellImages get()
 	{
 		return Client.client.images.cell;
 	}
-	
+
 	public Rules rules;
 
 	public CellBitmap[] cellBitmaps;
@@ -55,23 +55,23 @@ public class CellImages extends AbstractImages
 		else
 			return cellBitmaps[cell.type.ordinal].getBitmap(cell);
 	}
-	
+
 	public boolean containsBitmap(CellType type)
 	{
 		return type.template != null || cellBitmaps[type.ordinal] != null;
 	}
-	
+
 	public boolean isCellSmokes(Cell cell)
 	{
 		return cell.isCapture() && cellBitmaps[cell.type.ordinal].isSmokes;
 	}
-	
+
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
 		cellBitmaps = new CellBitmap[rules.cellTypes.length];
 		cellBitmapsDual = new CellBitmap[rules.cellTypes.length];
-		
+
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
 		MyAssert.a("images", reader.nextName());
@@ -82,15 +82,15 @@ public class CellImages extends AbstractImages
 			CellType type = rules.getCellType(JsonHelper.readString(reader, "type"));
 			MyAssert.a("images", reader.nextName());
 			String[] imageNames = new Gson().fromJson(reader, String[].class);
-			
+
 			CellBitmap cellBitmap = new CellBitmap();
-			
+
 			// defaultBitmap
 			Bitmap[] defaultBitmaps = new Bitmap[imageNames.length];
 			for (int j = 0; j < defaultBitmaps.length; j++)
 				defaultBitmaps[j] = loader.loadImage("default/" + imageNames[j]);
 			cellBitmap.defaultBitmap = new FewBitmaps(defaultBitmaps);
-			
+
 			// colorBitmaps
 			if (type.isCapturing)
 			{
@@ -103,7 +103,7 @@ public class CellImages extends AbstractImages
 					cellBitmap.colorBitmaps[colorI] = new FewBitmaps(bitmaps);
 				}
 			}
-			
+
 			while (reader.peek() == JsonToken.NAME)
 			{
 				String name = reader.nextName().intern();
@@ -120,12 +120,12 @@ public class CellImages extends AbstractImages
 		}
 		reader.endArray();
 		reader.endObject();
-		
+
 		for (CellType type : rules.cellTypes)
 			if (type.template != null)
 				type.template.load(loader, type);
 	}
-	
+
 	@Override
 	public void load(FileLoader loader, Game game) throws IOException
 	{
@@ -139,5 +139,5 @@ public class CellImages extends AbstractImages
 				if (cell.type.template != null)
 					cell.type.template.update(cell);
 	}
-	
+
 }

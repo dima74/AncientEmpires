@@ -7,7 +7,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawBitmaps extends DrawOnFramesWithRangeValues
 {
-	
+
 	public static final int FRAMES_FOR_BITMAP = 2;
 	public              int framesForBitmap   = DrawBitmaps.FRAMES_FOR_BITMAP;
 
@@ -26,30 +26,30 @@ public class DrawBitmaps extends DrawOnFramesWithRangeValues
 		this.framesForBitmap = framesForBitmap;
 		return this;
 	}
-	
+
 	public DrawBitmaps setBitmaps(Bitmap[] bitmaps)
 	{
 		this.bitmaps = bitmaps;
 		return this;
 	}
-	
+
 	public DrawBitmaps setYX(int y, int x)
 	{
 		this.y = y;
 		this.x = x;
 		return this;
 	}
-	
+
 	public DrawBitmaps animateRepeat(int repeat)
 	{
 		animateRange(0, bitmaps.length * framesForBitmap * repeat - 1);
 		return this;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
 		canvas.drawBitmap(bitmaps[value / framesForBitmap % bitmaps.length], x, y, null);
 	}
-	
+
 }

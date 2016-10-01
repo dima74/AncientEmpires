@@ -8,7 +8,7 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
 public class DrawCellAttack extends DrawOnFramesGroup
 {
-	
+
 	private int targetI;
 	private int targetJ;
 	private int frameUpdateTargetCell = -1;
@@ -30,7 +30,7 @@ public class DrawCellAttack extends DrawOnFramesGroup
 	}
 	
 	*/
-	
+
 	public DrawCellAttack(BaseDrawMain mainBase, ActionResultUnitAttack result, int targetI, int targetJ)
 	{
 		super(mainBase);
@@ -38,20 +38,20 @@ public class DrawCellAttack extends DrawOnFramesGroup
 		this.targetJ = targetJ;
 		int y = targetI * A;
 		int x = targetJ * A;
-		
+
 		add(new DrawBitmaps(mainBase)
 				.setYX(y, x)
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(1));
 		frameUpdateTargetCell = frameEnd;
-		
+
 		add(new DrawCellAttackPartTwo(mainBase, targetI, targetJ)
 				.increaseFrameStart(frameCount));
 
 		main.cells.keep[targetI][targetJ] = true;
 		main.cellsDual.keep[targetI][targetJ] = true;
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -62,11 +62,11 @@ public class DrawCellAttack extends DrawOnFramesGroup
 			main.cellsDual.keep[targetI][targetJ] = false;
 		}
 	}
-	
+
 	@Override
 	public void onEnd()
 	{
 		postUpdateCampaign();
 	}
-	
+
 }

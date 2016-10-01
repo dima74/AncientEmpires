@@ -11,7 +11,7 @@ import ru.ancientempires.serializable.MyNullable;
 
 public class ScriptUnitMove extends Script
 {
-	
+
 	public AbstractPoint[] points;
 	@MyNullable
 	public Script[]        handlers; // не ScriptUnitMoveHandler, чтобы можно было присваивать ScriptAlias
@@ -19,7 +19,7 @@ public class ScriptUnitMove extends Script
 
 	public ScriptUnitMove()
 	{}
-	
+
 	public ScriptUnitMove(Object... points)
 	{
 		this.points = AbstractPoint.createPoints(points);
@@ -43,22 +43,22 @@ public class ScriptUnitMove extends Script
 		if (handlers != null)
 			resolveAliases(handlers, scripts);
 	}
-	
+
 	private AbstractPoint first()
 	{
 		return points[0];
 	}
-	
+
 	private AbstractPoint last()
 	{
 		return points[points.length - 1];
 	}
-	
+
 	public int i()
 	{
 		return first().getI();
 	}
-	
+
 	public int j()
 	{
 		return first().getJ();
@@ -68,18 +68,18 @@ public class ScriptUnitMove extends Script
 	{
 		return last().getI();
 	}
-	
+
 	public int targetJ()
 	{
 		return last().getJ();
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.unitMove(this, true);
 	}
-	
+
 	@Override
 	public void performAction()
 	{

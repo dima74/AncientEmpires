@@ -6,23 +6,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCameraSpeed extends Script
 {
-	
+
 	private int delta;
-	
+
 	public ScriptSetCameraSpeed()
 	{}
-	
+
 	public ScriptSetCameraSpeed(int delta)
 	{
 		this.delta = delta;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.setCameraSpeed(delta, this);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

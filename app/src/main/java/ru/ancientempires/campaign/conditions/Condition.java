@@ -7,11 +7,11 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class Condition extends Script
 {
-	
+
 	@Override
 	public void performAction()
 	{}
-	
+
 	// =/({||})\=
 	// from spoon
 

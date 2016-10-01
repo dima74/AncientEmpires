@@ -17,11 +17,11 @@ import ru.ancientempires.serializable.SerializableJson;
 @IndexSubclasses
 public abstract class AbstractPoint extends AbstractGameHandler implements SerializableJson, SerializableData
 {
-	
+
 	public abstract int getI();
-	
+
 	public abstract int getJ();
-	
+
 	@Override
 	public int hashCode()
 	{

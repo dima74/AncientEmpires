@@ -2,7 +2,7 @@ package ru.ancientempires.actions.result;
 
 public class AttackResult
 {
-	
+
 	public int i;
 	public int j;
 

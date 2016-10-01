@@ -7,23 +7,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ActionFrom extends Action
 {
-	
+
 	public int i;
 	public int j;
-	
+
 	public ActionFrom setIJ(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 		return this;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return game.checkCoordinates(i, j);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

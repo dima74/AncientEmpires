@@ -14,7 +14,7 @@ import ru.ancientempires.model.Unit;
 
 public class UnitBitmap
 {
-	
+
 	public float y;
 	public float x;
 
@@ -28,7 +28,7 @@ public class UnitBitmap
 	{
 		this(unit, unit.i, unit.j);
 	}
-	
+
 	public UnitBitmap(Unit unit, int i, int j)
 	{
 		this.unit = unit;
@@ -36,26 +36,26 @@ public class UnitBitmap
 		y = i * 24;
 		x = j * 24;
 	}
-	
+
 	public Bitmap getBaseBitmap()
 	{
 		return UnitImages.get().getUnitBitmap(unit, keepTurn).getBitmap();
 	}
-	
+
 	public Bitmap getHealthBitmap()
 	{
 		if (canUpdateHealth)
 			health = unit.health;
 		return health == 100 ? null : SmallNumberImages.get().getBitmap(health);
 	}
-	
+
 	public Bitmap getLevelBitmap()
 	{
 		return unit.level < 10
 				? SmallNumberImages.get().getBitmap(unit.level)
 				: SmallNumberImages.get().asterisk;
 	}
-	
+
 	public boolean canUpdatePositiveBonus = true;
 	public boolean canUpdateNegativeBonus = true;
 	private boolean hasPositiveBonus;
@@ -67,16 +67,16 @@ public class UnitBitmap
 			hasPositiveBonus = unit.hasPositiveBonus();
 		return hasPositiveBonus;
 	}
-	
+
 	public boolean hasNegativeBonus()
 	{
 		if (canUpdateNegativeBonus)
 			hasNegativeBonus = unit.hasNegativeBonus();
 		return hasNegativeBonus;
 	}
-	
+
 	public int idleAnimationFrameLeft;
-	
+
 	public void idleAnimation(int frameCount)
 	{
 		idleAnimationFrameLeft = frameCount;
@@ -92,7 +92,7 @@ public class UnitBitmap
 			y += Draw.random.nextBoolean() ? 1 : 0;
 			--idleAnimationFrameLeft;
 		}
-		
+
 		canvas.drawBitmap(getBaseBitmap(), x, y, null);
 		Bitmap healthBitmap = getHealthBitmap();
 		if (healthBitmap != null)
@@ -102,7 +102,7 @@ public class UnitBitmap
 			Bitmap levelBitmap = getLevelBitmap();
 			canvas.drawBitmap(levelBitmap, x + 24 - levelBitmap.getWidth(), y + 24 - levelBitmap.getHeight(), null);
 		}
-		
+
 		if (hasPositiveBonus())
 		{
 			Bitmap bonusBitmap = StatusesImages.get().aura;
@@ -114,22 +114,22 @@ public class UnitBitmap
 			canvas.drawBitmap(bonusBitmap, x + 24 - bonusBitmap.getWidth(), y, null);
 		}
 	}
-	
+
 	public Point getIJ()
 	{
 		return new Point(y / 24, x / 24);
 	}
-	
+
 	public void move()
 	{
 		if (handlers != null)
 			for (ScriptUnitMoveHandler script : handlers)
 				script.unitMove(this);
 	}
-	
+
 	public boolean exactlyOn(AbstractPoint point)
 	{
 		return point.getI() * 24 == y && point.getJ() * 24 == x;
 	}
-	
+
 }

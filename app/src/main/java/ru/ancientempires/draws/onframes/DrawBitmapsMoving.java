@@ -6,7 +6,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawBitmapsMoving extends DrawBitmaps
 {
-	
+
 	public int startY;
 	public int startX;
 	public int endY;
@@ -16,7 +16,7 @@ public class DrawBitmapsMoving extends DrawBitmaps
 	{
 		super(mainBase);
 	}
-	
+
 	public DrawBitmapsMoving setLineYX(int startY, int startX, int endY, int endX)
 	{
 		this.startY = startY;
@@ -33,7 +33,7 @@ public class DrawBitmapsMoving extends DrawBitmaps
 		animateRange(0, Math.max(deltaY, deltaX) / delta);
 		return this;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
@@ -41,5 +41,5 @@ public class DrawBitmapsMoving extends DrawBitmaps
 		x = (frameLeft * startX + framePass * endX) / (frameCount - 1);
 		super.draw(canvas, value);
 	}
-	
+
 }

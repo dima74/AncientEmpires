@@ -7,11 +7,11 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptUnitMoveHandler extends Script
 {
-	
+
 	public boolean complete;
-	
+
 	public abstract void unitMove(UnitBitmap unit);
-	
+
 	public void complete()
 	{
 		if (!complete)
@@ -20,13 +20,13 @@ public abstract class ScriptUnitMoveHandler extends Script
 			campaign.iDrawCampaign.updateCampaign();
 		}
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return super.check() && complete;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

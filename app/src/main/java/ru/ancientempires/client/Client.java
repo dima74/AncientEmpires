@@ -22,7 +22,7 @@ import ru.ancientempires.server.Server;
 
 public class Client
 {
-	
+
 	public static Client client;
 
 	public static GamePath getGame(String gameID)
@@ -42,7 +42,7 @@ public class Client
 		MyAssert.a(game != null);
 		return game;
 	}
-	
+
 	public GameInit init;
 	public boolean  part0;
 
@@ -71,12 +71,12 @@ public class Client
 	{
 		return save.numberGames;
 	}
-	
+
 	public String getNameForNewGame()
 	{
 		return String.format(Strings.EDITOR_GAME_NAME_TEMPLATE.toString(), user.numberGames + 1);
 	}
-	
+
 	public ClientServer clientServer;
 	private Server[] servers = new Server[0];
 
@@ -94,7 +94,7 @@ public class Client
 		savesLoader = gamesLoader.getLoader("save/" + "/");
 		loadPart0();
 	}
-	
+
 	// То что нужно для показа главного меню
 	public void loadPart0() throws Exception
 	{
@@ -105,7 +105,7 @@ public class Client
 		fileLoader.loadLocalization(this);
 		MyLog.l("done loadPart0");
 	}
-	
+
 	// То что нужно для показа списка игр
 	public void loadPart1() throws Exception
 	{
@@ -122,7 +122,7 @@ public class Client
 			allFolders.put(folder.folderID, folder);
 		MyLog.l("done loadPart1");
 	}
-	
+
 	// То что нужно непосредственно для игры
 	public void loadPart2() throws Exception
 	{
@@ -134,34 +134,34 @@ public class Client
 		images.preload(imagesLoader);
 		MyLog.l("done loadPart2");
 	}
-	
+
 	// Начинает загружать 1 и 2 части
 	public void startLoadParts12()
 	{
 		init = new GameInit();
 		init.init(this);
 	}
-	
+
 	public boolean isFinishPart1()
 	{
 		return !init.foldersInitThread.isAlive();
 	}
-	
+
 	public boolean isFinishPart2()
 	{
 		return !init.initThread.isAlive();
 	}
-	
+
 	public void finishPart1() throws InterruptedException
 	{
 		init.foldersInitThread.join();
 	}
-	
+
 	public void finishPart2() throws InterruptedException
 	{
 		init.initThread.join();
 	}
-	
+
 	public static Game getGame()
 	{
 		return Client.client.clientServer.game;
@@ -181,7 +181,7 @@ public class Client
 	{
 		clientServer.stopGame();
 	}
-	
+
 	public static void commit(Action action)
 	{
 		if (action.changesGame())
@@ -202,5 +202,5 @@ public class Client
 			}
 		}
 	}
-	
+
 }

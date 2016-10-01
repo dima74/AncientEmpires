@@ -2,11 +2,11 @@ package ru.ancientempires.actions.result;
 
 public class ActionResultGetUnit extends ActionResult
 {
-	
+
 	public boolean canMove;
 	public boolean canAttack;
 	public boolean canRaise;
-	
+
 	public boolean[][] fieldMove;
 	public boolean[][] fieldMoveReal;
 	public boolean[][] fieldAttack;
@@ -15,5 +15,5 @@ public class ActionResultGetUnit extends ActionResult
 	public boolean[][] fieldRaiseReal;
 	public int[][]     previousMoveI;
 	public int[][]     previousMoveJ;
-	
+
 }

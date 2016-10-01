@@ -29,7 +29,7 @@ public class Swing
 		Game game = Client.client.startGame(gameID);
 		System.out.println(game.path.gameID);
 		JFrame frame = new JFrame("Ancient Empires");
-		
+
 		// end turn
 		JTextField text = new JTextField("Конец хода");
 		text.setEditable(false);
@@ -39,7 +39,7 @@ public class Swing
 		text.setMargin(new Insets(10, 10, 10, 10));
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.add("North", text);
-		
+
 		GameComponent component = new GameComponent(game, frame);
 		frame.add(component);
 		frame.pack();
@@ -62,7 +62,7 @@ public class Swing
 				}
 			}
 		});
-		
+
 		text.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -71,7 +71,7 @@ public class Swing
 				component.runOnGameThread(() -> component.inputMain.endTurn(true));
 			}
 		});
-		
+
 		Robot robot = new Robot();
 		File folder = new File("/home/dima/projects/missions/1");
 		boolean write = false;
@@ -81,7 +81,7 @@ public class Swing
 				file.delete();
 		Rectangle rectangle = new Rectangle((1600 - 600) / 2, (900 - 700) / 2, 600 + 50, 700 + 50);
 		int i = 0;
-		
+
 		game.campaign.start();
 		if (component.drawMain.isActiveGame())
 		{
@@ -103,5 +103,5 @@ public class Swing
 			++i;
 		}
 	}
-	
+
 }

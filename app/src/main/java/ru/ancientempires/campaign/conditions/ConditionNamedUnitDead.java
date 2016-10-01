@@ -7,24 +7,24 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionNamedUnitDead extends Condition
 {
-	
+
 	private String name;
-	
+
 	public ConditionNamedUnitDead()
 	{}
-	
+
 	public ConditionNamedUnitDead(String name)
 	{
 		this.name = name;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		Unit unit = game.namedUnits.get(name);
 		return game.floatingUnit != unit && game.getUnit(unit.i, unit.j) != unit;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

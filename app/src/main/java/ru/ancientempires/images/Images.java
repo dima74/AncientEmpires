@@ -12,12 +12,12 @@ import ru.ancientempires.rules.Rules;
 
 public class Images extends AbstractImages
 {
-	
+
 	public static Images get()
 	{
 		return Client.client.images;
 	}
-	
+
 	// public float baseMulti = 1.0f; // 4.5f / 3.0f;
 	public int bitmapSize = 24;
 	public Rules rules;
@@ -28,7 +28,7 @@ public class Images extends AbstractImages
 		cell.rules = rules;
 		unit.rules = rules;
 	}
-	
+
 	public CellImages        cell        = new CellImages();
 	public UnitImages        unit        = new UnitImages();
 	public ActionImages      action      = new ActionImages();
@@ -70,7 +70,7 @@ public class Images extends AbstractImages
 		arrows.preload(loader.getLoader("arrows"));
 		statuses.preload(loader.getLoader("statuses"));
 		smoke.preload(loader.getLoader("smoke"));
-		
+
 		// self
 		amountGold = loader.loadImage("amountGold.png");
 		amountUnits = loader.loadImage("amountUnits.png");
@@ -78,24 +78,24 @@ public class Images extends AbstractImages
 		defence = loader.loadImage("defence.png");
 		levelIncrease = loader.loadImage("levelIncrease.png");
 		levelUp = loader.loadImage("levelUp.png");
-		
+
 		tombstone = new FewBitmaps(loader, "tombstone.png");
 		attack = loader.loadImage("gameover.png");
-		
+
 		amountGoldH = amountGold.getHeight();
 		amountGoldW = amountGold.getWidth();
 		amountUnitsH = amountUnits.getHeight();
 		amountUnitsW = amountUnits.getWidth();
-		
+
 		levelUpH = levelUp.getHeight();
 		levelUpW = levelUp.getWidth();
 	}
-	
+
 	@Override
 	public void load(FileLoader loader, Game game) throws IOException
 	{
 		cell.load(loader.getLoader("cells"), game);
 		unit.load(loader.getLoader("units"), game);
 	}
-	
+
 }

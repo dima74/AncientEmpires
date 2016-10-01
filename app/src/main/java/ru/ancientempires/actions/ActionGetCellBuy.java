@@ -16,22 +16,22 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGetCellBuy extends ActionFrom
 {
-	
+
 	private ActionResultGetCellBuy result;
-	
+
 	@Override
 	public boolean changesGame()
 	{
 		return false;
 	}
-	
+
 	@Override
 	public ActionResultGetCellBuy perform(Game game)
 	{
 		performBase(game);
 		return result;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -42,7 +42,7 @@ public class ActionGetCellBuy extends ActionFrom
 		ArrayList<Unit> units = new ArrayList<>(game.allowedUnits == -1 ? cellUnits : cellUnits.subList(0, game.allowedUnits));
 		units.addAll(0, game.unitsStaticDead[cell.player.ordinal]);
 		result = new ActionResultGetCellBuy(units);
-		
+
 		BuyStatus[] status = result.statuses;
 		for (int k = 0; k < status.length; k++)
 			if (cell.player.numberUnits() >= cell.player.unitsLimit())
@@ -54,7 +54,7 @@ public class ActionGetCellBuy extends ActionFrom
 			else
 				status[k] = BuyStatus.SUCCESS;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

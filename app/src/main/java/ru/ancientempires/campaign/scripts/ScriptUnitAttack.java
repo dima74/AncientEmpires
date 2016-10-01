@@ -6,15 +6,15 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitAttack extends ScriptFrom
 {
-	
+
 	public ScriptUnitAttack()
 	{}
-	
+
 	public ScriptUnitAttack(int i, int j)
 	{
 		super(i, j);
 	}
-	
+
 	@Override
 	public void start()
 	{
@@ -26,7 +26,7 @@ public class ScriptUnitAttack extends ScriptFrom
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

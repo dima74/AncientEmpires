@@ -6,7 +6,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptHideBlackScreen extends Script
 {
-	
+
 	@Override
 	public void start()
 	{
@@ -18,7 +18,7 @@ public class ScriptHideBlackScreen extends Script
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -6,25 +6,25 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSparkDefault extends Script
 {
-	
+
 	private int i;
 	private int j;
-	
+
 	public ScriptSparkDefault()
 	{}
-	
+
 	public ScriptSparkDefault(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.sparksDefault(i, j, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{

@@ -13,7 +13,7 @@ import ru.ancientempires.rules.Rules;
 
 public class ClientServer extends Server
 {
-	
+
 	public Client client;
 	public Game   game;
 
@@ -44,7 +44,7 @@ public class ClientServer extends Server
 			String newID = "save." + client.numberSaves();
 			String newPath = newID.replace('.', '/') + "/";
 			client.gamesLoader.getLoader(newPath).mkdirs();
-			
+
 			GamePath newGamePath = GamePath
 					.get(client, path.path, false)
 					.copyTo(newPath, newID);
@@ -64,7 +64,7 @@ public class ClientServer extends Server
 	{
 		game.saver.finishSave();
 	}
-	
+
 	public void commit(Action action) throws IOException
 	{
 		// action.saveBase(MyAssert.output);
@@ -81,5 +81,5 @@ public class ClientServer extends Server
 			e.printStackTrace();
 		}
 	}
-	
+
 }

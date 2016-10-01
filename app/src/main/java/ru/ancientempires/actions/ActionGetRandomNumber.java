@@ -9,30 +9,30 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionGetRandomNumber extends Action
 {
-	
+
 	public int bound;
 	public ActionResultGetRandomNumber result = new ActionResultGetRandomNumber();
-	
+
 	public ActionGetRandomNumber setBound(int bound)
 	{
 		this.bound = bound;
 		return this;
 	}
-	
+
 	@Override
 	public ActionResultGetRandomNumber perform(Game game)
 	{
 		performBase(game);
 		return result;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
 		result.number = game.random.nextInt(bound);
 		// System.out.println(game + " " + result.number);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

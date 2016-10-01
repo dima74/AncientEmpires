@@ -7,26 +7,26 @@ import ru.ancientempires.Point;
 
 public class DrawWayLine extends Draw
 {
-	
+
 	public static Paint LINE_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
-	
+
 	static
 	{
 		// DrawWayLine.LINE_PAINT.setStrokeWidth(new Draw().A / 3);
 		DrawWayLine.LINE_PAINT.setColor(0xFFE10052);
 	}
-	
+
 	private float[] wayPoints;
 
 	public DrawWayLine(BaseDrawMain mainBase)
 	{
 		super(mainBase);
 	}
-	
+
 	public void update(Point[] points)
 	{
 		wayPoints = new float[(points.length - 1) * 4];
-		
+
 		// extra 1/12 pixels
 		float one12 = 1.0f / 12;
 		for (int k = 0; k < points.length - 1; k++)
@@ -63,17 +63,17 @@ public class DrawWayLine extends Draw
 			wayPoints[k * 4 + 3] = (y2 + 0.5f) * A;
 		}
 	}
-	
+
 	public void destroy()
 	{
 		wayPoints = null;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
 		if (wayPoints != null)
 			canvas.drawLines(wayPoints, DrawWayLine.LINE_PAINT);
 	}
-	
+
 }

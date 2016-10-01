@@ -9,7 +9,7 @@ import ru.ancientempires.model.Unit;
 
 public class DrawUnitsHeal extends DrawOnFramesGroup
 {
-	
+
 	public DrawUnitsHeal(BaseDrawMain mainBase)
 	{
 		super(mainBase);
@@ -19,7 +19,7 @@ public class DrawUnitsHeal extends DrawOnFramesGroup
 	{
 		ArrayList<Unit> unitsToHeal = result.unitsToHeal;
 		ArrayList<Integer> valueToHeal = result.valueToHeal;
-		
+
 		for (int i = 0; i < unitsToHeal.size(); i++)
 		{
 			Unit unit = unitsToHeal.get(i);
@@ -28,5 +28,5 @@ public class DrawUnitsHeal extends DrawOnFramesGroup
 		}
 		return this;
 	}
-	
+
 }

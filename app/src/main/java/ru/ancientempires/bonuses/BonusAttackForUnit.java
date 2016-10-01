@@ -14,40 +14,40 @@ public class BonusAttackForUnit extends Bonus
 	public UnitType targetType;
 	public int      bonusAttack;
 	public int      bonusDefence;
-	
+
 	public BonusAttackForUnit()
 	{}
-	
+
 	public BonusAttackForUnit(UnitType targetType, int bonusAttack, int bonusDefence)
 	{
 		this.targetType = targetType;
 		this.bonusAttack = bonusAttack;
 		this.bonusDefence = bonusDefence;
 	}
-	
+
 	@Override
 	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
 		return checkUnit(targetUnit) ? bonusAttack : 0;
 	}
-	
+
 	@Override
 	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
 		return checkUnit(fromUnit) ? bonusDefence : 0;
 	}
-	
+
 	public boolean checkUnit(Unit unit)
 	{
 		return unit != null && unit.type == targetType;
 	}
-	
+
 	@Override
 	public int getSign()
 	{
 		return (int) Math.signum(bonusAttack + bonusDefence);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -6,17 +6,17 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class TaskFrom extends Task
 {
-	
+
 	public int i;
 	public int j;
-	
+
 	public TaskFrom setIJ(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 		return this;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

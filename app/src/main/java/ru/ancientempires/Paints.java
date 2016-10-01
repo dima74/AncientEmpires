@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 public class Paints
 {
-	
+
 	public static final Paint   ANTI_ALIAS_FLAG = new Paint(Paint.ANTI_ALIAS_FLAG);
 	public static final Paint   WHITE           = new Paint();
 	public static final Paint   RED             = new Paint();
@@ -22,5 +22,5 @@ public class Paints
 			MY_COLORS[color.ordinal()] = paint;
 		}
 	}
-	
+
 }

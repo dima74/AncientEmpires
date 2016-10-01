@@ -6,23 +6,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionTurn extends Condition
 {
-	
+
 	private int turn;
-	
+
 	public ConditionTurn()
 	{}
-	
+
 	public ConditionTurn(int turn)
 	{
 		this.turn = turn;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return game.currentTurn == turn;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

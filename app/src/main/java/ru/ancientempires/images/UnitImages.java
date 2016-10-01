@@ -22,12 +22,12 @@ import ru.ancientempires.rules.Rules;
 
 public class UnitImages extends AbstractImages
 {
-	
+
 	public static UnitImages get()
 	{
 		return Client.client.images.unit;
 	}
-	
+
 	public Rules rules;
 
 	public MyColor[] colors = MyColor.values();
@@ -43,25 +43,25 @@ public class UnitImages extends AbstractImages
 		else
 			return unitBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
-	
+
 	public boolean containsBitmap(UnitType type)
 	{
 		return unitBitmaps[type.ordinal][0] != null;
 	}
-	
+
 	public Bitmap getUnitBitmapBuy(Unit unit)
 	{
 		return unitBitmapsBuy[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
-	
+
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
-		
+
 		unitBitmaps = new FewBitmaps[rules.unitTypes.length][5];
-		
+
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
 		while (reader.peek() == JsonToken.BEGIN_OBJECT)
@@ -80,11 +80,11 @@ public class UnitImages extends AbstractImages
 			reader.endObject();
 		}
 		reader.endArray();
-		
+
 		reader.endObject();
 		reader.close();
 	}
-	
+
 	@Override
 	public void load(FileLoader loader, Game game) throws IOException
 	{
@@ -99,5 +99,5 @@ public class UnitImages extends AbstractImages
 			for (int typeI = 1; typeI < unitBitmapsBuy.length; typeI++)
 				unitBitmapsBuy[typeI][colorI] = Bitmap.createScaledBitmap(unitBitmaps[typeI][colorI].bitmaps[0], 48, 48, false);
 	}
-	
+
 }

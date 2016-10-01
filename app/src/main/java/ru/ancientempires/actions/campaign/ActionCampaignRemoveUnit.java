@@ -9,7 +9,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignRemoveUnit extends ActionFrom
 {
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -23,7 +23,7 @@ public class ActionCampaignRemoveUnit extends ActionFrom
 	{
 		return game.getUnit(i, j) != null;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -11,7 +11,7 @@ import ru.ancientempires.helpers.ActionHelper;
 
 public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 {
-	
+
 	public int lastTapI;
 	public int lastTapJ;
 
@@ -41,7 +41,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	{
 		tapWithoutAction(i, j);
 		drawMain.isDrawCursor = true;
-		
+
 		if (!inputUnit.isActive)
 		{
 			boolean start = inputUnit.start(i, j);
@@ -67,7 +67,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 			}
 		}
 	}
-	
+
 	private void tryCellActions(int i, int j)
 	{
 		if (new ActionHelper(game).canUnitRepair(i, j))
@@ -77,14 +77,14 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		else if (new ActionHelper(game).canBuyOnCell(i, j))
 			tryBuy(i, j);
 	}
-	
+
 	public void tapWithoutAction(int i, int j)
 	{
 		lastTapI = i;
 		lastTapJ = j;
 		drawMain.cursorDefault.tap(i, j);
 	}
-	
+
 	private boolean tryRepair(int i, int j)
 	{
 		new ActionUnitRepair()
@@ -93,7 +93,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		drawMain.postUpdateCampaign();
 		return true;
 	}
-	
+
 	private boolean tryCapture(int i, int j)
 	{
 		new ActionUnitCapture()
@@ -102,7 +102,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		drawMain.postUpdateCampaign();
 		return true;
 	}
-	
+
 	private boolean tryBuy(int i, int j)
 	{
 		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
@@ -111,7 +111,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		new UnitBuyDialog().showDialog(inputMain.activity, this, result);
 		return true;
 	}
-	
+
 	@Override
 	public void onUnitBuy(int iUnit)
 	{
@@ -124,7 +124,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		inputUnit.start(lastTapI, lastTapJ);
 		drawMain.postUpdateCampaign();
 	}
-	
+
 	@Override
 	public void endTurn()
 	{
@@ -132,5 +132,5 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		if (inputUnit.isActive)
 			inputUnit.destroy();
 	}
-	
+
 }

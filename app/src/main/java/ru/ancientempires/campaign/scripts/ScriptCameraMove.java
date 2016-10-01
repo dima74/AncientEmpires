@@ -6,15 +6,15 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptCameraMove extends ScriptOnePoint
 {
-	
+
 	public ScriptCameraMove()
 	{}
-	
+
 	public ScriptCameraMove(Object... point)
 	{
 		super(point);
 	}
-	
+
 	@Override
 	public void start()
 	{
@@ -26,7 +26,7 @@ public class ScriptCameraMove extends ScriptOnePoint
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

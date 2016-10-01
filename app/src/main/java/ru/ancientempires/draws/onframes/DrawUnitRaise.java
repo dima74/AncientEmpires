@@ -7,7 +7,7 @@ import ru.ancientempires.images.SparksImages;
 
 public class DrawUnitRaise extends DrawOnFramesGroup
 {
-	
+
 	private static final int FRAME_LENGTH = SparksImages.get().amountDefault * 3 * 2;
 
 	private int targetI;
@@ -28,7 +28,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 						d,
 						A - d
 				};
-		
+
 		draws.clear();
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
@@ -40,7 +40,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 		frameUpdateTargetUnit = frameStart + DrawUnitRaise.FRAME_LENGTH / 2;
 		main.unitsDead.keep[this.targetI][this.targetJ] = true;
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -51,11 +51,11 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 			main.units.keep[targetI][targetJ] = false;
 		}
 	}
-	
+
 	@Override
 	public void onEnd()
 	{
 		postUpdateCampaign();
 	}
-	
+
 }

@@ -7,7 +7,7 @@ import ru.ancientempires.draws.Draw;
 
 public abstract class DrawOnFrames extends Draw
 {
-	
+
 	public int frameCount;
 	public int framePass;
 	public int frameLeft = 0;
@@ -29,27 +29,27 @@ public abstract class DrawOnFrames extends Draw
 		isEndDrawing = false;
 		return this;
 	}
-	
+
 	public DrawOnFrames increaseFrameStart(int framesBeforeStart)
 	{
 		frameStart += framesBeforeStart;
 		frameEnd += framesBeforeStart;
 		return this;
 	}
-	
+
 	public DrawOnFrames setFrameStart(int frameStart)
 	{
 		this.frameStart = frameStart;
 		frameEnd = frameStart + frameCount;
 		return this;
 	}
-	
+
 	@Override
 	public boolean isEnd()
 	{
 		return isEndDrawing;
 	}
-	
+
 	@Override
 	public final void draw(Canvas canvas)
 	{
@@ -66,18 +66,18 @@ public abstract class DrawOnFrames extends Draw
 		}
 		framePass++;
 	}
-	
+
 	public void onStart()
 	{}
-	
+
 	public abstract void drawOnFrames(Canvas canvas);
-	
+
 	public void onEnd()
 	{}
-	
+
 	public void reAnimate()
 	{
 		animate(frameCount);
 	}
-	
+
 }

@@ -14,22 +14,22 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCellBuy extends ActionFrom
 {
-	
+
 	private int iUnit;
-	
+
 	public ActionCellBuy setUnit(int iUnit)
 	{
 		this.iUnit = iUnit;
 		return this;
 	}
-	
+
 	@Override
 	public ActionResult perform(Game game)
 	{
 		performBase(game);
 		return null;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
@@ -38,13 +38,13 @@ public class ActionCellBuy extends ActionFrom
 		Unit unit = getUnit();
 		return new ActionHelper(game).isEmptyCells(i, j, unit);
 	}
-	
+
 	private boolean checkPlayer()
 	{
 		Player player = game.fieldCells[i][j].player;
 		return player == game.currentPlayer && player.numberUnits() < player.unitsLimit();
 	}
-	
+
 	private Unit getUnit()
 	{
 		ActionGetCellBuy actionGet = new ActionGetCellBuy();
@@ -55,7 +55,7 @@ public class ActionCellBuy extends ActionFrom
 			unit = new Unit(game, unit.type, unit.player);
 		return unit;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -63,10 +63,10 @@ public class ActionCellBuy extends ActionFrom
 		unit.health = unit.type.healthDefault;
 		unit.player = game.currentPlayer;
 		unit.player.units.add(unit);
-		
+
 		game.currentPlayer.gold -= unit.getCost();
 		game.setUnit(i, j, unit);
-		
+
 		if (unit.type.isStatic)
 		{
 			MyAssert.a(game.unitsStaticDead[unit.player.ordinal].contains(unit));
@@ -74,7 +74,7 @@ public class ActionCellBuy extends ActionFrom
 			unit.numberBuys++;
 		}
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

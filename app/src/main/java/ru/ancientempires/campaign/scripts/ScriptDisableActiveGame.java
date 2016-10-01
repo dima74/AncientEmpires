@@ -7,7 +7,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptDisableActiveGame extends Script
 {
-	
+
 	@Override
 	public void start()
 	{

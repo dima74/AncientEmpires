@@ -19,7 +19,7 @@ import ru.ancientempires.rules.RulesSaver;
 
 public class CellTemplate
 {
-	
+
 	public static CellTemplate fromJSON(JsonElement element, RulesLoader loader, CellType cellType)
 	{
 		JsonObject object = element.getAsJsonObject();
@@ -29,7 +29,7 @@ public class CellTemplate
 		template.setFriendsUp(loader.getCellTypes(object.get("friendsUp")));
 		return template;
 	}
-	
+
 	public JsonElement toJSON(RulesSaver saver)
 	{
 		JsonObject object = new JsonObject();
@@ -38,7 +38,7 @@ public class CellTemplate
 		object.add("friendsUp", saver.toArray(friendsUp.toArray(new CellType[0])));
 		return object;
 	}
-	
+
 	public FewBitmaps[] bitmaps = new FewBitmaps[256];
 	public CellTemplateType type;
 
@@ -52,18 +52,18 @@ public class CellTemplate
 		this.cellType = cellType;
 		friends.addAll(Arrays.asList(friendTypes));
 	}
-	
+
 	public CellTemplate setFriendsUp(CellType... friendTypes)
 	{
 		friendsUp.addAll(Arrays.asList(friendTypes));
 		return this;
 	}
-	
+
 	public FewBitmaps get(Cell cell)
 	{
 		return bitmaps[cell.specialization];
 	}
-	
+
 	public final void load(FileLoader loader, CellType cellType) throws IOException
 	{
 		loader = loader.getLoader(cellType.name);
@@ -73,7 +73,7 @@ public class CellTemplate
 			int i = Integer.valueOf(image.substring(0, image.indexOf('.')));
 			bitmaps[i] = new FewBitmaps(loader.loadImage(image));
 		}
-		
+
 		for (int i = 0; i < bitmaps.length; i++)
 			if (bitmaps[i] == null)
 			{
@@ -94,15 +94,15 @@ public class CellTemplate
 						continue;
 					}
 				}
-				
+
 				// 012
 				// 3*4
 				// 567
-				
+
 				// 1 2 4
 				// 8 * 16
 				// 32 64 128
-				
+
 				Bitmap[][] parts = new Bitmap[2][2];
 				// if (type == CellTemplateType.WATER)
 				{
@@ -128,7 +128,7 @@ public class CellTemplate
 					parts[1][1] = getWay(i, 1, 1, 2, 3);
 				}
 				//*/
-				
+
 				Bitmap bitmap = Bitmap.createBitmap(24, 24, Config.ARGB_8888);
 				Canvas canvas = new Canvas(bitmap);
 				for (int h = 0; h < 2; h++)
@@ -137,7 +137,7 @@ public class CellTemplate
 				bitmaps[i] = new FewBitmaps(bitmap);
 			}
 	}
-	
+
 	private Bitmap getWay(int i, int h, int w, int i0, int i1)
 	{
 		int m = 1 << i0 | 1 << i1;
@@ -147,7 +147,7 @@ public class CellTemplate
 		MyAssert.a(false);
 		return null;
 	}
-	
+
 	private Bitmap getWater(int i, int h, int w, int i0, int i1, int i2)
 	{
 		int m = 1 << i0 | 1 << i2;
@@ -159,7 +159,7 @@ public class CellTemplate
 		MyAssert.a(false);
 		return null;
 	}
-	
+
 	public void update(Cell cell)
 	{
 		int mask = bitmaps.length - 1;
@@ -176,7 +176,7 @@ public class CellTemplate
 			mask |= 5;
 		cell.specialization = mask;
 	}
-	
+
 	private boolean isFriend(Cell cell, int i, int j)
 	{
 		if (!cell.game.checkCoordinates(i, j))
@@ -185,11 +185,11 @@ public class CellTemplate
 		return cellType == target.type || friends.contains(target.type)
 				|| j == cell.j && i + 1 == cell.i && friendsUp.contains(target.type);
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return String.format("%s %s", type, friends);
 	}
-	
+
 }

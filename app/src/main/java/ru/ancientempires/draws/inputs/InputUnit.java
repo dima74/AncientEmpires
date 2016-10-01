@@ -22,15 +22,15 @@ import ru.ancientempires.helpers.ActionHelper;
 
 public class InputUnit extends AbstractInput
 {
-	
+
 	public InputPlayer inputPlayer;
-	
+
 	public InputUnit(InputMain inputMain, InputPlayer inputPlayer)
 	{
 		super(inputMain);
 		this.inputPlayer = inputPlayer;
 	}
-	
+
 	public boolean isActive = false;
 
 	private ActionResultGetUnit result;
@@ -49,7 +49,7 @@ public class InputUnit extends AbstractInput
 	{
 		return this.i == i && this.j == j;
 	}
-	
+
 	public boolean start(int i, int j)
 	{
 		if (!new ActionHelper(game).isUnitActive(i, j))
@@ -62,16 +62,16 @@ public class InputUnit extends AbstractInput
 
 		this.i = i;
 		this.j = j;
-		
+
 		diameter = result.fieldMoveReal.length;
 		radius = diameter / 2;
 		isActive = true;
-		
+
 		drawRange = new DrawRange(drawMain, i, j, result);
 		drawMain.add(drawRange);
 		return true;
 	}
-	
+
 	public boolean tap(int targetI, int targetJ)
 	{
 		this.targetI = targetI;
@@ -79,7 +79,7 @@ public class InputUnit extends AbstractInput
 		int relativeI = radius + targetI - i;
 		int relativeJ = radius + targetJ - j;
 		boolean isBoundsNormal = relativeI >= 0 && relativeI < diameter && relativeJ >= 0 && relativeJ < diameter;
-		
+
 		ArrayList<ActionFromTo> actions = new ArrayList<>();
 		if (isBoundsNormal)
 		{
@@ -95,19 +95,19 @@ public class InputUnit extends AbstractInput
 			destroy();
 			return false;
 		}
-		
+
 		if (actions.size() == 1)
 			performAction(actions.get(0));
 		else if (actions.size() == 2)
 			drawMain.action.start(actions.get(0), actions.get(1));
 		return true;
 	}
-	
+
 	public void performAction(ActionFromTo action)
 	{
 		action.setIJ(i, j);
 		action.setTargetIJ(targetI, targetJ);
-		
+
 		if (action.getClass() == ActionUnitMove.class)
 		{
 			ActionResultUnitMove result = ((ActionUnitMove) action).perform(game);
@@ -139,13 +139,13 @@ public class InputUnit extends AbstractInput
 		else
 			MyAssert.a(false);
 	}
-	
+
 	public static Point[] getPoints(int startI, int startJ, int targetI, int targetJ, int[][] previousMoveI, int[][] previousMoveJ)
 	{
 		int radius = previousMoveI.length / 2;
 		int relativeToAbsoluteI = -radius + startI;
 		int relativeToAbsoluteJ = -radius + startJ;
-		
+
 		ArrayList<Point> points = new ArrayList<>();
 		Point p = new Point(targetI - relativeToAbsoluteI, targetJ - relativeToAbsoluteJ);
 		while (!p.equals(Point.NULL_POINT))
@@ -156,11 +156,11 @@ public class InputUnit extends AbstractInput
 		Collections.reverse(points);
 		return points.toArray(new Point[points.size()]);
 	}
-	
+
 	public void destroy()
 	{
 		isActive = false;
 		drawMain.remove(drawRange);
 	}
-	
+
 }

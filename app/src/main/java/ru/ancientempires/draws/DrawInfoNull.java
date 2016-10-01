@@ -7,7 +7,7 @@ import android.graphics.Paint;
 
 public class DrawInfoNull extends Draw
 {
-	
+
 	public int a = 2;
 	public int h = DrawInfo.mA + 8 * 2;
 	public int w = w();
@@ -24,7 +24,7 @@ public class DrawInfoNull extends Draw
 		drawRect(canvas, 0, a, w, a * 2, DrawInfo.color1);
 		drawRect(canvas, 0, a * 3, w, a, DrawInfo.color2);
 		drawRect(canvas, 0, a * 4, w, a, DrawInfo.color5);
-		
+
 		// 3 1
 		// 1 2
 		// 2 1
@@ -36,11 +36,11 @@ public class DrawInfoNull extends Draw
 	{
 		canvas.drawRect(x, y, x + w, y + h, paint);
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
 		canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 	}
-	
+
 }

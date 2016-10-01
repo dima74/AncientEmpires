@@ -16,12 +16,12 @@ public class BonusCreatorDireWolf extends BonusCreator
 		Здесь один бонус, у BonusCreatorWisp может быть несколько, 
 			мне кажется можно и у виспа сделать один
 	*/
-	
+
 	public Bonus bonus;
-	
+
 	public BonusCreatorDireWolf()
 	{}
-	
+
 	public BonusCreatorDireWolf(Bonus bonus)
 	{
 		this.bonus = bonus;
@@ -42,17 +42,17 @@ public class BonusCreatorDireWolf extends BonusCreator
 						new BonusCreate(targetUnit, bonus)
 				};
 	}
-	
+
 	@Override
 	public void saveJSON(JsonObject object, JsonSerializationContext context)
 	{
 		object.add("bonus", context.serialize(bonus));
 	}
-	
+
 	@Override
 	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
 	{
 		bonus = context.deserialize(object.get("bonus"), Bonus.class);
 	}
-	
+
 }

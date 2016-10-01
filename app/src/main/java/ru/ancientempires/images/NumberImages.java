@@ -10,23 +10,23 @@ import ru.ancientempires.framework.FileLoader;
 
 public abstract class NumberImages extends AbstractImages
 {
-	
+
 	public Bitmap minus;
 	public Bitmap plus;
 	public Bitmap[] digits = new Bitmap[10];
-	
+
 	public Bitmap[] numbers;
 	public Bitmap[] numbersPlus;
 	public Bitmap[] numbersMinus;
-	
+
 	public int h;
 	public int w;
-	
+
 	public Bitmap getBitmap(int number)
 	{
 		return number <= 100 ? numbers[number] : createBitmap(number);
 	}
-	
+
 	public Bitmap createBitmap(int number)
 	{
 		int copyNumber = number;
@@ -40,12 +40,12 @@ public abstract class NumberImages extends AbstractImages
 			canvas.drawBitmap(digits[number % 10], i * w, 0, null);
 		return bitmap;
 	}
-	
+
 	public Bitmap getBitmap(int number, int sign)
 	{
 		return sign == 0 ? getBitmap(number) : sign == +1 ? numbersPlus[number] : numbersMinus[number];
 	}
-	
+
 	public void preloadBase(FileLoader loader) throws IOException
 	{
 		for (int i = 0; i < 10; i++)
@@ -53,13 +53,13 @@ public abstract class NumberImages extends AbstractImages
 		minus = loader.loadImage("-.png");
 		h = digits[0].getHeight();
 		w = digits[0].getWidth();
-		
+
 		numbers = getNumbers(null);
 		if (plus != null)
 			numbersPlus = getNumbers(plus);
 		numbersMinus = getNumbers(minus);
 	}
-	
+
 	private Bitmap[] getNumbers(Bitmap prefix)
 	{
 		Bitmap[] bitmaps = new Bitmap[101];
@@ -70,7 +70,7 @@ public abstract class NumberImages extends AbstractImages
 		bitmaps[100] = getBitmap(prefix, digits[1], digits[0], digits[0]);
 		return bitmaps;
 	}
-	
+
 	private Bitmap getBitmap(Bitmap b1, Bitmap b2)
 	{
 		if (b1 == null)
@@ -81,7 +81,7 @@ public abstract class NumberImages extends AbstractImages
 		canvas.drawBitmap(b2, w, 0, null);
 		return bitmap;
 	}
-	
+
 	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3)
 	{
 		if (b1 == null)
@@ -93,7 +93,7 @@ public abstract class NumberImages extends AbstractImages
 		canvas.drawBitmap(b3, w * 2, 0, null);
 		return bitmap;
 	}
-	
+
 	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3, Bitmap b4)
 	{
 		if (b1 == null)
@@ -106,5 +106,5 @@ public abstract class NumberImages extends AbstractImages
 		canvas.drawBitmap(b4, w * 3, 0, null);
 		return bitmap;
 	}
-	
+
 }

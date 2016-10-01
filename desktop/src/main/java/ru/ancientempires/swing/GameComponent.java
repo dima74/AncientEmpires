@@ -22,7 +22,7 @@ import ru.ancientempires.model.Game;
 
 public class GameComponent extends JComponent implements MouseListener, MouseMotionListener
 {
-	
+
 	public int h = 700;
 	public int w = 600;
 
@@ -53,7 +53,7 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 		MyAssert.a(runnable != null);
 		this.runnable = runnable;
 	}
-	
+
 	public GameComponent(Game game, JFrame frame)
 	{
 		this.frame = frame;
@@ -61,32 +61,32 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 		GameActivity activity = new GameActivity();
 		activity.view = this;
 		this.game = activity.game = game;
-		
+
 		drawMain = new DrawMain(activity);
 		inputMain = new InputMain(activity, drawMain);
-		
+
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
-	
+
 	@Override
 	public void paint(Graphics graphics)
 	{
 		Graphics2D g = (Graphics2D) graphics;
-		
+
 		long current = System.currentTimeMillis();
 		long delta = Math.max(1, current - last);
 		last = current;
-		
+
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Float(0, 0, w, h));
 		g.setColor(Color.CYAN);
 		g.fill(new Rectangle2D.Float(10, 10, w - 20, h - 20));
-		
+
 		Canvas canvas = new Canvas(g);
 		drawMain.iFrame++;
 		drawMain.draw(canvas);
-		
+
 		boolean isTouch = false;
 		float touchY = 0, touchX = 0;
 		synchronized (this)
@@ -106,14 +106,14 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 			runnable.run();
 			runnable = null;
 		}
-		
+
 		if (needUpdateCampaign)
 		{
 			game.campaign.update();
 			needUpdateCampaign = false;
 		}
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
@@ -125,7 +125,7 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 				touchX = e.getX();
 			}
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
@@ -135,21 +135,21 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 		lastY = e.getY();
 		lastX = e.getX();
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
 		isDrag = false;
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e)
 	{}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e)
 	{}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
@@ -164,9 +164,9 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 			drawMain.onScroll(-distanceY, -distanceX);
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{}
-	
+
 }

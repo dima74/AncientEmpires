@@ -7,7 +7,7 @@ import ru.ancientempires.model.Unit;
 
 public class ActionResultGetCellBuy extends ActionResult
 {
-	
+
 	public Unit[]      units;
 	public BuyStatus[] statuses;
 
@@ -16,5 +16,5 @@ public class ActionResultGetCellBuy extends ActionResult
 		this.units = units.toArray(new Unit[0]);
 		statuses = new BuyStatus[units.size()];
 	}
-	
+
 }

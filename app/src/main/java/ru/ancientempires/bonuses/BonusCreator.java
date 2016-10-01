@@ -24,7 +24,7 @@ public abstract class BonusCreator
 		В возвращаемом массиве войны могут повторяться, 
 			таким образом один войн может получить несколько бонусов
 	*/
-	
+
 	public static List<Class<? extends BonusCreator>> classes = Arrays.asList(
 			BonusCreatorWisp.class,
 			BonusCreatorDireWolf.class);
@@ -33,20 +33,20 @@ public abstract class BonusCreator
 	{
 		return BonusCreator.classes.indexOf(getClass());
 	}
-	
+
 	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
 	{
 		return new BonusCreate[0];
 	}
-	
+
 	public BonusCreate[] applyBonusesAfterMove(Game game, Unit unit)
 	{
 		return new BonusCreate[0];
 	}
-	
+
 	public void saveJSON(JsonObject object, JsonSerializationContext context)
 	{}
-	
+
 	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
 	{}
 
@@ -63,5 +63,5 @@ public abstract class BonusCreator
 			return null;
 		}
 	}
-	
+
 }

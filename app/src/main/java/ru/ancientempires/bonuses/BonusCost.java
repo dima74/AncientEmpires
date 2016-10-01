@@ -8,23 +8,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusCost extends Bonus
 {
-	
+
 	public int multi;
-	
+
 	public BonusCost()
 	{}
-	
+
 	public BonusCost(int multi)
 	{
 		this.multi = multi;
 	}
-	
+
 	@Override
 	public int getBonusCost(Game game, Unit unit)
 	{
 		return unit.numberBuys * multi;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

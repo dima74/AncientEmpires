@@ -7,20 +7,20 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptEnableActiveGame extends Script
 {
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.enableActiveGame(this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
 		campaign.needActionRewriteScriptsStatus = true;
 		new ActionCampaignLeaveCampaign().perform(game);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

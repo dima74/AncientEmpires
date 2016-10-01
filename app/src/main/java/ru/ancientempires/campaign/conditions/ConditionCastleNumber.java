@@ -9,33 +9,33 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionCastleNumber extends Condition
 {
-	
+
 	private Player player;
 	private int    comparator;    // -1 less, 0 equals, +1 more
 	private int    number;
-	
+
 	public ConditionCastleNumber()
 	{}
-	
+
 	public ConditionCastleNumber(int player, int comparator, int value)
 	{
 		this.player = getGame().players[player];
 		this.comparator = comparator;
 		number = value;
 	}
-	
+
 	private static int sign(int x)
 	{
 		return x == 0 ? 0 : x < 0 ? -1 : 1;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		int number = getCastleNumber(player);
 		return ConditionCastleNumber.sign(this.number - number) == comparator;
 	}
-	
+
 	public int getCastleNumber(Player player)
 	{
 		CellType castle = game.rules.getCellType("CASTLE");
@@ -46,7 +46,7 @@ public class ConditionCastleNumber extends Condition
 					number++;
 		return number;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

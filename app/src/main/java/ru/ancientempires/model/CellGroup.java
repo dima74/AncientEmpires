@@ -22,7 +22,7 @@ public class CellGroup implements Numbered
 
 	public CellType[]    types;
 	public Set<CellType> typesSet;
-	
+
 	public CellGroup(Rules rules, String name, int ordinal)
 	{
 		this.name = name;
@@ -41,25 +41,25 @@ public class CellGroup implements Numbered
 	{
 		return typesSet.contains(type);
 	}
-	
+
 	public void setTypes(CellType... types)
 	{
 		this.types = types;
 		typesSet = new HashSet<>(Arrays.asList(types));
 	}
-	
+
 	public void setBaseTypeToAll()
 	{
 		for (CellType type : types)
 			type.setProperties(baseType);
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return name;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
@@ -68,7 +68,7 @@ public class CellGroup implements Numbered
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -88,5 +88,5 @@ public class CellGroup implements Numbered
 			return false;
 		return true;
 	}
-	
+
 }

@@ -10,27 +10,27 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitCreateAndMove extends ScriptUnitMove
 {
-	
+
 	public UnitType unitType;
 	public Player   player;
 
 	public ScriptUnitCreateAndMove()
 	{
 	}
-	
+
 	public ScriptUnitCreateAndMove(int player, String unitType, Object... points)
 	{
 		super(points);
 		this.player = getGame().players[player];
 		this.unitType = "KING".equals(unitType) ? new UnitHelper(getGame()).getKingType(this.player) : getGame().rules.getUnitType(unitType);
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.unitMove(this, false);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
@@ -46,7 +46,7 @@ public class ScriptUnitCreateAndMove extends ScriptUnitMove
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

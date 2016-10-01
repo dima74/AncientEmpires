@@ -7,7 +7,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 {
-	
+
 	// length = 48
 	public static final int[] YS = new int[]
 			{
@@ -60,7 +60,7 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 					13,
 					13
 			};
-	
+
 	private int y = 0;
 	private int x = 0;
 	private Bitmap bitmap;
@@ -69,7 +69,7 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 	{
 		super(mainBase);
 	}
-	
+
 	public DrawBitmapSinus animate(int y, int x, Bitmap bitmap, int valuesForFrame)
 	{
 		this.y = y;
@@ -78,11 +78,11 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 		animateRange(0, DrawBitmapSinus.YS.length - 1, valuesForFrame);
 		return this;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas, int value)
 	{
 		canvas.drawBitmap(bitmap, x, (int) (y + DrawBitmapSinus.YS[value] * a), null);
 	}
-	
+
 }

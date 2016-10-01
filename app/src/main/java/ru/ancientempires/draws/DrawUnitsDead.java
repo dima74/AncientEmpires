@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 
 public class DrawUnitsDead extends Draw
 {
-	
+
 	public boolean[][] isTombstone = new boolean[game.h][game.w];
 	public boolean[][] keep        = new boolean[game.h][game.w];
 
@@ -25,5 +25,5 @@ public class DrawUnitsDead extends Draw
 					canvas.drawBitmap(Images().tombstone.getBitmap(), j * A, i * A, null);
 			}
 	}
-	
+
 }

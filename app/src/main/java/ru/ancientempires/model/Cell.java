@@ -44,14 +44,14 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		setGame(game);
 		this.type = type;
 	}
-	
+
 	// тоже
 	public Cell(Cell cell)
 	{
 		this(cell.game, cell.type);
 		player = cell.player;
 	}
-	
+
 	public Cell(Game game, CellType type, int i, int j)
 	{
 		this(game, type);
@@ -65,32 +65,32 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		this.player = game.players[player];
 		return this;
 	}
-	
+
 	public void destroy()
 	{
 		new Cell(game, type.destroyingType, i, j);
 	}
-	
+
 	public void repair()
 	{
 		game.fieldCells[i][j] = new Cell(game, type.repairType, i, j);
 	}
-	
+
 	public boolean needSave()
 	{
 		return isCapture();
 	}
-	
+
 	public int getSteps()
 	{
 		return type.steps;
 	}
-	
+
 	public Team getTeam()
 	{
 		return player == null ? null : player.team;
 	}
-	
+
 	@Override
 	public boolean equals(Object o)
 	{

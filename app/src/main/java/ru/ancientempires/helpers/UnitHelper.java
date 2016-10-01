@@ -12,22 +12,22 @@ import ru.ancientempires.tasks.TaskRemoveTombstone;
 
 public class UnitHelper extends GameHandler
 {
-	
+
 	public UnitHelper(Game game)
 	{
 		setGame(game);
 	}
-	
+
 	public int getQualitySum(Unit unit)
 	{
 		return unit.type.attackMin + unit.type.attackMax + unit.type.defence;
 	}
-	
+
 	public final int getNextRankExperience(Unit unit)
 	{
 		return getQualitySum(unit) * 100 * 2 / 3;
 	}
-	
+
 	public boolean checkLevelUp(Unit unit)
 	{
 		int nextLevelExperience = getNextRankExperience(unit);
@@ -39,7 +39,7 @@ public class UnitHelper extends GameHandler
 		}
 		return false;
 	}
-	
+
 	public void checkDied(Unit unit)
 	{
 		if (unit.health > 0)
@@ -57,11 +57,11 @@ public class UnitHelper extends GameHandler
 					.register();
 			game.fieldUnitsDead[unit.i][unit.j] = unit;
 		}
-		
+
 		unit.player.units.remove(unit);
 		game.fieldUnits[unit.i][unit.j] = null;
 	}
-	
+
 	public int getDecreaseHealth(Unit unit, Unit targetUnit)
 	{
 		int attackBonus = unit.getBonusAttack(targetUnit);
@@ -69,14 +69,14 @@ public class UnitHelper extends GameHandler
 		// int attack = unit.type.attackMin;
 		return Math.min(unit.health * Math.max(attack + attackBonus - getUnitDefence(targetUnit, unit), 0) / 100, targetUnit.health);
 	}
-	
+
 	public int getUnitDefence(Unit unit, Unit fromUnit)
 	{
 		int defenceBonus = unit.getBonusDefence(fromUnit);
 		int defence = unit.type.defence;
 		return defence + defenceBonus;
 	}
-	
+
 	public UnitType getKingType(Player player)
 	{
 		HashMap<MyColor, UnitType> colorToKing = new HashMap<MyColor, UnitType>();
@@ -86,12 +86,12 @@ public class UnitHelper extends GameHandler
 		colorToKing.put(MyColor.BLACK, game.rules.getUnitType("KING_SAETH"));
 		return colorToKing.get(player.color);
 	}
-	
+
 	public Unit getKing(Player player)
 	{
 		return getKing(player, getKingType(player));
 	}
-	
+
 	public Unit getKing(Player player, UnitType kingType)
 	{
 		for (Unit unit : player.units)
@@ -99,5 +99,5 @@ public class UnitHelper extends GameHandler
 				return unit;
 		return null;
 	}
-	
+
 }

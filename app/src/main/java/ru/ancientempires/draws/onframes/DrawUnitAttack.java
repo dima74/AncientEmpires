@@ -8,7 +8,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawUnitAttack extends DrawOnFramesGroup
 {
-	
+
 	public AttackResult result;
 
 	private int y;
@@ -29,13 +29,13 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		isDirect = true;
 		return this;
 	}
-	
+
 	public void initPartOne(AttackResult result)
 	{
 		this.result = result;
 		y = result.targetI * A;
 		x = result.targetJ * A;
-		
+
 		draws.clear();
 		add(new DrawNumberSinus(mainBase)
 				.animate(y, x, -1, result.decreaseHealth));
@@ -44,7 +44,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.animateRepeat(2));
 	}
-	
+
 	public DrawUnitAttack initPartTwo(int framesBeforePartTwo)
 	{
 		if (result.effectSign == -1)
@@ -64,7 +64,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			main.units.field[result.targetI][result.targetJ].canUpdateNegativeBonus = false;
 			frameUpdateBonus = draw.frameEnd;
 		}
-		
+
 		if (result.isLevelUp)
 		{
 			DrawOnFrames levelUp = new DrawLevelUp(mainBase)
@@ -75,13 +75,13 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 				add(new DrawToast(mainBase, String.format(Strings.PROMOTION.toString(), game.fieldUnits[result.i][result.j].name))
 						.setFrameStart(levelUp.frameEnd + 1));
 		}
-		
+
 		main.units.field[result.targetI][result.targetJ].canUpdateHealth = false;
 		if (!result.isTargetLive)
 		{
 			main.unitsDead.keep[result.targetI][result.targetJ] = true;
 			main.units.keep[result.targetI][result.targetJ] = true;
-			
+
 			DrawOnFrames gameDrawBitmaps = new DrawBitmaps(mainBase)
 					.setYX(y, x)
 					.setBitmaps(SparksImages().bitmapsDefault)
@@ -89,7 +89,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 					.increaseFrameStart(framesBeforePartTwo);
 			add(gameDrawBitmaps);
 			frameStartSmoke = gameDrawBitmaps.frameEnd;
-			
+
 			int startY = y + 24 - SmokeImages().hDefault;
 			int startX = x;
 			int endY = startY - 3 * 2 * SmokeImages().amountDefault;
@@ -103,7 +103,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		}
 		return this;
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -123,5 +123,5 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		if (iFrame() == frameUpdateBonus)
 			main.units.field[result.targetI][result.targetJ].canUpdateNegativeBonus = true;
 	}
-	
+
 }

@@ -8,7 +8,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignSetNamedUnit extends ActionFrom
 {
-	
+
 	public String name;
 
 	public ActionCampaignSetNamedUnit()
@@ -18,7 +18,7 @@ public class ActionCampaignSetNamedUnit extends ActionFrom
 	{
 		this.name = name;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{

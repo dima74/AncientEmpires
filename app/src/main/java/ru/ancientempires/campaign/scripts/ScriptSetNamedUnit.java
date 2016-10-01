@@ -7,21 +7,21 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetNamedUnit extends Script
 {
-	
+
 	private int    i;
 	private int    j;
 	private String name;
-	
+
 	public ScriptSetNamedUnit()
 	{}
-	
+
 	public ScriptSetNamedUnit(int i, int j, String name)
 	{
 		this.i = i;
 		this.j = j;
 		this.name = name;
 	}
-	
+
 	@Override
 	public void start()
 	{
@@ -29,7 +29,7 @@ public class ScriptSetNamedUnit extends Script
 				.setIJ(i, j)
 				.perform(game);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -73,17 +73,17 @@ import ru.ancientempires.model.Game;
 
 public class CampaignEditor
 {
-	
+
 	// framesForCell = 48 / Unit.speed
 	// delta = mapStepMax / 2
-	
+
 	// оставлять задержку после
 	// PaintableObject.currentRenderer.setCurrentDisplayable(auxMapNameMessage);
 	// createDialogScreen(PaintableObject.getLocaleString(221), (byte)2, (byte)4);
-	
+
 	// не нужно после
 	// createSimpleSparkSprite(sprRedSpark, var12.currentX, var12.currentY, 0, 0, 2, 50);
-	
+
 	public ArrayList<ScriptContainer> allContainerLists = new ArrayList<ScriptContainer>();
 	public ScriptContainer[]        allContainers;
 	public HashSet<ScriptContainer> used;
@@ -99,7 +99,7 @@ public class CampaignEditor
 		h = game.h;
 		w = game.w;
 	}
-	
+
 	public void createCampaign(int iMission) throws IOException
 	{
 		CampaignEditorGame.game = game;
@@ -122,26 +122,26 @@ public class CampaignEditor
 		CampaignEditorGame.game = null;
 		save();
 	}
-	
+
 	public void createDefaultGameCampaign() throws IOException
 	{
 		CampaignEditorGame.game = game;
-		
+
 		ContainerList c = addRoot(new ScriptDisableActiveGame());
 		c = c.add(new ScriptSetMapPositionToCenter());
 		c = c.add(new ScriptHideInfoImmediately());
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptFocusOnCurrentPlayerCenter());
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		CampaignEditorGame.game = null;
 		save();
 	}
-	
+
 	public void createTestGameCampaign() throws IOException
 	{
 		CampaignEditorGame.game = game;
-		
+
 		ContainerList c = addRoot(new ScriptDisableActiveGame());
 		c = c.add(new ScriptUnitChangePosition(3, 3, 5, 5));
 		c = c.add(new ScriptEnableActiveGame());
@@ -149,7 +149,7 @@ public class CampaignEditor
 		CampaignEditorGame.game = null;
 		save();
 	}
-	
+
 	public void save() throws IOException
 	{
 		allContainers = allContainerLists.toArray(new ScriptContainer[0]);
@@ -164,7 +164,7 @@ public class CampaignEditor
 			scripts.get(i).index = i;
 		game.campaign.scripts = scripts.toArray(new Script[0]);
 	}
-	
+
 	public void dfs(ScriptContainer container)
 	{
 		for (ScriptContainer prev : container.prev)
@@ -179,14 +179,14 @@ public class CampaignEditor
 		if (used.contains(container))
 			return;
 		used.add(container);
-		
+
 		container.script.previous = Arrays.stream(container.prev.toArray(new ScriptContainer[0])).map(prev -> prev.script).toArray(Script[]::new);
 		scripts.add(container.script);
-		
+
 		for (ScriptContainer next : container.next)
 			dfs(next);
 	}
-	
+
 	public ContainerList addRoot(Script... scripts)
 	{
 		ContainerList list = new ContainerList((Object[]) scripts);
@@ -194,34 +194,34 @@ public class CampaignEditor
 			allContainerLists.add(container);
 		return list;
 	}
-	
+
 	public ContainerList add(Script... scripts)
 	{
 		return new ContainerList((Object[]) scripts);
 	}
-	
+
 	public ContainerList addConditionOr(ContainerList c, Script... scripts)
 	{
 		ContainerList list = c.add((Object[]) scripts);
 		return addRoot(new ConditionOr(scripts));
 	}
-	
+
 	public ContainerList addConditionAnd(ContainerList c, Script... scripts)
 	{
 		ContainerList list = c.add((Object[]) scripts);
 		return addRoot(new ConditionOr(scripts));
 	}
-	
+
 	public ConditionOr createConditionOr(ContainerList c)
 	{
 		return new ConditionOr(c.stream().map(c2 -> c2.script).toArray(Script[]::new));
 	}
-	
+
 	public ConditionAnd createConditionAnd(ContainerList c)
 	{
 		return new ConditionAnd(c.stream().map(c2 -> c2.script).toArray(Script[]::new));
 	}
-	
+
 	public void mission0() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -231,7 +231,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetUnitSpeed(12));
 		c0 = c0.add(new ScriptSetCameraSpeed(1));
 		c0 = c0.add(new ScriptSetNamedUnit(9, 1, "king"));
-		
+
 		// *
 		ContainerList c = c0.add(new ScriptDialogIntro("intro.0", "campaign/intro/0.png"));
 		c = c.add(new ScriptDialogIntro("intro.1", "campaign/intro/1.png"));
@@ -260,7 +260,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		// new ScriptShowCursor(),
 		c.add(new ScriptEnableActiveGame());
-		
+
 		// part 2
 		c = c.add(new ConditionUnitNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
@@ -278,7 +278,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(333));
 		c = c.add(new ScriptDialog("dialog.5", "campaign/portrait/0.png", "LEFT"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// part 3
 		c = c.add(new ConditionUnitNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
@@ -295,13 +295,13 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(1000));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		// c = addRoot(new ConditionCastleNumber(0, 0, 0), new ConditionNamedUnitDead("king"));
 		c = c0.add(new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
 		// */
 	}
-	
+
 	public void mission1() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -311,7 +311,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetUnitSpeed(12));
 		c0 = c0.add(new ScriptSetCameraSpeed(1));
 		c0 = c0.add(new ScriptSetNamedUnit(11, 8, "king"));
-		
+
 		ContainerList c = c0.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
 				new ScriptUnitMove(12, 7, 10, 7),
@@ -329,7 +329,7 @@ public class CampaignEditor
 		c = c.add(new ScriptSetCursorPosition(3, 7));
 		c = c.add(new ScriptDialog("dialog.2", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptCameraMove(3, 7));
-		
+
 		c = c.add(new ScriptSetUnitSpeed(24));
 		ScriptUnitMoveHandlerPoint handler = new ScriptUnitMoveHandlerPoint(3, 6);
 		c = c.add(handler, new ScriptUnitCreateAndMove(1, "SOLDIER", 3, 7, 3, 6, -2, 6)
@@ -359,7 +359,7 @@ public class CampaignEditor
 		c = c.add(new ScriptCameraMoveOnKing(0));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		c = c.add(new ConditionUnitNumber(1, 0, 0),
 				new ConditionCastleNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
@@ -370,12 +370,12 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		c = c0.add(new ConditionCastleNumber(0, 0, 0),
 				new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
 	}
-	
+
 	public void mission2() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -385,7 +385,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetUnitSpeed(12));
 		c0 = c0.add(new ScriptSetCameraSpeed(1));
 		c0 = c0.add(new ScriptSetNamedUnit(16, 8, "king"));
-		
+
 		ContainerList c = c0.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
 				new ScriptUnitMove(16, 8, 14, 8),
@@ -397,31 +397,31 @@ public class CampaignEditor
 		c = c.add(new ScriptDialog("dialog.2", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// часть 2
 		c = c.add(new ConditionUnitIntoBounds(0, new Bounds(0, 0, 10, w), new Bounds(0, 0, h, 4)));
 		c = c.add(new ScriptDisableActiveGame());
 		c = c.add(new ScriptHideCursor());
 		c = c.add(new ScriptDelay(666));
-		
+
 		c = c.add(new ScriptCameraMove(8, 0),
 				new ScriptUnitCreateAndMove(1, "DIRE_WOLF", 8, -1, 8, 0),
 				new ScriptUnitCreateAndMove(1, "DIRE_WOLF", 7, -2, 7, 1));
 		c = c.add(new ScriptDelay(666));
-		
+
 		c = c.add(new ScriptCameraMove(6, 8),
 				new ScriptUnitCreateAndMove(1, "DIRE_WOLF", 6, 11, 6, 8));
 		c = c.add(new ScriptDelay(333));
-		
+
 		c = c.add(new ScriptCameraMove(1, 2),
 				new ScriptUnitCreateAndMove(1, "WISP", -1, 2, 1, 2),
 				new ScriptUnitCreateAndMove(1, "DIRE_WOLF", -2, 1, 2, 1),
 				new ScriptUnitCreateAndMove(1, "DIRE_WOLF", -2, 3, 2, 3));
 		c = c.add(new ScriptDelay(333));
-		
+
 		c = c.add(new ScriptDialog("dialog.3", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptDelay(666));
-		
+
 		c = c.add(new ScriptCameraMove(8, 4));
 		c = c.add(new ScriptUnitCreate(1, "ELEMENTAL", 8, 3),
 				new ScriptUnitCreate(1, "ELEMENTAL", 7, 4),
@@ -430,7 +430,7 @@ public class CampaignEditor
 				new ScriptSparkDefault(7, 4),
 				new ScriptSparkDefault(8, 5));
 		c = c.add(new ScriptDelay(333));
-		
+
 		c = c.add(new ScriptDialog("dialog.4", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptDialogWithoutImage("dialog.5"));
@@ -438,7 +438,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDialog("dialog.6", "campaign/portrait/0.png", "LEFT"));
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastTitle("dialog.7")); // TODO toast
-		
+
 		c = c.add(new ScriptRemoveUnit(8, 3),
 				new ScriptRemoveUnit(7, 4),
 				new ScriptRemoveUnit(8, 5));
@@ -449,18 +449,18 @@ public class CampaignEditor
 				new ScriptSparkDefault(7, 4),
 				new ScriptSparkDefault(8, 5));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// часть 3
 		c = c.add(new ConditionUnitNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		c = c0.add(new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
 	}
-	
+
 	public void mission3() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -470,7 +470,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetUnitSpeed(12));
 		c0 = c0.add(new ScriptSetCameraSpeed(1));
 		c0 = c0.add(new ScriptSetNamedUnit(5, 0, "king"));
-		
+
 		ContainerList c = c0.add(new ScriptDialogIntro("intro.0", "campaign/intro/3.png"));
 		c = c.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
@@ -502,7 +502,7 @@ public class CampaignEditor
 		c = c.add(new ScriptCameraMove(9, 4), new ScriptSparkAttack(9, 4));
 		// c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptCellAttackPartTwo(9, 4));
-		
+
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptDialog("dialog.3", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptCameraMove(1, 7));
@@ -510,7 +510,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(333));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// часть 2
 		c = c.add(new ConditionUnitNumber(1, 0, 0),
 				new ConditionCastleNumber(1, 0, 0));
@@ -522,12 +522,12 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		c = c0.add(new ConditionCastleNumber(0, 0, 0),
 				new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
 	}
-	
+
 	public void mission4() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -538,7 +538,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetCameraSpeed(6));// ?
 		c0 = c0.add(new ScriptSetNamedUnit(-5, 11, "king"));
 		c0 = c0.add(new ScriptSetNamedUnit(-7, 11, "crystall"));
-		
+
 		ContainerList c = c0.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
 				new ScriptUnitMove(-3, 11, 2, 11),
@@ -553,7 +553,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(333));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// часть 2
 		c = c.add(new ConditionUnitIntoBounds(0, new Bounds(0, 0, h, 8)));
 		c = c.add(new ScriptDisableActiveGame());
@@ -567,7 +567,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDialog("dialog.2", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptCameraMoveOnKing(0));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// part 3
 		c = c.add(new ConditionUnitIntoBounds(0, new Bounds(7, 0, h, w)));
 		c = c.add(new ScriptDisableActiveGame());
@@ -582,7 +582,7 @@ public class CampaignEditor
 		c = c.add(new ScriptUnitCreate(1, "DIRE_WOLF", 10, 6));
 		c = c.add(new ScriptUnitMoveAbout(10, 6, 9, 7));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// part 4
 		c = c.add(new ConditionUnitIntoBounds(0, new Bounds(6, 8, h, w)));
 		c = c.add(new ScriptDisableActiveGame());
@@ -597,7 +597,7 @@ public class CampaignEditor
 		c = c.add(new ScriptUnitCreate(1, "DIRE_WOLF", 5, 12));
 		c = c.add(new ScriptUnitMoveAbout(5, 12, 5, 11));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		// part 5
 		c = c.add(new ConditionUnitIntoBounds(0, new Bounds(8, 15, h, w)));
 		c = c.add(new ScriptDisableActiveGame());
@@ -617,7 +617,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(333));
 		c = c.add(new ScriptDialog("dialog.3", "campaign/portrait/0.png", "LEFT"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		c = addConditionOr(c, new ConditionUnitNumber(1, 0, 0),
 				new ConditionNamedUnitIntoBounds("crystall",
 						new Bounds(11, 15, h, w)));
@@ -626,12 +626,12 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		c = addConditionOr(c0, new ConditionNamedUnitDead("king"),
 				new ConditionNamedUnitDead("crystall"));
 		c = c.add(new ScriptGameOver());
 	}
-	
+
 	public void mission5() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -641,7 +641,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetUnitSpeed(12));// ?
 		c0 = c0.add(new ScriptSetCameraSpeed(2));
 		c0 = c0.add(new ScriptSetNamedUnit(17, 5, "king"));
-		
+
 		ContainerList c = c0.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
 				new ScriptCameraMoveOnKing(0));
@@ -649,7 +649,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDialog("dialog.0", "campaign/portrait/1.png", "LEFT"));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		c = c.add(new ConditionUnitNumber(1, 0, 0), new ConditionCastleNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
 		c = c.add(new ScriptHideCursor());
@@ -659,13 +659,13 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptToastMissionComplete("missionComplete"));
 		c = c.add(new ScriptCloseMission());
-		
+
 		c = c0.add(new ConditionCastleNumber(0, 0, 0),
 				new ConditionNamedUnitDead("king"));
 		c = c.add(new ScriptGameOver());
-		
+
 	}
-	
+
 	public void mission6() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -677,7 +677,7 @@ public class CampaignEditor
 		c0 = c0.add(new ScriptSetNamedUnit(0, 13, "king"));
 		c0 = c0.add(new ScriptSetNamedUnit(-4, 13, "crystall"));
 		c0 = c0.add(new ScriptSetNamedBoolean("part1", true));
-		
+
 		ContainerList c = c0.add(new ScriptToastTitle("title"));
 		c = c.add(new ScriptHideBlackScreen(),
 				new ScriptUnitMove(0, 13, 1, 13, 1, 14, 3, 14).disableMakeSmoke(),
@@ -692,7 +692,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(333));
 		c = c.add(new ScriptDialogTarget("name", "target"));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		//c = c.add(new ConditionTurn(2));
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptDisableActiveGame());
@@ -707,7 +707,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDialog("dialog.2", "campaign/portrait/5.png", "LEFT"));
 		c = c.add(new ScriptCameraMoveOnKing(0));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		c = c.add(createConditionOr(c.add(new ConditionUnitIntoBounds(0, new Bounds(10, 0, h, 9)),
 				new ConditionUnitNumber(1, 0, 0))));
 		c = c.add(new ScriptDelay(666));
@@ -795,7 +795,7 @@ public class CampaignEditor
 		c = c.add(new ScriptDelay(666));
 		c = c.add(new ScriptCameraMoveOnKing(0));
 		c = c.add(new ScriptEnableActiveGame());
-		
+
 		c = c.add(new ConditionUnitNumber(1, 0, 0),
 				new ConditionCastleNumber(1, 0, 0));
 		c = c.add(new ScriptDisableActiveGame());
@@ -813,7 +813,7 @@ public class CampaignEditor
 						new ConditionNamedUnitDead("king"))))));
 		c = c.add(new ScriptGameOver());
 	}
-	
+
 	public void mission7() throws IOException
 	{
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
@@ -1188,7 +1188,7 @@ public class CampaignEditor
 		save(endScripts, file);
 	}
 	*/
-	
+
 	public void convert(int iMission) throws IOException
 	{
 		//for (int iMission = iMission2; iMission <= iMission2; iMission++)
@@ -1209,7 +1209,7 @@ public class CampaignEditor
 			System.out.println("map.add(new Pair(129 + i, \"target\"));");
 			System.out.println("map.add(new Pair(121 + i, \"name\"));");
 			*/
-			
+
 			// int n = 0;
 			if (0 == 1)
 			{
@@ -1226,9 +1226,9 @@ public class CampaignEditor
 			System.out.println("return map;");
 			System.out.println("}");
 			*/
-			
+
 			String alphaChange = "Show";
-			
+
 			int n = 0;
 			ArrayList<ArrayList<String>> cases = new ArrayList<ArrayList<String>>();
 			for (int iStart = 0, iEnd = 0; iStart < strings.length; iStart = iEnd + 2, iEnd = iStart)
@@ -1330,13 +1330,13 @@ public class CampaignEditor
 				scriptsStrings.add("//" + strings[iEnd + 1]);
 				cases.add(scriptsStrings);
 			}
-			
+
 			System.out.println("public void mission" + iMission + "(String file) throws IOException");
 			System.out.println("{");
 			System.out.println("// new Script()).addDependent(");
 			System.out.println("Script[] endScripts =");
 			System.out.println("{");
-			
+
 			System.out.println("new ScriptSetNamedUnit(, , \"king\"),");
 			System.out.println("new ScriptBlackScreen(),");
 			System.out.println("new ScriptHideInfoBar(),");
@@ -1352,7 +1352,7 @@ public class CampaignEditor
 					System.out.println(string);
 				System.out.println(").addDependent(");
 			}
-			
+
 			System.out.println("new ScriptMissionComplete(\"missionComplete\")).addDependent(");
 			System.out.println("new ScriptCloseMission()).getStartScript(), ");
 			System.out.println("new ScriptGameOver().setConditions(new ConditionCastleNumber(0, 0, 0), new ConditionNamedUnitDead(\"king\"))");
@@ -2855,5 +2855,5 @@ public class CampaignEditor
 		save(endScripts, file);
 	}
 	//*/
-	
+
 }

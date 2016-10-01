@@ -6,13 +6,13 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptHideCursor extends Script
 {
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.hideCursor(this);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -9,12 +9,12 @@ import ru.ancientempires.framework.FileLoader;
 
 public class StatusesImages extends AbstractImages
 {
-	
+
 	public static StatusesImages get()
 	{
 		return Client.client.images.statuses;
 	}
-	
+
 	public Bitmap aura;
 	public Bitmap poison;
 
@@ -26,9 +26,9 @@ public class StatusesImages extends AbstractImages
 	{
 		aura = loader.loadImage("aura.png");
 		poison = loader.loadImage("poison.png");
-		
+
 		h = poison.getHeight();
 		w = poison.getWidth();
 	}
-	
+
 }

@@ -27,7 +27,7 @@ public class UnitType implements Named, Numbered
 		То есть при попытке создать война типа KING у игрока синего цвета мы должны получить война типа KING_GALAMAR
 		Если нет "специализации" KING для какого-то цвета то замена то используется KING
 	*/
-	
+
 	public int ordinal;
 
 	public UnitType baseType;
@@ -43,13 +43,13 @@ public class UnitType implements Named, Numbered
 		specializations.put(color, specialization);
 		specialization.templateType = this;
 	}
-	
+
 	public UnitType trySpecialize(Player player)
 	{
 		UnitType specialization = specializations == null ? null : specializations.get(player.color);
 		return specialization == null ? this : specialization;
 	}
-	
+
 	public int attackMin;
 	public int attackMax;
 	public int defence;
@@ -84,7 +84,7 @@ public class UnitType implements Named, Numbered
 				а. В начале изменение общего moveRadius
 				б. При каждом перемещении между клеточками
 	*/
-	
+
 	public Bonus[]        bonuses;
 	public BonusCreator[] creators;
 
@@ -96,32 +96,32 @@ public class UnitType implements Named, Numbered
 		this.name = name.intern();
 		this.ordinal = ordinal;
 	}
-	
+
 	public UnitType setProperties(UnitType type)
 	{
 		baseType = type;
-		
+
 		healthDefault = type.healthDefault;
 		attackMin = type.attackMin;
 		attackMax = type.attackMax;
 		defence = type.defence;
 		moveRadius = type.moveRadius;
 		cost = type.cost;
-		
+
 		repairTypes = type.repairTypes;
 		captureTypes = type.captureTypes;
 		destroyingTypes = type.destroyingTypes;
-		
+
 		attackRange = type.attackRange;
 		attackRangeReverse = type.attackRangeReverse;
 		raiseRange = type.raiseRange;
 		raiseType = type.raiseType;
-		
+
 		isStatic = type.isStatic;
 		hasTombstone = type.hasTombstone;
 		canDoTwoActionAfterOne = type.canDoTwoActionAfterOne;
 		isFly = type.isFly;
-		
+
 		bonuses = type.bonuses;
 		creators = type.creators;
 		return this;
@@ -153,7 +153,7 @@ public class UnitType implements Named, Numbered
 	{
 		return name;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
@@ -162,7 +162,7 @@ public class UnitType implements Named, Numbered
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -182,5 +182,5 @@ public class UnitType implements Named, Numbered
 			return false;
 		return true;
 	}
-	
+
 }

@@ -30,7 +30,7 @@ import ru.ancientempires.helpers.AssetsHelper;
 
 public class FileLoader
 {
-	
+
 	public AssetsHelper assets;
 	public File         baseDirectory;
 	public String       prefix;
@@ -41,12 +41,12 @@ public class FileLoader
 		assets = helper.getAssets();
 		prefix = "";
 	}
-	
+
 	public FileLoader(FileLoader loader)
 	{
 		this(loader, "");
 	}
-	
+
 	public FileLoader(FileLoader loader, String prefix)
 	{
 		baseDirectory = loader.baseDirectory;
@@ -55,17 +55,17 @@ public class FileLoader
 		if (!this.prefix.endsWith("/"))
 			this.prefix += "/";
 	}
-	
+
 	public File getFile(String name)
 	{
 		return new File(baseDirectory, prefix + name);
 	}
-	
+
 	public boolean exists(String name)
 	{
 		return getFile(name).exists() || assets.exists(prefix + name);
 	}
-	
+
 	public InputStream openIS(String name) throws IOException
 	{
 		if (getFile(name).exists())
@@ -73,7 +73,7 @@ public class FileLoader
 		else
 			return assets.openIS(prefix + name);
 	}
-	
+
 	public DataInputStream openDIS(String name) throws IOException
 	{
 		return new DataInputStream(openIS(name));
@@ -83,7 +83,7 @@ public class FileLoader
 	{
 		return new FileInputStream(getFile(name));
 	}
-	
+
 	public JsonReader getReader(String name) throws IOException
 	{
 		if (getFile(name).exists())
@@ -96,22 +96,22 @@ public class FileLoader
 	{
 		return new Scanner(openIS(name));
 	}
-	
+
 	public void mkdirs(String name)
 	{
 		getFile(name).mkdirs();
 	}
-	
+
 	public void mkdirs()
 	{
 		mkdirs("");
 	}
-	
+
 	public OutputStream openOS(String name) throws IOException
 	{
 		return new FileOutputStream(getFile(name));
 	}
-	
+
 	public DataOutputStream openDOS(String name) throws IOException
 	{
 		return new DataOutputStream(openOS(name));
@@ -142,7 +142,7 @@ public class FileLoader
 	{
 		return new PrintWriter(new FileWriter(getFile(name), append));
 	}
-	
+
 	public FileLoader getLoader(String name)
 	{
 		return new FileLoader(this, name);
@@ -152,7 +152,7 @@ public class FileLoader
 	{
 		client.localization.loadFull(this);
 	}
-	
+
 	public String[] list(String name) throws IOException
 	{
 		ArrayList<String> list = new ArrayList<>();
@@ -192,11 +192,11 @@ public class FileLoader
 				file.delete();
 		folder.delete();
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return prefix;
 	}
-	
+
 }

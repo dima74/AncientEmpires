@@ -6,7 +6,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
 {
-	
+
 	public int start;
 	public int end;
 	public int step;
@@ -24,12 +24,12 @@ public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
 		animate(Math.abs(end - start) / this.step + 1);
 		return this;
 	}
-	
+
 	public DrawOnFramesWithRangeValues animateRange(int start, int end)
 	{
 		return animateRange(start, end, 1);
 	}
-	
+
 	@Override
 	public final void drawOnFrames(Canvas canvas)
 	{
@@ -39,7 +39,7 @@ public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
 		int value = b == 0 ? start : (2 * a / b + 1) / 2;
 		draw(canvas, value);
 	}
-	
+
 	public abstract void draw(Canvas canvas, int value);
-	
+
 }

@@ -6,19 +6,19 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptFrom extends Script
 {
-	
+
 	public int i;
 	public int j;
-	
+
 	public ScriptFrom()
 	{}
-	
+
 	public ScriptFrom(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

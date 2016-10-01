@@ -13,22 +13,22 @@ import ru.ancientempires.serializable.SerializableJson;
 @IndexSubclasses
 public abstract class Task extends AbstractGameHandler implements SerializableJson
 {
-	
+
 	@Exclude public int turnToRun;
-	
+
 	public Task setTurn(int differenceTurn)
 	{
 		turnToRun = game.currentTurn + differenceTurn;
 		return this;
 	}
-	
+
 	public void register()
 	{
 		game.registerTask(this);
 	}
-	
+
 	public abstract void run();
-	
+
 	// =/({||})\=
 	// from spoon
 

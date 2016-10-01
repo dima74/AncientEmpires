@@ -15,5 +15,5 @@ public class BaseGameActivity
 	{
 		return view;
 	}
-	
+
 }

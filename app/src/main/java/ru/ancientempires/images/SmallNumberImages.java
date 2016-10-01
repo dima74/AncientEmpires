@@ -9,12 +9,12 @@ import ru.ancientempires.framework.FileLoader;
 
 public class SmallNumberImages extends NumberImages
 {
-	
+
 	public static SmallNumberImages get()
 	{
 		return Client.client.images.smallNumber;
 	}
-	
+
 	public Bitmap asterisk;
 	public Bitmap defenceBitmap;
 
@@ -25,5 +25,5 @@ public class SmallNumberImages extends NumberImages
 		defenceBitmap = loader.loadImage("defence.png");
 		asterisk = loader.loadImage("asterisk.png");
 	}
-	
+
 }

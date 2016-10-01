@@ -9,7 +9,7 @@ public class AbstractInput
 	public Game      game;
 	public InputMain inputMain;
 	public DrawMain  drawMain;
-	
+
 	public AbstractInput(InputMain inputMain)
 	{
 		this.inputMain = inputMain;

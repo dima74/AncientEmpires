@@ -7,7 +7,7 @@ import ru.ancientempires.draws.Draw;
 
 public class DrawBuildingSmokes extends Draw
 {
-	
+
 	private DrawOnFrames[][] field = new DrawOnFrames[game.h][game.w];
 
 	public DrawBuildingSmokes(BaseDrawMain mainBase)
@@ -34,7 +34,7 @@ public class DrawBuildingSmokes extends Draw
 				else
 					field[i][j] = null;
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -47,5 +47,5 @@ public class DrawBuildingSmokes extends Draw
 						draw.reAnimate();
 				}
 	}
-	
+
 }

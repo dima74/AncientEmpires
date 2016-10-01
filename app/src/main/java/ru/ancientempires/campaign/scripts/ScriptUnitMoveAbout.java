@@ -9,24 +9,24 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitMoveAbout extends ScriptUnitMove
 {
-	
+
 	public ScriptUnitMoveAbout()
 	{
 	}
-	
+
 	public ScriptUnitMoveAbout(Object... points)
 	{
 		super(points);
 		MyAssert.a(this.points.length == 2);
 	}
-	
+
 	@Override
 	public void start()
 	{
 		find();
 		campaign.iDrawCampaign.unitMove(this, true);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
@@ -35,7 +35,7 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 				.setTargetIJ(targetI(), targetJ())
 				.perform(game);
 	}
-	
+
 	private void find()
 	{
 		for (int a = 0; ; a++)
@@ -45,7 +45,7 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 						if (tryIJ(i, j))
 							return;
 	}
-	
+
 	private boolean tryIJ(int relativeI, int relativeJ)
 	{
 		int absoluteI = targetI() + relativeI;
@@ -63,7 +63,7 @@ public class ScriptUnitMoveAbout extends ScriptUnitMove
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

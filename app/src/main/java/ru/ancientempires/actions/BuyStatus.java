@@ -8,7 +8,7 @@ public enum BuyStatus
 	NO_GOLD,
 	NO_PLACE,
 	UNIT_LIMIT_REACHED;
-	
+
 	@Override
 	public String toString()
 	{

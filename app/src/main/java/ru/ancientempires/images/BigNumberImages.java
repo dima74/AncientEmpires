@@ -8,9 +8,9 @@ import ru.ancientempires.framework.FileLoader;
 
 public class BigNumberImages extends NumberImages
 {
-	
+
 	public Bitmap slashBitmap;
-	
+
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
@@ -18,5 +18,5 @@ public class BigNumberImages extends NumberImages
 		slashBitmap = loader.loadImage("slash.png");
 		preloadBase(loader);
 	}
-	
+
 }

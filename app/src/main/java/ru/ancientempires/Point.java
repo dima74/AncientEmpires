@@ -6,7 +6,7 @@ import ru.ancientempires.campaign.points.AbstractPoint;
 
 public class Point
 {
-	
+
 	public static final Point NULL_POINT = new Point(-1, -1);
 
 	public int i, j;

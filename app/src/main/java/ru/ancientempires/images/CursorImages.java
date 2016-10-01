@@ -9,7 +9,7 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class CursorImages extends AbstractImages
 {
-	
+
 	public Bitmap cursorWay;
 	public Bitmap cursorAttack;
 	public Bitmap cursorMixed;
@@ -35,9 +35,9 @@ public class CursorImages extends AbstractImages
 				"cursor_pointer_attack_1.png",
 				"cursor_pointer_attack_2.png");
 		cursorPointerWay = new FewBitmaps(loader, "cursor_pointer_way.png");
-		
+
 		cursorH = cursor.getBitmap().getHeight();
 		cursorW = cursor.getBitmap().getWidth();
 	}
-	
+
 }

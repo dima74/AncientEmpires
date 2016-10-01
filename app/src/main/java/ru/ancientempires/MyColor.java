@@ -9,7 +9,7 @@ public enum MyColor
 	GREEN(0xFF00FF00),
 	BLUE(0xFF0000FF),
 	BLACK(0xFF007696);
-	
+
 	public static MyColor[] playersColors()
 	{
 		return new MyColor[] {
@@ -30,17 +30,17 @@ public enum MyColor
 				BLACK
 		};
 	}
-	
+
 	public int showColor;
-	
+
 	MyColor(int showColor)
 	{
 		this.showColor = showColor;
 	}
-	
+
 	public String folderName()
 	{
 		return name().toLowerCase(Locale.ENGLISH);
 	}
-	
+
 }

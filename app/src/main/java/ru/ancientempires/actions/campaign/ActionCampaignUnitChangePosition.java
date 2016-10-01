@@ -10,7 +10,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignUnitChangePosition extends ActionFromTo
 {
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -25,7 +25,7 @@ public class ActionCampaignUnitChangePosition extends ActionFromTo
 	{
 		return game.getUnit(i, j) != null && game.canSetUnit(targetI, targetJ);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

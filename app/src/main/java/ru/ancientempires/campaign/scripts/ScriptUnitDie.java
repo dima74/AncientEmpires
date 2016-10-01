@@ -7,25 +7,25 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptUnitDie extends Script
 {
-	
+
 	private int i;
 	private int j;
-	
+
 	public ScriptUnitDie()
 	{}
-	
+
 	public ScriptUnitDie(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.unitDie(i, j, this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{

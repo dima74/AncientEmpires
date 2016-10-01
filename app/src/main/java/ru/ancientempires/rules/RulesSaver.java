@@ -26,7 +26,7 @@ import ru.ancientempires.model.UnitType;
 
 public class RulesSaver
 {
-	
+
 	public FileLoader loader;
 	public Rules      rules;
 
@@ -35,7 +35,7 @@ public class RulesSaver
 		this.loader = loader;
 		this.rules = rules;
 	}
-	
+
 	public void save(String name) throws IOException
 	{
 		new File("assets/rules/").mkdir();
@@ -55,7 +55,7 @@ public class RulesSaver
 		writer.close();
 		System.exit(0);
 	}
-	
+
 	public class RulesSerializer implements JsonSerializer<Rules>
 	{
 		@Override
@@ -65,15 +65,15 @@ public class RulesSaver
 			result.addProperty("name", rules.name);
 			result.addProperty("version", rules.version);
 			result.addProperty("author", rules.author);
-			
+
 			result.add("allUnitTypes", context.serialize(rules.getAllUnitTypes()));
 			result.add("allCellTypes", context.serialize(rules.getAllCellTypes()));
 			result.add("allCellGroups", context.serialize(rules.getAllCellGroups()));
 			result.add("ranges", context.serialize(rules.ranges));
-			
+
 			result.add("defaultUnitType", context.serialize(rules.defaultUnitType));
 			result.add("defaultCellType", context.serialize(rules.defaultCellType));
-			
+
 			result.add("unitTypes", context.serialize(rules.unitTypes));
 			result.add("cellGroups", context.serialize(rules.cellGroups));
 			result.add("cellTypes", context.serialize(rules.cellTypes));
@@ -84,7 +84,7 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 	public class RangeSerializer implements JsonSerializer<Range>
 	{
 		@Override
@@ -92,7 +92,7 @@ public class RulesSaver
 		{
 			JsonObject result = new JsonObject();
 			result.addProperty("name", range.name);
-			
+
 			JsonArray array = new JsonArray();
 			boolean[][] table = range.table;
 			for (boolean[] line : table)
@@ -106,19 +106,19 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 	public class UnitTypeSerializer implements JsonSerializer<UnitType>
 	{
 		@Override
 		public JsonElement serialize(UnitType type, Type typeOfSrc, JsonSerializationContext context)
 		{
 			UnitType defaultType = type.baseType;
-			
+
 			JsonObject result = new JsonObject();
 			if (type == defaultType || type.baseType != defaultType.baseType)
 				result.addProperty("baseType", type.baseType.name);
 			result.addProperty("name", type.name);
-			
+
 			if (type.specializations != null)
 			{
 				JsonObject specializations = new JsonObject();
@@ -170,7 +170,7 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 	public JsonArray toArray(CellType[] types)
 	{
 		JsonArray array = new JsonArray();
@@ -178,7 +178,7 @@ public class RulesSaver
 			array.add(type.name);
 		return array;
 	}
-	
+
 	public class CellGroupSerializer implements JsonSerializer<CellGroup>
 	{
 		@Override
@@ -191,14 +191,14 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 	public class CellTypeSerializer implements JsonSerializer<CellType>
 	{
 		@Override
 		public JsonElement serialize(CellType type, Type typeOfSrc, JsonSerializationContext context)
 		{
 			CellType defaultType = type.baseType;
-			
+
 			JsonObject result = new JsonObject();
 			if (type == defaultType || type.baseType != defaultType.baseType)
 				result.addProperty("baseType", type.baseType.name);
@@ -239,7 +239,7 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 	public JsonArray toArray(UnitType[] types)
 	{
 		JsonArray array = new JsonArray();
@@ -247,7 +247,7 @@ public class RulesSaver
 			array.add(type.name);
 		return array;
 	}
-	
+
 	public class BonusSerializer implements JsonSerializer<Bonus>
 	{
 		@Override
@@ -265,7 +265,7 @@ public class RulesSaver
 			return null;
 		}
 	}
-	
+
 	public class BonusCreatorSerializer implements JsonSerializer<BonusCreator>
 	{
 		@Override
@@ -277,5 +277,5 @@ public class RulesSaver
 			return result;
 		}
 	}
-	
+
 }

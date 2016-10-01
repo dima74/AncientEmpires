@@ -81,14 +81,14 @@ public class GamesFolder
 		new Gson().toJson(object, writer);
 		writer.close();
 	}
-	
+
 	public void add(GamePath game) throws IOException
 	{
 		games.add(game);
 		numberGames++;
 		save();
 	}
-	
+
 	@Override
 	public String toString()
 	{

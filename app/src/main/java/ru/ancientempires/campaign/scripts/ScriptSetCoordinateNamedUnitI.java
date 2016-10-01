@@ -7,25 +7,25 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCoordinateNamedUnitI extends Script
 {
-	
+
 	private String name;
 	private String unit;
-	
+
 	public ScriptSetCoordinateNamedUnitI()
 	{}
-	
+
 	public ScriptSetCoordinateNamedUnitI(String name, String unit)
 	{
 		this.name = name;
 		this.unit = unit;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		NamedCoordinates.set(name, game.namedUnits.get(unit).i);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -10,7 +10,7 @@ import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class MyAssert
 {
-	
+
 	public static DataOutputStream output;
 	public static PrintWriter      outputText;
 
@@ -33,7 +33,7 @@ public class MyAssert
 
 	private static void method()
 	{}
-	
+
 	public static void a(Object one, Object two)
 	{
 		boolean equals = one.equals(two);

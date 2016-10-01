@@ -8,7 +8,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawUnitAttackMain extends DrawOnFramesGroup
 {
-	
+
 	public static final int FRAMES_BETWEEN_ANIMATES = 32;    // GameDrawDecreaseHealth.FRAMES_ANIMATE * 2 / 3;
 
 	private DrawUnitAttack drawDirect;
@@ -26,15 +26,15 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup
 		drawDirect = new DrawUnitAttack(mainBase).setDirect();
 		drawReverse = new DrawUnitAttack(mainBase);
 	}
-	
+
 	public DrawUnitAttackMain start(ActionResultUnitAttack result)
 	{
 		AttackResult resultDirect = result.attackResultDirect;
 		isUnitDie = !resultDirect.isTargetLive;
-		
+
 		drawDirect.initPartOne(resultDirect);
 		framesBeforePartTwo = drawDirect.frameCount - 16;
-		
+
 		isReverseAttack = result.isReverseAttack;
 		if (isReverseAttack)
 		{
@@ -44,7 +44,7 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup
 			framesBeforePartTwo = DrawUnitAttackMain.FRAMES_BETWEEN_ANIMATES + drawReverse.frameCount - 16;
 			isUnitDie |= !resultReverse.isTargetLive;
 		}
-		
+
 		draws.clear();
 		add(drawDirect.initPartTwo(framesBeforePartTwo));
 		if (isReverseAttack)
@@ -52,7 +52,7 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup
 		main.units.field[drawDirect.result.i][drawDirect.result.j].keepTurn = true;
 		return this;
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -60,12 +60,12 @@ public class DrawUnitAttackMain extends DrawOnFramesGroup
 		if (framePass == framesBeforePartTwo - 1)
 			main.units.field[drawDirect.result.i][drawDirect.result.j].keepTurn = false;
 	}
-	
+
 	@Override
 	public void onEnd()
 	{
 		if (isUnitDie)
 			postUpdateCampaign();
 	}
-	
+
 }

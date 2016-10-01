@@ -8,19 +8,19 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionUnitIntoBounds extends Condition
 {
-	
+
 	private Player           player;
 	private AbstractBounds[] bounds;
-	
+
 	public ConditionUnitIntoBounds()
 	{}
-	
+
 	public ConditionUnitIntoBounds(int player, AbstractBounds... bounds)
 	{
 		this.player = getGame().players[player];
 		this.bounds = bounds;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
@@ -30,7 +30,7 @@ public class ConditionUnitIntoBounds extends Condition
 					return true;
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

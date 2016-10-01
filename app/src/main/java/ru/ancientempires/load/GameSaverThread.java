@@ -6,7 +6,7 @@ import ru.ancientempires.framework.MyAssert;
 
 public class GameSaverThread extends Thread
 {
-	
+
 	public LinkedBlockingQueue<Save>    queue        = new LinkedBlockingQueue<>();
 	public LinkedBlockingQueue<Boolean> reverseQueue = new LinkedBlockingQueue<>(); // Void нельзя, ибо нельзя null
 
@@ -36,5 +36,5 @@ public class GameSaverThread extends Thread
 		}
 		MyAssert.a(queue.isEmpty());
 	}
-	
+
 }

@@ -13,10 +13,10 @@ public class ScriptUnitCreate extends ScriptOnePoint
 
 	private UnitType unitType;
 	private Player   player;
-	
+
 	public ScriptUnitCreate()
 	{}
-	
+
 	public ScriptUnitCreate(int player, String unitType, Object... point)
 	{
 		super(point);
@@ -29,13 +29,13 @@ public class ScriptUnitCreate extends ScriptOnePoint
 	{
 		campaign.iDrawCampaign.unitCreate(i(), j(), unitType, player, this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
 		new ActionCampaignUnitCreate().setType(unitType).setPlayer(player.ordinal).setIJ(i(), j()).perform(game);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

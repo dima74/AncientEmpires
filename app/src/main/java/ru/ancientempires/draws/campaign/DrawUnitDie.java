@@ -7,7 +7,7 @@ import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
 public class DrawUnitDie extends DrawOnFramesGroup
 {
-	
+
 	private int i;
 	private int j;
 
@@ -31,12 +31,12 @@ public class DrawUnitDie extends DrawOnFramesGroup
 				.setFramesForBitmap(4)
 				.animateRepeat(1));
 	}
-	
+
 	@Override
 	public void onEnd()
 	{
 		super.onEnd();
 		main.units.updateUnit(i, j);
 	}
-	
+
 }

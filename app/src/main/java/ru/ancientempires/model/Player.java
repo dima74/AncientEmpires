@@ -52,7 +52,7 @@ public class Player implements SerializableJson, Numbered
 	{
 		return unitsLimit == -1 ? Integer.MAX_VALUE : unitsLimit;
 	}
-	
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -69,13 +69,13 @@ public class Player implements SerializableJson, Numbered
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return "Player [" + units + "]";
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

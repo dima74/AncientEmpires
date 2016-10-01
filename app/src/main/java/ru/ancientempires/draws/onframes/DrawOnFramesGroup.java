@@ -8,14 +8,14 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public class DrawOnFramesGroup extends DrawOnFrames
 {
-	
+
 	public ArrayList<DrawOnFrames> draws = new ArrayList<>();
 
 	public DrawOnFramesGroup(BaseDrawMain mainBase)
 	{
 		super(mainBase);
 	}
-	
+
 	public void add(DrawOnFrames gameDraw)
 	{
 		draws.add(gameDraw);
@@ -24,7 +24,7 @@ public class DrawOnFramesGroup extends DrawOnFrames
 		animate(frameEnd - frameStart + 1);
 		super.increaseFrameStart(frameStart - iFrame() - 1);
 	}
-	
+
 	public int getFrameStart()
 	{
 		int frameStart = Integer.MAX_VALUE;
@@ -32,7 +32,7 @@ public class DrawOnFramesGroup extends DrawOnFrames
 			frameStart = Math.min(frameStart, gameDrawOnFrames.frameStart);
 		return frameStart;
 	}
-	
+
 	public int getFrameEnd()
 	{
 		int frameEnd = 0;
@@ -40,7 +40,7 @@ public class DrawOnFramesGroup extends DrawOnFrames
 			frameEnd = Math.max(frameEnd, gameDrawOnFrames.frameEnd);
 		return frameEnd;
 	}
-	
+
 	@Override
 	public DrawOnFrames increaseFrameStart(int framesBeforeStart)
 	{
@@ -49,12 +49,12 @@ public class DrawOnFramesGroup extends DrawOnFrames
 			draw.increaseFrameStart(framesBeforeStart);
 		return this;
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
 		for (DrawOnFrames gameDrawOnFrames : draws)
 			gameDrawOnFrames.draw(canvas);
 	}
-	
+
 }

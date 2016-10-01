@@ -6,23 +6,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetUnitSpeed extends Script
 {
-	
+
 	private int framesForCell;
-	
+
 	public ScriptSetUnitSpeed()
 	{}
-	
+
 	public ScriptSetUnitSpeed(int framesForCell)
 	{
 		this.framesForCell = framesForCell;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.setUnitSpeed(framesForCell, this);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

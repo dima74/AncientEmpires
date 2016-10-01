@@ -6,13 +6,13 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptHideInfoImmediately extends Script
 {
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.hideInfoImmediately(this);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

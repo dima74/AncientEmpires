@@ -7,15 +7,15 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ConditionAnd extends ConditionBoolean
 {
-	
+
 	public ConditionAnd()
 	{}
-	
+
 	public ConditionAnd(Script... scripts)
 	{
 		super(scripts);
 	}
-	
+
 	@Override
 	public boolean check()
 	{
@@ -24,7 +24,7 @@ public class ConditionAnd extends ConditionBoolean
 				return false;
 		return true;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

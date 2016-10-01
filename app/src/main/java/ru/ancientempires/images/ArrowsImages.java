@@ -8,11 +8,11 @@ import ru.ancientempires.framework.FileLoader;
 
 public class ArrowsImages extends AbstractImages
 {
-	
+
 	public Bitmap equals;
 	public Bitmap more;
 	public Bitmap less;
-	
+
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
@@ -20,5 +20,5 @@ public class ArrowsImages extends AbstractImages
 		more = loader.loadImage("more.png");
 		less = loader.loadImage("less.png");
 	}
-	
+
 }

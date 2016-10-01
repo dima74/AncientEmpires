@@ -16,7 +16,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitAttack extends ActionFromTo
 {
-	
+
 	private ActionResultUnitAttack result = new ActionResultUnitAttack();
 	@Exclude private Unit unit;
 
@@ -26,31 +26,31 @@ public class ActionUnitAttack extends ActionFromTo
 		performBase(game);
 		return result;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
 		return super.check() && checkAttack() && (checkAttackUnit() || checkAttackCell());
 	}
-	
+
 	private boolean checkAttack()
 	{
 		unit = game.fieldUnits[i][j];
 		return unit != null && !unit.isTurn && unit.type.attackRange.checkAccess(unit, targetI, targetJ);
 	}
-	
+
 	private boolean checkAttackCell()
 	{
 		Cell targetCell = game.fieldCells[targetI][targetJ];
 		return targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 	}
-	
+
 	private boolean checkAttackUnit()
 	{
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
 		return targetUnit != null && unit.player.team != targetUnit.player.team;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
@@ -60,25 +60,25 @@ public class ActionUnitAttack extends ActionFromTo
 		else
 			attackCell();
 	}
-	
+
 	private void attackCell()
 	{
 		result.isAttackUnit = false;
-		
+
 		Cell targetCell = game.fieldCells[targetI][targetJ];
 		if (targetCell.player != null)
 			game.currentEarns[targetCell.player.ordinal] -= targetCell.type.earn;
 		targetCell.destroy();
 	}
-	
+
 	private void attackUnit()
 	{
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
 		result.isAttackUnit = true;
-		
+
 		AttackResult attackResultDirect = attack(unit, targetUnit, false);
 		AttackResult attackResultReverse = targetUnit.type.attackRangeReverse.checkAccess(targetUnit, unit) && targetUnit.health > 0 ? attack(targetUnit, unit, true) : null;
-		
+
 		result.attackResultDirect = attackResultDirect;
 		boolean isReverseAttack = attackResultReverse != null;
 		result.isReverseAttack = isReverseAttack;
@@ -90,14 +90,14 @@ public class ActionUnitAttack extends ActionFromTo
 			unit.setTurn();
 		unit.setTurn();
 	}
-	
+
 	private AttackResult attack(Unit unit, Unit targetUnit, boolean reverse)
 	{
 		int decreaseHealth = new UnitHelper(game).getDecreaseHealth(unit, targetUnit);
 		targetUnit.health -= decreaseHealth;
 		new UnitHelper(game).checkDied(targetUnit);
 		unit.experience += new UnitHelper(game).getQualitySum(targetUnit) * decreaseHealth;
-		
+
 		AttackResult result = new AttackResult();
 		result.i = unit.i;
 		result.j = unit.j;
@@ -114,7 +114,7 @@ public class ActionUnitAttack extends ActionFromTo
 		result.effectSign = reverse ? 0 : handleAfterAttackEffect(unit, targetUnit);
 		return result;
 	}
-	
+
 	private int handleAfterAttackEffect(Unit unit, Unit targetUnit)
 	{
 		if (unit.type.creators.length == 0)

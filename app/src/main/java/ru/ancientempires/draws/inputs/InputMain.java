@@ -8,7 +8,7 @@ import ru.ancientempires.draws.DrawUnitsHeal;
 
 public class InputMain extends AbstractInput
 {
-	
+
 	public InputPlayer         inputPlayer;
 	public InputComputer       inputComputer;
 	public AbstractPlayerInput currentInput;
@@ -20,20 +20,20 @@ public class InputMain extends AbstractInput
 		this.activity = activity;
 		this.drawMain = drawMain;
 		game = activity.game;
-		
+
 		inputPlayer = new InputPlayer(this);
 		inputComputer = new InputComputer(this);
 
 		drawMain.inputMain = this;
 		drawMain.inputPlayer = inputPlayer;
-		
+
 		drawMain.info.update();
 		drawMain.cells.update();
 		drawMain.cellsDual.update();
 		drawMain.units.update();
 		drawMain.buildingSmokes.update();
 	}
-	
+
 	public void beginTurn()
 	{
 		if (currentInput != null)
@@ -56,12 +56,12 @@ public class InputMain extends AbstractInput
 		}
 		drawMain.info.update();
 	}
-	
+
 	public void tap(int i, int j)
 	{
 		currentInput.tap(i, j);
 	}
-	
+
 	public void endTurn(boolean performEndTurn)
 	{
 		if (!drawMain.isActiveGame)
@@ -72,16 +72,16 @@ public class InputMain extends AbstractInput
 			performEndTurn();
 		beginTurn();
 	}
-	
+
 	private void performEndTurn()
 	{
 		performEndTurn(new ActionGameEndTurn());
 	}
-	
+
 	public void performEndTurn(ActionGameEndTurn action)
 	{
 		ActionResultGameEndTurn result = action.perform(game);
 		drawMain.add(new DrawUnitsHeal(drawMain).start(result));
 	}
-	
+
 }

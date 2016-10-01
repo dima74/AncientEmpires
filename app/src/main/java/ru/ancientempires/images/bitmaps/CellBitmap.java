@@ -6,7 +6,7 @@ import ru.ancientempires.model.CellType;
 
 public class CellBitmap
 {
-	
+
 	public boolean isDual   = false;
 	public boolean isSmokes = false;
 
@@ -21,5 +21,5 @@ public class CellBitmap
 		else
 			return defaultBitmap;
 	}
-	
+
 }

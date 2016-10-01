@@ -6,7 +6,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 
 public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 {
-	
+
 	private float start;
 	private float end;
 	private float step;
@@ -15,7 +15,7 @@ public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 	{
 		super(mainBase);
 	}
-	
+
 	public DrawOnFramesWithRangeFloat animateRange(float start, float end, float step)
 	{
 		this.start = start;
@@ -24,12 +24,12 @@ public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 		animate(Math.round((end - start) / this.step + 1));
 		return this;
 	}
-	
+
 	public DrawOnFramesWithRangeFloat animateRange(float start, float end)
 	{
 		return animateRange(start, end, 1);
 	}
-	
+
 	@Override
 	public void drawOnFrames(Canvas canvas)
 	{
@@ -38,7 +38,7 @@ public abstract class DrawOnFramesWithRangeFloat extends DrawOnFrames
 		float value = b == 0 ? start : a / b;
 		draw(canvas, value);
 	}
-	
+
 	public abstract void draw(Canvas canvas, float value);
-	
+
 }

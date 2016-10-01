@@ -49,7 +49,7 @@ public class CellType implements Numbered
 	{
 		return ordinal;
 	}
-	
+
 	public CellType setProperties(CellType type)
 	{
 		baseType = type;
@@ -61,15 +61,15 @@ public class CellType implements Numbered
 		isHealing = type.isHealing;
 		destroyingType = type.destroyingType;
 		repairType = type.repairType;
-		
+
 		isCaptureDefault = type.isCaptureDefault;
 		return this;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return name;
 	}
-	
+
 }

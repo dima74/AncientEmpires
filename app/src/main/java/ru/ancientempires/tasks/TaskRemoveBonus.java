@@ -16,35 +16,35 @@ public class TaskRemoveBonus extends Task
 	public Unit  unit;
 	@WithNumbered("numberedBonuses")
 	public Bonus bonus;
-	
+
 	public TaskRemoveBonus()
 	{}
-	
+
 	public TaskRemoveBonus(Game game)
 	{
 		setGame(game);
 	}
-	
+
 	public TaskRemoveBonus setUnit(Unit unit)
 	{
 		MyAssert.a(unit != null);
 		this.unit = unit;
 		return this;
 	}
-	
+
 	public TaskRemoveBonus setBonus(Bonus bonus)
 	{
 		this.bonus = bonus;
 		return this;
 	}
-	
+
 	@Override
 	public void run()
 	{
 		if (unit != null)
 			unit.removeBonus(bonus);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

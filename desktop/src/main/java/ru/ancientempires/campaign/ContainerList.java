@@ -10,17 +10,17 @@ import ru.ancientempires.framework.MyAssert;
 
 public class ContainerList extends ArrayList<ScriptContainer>
 {
-	
+
 	public ContainerList(ArrayList<ScriptContainer> containers)
 	{
 		super(containers);
 	}
-	
+
 	public ContainerList(ScriptContainer... containers)
 	{
 		super(Arrays.asList(containers));
 	}
-	
+
 	public ContainerList(Object... scripts)
 	{
 		Arrays
@@ -43,7 +43,7 @@ public class ContainerList extends ArrayList<ScriptContainer>
 					}
 				});
 	}
-	
+
 	public ScriptContainer[] root()
 	{
 		HashSet<ScriptContainer> allContainers = new HashSet<ScriptContainer>();
@@ -54,14 +54,14 @@ public class ContainerList extends ArrayList<ScriptContainer>
 				.filter(container -> container.prev.isEmpty())
 				.toArray(ScriptContainer[]::new);
 	}
-	
+
 	private static void addSubTree(HashSet<ScriptContainer> allContainers, ScriptContainer container)
 	{
 		allContainers.add(container);
 		for (ScriptContainer prev : container.prev)
 			ContainerList.addSubTree(allContainers, prev);
 	}
-	
+
 	// Script and ContainerList
 	public ContainerList add(Object... scripts)
 	{
@@ -70,15 +70,15 @@ public class ContainerList extends ArrayList<ScriptContainer>
 			container.add(list);
 		return list;
 	}
-	
+
 	public ContainerList first()
 	{
 		return new ContainerList(get(0));
 	}
-	
+
 	public ContainerList last()
 	{
 		return new ContainerList(get(size() - 1));
 	}
-	
+
 }

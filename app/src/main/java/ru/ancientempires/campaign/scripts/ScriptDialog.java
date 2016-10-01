@@ -11,7 +11,7 @@ import ru.ancientempires.serializable.Localize;
 
 public class ScriptDialog extends Script
 {
-	
+
 	@Localize public    String text;
 	@BitmapPath private String imagePath;
 	private             String align;
@@ -19,20 +19,20 @@ public class ScriptDialog extends Script
 
 	public ScriptDialog()
 	{}
-	
+
 	public ScriptDialog(String text, String imagePath, String align)
 	{
 		this.text = text;
 		this.imagePath = imagePath;
 		this.align = align;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.dialog(image, text, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{

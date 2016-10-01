@@ -10,14 +10,14 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionUnitRaise extends ActionFromTo
 {
-	
+
 	@Override
 	public ActionResult perform(Game game)
 	{
 		performBase(game);
 		return null;
 	}
-	
+
 	@Override
 	public boolean check()
 	{
@@ -28,13 +28,13 @@ public class ActionUnitRaise extends ActionFromTo
 		Unit targetUnit = game.fieldUnitsDead[targetI][targetJ];
 		return unit != null && targetUnit != null && !unit.isTurn && unit.type.raiseRange.checkAccess(unit, targetUnit);
 	}
-	
+
 	@Override
 	public void performQuick()
 	{
 		Unit unit = game.fieldUnits[i][j];
 		unit.setTurn();
-		
+
 		Unit raisedUnit = new Unit(game, unit.type.raiseType, unit.player);
 		raisedUnit.i = targetI;
 		raisedUnit.j = targetJ;
@@ -43,7 +43,7 @@ public class ActionUnitRaise extends ActionFromTo
 		game.setUnit(targetI, targetJ, raisedUnit);
 		game.fieldUnitsDead[targetI][targetJ] = null;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

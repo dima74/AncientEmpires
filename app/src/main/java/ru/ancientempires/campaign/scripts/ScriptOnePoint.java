@@ -7,12 +7,12 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public abstract class ScriptOnePoint extends AbstractScriptOnePoint
 {
-	
+
 	public AbstractPoint point;
-	
+
 	public ScriptOnePoint()
 	{}
-	
+
 	public ScriptOnePoint(Object... points)
 	{
 		this.point = AbstractPoint.createPoint(points);
@@ -27,7 +27,7 @@ public abstract class ScriptOnePoint extends AbstractScriptOnePoint
 	{
 		return point.getJ();
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

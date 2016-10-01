@@ -24,10 +24,10 @@ import ru.ancientempires.serializable.WithNumbered;
 @WithNumbered("numberedUnits")
 public class Unit extends AbstractGameHandler implements SerializableJson
 {
-	
+
 	public UnitType type;
 	public Player   player;
-	
+
 	public int i;
 	public int j;
 	public int health;
@@ -36,15 +36,15 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 	// только для статичных войнов
 	@OnlyIf("isStatic")
 	public int numberBuys;
-	
+
 	private boolean isStatic()
 	{
 		return type.isStatic;
 	}
-	
+
 	public boolean isMove;
 	public boolean isTurn;
-	
+
 	@CheckForNullAndEmpty
 	private ArrayList<Bonus> bonuses;
 	@Exclude

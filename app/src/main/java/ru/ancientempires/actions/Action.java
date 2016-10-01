@@ -44,7 +44,7 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		performBase(game);
 		return null;
 	}
-	
+
 	public final void performBase(Game game)
 	{
 		try
@@ -60,7 +60,7 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 			e.printStackTrace();
 		}
 	}
-	
+
 	public final boolean checkBase(Game game)
 	{
 		setGame(game);
@@ -72,21 +72,21 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		}
 		return successfully;
 	}
-	
+
 	public boolean check()
 	{
 		return true;
 	}
-	
+
 	public abstract void performQuick();
-	
+
 	public final void performQuickBase(Game game)
 	{
 		setGame(game);
 		game.allActions.add(this);
 		performQuick();
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -124,12 +124,12 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		// s = game.hashCode() + " " + s;
 		return s;
 	}
-	
+
 	private String coordinates(int i, int j)
 	{
 		return "(" + i + "," + j + ")";
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

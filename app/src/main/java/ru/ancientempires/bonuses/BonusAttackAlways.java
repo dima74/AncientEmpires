@@ -9,37 +9,37 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class BonusAttackAlways extends Bonus
 {
-	
+
 	public int bonusAttack;
 	public int bonusDefence;
-	
+
 	public BonusAttackAlways()
 	{}
-	
+
 	public BonusAttackAlways(int bonusAttack, int bonusDefence)
 	{
 		this.bonusAttack = bonusAttack;
 		this.bonusDefence = bonusDefence;
 	}
-	
+
 	@Override
 	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
 		return bonusAttack;
 	}
-	
+
 	@Override
 	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
 		return bonusDefence;
 	}
-	
+
 	@Override
 	public int getSign()
 	{
 		return (int) Math.signum(bonusAttack + bonusDefence);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

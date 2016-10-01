@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class SerializableJsonHelper
 {
-	
+
 	public static JsonObject toJson(SerializableJson object)
 	{
 		JsonObject jsonObject = new JsonObject();
@@ -21,7 +21,7 @@ public class SerializableJsonHelper
 		jsonObject.addProperty("typeName", object.getClass().getSimpleName());
 		return jsonObject;
 	}
-	
+
 	public static <T extends SerializableJson> JsonArray toJsonArray(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
@@ -29,12 +29,12 @@ public class SerializableJsonHelper
 			jsonArray.add(object.toJson());
 		return jsonArray;
 	}
-	
+
 	public static <T extends SerializableJson> JsonArray toJsonArray(T[] array)
 	{
 		return toJsonArray(Arrays.asList(array));
 	}
-	
+
 	public static <T extends Named> JsonArray toJsonArrayNamed(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
@@ -42,12 +42,12 @@ public class SerializableJsonHelper
 			jsonArray.add(object.getName());
 		return jsonArray;
 	}
-	
+
 	public static <T extends Named> JsonArray toJsonArrayNamed(T[] array)
 	{
 		return toJsonArrayNamed(Arrays.asList(array));
 	}
-	
+
 	public static <T extends Numbered> JsonArray toJsonArrayNumbered(Iterable<T> array)
 	{
 		JsonArray jsonArray = new JsonArray();
@@ -55,29 +55,29 @@ public class SerializableJsonHelper
 			jsonArray.add(object.getNumber());
 		return jsonArray;
 	}
-	
+
 	public static <T extends Numbered> JsonArray toJsonArrayNumbered(T[] array)
 	{
 		return toJsonArrayNumbered(Arrays.asList(array));
 	}
-	
+
 	public static boolean equals(SerializableJson a, SerializableJson b)
 	{
 		return a.toJson().equals(b.toJson());
 	}
-	
+
 	public static int hashCode(SerializableJson o)
 	{
 		return o.toJson().hashCode();
 	}
-	
+
 	public static void eraseDefaults(JsonObject object, JsonObject defaultObject)
 	{
 		for (Map.Entry<String, JsonElement> entry : defaultObject.entrySet())
 			if (entry.getValue().equals(object.get(entry.getKey())))
 				object.remove(entry.getKey());
 	}
-	
+
 	public static JsonObject insertDefaults(JsonObject object, JsonObject defaultObject)
 	{
 		for (Map.Entry<String, JsonElement> entry : defaultObject.entrySet())
@@ -89,7 +89,7 @@ public class SerializableJsonHelper
 		}
 		return object;
 	}
-	
+
 	public static JsonArray insertDefaults(JsonArray array, JsonArray defaultsArray)
 	{
 		if (array == null)
@@ -102,7 +102,7 @@ public class SerializableJsonHelper
 			insertDefaults((JsonObject) array.get(i), (JsonObject) defaultsArray.get(i));
 		return array;
 	}
-	
+
 	public static JsonObject leaveOnly(JsonObject object, String... keys)
 	{
 		JsonObject result = new JsonObject();

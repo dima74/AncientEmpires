@@ -17,42 +17,42 @@ import ru.ancientempires.serializable.WithNumbered;
 @WithNumbered(value = "numberedBonuses", checkGameForNull = true)
 public abstract class Bonus extends AbstractGameHandler implements SerializableJson
 {
-	
+
 	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
 	{
 		return 0;
 	}
-	
+
 	public final int getBonusAttack(Game game, Unit unit, Unit targetUnit)
 	{
 		return getBonusAttack(game, unit, unit.getCell(), targetUnit);
 	}
-	
+
 	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
 	{
 		return 0;
 	}
-	
+
 	public final int getBonusDefence(Game game, Unit unit, Unit fromUnit)
 	{
 		return getBonusDefence(game, unit, unit.getCell(), fromUnit);
 	}
-	
+
 	public int getBonusMove(Game game, Unit unit, Cell targetCell)
 	{
 		return 0;
 	}
-	
+
 	public int getBonusMoveStart(Game game, Unit unit)
 	{
 		return 0;
 	}
-	
+
 	public int getBonusCost(Game game, Unit unit)
 	{
 		return 0;
 	}
-	
+
 	public int getSign()
 	{
 		return 0;

@@ -91,16 +91,16 @@ public class GameSaver
 		add(new SaveSnapshot(mainGame.campaign.createSimpleCopy(game)));
 	}
 	*/
-	
+
 	public class SaveAction implements Save
 	{
 		public Action action;
-		
+
 		public SaveAction(Action action)
 		{
 			this.action = action;
 		}
-		
+
 		@Override
 		public int save() throws Exception
 		{
@@ -129,12 +129,12 @@ public class GameSaver
 			return rc;
 		}
 	}
-	
+
 	public void save(Action action) throws IOException
 	{
 		add(new SaveAction(action));
 	}
-	
+
 	public void waitSave() throws Exception
 	{
 		MyAssert.a(thread.isAlive());
@@ -150,10 +150,10 @@ public class GameSaver
 		actionsDOS.close();
 		game.path.save();
 	}
-	
+
 	public void add(Save save)
 	{
 		thread.queue.add(save);
 	}
-	
+
 }

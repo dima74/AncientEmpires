@@ -9,26 +9,26 @@ import ru.ancientempires.framework.FileLoader;
 
 public class SparksImages extends AbstractImages
 {
-	
+
 	public static SparksImages get()
 	{
 		return Client.client.images.sparks;
 	}
-	
+
 	public Bitmap[] bitmapsDefault;
 	public Bitmap[] bitmapsSmall;
 	public Bitmap[] bitmapsAttack;
-	
+
 	public int amountDefault;
 	public int amountSmall;
 	public int amountAttack;
-	
+
 	public int hDefault;
 	public int wDefault;
-	
+
 	public int hSmall;
 	public int wSmall;
-	
+
 	@Override
 	public void preload(FileLoader loader) throws IOException
 	{
@@ -36,7 +36,7 @@ public class SparksImages extends AbstractImages
 		preloadSmall(loader.getLoader("small/"));
 		preloadAttack(loader.getLoader("attack/"));
 	}
-	
+
 	private void preloadDefault(FileLoader loader) throws IOException
 	{
 		amountDefault = 6;
@@ -46,7 +46,7 @@ public class SparksImages extends AbstractImages
 		hDefault = bitmapsDefault[0].getHeight();
 		wDefault = bitmapsDefault[0].getWidth();
 	}
-	
+
 	private void preloadSmall(FileLoader loader) throws IOException
 	{
 		amountSmall = 3;
@@ -56,7 +56,7 @@ public class SparksImages extends AbstractImages
 		hSmall = bitmapsSmall[0].getHeight();
 		wSmall = bitmapsSmall[0].getWidth();
 	}
-	
+
 	private void preloadAttack(FileLoader loader) throws IOException
 	{
 		amountAttack = 6;
@@ -64,5 +64,5 @@ public class SparksImages extends AbstractImages
 		for (int i = 0; i < amountAttack; i++)
 			bitmapsAttack[i] = loader.loadImage(i + ".png");
 	}
-	
+
 }

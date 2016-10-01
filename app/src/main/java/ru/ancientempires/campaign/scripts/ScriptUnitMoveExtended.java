@@ -64,7 +64,7 @@ public class ScriptUnitMoveExtended extends Script
 	{
 		return false;
 	}//*/
-	
+
 	// =/({||})\=
 	// from spoon
 

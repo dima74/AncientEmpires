@@ -8,7 +8,7 @@ import ru.ancientempires.framework.FileLoader;
 
 public class SmokeImages extends AbstractImages
 {
-	
+
 	public Bitmap[] bitmapsDefault;
 	public Bitmap[] bitmapsSmall;
 
@@ -27,7 +27,7 @@ public class SmokeImages extends AbstractImages
 		preloadDefault(loader.getLoader("default/"));
 		preloadSmall(loader.getLoader("small/"));
 	}
-	
+
 	private void preloadDefault(FileLoader loader) throws IOException
 	{
 		amountDefault = 4;
@@ -37,7 +37,7 @@ public class SmokeImages extends AbstractImages
 		hDefault = bitmapsDefault[0].getHeight();
 		wDefault = bitmapsDefault[0].getWidth();
 	}
-	
+
 	private void preloadSmall(FileLoader loader) throws IOException
 	{
 		amountSmall = 4;
@@ -47,5 +47,5 @@ public class SmokeImages extends AbstractImages
 		hSmall = bitmapsSmall[0].getHeight();
 		wSmall = bitmapsSmall[0].getWidth();
 	}
-	
+
 }

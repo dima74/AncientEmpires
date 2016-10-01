@@ -6,30 +6,30 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptDelay extends Script
 {
-	
+
 	public int milliseconds;
-	
+
 	public ScriptDelay()
 	{}
-	
+
 	public ScriptDelay(int milliseconds)
 	{
 		this.milliseconds = milliseconds;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		//campaign.iDrawCampaign.delay(milliseconds, this);
 		finish();
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

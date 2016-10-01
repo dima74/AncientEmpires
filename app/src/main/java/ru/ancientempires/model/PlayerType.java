@@ -7,7 +7,7 @@ public enum PlayerType
 	PLAYER,
 	COMPUTER,
 	NONE;
-	
+
 	@Override
 	public String toString()
 	{

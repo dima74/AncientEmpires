@@ -7,31 +7,31 @@ import ru.ancientempires.serializable.Localize;
 
 public class ScriptDialogTarget extends Script
 {
-	
+
 	@Localize private String textTitle;
 	@Localize private String textTarget;
 
 	public ScriptDialogTarget()
 	{}
-	
+
 	public ScriptDialogTarget(String textTitle, String textTarget)
 	{
 		this.textTitle = textTitle;
 		this.textTarget = textTarget;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.dialogTarget(textTitle, textTarget, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

@@ -7,15 +7,15 @@ import ru.ancientempires.actions.result.ActionResultGetUnit;
 
 public class DrawRange extends Draw
 {
-	
+
 	private int startI;
 	private int startJ;
-	
+
 	private int radius;
 	private int diameter;
-	
+
 	private Bitmap[][] field;
-	
+
 	public DrawRange(BaseDrawMain mainBase, int startI, int startJ, ActionResultGetUnit result)
 	{
 		super(mainBase);
@@ -23,7 +23,7 @@ public class DrawRange extends Draw
 		this.startJ = startJ;
 		diameter = result.fieldMoveReal.length;
 		radius = diameter / 2;
-		
+
 		field = new Bitmap[diameter][diameter];
 		for (int i = 0; i < diameter; i++)
 			for (int j = 0; j < diameter; j++)
@@ -37,7 +37,7 @@ public class DrawRange extends Draw
 					field[i][j] = CursorImages().cursorAttack;
 			}
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -50,5 +50,5 @@ public class DrawRange extends Draw
 					canvas.drawBitmap(field[relativeI][relativeJ], j * A, i * A, null);
 			}
 	}
-	
+
 }

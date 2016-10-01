@@ -6,25 +6,25 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptSetCursorPosition extends Script
 {
-	
+
 	private int i;
 	private int j;
 
 	public ScriptSetCursorPosition()
 	{}
-	
+
 	public ScriptSetCursorPosition(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.setCursorPosition(i, j, this);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

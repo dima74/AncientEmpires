@@ -10,7 +10,7 @@ public class ScriptRemoveUnit extends ScriptOnePoint
 
 	public ScriptRemoveUnit()
 	{}
-	
+
 	public ScriptRemoveUnit(Object... point)
 	{
 		super(point);
@@ -21,7 +21,7 @@ public class ScriptRemoveUnit extends ScriptOnePoint
 	{
 		campaign.iDrawCampaign.removeUnit(i(), j(), this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{
@@ -29,7 +29,7 @@ public class ScriptRemoveUnit extends ScriptOnePoint
 				.setIJ(i(), j())
 				.perform(game);
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

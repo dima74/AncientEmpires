@@ -11,7 +11,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ActionCampaignUnitCreate extends ActionFrom
 {
-	
+
 	public UnitType type;
 	public int      player;
 
@@ -20,13 +20,13 @@ public class ActionCampaignUnitCreate extends ActionFrom
 		this.type = type;
 		return this;
 	}
-	
+
 	public ActionCampaignUnitCreate setPlayer(int player)
 	{
 		this.player = player;
 		return this;
 	}
-	
+
 	@Override
 	public void performQuick()
 	{

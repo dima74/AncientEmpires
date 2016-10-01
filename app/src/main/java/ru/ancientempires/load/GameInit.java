@@ -17,7 +17,7 @@ public class GameInit
 				Если надо начинать игру, а вторая часть ещё не загрузилась, то
 					показываем прогресс бар и дозагружаем.
 	*/
-	
+
 	public Thread foldersInitThread;
 	public Thread initThread;
 
@@ -41,7 +41,7 @@ public class GameInit
 			}
 		};
 		foldersInitThread.start();
-		
+
 		initThread = new Thread()
 		{
 			@Override
@@ -63,5 +63,5 @@ public class GameInit
 		};
 		initThread.start();
 	}
-	
+
 }

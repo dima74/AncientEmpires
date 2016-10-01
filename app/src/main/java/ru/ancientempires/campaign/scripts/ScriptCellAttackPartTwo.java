@@ -7,22 +7,22 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptCellAttackPartTwo extends ScriptFrom
 {
-	
+
 	public ScriptCellAttackPartTwo()
 	{
 	}
-	
+
 	public ScriptCellAttackPartTwo(int i, int j)
 	{
 		super(i, j);
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.cellAttackPartTwo(i, j, this);
 	}
-	
+
 	@Override
 	public void performAction()
 	{

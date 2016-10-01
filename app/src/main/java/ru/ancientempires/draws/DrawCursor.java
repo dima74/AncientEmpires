@@ -6,11 +6,11 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 
 public class DrawCursor extends Draw
 {
-	
+
 	private FewBitmaps cursor;
 	private int        cursorH;
 	private int        cursorW;
-	
+
 	public int cursorI;
 	public int cursorJ;
 
@@ -18,7 +18,7 @@ public class DrawCursor extends Draw
 	{
 		super(mainBase);
 	}
-	
+
 	public DrawCursor setCursor(FewBitmaps cursor)
 	{
 		this.cursor = cursor;
@@ -40,5 +40,5 @@ public class DrawCursor extends Draw
 		int cursorX = cursorJ * A + (A - cursorW) / 2;
 		canvas.drawBitmap(cursor.getBitmap(), cursorX, cursorY, null);
 	}
-	
+
 }

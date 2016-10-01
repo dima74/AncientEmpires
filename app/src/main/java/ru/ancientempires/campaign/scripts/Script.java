@@ -51,12 +51,12 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 				return false;
 		return check();
 	}
-	
+
 	public boolean check()
 	{
 		return true;
 	}
-	
+
 	public void start()
 	{}
 
@@ -65,10 +65,10 @@ public abstract class Script extends AbstractGameHandler implements Serializable
 		MyAssert.a(!isSimple());
 		campaign.finish(this);
 	}
-	
+
 	public void performAction()
 	{}
-	
+
 	// Используется только в конструкторах, которые вызываются только в редакторе кампании
 	public Game getGame()
 	{

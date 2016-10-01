@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 public class NumberedObjects<T>
 {
-	
+
 	public ArrayList<T> objects = new ArrayList<>();
-	
+
 	public int add(T object)
 	{
 		objects.add(object);
 		return objects.size() - 1;
 	}
-	
+
 	public T get(int i)
 	{
 		return i < objects.size() ? objects.get(i) : null;

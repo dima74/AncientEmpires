@@ -7,7 +7,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptCloseMission extends Script
 {
-	
+
 	@Override
 	public void start()
 	{

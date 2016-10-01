@@ -16,19 +16,19 @@ import ru.ancientempires.tasks.TaskRemoveBonus;
 
 public class BonusCreatorWisp extends BonusCreator
 {
-	
+
 	public Range   range;
 	public Bonus[] bonuses;
-	
+
 	public BonusCreatorWisp()
 	{}
-	
+
 	public BonusCreatorWisp(Range range, Bonus... bonuses)
 	{
 		this.range = range;
 		this.bonuses = bonuses;
 	}
-	
+
 	@Override
 	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit)
 	{
@@ -55,19 +55,19 @@ public class BonusCreatorWisp extends BonusCreator
 		});
 		return creates.toArray(new BonusCreate[creates.size()]);
 	}
-	
+
 	@Override
 	public void saveJSON(JsonObject object, JsonSerializationContext context)
 	{
 		object.addProperty("range", range.name);
 		object.add("bonuses", context.serialize(bonuses));
 	}
-	
+
 	@Override
 	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
 	{
 		range = rules.getRange(object.get("range").getAsString());
 		bonuses = context.deserialize(object.get("bonuses"), Bonus[].class);
 	}
-	
+
 }

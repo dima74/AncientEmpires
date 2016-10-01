@@ -115,28 +115,28 @@ public class Draw
 	{
 		return mainBase.activity.getView().h;
 	}
-	
+
 	public int w()
 	{
 		return mainBase.activity.getView().w;
 	}
-	
+
 	public int iFrame()
 	{
 		return mainBase.iFrame;
 	}
-	
+
 	public void postUpdateCampaign()
 	{
 		((GameActivity) mainBase.activity).postUpdateCampaign();
 	}
-	
+
 	public boolean isEnd()
 	{
 		return false;
 	}
-	
+
 	public void draw(Canvas canvas)
 	{}
-	
+
 }

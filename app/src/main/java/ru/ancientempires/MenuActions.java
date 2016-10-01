@@ -2,7 +2,7 @@ package ru.ancientempires;
 
 public enum MenuActions
 {
-	
+
 	// MainActivity
 	PLAY,
 	ONLINE,
@@ -10,23 +10,23 @@ public enum MenuActions
 	MAP_EDITOR,
 	INSTRUCTIONS,
 	AUTHORS,
-	
+
 	// PlayMenuActivity
 	CAMPAIGN,
 	SKIRMISH,
 	USER_MAPS,
 	LOAD,
-	
+
 	// MapEditorActivity
 	CREATE_GAME,
 	EDIT_GAME;
-	
+
 	@Override
 	public String toString()
 	{
 		return Localization.get(name());
 	}
-	
+
 	public static String[] convertToNames(MenuActions[] actions)
 	{
 		String[] names = new String[actions.length];
@@ -34,5 +34,5 @@ public enum MenuActions
 			names[i] = actions[i].toString();
 		return names;
 	}
-	
+
 }

@@ -7,29 +7,29 @@ import ru.ancientempires.serializable.Localize;
 
 public class ScriptToastMissionComplete extends Script
 {
-	
+
 	@Localize private String text;
-	
+
 	public ScriptToastMissionComplete()
 	{}
-	
+
 	public ScriptToastMissionComplete(String text)
 	{
 		this.text = text;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.toastTitle(text, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

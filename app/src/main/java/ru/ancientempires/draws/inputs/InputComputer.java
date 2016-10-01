@@ -9,7 +9,7 @@ import ru.ancientempires.actions.campaign.ActionCampaignLeaveCampaign;
 
 public class InputComputer extends AbstractPlayerInput
 {
-	
+
 	public InputComputer(InputMain inputMain)
 	{
 		super(inputMain);
@@ -26,7 +26,7 @@ public class InputComputer extends AbstractPlayerInput
 		for (Action action : actions)
 			action.perform(game);
 		inputMain.performEndTurn(actionGameEndTurn);
-		
+
 		drawMain.units.update();
 		drawMain.cells.update();
 		drawMain.cellsDual.update();
@@ -35,13 +35,13 @@ public class InputComputer extends AbstractPlayerInput
 
 		new ActionCampaignLeaveCampaign().perform(game);
 	}
-	
+
 	@Override
 	public void tap(int i, int j)
 	{}
-	
+
 	@Override
 	public void endTurn()
 	{}
-	
+
 }

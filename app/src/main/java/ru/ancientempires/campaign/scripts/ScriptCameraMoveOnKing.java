@@ -8,12 +8,12 @@ import ru.ancientempires.serializable.LoaderInfo;
 
 public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint
 {
-	
+
 	public Player player;
-	
+
 	public ScriptCameraMoveOnKing()
 	{}
-	
+
 	public ScriptCameraMoveOnKing(int player)
 	{
 		this.player = getGame().players[player];
@@ -42,7 +42,7 @@ public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

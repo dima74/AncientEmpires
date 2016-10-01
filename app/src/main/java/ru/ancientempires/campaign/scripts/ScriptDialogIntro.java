@@ -11,32 +11,32 @@ import ru.ancientempires.serializable.Localize;
 
 public class ScriptDialogIntro extends Script
 {
-	
+
 	@Localize private   String text;
 	@BitmapPath private String imagePath;
 	@Exclude private    Bitmap image;
 
 	public ScriptDialogIntro()
 	{}
-	
+
 	public ScriptDialogIntro(String text, String imagePath)
 	{
 		this.text = text;
 		this.imagePath = imagePath;
 	}
-	
+
 	@Override
 	public void start()
 	{
 		campaign.iDrawCampaign.dialogIntro(image, text, this);
 	}
-	
+
 	@Override
 	public boolean isSimple()
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 

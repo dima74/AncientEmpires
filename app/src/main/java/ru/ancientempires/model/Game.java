@@ -33,7 +33,7 @@ import ru.ancientempires.tasks.Task;
 @DontGenerate
 public class Game implements SerializableJson
 {
-	
+
 	// для отладки в ИИ
 	public ArrayList<Action> allActions = new ArrayList<>();
 
@@ -129,14 +129,14 @@ public class Game implements SerializableJson
 		for (int i = 0; i < teams.length; i++)
 			teams[i] = new Team(i);
 	}
-	
+
 	public long getSeed()
 	{
 		long seed = Game.getSeed(random);
 		MyAssert.a(Game.getSeed(new Random(seed)) == seed);
 		return Game.getSeed(random);
 	}
-	
+
 	public static long getSeed(Random random)
 	{
 		long seed = 0;
@@ -153,7 +153,7 @@ public class Game implements SerializableJson
 		}
 		return seed ^ 0x5DEECE66DL;
 	}
-	
+
 	public Team[]   teams;
 	public Player[] players;
 	public Player   currentPlayer;
@@ -183,7 +183,7 @@ public class Game implements SerializableJson
 	{
 		return checkFloating() || unit != floatingUnit && unit.i == floatingUnit.i && unit.j == floatingUnit.j;
 	}
-	
+
 	public Integer currentTurn;
 	public HashMap<Integer, ArrayList<Task>> tasks = new HashMap<>();
 	public Unit[][][] buyUnits;
@@ -197,7 +197,7 @@ public class Game implements SerializableJson
 		json2.remove("campaignState");
 		return json1.equals(json2);
 	}
-	
+
 	public Player getPlayer(MyColor color)
 	{
 		for (Player player : players)
@@ -206,14 +206,14 @@ public class Game implements SerializableJson
 		MyAssert.a(false);
 		return null;
 	}
-	
+
 	public void registerTask(Task task)
 	{
 		if (tasks.get(task.turnToRun) == null)
 			tasks.put(task.turnToRun, new ArrayList<Task>());
 		tasks.get(task.turnToRun).add(task);
 	}
-	
+
 	public void runTasks()
 	{
 		ArrayList<Task> currentTasks = tasks.get(currentTurn);
@@ -222,20 +222,20 @@ public class Game implements SerializableJson
 				task.run();
 		tasks.remove(currentTurn);
 	}
-	
+
 	// Из GameHandler
 	public boolean checkCoordinates(int i, int j)
 	{
 		return i >= 0 && i < h && j >= 0 && j < w;
 	}
-	
+
 	public Unit getUnit(int i, int j)
 	{
 		if (checkCoordinates(i, j))
 			return fieldUnits[i][j];
 		return getUnitOutside(i, j);
 	}
-	
+
 	public void setUnit(int i, int j, Unit unit)
 	{
 		Unit floatingUnit = getUnit(i, j);
@@ -244,7 +244,7 @@ public class Game implements SerializableJson
 			MyAssert.a(this.floatingUnit == null);
 			this.floatingUnit = floatingUnit;
 		}
-		
+
 		unit.i = i;
 		unit.j = j;
 		if (checkCoordinates(i, j))
@@ -272,7 +272,7 @@ public class Game implements SerializableJson
 			floatingUnit = null;
 		}
 	}
-	
+
 	private Unit getUnitOutside(int i, int j)
 	{
 		for (Unit unit : unitsOutside)
@@ -280,7 +280,7 @@ public class Game implements SerializableJson
 				return unit;
 		return null;
 	}
-	
+
 	public int numberPlayers()
 	{
 		return players.length;
@@ -296,12 +296,12 @@ public class Game implements SerializableJson
 	{
 		// int health = fieldUnits[3][7] == null ? 0 : fieldUnits[3][7].health;
 		// String s = "king health: " + health + "\n";
-		
+
 		String s = "   ";
 		for (int i = 0; i < w; i++)
 			s += String.format("%3d", i);
 		s += "\n";
-		
+
 		int ih = 0;
 		for (Unit[] line : fieldUnits)
 		{
@@ -323,7 +323,7 @@ public class Game implements SerializableJson
 		}
 		return s;
 	}
-	
+
 	@Override
 	public String toString()
 	{

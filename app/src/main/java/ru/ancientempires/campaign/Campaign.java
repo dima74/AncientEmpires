@@ -20,20 +20,20 @@ import ru.ancientempires.serializable.SerializableJsonHelper;
 
 public class Campaign
 {
-	
+
 	public Game game;
-	
+
 	public Script[]      scripts;
 	public JsonArray     arrayState; // используется только при загрузке
 	public IDrawCampaign iDrawCampaign;
 	public boolean isDefault = false;
 	public boolean needActionRewriteScriptsStatus;
-	
+
 	public Campaign(Game game)
 	{
 		this.game = game;
 	}
-	
+
 	public void save(FileLoader loader) throws Exception
 	{
 		JsonWriter writer = loader.getWriter("campaign.json");
@@ -44,7 +44,7 @@ public class Campaign
 		writer.jsonValue(object.toString());
 		writer.close();
 	}
-	
+
 	public void load(FileLoader loader) throws Exception
 	{
 		JsonReader reader = loader.getReader("campaign.json");
@@ -52,7 +52,7 @@ public class Campaign
 		reader.close();
 
 		this.scripts = game.getLoaderInfo().fromJsonArray((JsonArray) object.get("scripts"), Script.class);
-		
+
 		int i = 0;
 		for (Script script : this.scripts)
 		{
@@ -68,15 +68,15 @@ public class Campaign
 		fromJsonState(arrayState);
 		arrayState = null;
 	}
-	
+
 	public void start()
 	{
 		update();
 	}
-	
+
 	public boolean isUpdate;
 	//public boolean needSaveSnapshot;
-	
+
 	public void update()
 	{
 		if (isUpdate)
@@ -96,7 +96,7 @@ public class Campaign
 						script.isFinishing = true;
 				}
 		}
-		
+
 		isUpdate = false;
 		if (needActionRewriteScriptsStatus)
 		{
@@ -118,13 +118,13 @@ public class Campaign
 		}
 		*/
 	}
-	
+
 	public void finish(Script script)
 	{
 		script.isFinishing = true;
 		iDrawCampaign.updateCampaign();
 	}
-	
+
 	public void saveState(FileLoader loader) throws IOException
 	{
 		DataOutputStream output = loader.openDOS("campaignState.dat");
@@ -135,7 +135,7 @@ public class Campaign
 		}
 		output.close();
 	}
-	
+
 	public void loadState(FileLoader loader) throws IOException
 	{
 		DataInputStream input = loader.openDIS("campaignState.dat");
@@ -146,7 +146,7 @@ public class Campaign
 		}
 		input.close();
 	}
-	
+
 	public JsonArray toJsonState()
 	{
 		JsonArray array = new JsonArray();
@@ -157,7 +157,7 @@ public class Campaign
 		}
 		return array;
 	}
-	
+
 	public void fromJsonState(JsonArray array) throws IOException
 	{
 		for (int i = 0; i < scripts.length; i++)
@@ -189,5 +189,5 @@ public class Campaign
 		return campaign;
 	}
 	*/
-	
+
 }

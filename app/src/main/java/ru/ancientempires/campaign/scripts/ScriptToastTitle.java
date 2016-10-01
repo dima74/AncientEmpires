@@ -7,17 +7,17 @@ import ru.ancientempires.serializable.Localize;
 
 public class ScriptToastTitle extends Script
 {
-	
+
 	@Localize private String text;
-	
+
 	public ScriptToastTitle()
 	{}
-	
+
 	public ScriptToastTitle(String text)
 	{
 		this.text = text;
 	}
-	
+
 	@Override
 	public void start()
 	{
@@ -29,7 +29,7 @@ public class ScriptToastTitle extends Script
 	{
 		return false;
 	}
-	
+
 	// =/({||})\=
 	// from spoon
 
