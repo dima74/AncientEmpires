@@ -15,39 +15,33 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class StructCitadel extends Struct
-{
+public class StructCitadel extends Struct {
 
 	public UnitType crystalType;
 	public int      crystalsRequired;
 	public Constraint[] constraints = new Constraint[0];
 
-	public StructCitadel()
-	{}
+	public StructCitadel() {}
 
-	public StructCitadel(UnitType crystalType, int crystalsRequired)
-	{
+	public StructCitadel(UnitType crystalType, int crystalsRequired) {
 		this.crystalType = crystalType;
 		this.crystalsRequired = crystalsRequired;
 	}
 
-	public StructCitadel addConstraint(int di, int dj, CellType type)
-	{
+	public StructCitadel addConstraint(int di, int dj, CellType type) {
 		ArrayList<Constraint> list = new ArrayList<>(Arrays.asList(constraints));
 		list.add(new Constraint(di, dj, type));
 		constraints = list.toArray(new Constraint[list.size()]);
 		return this;
 	}
 
-	public void checkStructInfo(Cell cell)
-	{
+	public void checkStructInfo(Cell cell) {
 		if (cell.structInfo == null)
 			cell.structInfo = new StructInfoCitadel();
 	}
 
 	@Override
-	public boolean canActivate(Cell cell)
-	{
+	public boolean canActivate(Cell cell) {
 		checkStructInfo(cell);
 		if (!(cell.structInfo instanceof StructInfoCitadel))
 			return false;
@@ -64,8 +58,7 @@ public class StructCitadel extends Struct
 	}
 
 	@Override
-	public void activate(Cell cell)
-	{
+	public void activate(Cell cell) {
 		MyAssert.a(canActivate(cell));
 		int i = cell.i;
 		int j = cell.j;
@@ -77,8 +70,7 @@ public class StructCitadel extends Struct
 	}
 
 	@Override
-	public void loadJSON(JsonElement element, LoaderInfo info)
-	{
+	public void loadJSON(JsonElement element, LoaderInfo info) {
 		JsonObject object = element.getAsJsonObject();
 		crystalType = info.rules.getUnitType(object.get("crystalType").getAsString());
 		crystalsRequired = element.getAsJsonObject().get("crystalsRequired").getAsInt();
@@ -88,15 +80,13 @@ public class StructCitadel extends Struct
 	}
 
 	@Override
-	public JsonElement toJSON()
-	{
+	public JsonElement toJSON() {
 		JsonObject result = new JsonObject();
 		result.addProperty("crystalType", crystalType.name);
 		result.addProperty("crystalsRequired", crystalsRequired);
 
 		JsonArray constraints = new JsonArray();
-		for (Constraint constraint : this.constraints)
-		{
+		for (Constraint constraint : this.constraints) {
 			JsonObject constraintObject = new JsonObject();
 			constraintObject.addProperty("di", constraint.di);
 			constraintObject.addProperty("dj", constraint.dj);
@@ -110,8 +100,7 @@ public class StructCitadel extends Struct
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("crystalType", crystalType.getName());
 		object.addProperty("crystalsRequired", crystalsRequired);
@@ -119,8 +108,7 @@ public class StructCitadel extends Struct
 		return object;
 	}
 
-	public StructCitadel fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public StructCitadel fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		crystalType = UnitType.newInstance(object.get("crystalType").getAsString(), info);
 		crystalsRequired = object.get("crystalsRequired").getAsInt();

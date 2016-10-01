@@ -15,11 +15,9 @@ import ru.ancientempires.serializable.Numbered;
 import ru.ancientempires.serializable.SerializableJson;
 
 @EraseNulls
-public class Player implements SerializableJson, Numbered
-{
+public class Player implements SerializableJson, Numbered {
 
-	public static Player newInstance(int i, LoaderInfo info)
-	{
+	public static Player newInstance(int i, LoaderInfo info) {
 		return info.game.players[i];
 	}
 
@@ -38,24 +36,20 @@ public class Player implements SerializableJson, Numbered
 	public Integer         unitsLimit;
 
 	@Override
-	public int getNumber()
-	{
+	public int getNumber() {
 		return ordinal;
 	}
 
-	public int numberUnits()
-	{
+	public int numberUnits() {
 		return units.size();
 	}
 
-	public int unitsLimit()
-	{
+	public int unitsLimit() {
 		return unitsLimit == -1 ? Integer.MAX_VALUE : unitsLimit;
 	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		Player player = (Player) o;
 		if (color != player.color)
 			return false;
@@ -71,16 +65,14 @@ public class Player implements SerializableJson, Numbered
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Player [" + units + "]";
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = new JsonObject();
 		if (color != null)
 			object.addProperty("color", color.name());
@@ -94,8 +86,7 @@ public class Player implements SerializableJson, Numbered
 		return object;
 	}
 
-	public Player fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public Player fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		color = MyColor.valueOf(object.get("color").getAsString());
 		type = PlayerType.valueOf(object.get("type").getAsString());
 		team = Team.newInstance(object.get("team").getAsInt(), info);
@@ -104,8 +95,7 @@ public class Player implements SerializableJson, Numbered
 		return this;
 	}
 
-	static public Player[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public Player[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		Player[] array = new Player[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = new Player().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);

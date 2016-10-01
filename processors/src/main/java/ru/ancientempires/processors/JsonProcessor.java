@@ -31,15 +31,13 @@ import ru.ancientempires.serializable.WithNumbered;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.declaration.CtClass;
 
-public class JsonProcessor extends MyAbstractManualProcessor
-{
+public class JsonProcessor extends MyAbstractManualProcessor {
 
 	public HashMap<Class, String> classToSuffix                        = new HashMap<>();
 	public HashSet<Class>         classesToAddNewInstanceArrayNumbered = new HashSet<>();
 	public HashSet<Class>         classesToAddNewInstanceArrayNamed    = new HashSet<>();
 
-	public void initStatic() throws Exception
-	{
+	public void initStatic() throws Exception {
 		initStatic(SerializableJson.class);
 		classToSuffix.put(int.class, "Int");
 		classToSuffix.put(Integer.class, "Int");
@@ -48,16 +46,13 @@ public class JsonProcessor extends MyAbstractManualProcessor
 	}
 
 	@Override
-	public void process()
-	{
+	public void process() {
 		newMethods.clear();
-		try
-		{
+		try {
 			initStatic();
 			System.out.println("JsonProcessor.process");
 
-			for (Class baseClass : baseClasses)
-			{
+			for (Class baseClass : baseClasses) {
 				System.out.println("base " + baseClass);
 				CtClass ctClass = getFactory().Class().get(baseClass);
 				String simpleName = baseClass.getSimpleName();
@@ -73,8 +68,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
 
-			for (Class serializableClass : serializableClasses)
-			{
+			for (Class serializableClass : serializableClasses) {
 				System.out.println("serializable " + serializableClass);
 				CtClass ctClass = getFactory().Class().get(serializableClass);
 				boolean simple = !allSubclasses.contains(ctClass.getActualClass());
@@ -85,9 +79,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 
 			addNewInstanceArray(classesToAddNewInstanceArrayNumbered, "Numbered", "Int");
 			addNewInstanceArray(classesToAddNewInstanceArrayNamed, "Named", "String");
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -99,10 +91,8 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		//ctClass.compileAndReplaceSnippets();
 	}
 
-	public void addNewInstanceArray(HashSet<Class> classesToAddNewInstanceArray, String suffixMethod, String suffixGetAs)
-	{
-		for (Class c : classesToAddNewInstanceArray)
-		{
+	public void addNewInstanceArray(HashSet<Class> classesToAddNewInstanceArray, String suffixMethod, String suffixGetAs) {
+		for (Class c : classesToAddNewInstanceArray) {
 			System.out.println("classesToAddNewInstanceArray" + suffixMethod + " " + c);
 			CtClass ctClass = getFactory().Class().get(c);
 			String simpleName = c.getSimpleName();
@@ -116,8 +106,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		}
 	}
 
-	public void createToJson(CtClass ctClass, boolean simple, boolean base) throws Exception
-	{
+	public void createToJson(CtClass ctClass, boolean simple, boolean base) throws Exception {
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethodNoExcept(ctClass, "toJson", JsonObject.class);
 
@@ -125,8 +114,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(firstStatement));
 
 		for (Field field : actualClass.getDeclaredFields())
-			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()))
-			{
+			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers())) {
 				String fieldName = field.getName();
 				Class fieldType = field.getType();
 				System.out.println(actualClass + " " + fieldType + " " + fieldName);
@@ -139,12 +127,10 @@ public class JsonProcessor extends MyAbstractManualProcessor
 					statement = String.format("object.addProperty(\"%s\", %s)", fieldName, fieldName);
 				else if (fieldType.isEnum())
 					statement = String.format("object.addProperty(\"%s\", %s.name())", fieldName, fieldName);
-				else if (field.getAnnotation(WithNumbered.class) != null)
-				{
+				else if (field.getAnnotation(WithNumbered.class) != null) {
 					WithNumbered annotation = field.getAnnotation(WithNumbered.class);
 					statement = String.format("object.addProperty(\"%s\", game.%s.add(%s))", fieldName, annotation.value(), fieldName);
-				}
-				else if (Named.class.isAssignableFrom(fieldType))
+				} else if (Named.class.isAssignableFrom(fieldType))
 					statement = String.format("object.addProperty(\"%s\", %s.getName())", fieldName, fieldName);
 				else if (Numbered.class.isAssignableFrom(fieldType))
 					statement = String.format("object.addProperty(\"%s\", %s.getNumber())", fieldName, fieldName);
@@ -167,13 +153,11 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
-		if (ctClass.getAnnotation(WithNamed.class) != null)
-		{
+		if (ctClass.getAnnotation(WithNamed.class) != null) {
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.toJsonPart(object, this)", annotation.value())));
 		}
-		if (ctClass.getAnnotation(WithNumbered.class) != null)
-		{
+		if (ctClass.getAnnotation(WithNumbered.class) != null) {
 			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
 			String statement = String.format("game.%s.toJsonPart(object, this)", annotation.value());
 			if (annotation.checkGameForNull())
@@ -185,8 +169,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("return object"));
 	}
 
-	public void createFromJson(CtClass ctClass, boolean simple, boolean base) throws Exception
-	{
+	public void createFromJson(CtClass ctClass, boolean simple, boolean base) throws Exception {
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethod(ctClass, "fromJson", actualClass, JsonObject.class, "object", LoaderInfo.class, "info");
 
@@ -194,8 +177,7 @@ public class JsonProcessor extends MyAbstractManualProcessor
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(simple ? "game = info.game" : "super.fromJson(object, info)"));
 
 		for (Field field : actualClass.getDeclaredFields())
-			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()))
-			{
+			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers())) {
 				String fieldName = field.getName();
 				Class fieldType = field.getType();
 				String fieldTypeName = fieldType.getSimpleName();
@@ -206,44 +188,33 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				String statement = null;
 				if (field.getAnnotation(Localize.class) != null)
 					statement = String.format("%s = ru.ancientempires.Localization.get(object.get(\"%s\").getAsString())", fieldName, fieldName);
-				else if (classToSuffix.containsKey(fieldType))
-				{
+				else if (classToSuffix.containsKey(fieldType)) {
 					statement = String.format("%s = object.get(\"%s\").getAs%s()", fieldName, fieldName, classToSuffix.get(fieldType));
 					if (field.getAnnotation(BitmapPath.class) != null)
 						statement += String.format(";\n\timage = ru.ancientempires.client.Client.client.imagesLoader.loadImage(%s)", fieldName);
-				}
-				else if (fieldType.isEnum())
+				} else if (fieldType.isEnum())
 					statement = String.format("%s = %s.valueOf(object.get(\"%s\").getAsString())", fieldName, fieldTypeName, fieldName);
-				else if (field.getAnnotation(WithNumbered.class) != null)
-				{
+				else if (field.getAnnotation(WithNumbered.class) != null) {
 					WithNumbered annotation = field.getAnnotation(WithNumbered.class);
 					statement = String.format("%s = game.%s.get(object.get(\"%s\").getAsInt())", fieldName, annotation.value(), fieldName);
-				}
-				else if (Named.class.isAssignableFrom(fieldType))
+				} else if (Named.class.isAssignableFrom(fieldType))
 					statement = String.format("%s = %s.newInstance(object.get(\"%s\").getAsString(), info)", fieldName, fieldTypeName, fieldName);
 				else if (Numbered.class.isAssignableFrom(fieldType))
 					statement = String.format("%s = %s.newInstance(object.get(\"%s\").getAsInt(), info)", fieldName, fieldTypeName, fieldName);
-				else if (componentType != null && Named.class.isAssignableFrom(componentType))
-				{
+				else if (componentType != null && Named.class.isAssignableFrom(componentType)) {
 					statement = String.format("%s = %s.newInstanceArrayNamed(object.get(\"%s\").getAsJsonArray(), info)", fieldName, componentTypeName, fieldName);
 					classesToAddNewInstanceArrayNamed.add(fieldType.getComponentType());
-				}
-				else if (componentType != null && Numbered.class.isAssignableFrom(componentType))
-				{
+				} else if (componentType != null && Numbered.class.isAssignableFrom(componentType)) {
 					statement = String.format("%s = %s.newInstanceArrayNumbered(object.get(\"%s\").getAsJsonArray(), info)", fieldName, componentTypeName, fieldName);
 					classesToAddNewInstanceArrayNumbered.add(fieldType.getComponentType());
-				}
-				else if (componentType != null)
-				{
+				} else if (componentType != null) {
 					String expression = !allSubclasses.contains(componentType) ?
 							String.format("info.fromJsonArraySimple(object.get(\"%s\").getAsJsonArray(), %s.class)", fieldName, componentTypeName) :
 							String.format("%s.fromJsonArray(object.get(\"%s\").getAsJsonArray(), info)", componentTypeName, fieldName);
 					if (!fieldType.isArray())
 						expression = String.format("new %s<>(Arrays.asList(%s))", fieldTypeName, expression);
 					statement = String.format("%s = %s", fieldName, expression);
-				}
-				else
-				{
+				} else {
 					MyAssert.a(SerializableJson.class.isAssignableFrom(fieldType));
 					statement = String.format("%s = info.fromJson((JsonObject) object.get(\"%s\"), %s.class)", fieldName, fieldName, fieldTypeName);
 				}
@@ -256,13 +227,11 @@ public class JsonProcessor extends MyAbstractManualProcessor
 				if (statement != null)
 					ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
-		if (ctClass.getAnnotation(WithNamed.class) != null)
-		{
+		if (ctClass.getAnnotation(WithNamed.class) != null) {
 			WithNamed annotation = ctClass.getAnnotation(WithNamed.class);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(String.format("game.%s.fromJsonPart(object, this)", annotation.value())));
 		}
-		if (ctClass.getAnnotation(WithNumbered.class) != null)
-		{
+		if (ctClass.getAnnotation(WithNumbered.class) != null) {
 			WithNumbered annotation = ctClass.getAnnotation(WithNumbered.class);
 			String statement = String.format("game.%s.fromJsonPart(object, this)", annotation.value());
 			if (annotation.checkGameForNull())

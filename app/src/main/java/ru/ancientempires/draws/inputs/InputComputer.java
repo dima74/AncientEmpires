@@ -7,17 +7,14 @@ import ru.ancientempires.actions.ActionGameEndTurn;
 import ru.ancientempires.actions.campaign.ActionCampaignEnterCampaign;
 import ru.ancientempires.actions.campaign.ActionCampaignLeaveCampaign;
 
-public class InputComputer extends AbstractPlayerInput
-{
+public class InputComputer extends AbstractPlayerInput {
 
-	public InputComputer(InputMain inputMain)
-	{
+	public InputComputer(InputMain inputMain) {
 		super(inputMain);
 	}
 
 	@Override
-	public void beginTurn()
-	{
+	public void beginTurn() {
 		new ActionCampaignEnterCampaign().perform(game);
 
 		ArrayList<Action> actions = game.ii.turn(game);
@@ -37,11 +34,9 @@ public class InputComputer extends AbstractPlayerInput
 	}
 
 	@Override
-	public void tap(int i, int j)
-	{}
+	public void tap(int i, int j) {}
 
 	@Override
-	public void endTurn()
-	{}
+	public void endTurn() {}
 
 }

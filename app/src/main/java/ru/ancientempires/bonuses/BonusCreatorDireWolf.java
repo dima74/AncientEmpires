@@ -9,8 +9,7 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 import ru.ancientempires.tasks.TaskRemoveBonus;
 
-public class BonusCreatorDireWolf extends BonusCreator
-{
+public class BonusCreatorDireWolf extends BonusCreator {
 	
 	/*
 		Здесь один бонус, у BonusCreatorWisp может быть несколько, 
@@ -19,17 +18,14 @@ public class BonusCreatorDireWolf extends BonusCreator
 
 	public Bonus bonus;
 
-	public BonusCreatorDireWolf()
-	{}
+	public BonusCreatorDireWolf() {}
 
-	public BonusCreatorDireWolf(Bonus bonus)
-	{
+	public BonusCreatorDireWolf(Bonus bonus) {
 		this.bonus = bonus;
 	}
 
 	@Override
-	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
-	{
+	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit) {
 		Bonus bonus = copy(this.bonus, game);
 		targetUnit.addBonus(bonus);
 		new TaskRemoveBonus(game)
@@ -44,14 +40,12 @@ public class BonusCreatorDireWolf extends BonusCreator
 	}
 
 	@Override
-	public void saveJSON(JsonObject object, JsonSerializationContext context)
-	{
+	public void saveJSON(JsonObject object, JsonSerializationContext context) {
 		object.add("bonus", context.serialize(bonus));
 	}
 
 	@Override
-	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
-	{
+	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context) {
 		bonus = context.deserialize(object.get("bonus"), Bonus.class);
 	}
 

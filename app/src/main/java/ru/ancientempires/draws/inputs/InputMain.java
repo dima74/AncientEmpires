@@ -6,16 +6,14 @@ import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.draws.DrawMain;
 import ru.ancientempires.draws.DrawUnitsHeal;
 
-public class InputMain extends AbstractInput
-{
+public class InputMain extends AbstractInput {
 
 	public InputPlayer         inputPlayer;
 	public InputComputer       inputComputer;
 	public AbstractPlayerInput currentInput;
 	public GameActivity        activity;
 
-	public InputMain(GameActivity activity, DrawMain drawMain)
-	{
+	public InputMain(GameActivity activity, DrawMain drawMain) {
 		super(null);
 		this.activity = activity;
 		this.drawMain = drawMain;
@@ -34,13 +32,11 @@ public class InputMain extends AbstractInput
 		drawMain.buildingSmokes.update();
 	}
 
-	public void beginTurn()
-	{
+	public void beginTurn() {
 		if (currentInput != null)
 			drawMain.focusOnCurrentPlayerCenter();
 		drawMain.isDrawCursor = false;
-		switch (game.currentPlayer.type)
-		{
+		switch (game.currentPlayer.type) {
 			case NONE:
 				endTurn(true);
 				return;
@@ -57,13 +53,11 @@ public class InputMain extends AbstractInput
 		drawMain.info.update();
 	}
 
-	public void tap(int i, int j)
-	{
+	public void tap(int i, int j) {
 		currentInput.tap(i, j);
 	}
 
-	public void endTurn(boolean performEndTurn)
-	{
+	public void endTurn(boolean performEndTurn) {
 		if (!drawMain.isActiveGame)
 			return;
 		if (currentInput != null) // первый игрок --- NONE
@@ -73,13 +67,11 @@ public class InputMain extends AbstractInput
 		beginTurn();
 	}
 
-	private void performEndTurn()
-	{
+	private void performEndTurn() {
 		performEndTurn(new ActionGameEndTurn());
 	}
 
-	public void performEndTurn(ActionGameEndTurn action)
-	{
+	public void performEndTurn(ActionGameEndTurn action) {
 		ActionResultGameEndTurn result = action.perform(game);
 		drawMain.add(new DrawUnitsHeal(drawMain).start(result));
 	}

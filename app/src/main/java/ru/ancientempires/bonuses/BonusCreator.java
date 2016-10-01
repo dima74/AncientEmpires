@@ -12,8 +12,7 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 
-public abstract class BonusCreator
-{
+public abstract class BonusCreator {
 	
 	/*
 		После какого-либо действия (атака/перемещение) войн может дать бонусы некоторым другим войнам
@@ -29,35 +28,26 @@ public abstract class BonusCreator
 			BonusCreatorWisp.class,
 			BonusCreatorDireWolf.class);
 
-	public int ordinal()
-	{
+	public int ordinal() {
 		return BonusCreator.classes.indexOf(getClass());
 	}
 
-	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit)
-	{
+	public BonusCreate[] applyBonusesAfterAttack(Game game, Unit unit, Unit targetUnit) {
 		return new BonusCreate[0];
 	}
 
-	public BonusCreate[] applyBonusesAfterMove(Game game, Unit unit)
-	{
+	public BonusCreate[] applyBonusesAfterMove(Game game, Unit unit) {
 		return new BonusCreate[0];
 	}
 
-	public void saveJSON(JsonObject object, JsonSerializationContext context)
-	{}
+	public void saveJSON(JsonObject object, JsonSerializationContext context) {}
 
-	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
-	{}
+	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context) {}
 
-	public static Bonus copy(Bonus bonus, Game game)
-	{
-		try
-		{
+	public static Bonus copy(Bonus bonus, Game game) {
+		try {
 			return game.getLoaderInfo().fromJson(bonus.toJson(), Bonus.class);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			MyAssert.a(false);
 			return null;

@@ -18,11 +18,9 @@ import ru.ancientempires.load.GamesFolder;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
-public class Main
-{
+public class Main {
 
-	public static void main(String[] args) throws Exception
-	{
+	public static void main(String[] args) throws Exception {
 		//test2();
 		Client client = new Client(new DesktopClientHelper());
 		//new RulesSaver(client.fileLoader, new DefaultRules().create()).save("rules/rules.json");
@@ -45,8 +43,7 @@ public class Main
 				testII("skirmish." + iGame);
 	}
 
-	private static void test() throws Exception
-	{
+	private static void test() throws Exception {
 		Game game = Client.client.startGame("skirmish.5");
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
@@ -57,16 +54,14 @@ public class Main
 		System.exit(0);
 	}
 
-	private static void test2() throws Exception
-	{
+	private static void test2() throws Exception {
 		Rules rules = Client.client.rules;
 		System.out.println(Arrays.toString(rules.cellTypes));
 		System.out.println(rules.cellTypes[0].isDefault);
 		System.exit(0);
 	}
 
-	public static void testFull() throws Exception
-	{
+	public static void testFull() throws Exception {
 		List<GamesFolder> gamesFolders = Arrays.asList(Client.client.skirmish, Client.client.campaign);
 		for (GamesFolder gamesFolder : gamesFolders)
 			for (GamePath path : gamesFolder.games)
@@ -77,14 +72,12 @@ public class Main
 		System.exit(0);
 	}
 
-	public static void testII(String gameID) throws Exception
-	{
+	public static void testII(String gameID) throws Exception {
 		Game game = Client.client.startGame(gameID);
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
-		for (int i = 0; i < 10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			//System.out.println("i = " + i);
 			if (game.campaign.isDefault)
 				new II(game.rules).turnFull(game);
@@ -101,8 +94,7 @@ public class Main
 		testLoadGame(game.path.gameID, true);
 	}
 
-	public static void testLoadGame(String gameID, boolean reload) throws Exception
-	{
+	public static void testLoadGame(String gameID, boolean reload) throws Exception {
 		Game game = Client.client.startGame(gameID);
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
@@ -112,8 +104,7 @@ public class Main
 			testLoadGame(game.path.gameID, false);
 	}
 
-	private static void captureScreen(String path) throws Exception
-	{
+	private static void captureScreen(String path) throws Exception {
 		File folder = new File("/home/dima/AndroidStudioProjects/missions/" + path);
 		folder.mkdirs();
 		for (File file : folder.listFiles())
@@ -124,8 +115,7 @@ public class Main
 		long start = System.currentTimeMillis();
 		long prev = start;
 		System.out.println("Main.captureScreen()");
-		for (int i = 0; i < 50000; ++i)
-		{
+		for (int i = 0; i < 50000; ++i) {
 			long curr = System.currentTimeMillis();
 			BufferedImage image = robot.createScreenCapture(rect);
 			ImageIO.write(image, "png", new File(folder, String.format("%d_%d_%d.png", i, curr - prev, (curr - start) * 15 / 1000)));

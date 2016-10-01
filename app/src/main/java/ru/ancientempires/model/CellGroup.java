@@ -8,11 +8,9 @@ import ru.ancientempires.rules.Rules;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Numbered;
 
-public class CellGroup implements Numbered
-{
+public class CellGroup implements Numbered {
 
-	public static CellGroup newInstance(int i, LoaderInfo info)
-	{
+	public static CellGroup newInstance(int i, LoaderInfo info) {
 		return info.rules.cellGroups[i];
 	}
 
@@ -23,8 +21,7 @@ public class CellGroup implements Numbered
 	public CellType[]    types;
 	public Set<CellType> typesSet;
 
-	public CellGroup(Rules rules, String name, int ordinal)
-	{
+	public CellGroup(Rules rules, String name, int ordinal) {
 		this.name = name;
 		baseType = rules.getCellType(name + "_GROUP");
 		baseType.isDefault = true;
@@ -32,37 +29,31 @@ public class CellGroup implements Numbered
 	}
 
 	@Override
-	public int getNumber()
-	{
+	public int getNumber() {
 		return ordinal;
 	}
 
-	public boolean contains(CellType type)
-	{
+	public boolean contains(CellType type) {
 		return typesSet.contains(type);
 	}
 
-	public void setTypes(CellType... types)
-	{
+	public void setTypes(CellType... types) {
 		this.types = types;
 		typesSet = new HashSet<>(Arrays.asList(types));
 	}
 
-	public void setBaseTypeToAll()
-	{
+	public void setBaseTypeToAll() {
 		for (CellType type : types)
 			type.setProperties(baseType);
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (name == null ? 0 : name.hashCode());
@@ -70,8 +61,7 @@ public class CellGroup implements Numbered
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -79,12 +69,10 @@ public class CellGroup implements Numbered
 		if (getClass() != obj.getClass())
 			return false;
 		CellGroup other = (CellGroup) obj;
-		if (name == null)
-		{
+		if (name == null) {
 			if (other.name != null)
 				return false;
-		}
-		else if (!name.equals(other.name))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

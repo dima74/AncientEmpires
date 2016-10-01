@@ -1,6 +1,5 @@
 package ru.ancientempires.actions.result;
 
-public abstract class ActionResult
-{
+public abstract class ActionResult {
 
 }

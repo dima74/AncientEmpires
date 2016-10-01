@@ -9,25 +9,21 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
 
 @IndexSubclasses
-public abstract class StructInfo implements SerializableJson
-{
+public abstract class StructInfo implements SerializableJson {
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 
-	public StructInfo fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public StructInfo fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		return this;
 	}
 
-	static public StructInfo[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public StructInfo[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		StructInfo[] array = new StructInfo[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), StructInfo.class);

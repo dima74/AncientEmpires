@@ -4,21 +4,18 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.draws.BaseDrawMain;
 
-public class DrawBitmapsMoving extends DrawBitmaps
-{
+public class DrawBitmapsMoving extends DrawBitmaps {
 
 	public int startY;
 	public int startX;
 	public int endY;
 	public int endX;
 
-	public DrawBitmapsMoving(BaseDrawMain mainBase)
-	{
+	public DrawBitmapsMoving(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawBitmapsMoving setLineYX(int startY, int startX, int endY, int endX)
-	{
+	public DrawBitmapsMoving setLineYX(int startY, int startX, int endY, int endX) {
 		this.startY = startY;
 		this.startX = startX;
 		this.endY = endY;
@@ -26,8 +23,7 @@ public class DrawBitmapsMoving extends DrawBitmaps
 		return this;
 	}
 
-	public DrawBitmapsMoving animateDelta(int delta)
-	{
+	public DrawBitmapsMoving animateDelta(int delta) {
 		int deltaY = Math.abs(endY - startY);
 		int deltaX = Math.abs(endX - startX);
 		animateRange(0, Math.max(deltaY, deltaX) / delta);
@@ -35,8 +31,7 @@ public class DrawBitmapsMoving extends DrawBitmaps
 	}
 
 	@Override
-	public void draw(Canvas canvas, int value)
-	{
+	public void draw(Canvas canvas, int value) {
 		y = (frameLeft * startY + framePass * endY) / (frameCount - 1);
 		x = (frameLeft * startX + framePass * endX) / (frameCount - 1);
 		super.draw(canvas, value);

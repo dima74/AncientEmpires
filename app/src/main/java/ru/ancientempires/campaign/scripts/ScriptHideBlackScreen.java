@@ -4,32 +4,27 @@ import com.google.gson.JsonObject;
 
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptHideBlackScreen extends Script
-{
+public class ScriptHideBlackScreen extends Script {
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.hideBlackScreen(this);
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ScriptHideBlackScreen fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptHideBlackScreen fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

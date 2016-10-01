@@ -9,16 +9,13 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Named;
 import ru.ancientempires.serializable.Numbered;
 
-public class UnitType implements Named, Numbered
-{
+public class UnitType implements Named, Numbered {
 
-	public static UnitType newInstance(String name, LoaderInfo info)
-	{
+	public static UnitType newInstance(String name, LoaderInfo info) {
 		return info.rules.getUnitType(name);
 	}
 
-	public static UnitType newInstance(int i, LoaderInfo info)
-	{
+	public static UnitType newInstance(int i, LoaderInfo info) {
 		return info.rules.unitTypes[i];
 	}
 
@@ -36,16 +33,14 @@ public class UnitType implements Named, Numbered
 	public UnitType                   templateType;
 	public HashMap<MyColor, UnitType> specializations;
 
-	public void addSpecialization(MyColor color, UnitType specialization)
-	{
+	public void addSpecialization(MyColor color, UnitType specialization) {
 		if (specializations == null)
 			specializations = new HashMap<>();
 		specializations.put(color, specialization);
 		specialization.templateType = this;
 	}
 
-	public UnitType trySpecialize(Player player)
-	{
+	public UnitType trySpecialize(Player player) {
 		UnitType specialization = specializations == null ? null : specializations.get(player.color);
 		return specialization == null ? this : specialization;
 	}
@@ -91,14 +86,12 @@ public class UnitType implements Named, Numbered
 	// Эти поля используются только для копирования в война
 	public int healthDefault;
 
-	public UnitType(String name, int ordinal)
-	{
+	public UnitType(String name, int ordinal) {
 		this.name = name.intern();
 		this.ordinal = ordinal;
 	}
 
-	public UnitType setProperties(UnitType type)
-	{
+	public UnitType setProperties(UnitType type) {
 		baseType = type;
 
 		healthDefault = type.healthDefault;
@@ -127,8 +120,7 @@ public class UnitType implements Named, Numbered
 		return this;
 	}
 
-	public void addBonuses(Bonus... bonusesNew)
-	{
+	public void addBonuses(Bonus... bonusesNew) {
 		Bonus[] bonusesOld = this.bonuses;
 		bonuses = new Bonus[bonusesOld.length + bonusesNew.length];
 		for (int i = 0; i < bonusesOld.length; i++)
@@ -137,26 +129,22 @@ public class UnitType implements Named, Numbered
 			bonuses[bonusesOld.length + i] = bonusesNew[i];
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 
 	@Override
-	public int getNumber()
-	{
+	public int getNumber() {
 		return ordinal;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (name == null ? 0 : name.hashCode());
@@ -164,8 +152,7 @@ public class UnitType implements Named, Numbered
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -173,12 +160,10 @@ public class UnitType implements Named, Numbered
 		if (getClass() != obj.getClass())
 			return false;
 		UnitType other = (UnitType) obj;
-		if (name == null)
-		{
+		if (name == null) {
 			if (other.name != null)
 				return false;
-		}
-		else if (!name.equals(other.name))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

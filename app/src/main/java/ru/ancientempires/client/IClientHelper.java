@@ -4,8 +4,7 @@ import java.io.File;
 
 import ru.ancientempires.helpers.AssetsHelper;
 
-public interface IClientHelper
-{
+public interface IClientHelper {
 
 	File getFilesDir();
 

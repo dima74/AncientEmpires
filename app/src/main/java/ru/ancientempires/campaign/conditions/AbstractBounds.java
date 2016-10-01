@@ -9,27 +9,23 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
 
 @IndexSubclasses
-public abstract class AbstractBounds implements SerializableJson
-{
+public abstract class AbstractBounds implements SerializableJson {
 
 	public abstract boolean in(int i, int j);
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 
-	public AbstractBounds fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public AbstractBounds fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		return this;
 	}
 
-	static public AbstractBounds[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public AbstractBounds[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		AbstractBounds[] array = new AbstractBounds[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), AbstractBounds.class);

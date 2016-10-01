@@ -16,16 +16,13 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableData;
 
 @IndexSubclasses
-public abstract class Action extends AbstractGameHandler implements SerializableData
-{
+public abstract class Action extends AbstractGameHandler implements SerializableData {
 
-	public Action()
-	{
+	public Action() {
 		setGame(null);
 	}
 
-	public boolean changesGame()
-	{
+	public boolean changesGame() {
 		return true;
 	}
 
@@ -39,84 +36,66 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 	}
 	*/
 
-	public ActionResult perform(Game game)
-	{
+	public ActionResult perform(Game game) {
 		performBase(game);
 		return null;
 	}
 
-	public final void performBase(Game game)
-	{
-		try
-		{
+	public final void performBase(Game game) {
+		try {
 			checkBase(game);
 			performQuick();
 			if (game.isMain)
 				Client.commit(this);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
 
-	public final boolean checkBase(Game game)
-	{
+	public final boolean checkBase(Game game) {
 		setGame(game);
 		boolean successfully = /*isCampaign() || */check();
-		if (!successfully)
-		{
+		if (!successfully) {
 			MyAssert.a(false);
 			check();
 		}
 		return successfully;
 	}
 
-	public boolean check()
-	{
+	public boolean check() {
 		return true;
 	}
 
 	public abstract void performQuick();
 
-	public final void performQuickBase(Game game)
-	{
+	public final void performQuickBase(Game game) {
 		setGame(game);
 		game.allActions.add(this);
 		performQuick();
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String s = this.getClass().getSimpleName().replace("Action", "") + " ";
-		if (this instanceof ActionFromTo)
-		{
+		if (this instanceof ActionFromTo) {
 			ActionFromTo thisCast = (ActionFromTo) this;
 			s += coordinates(thisCast.i, thisCast.j)
 					+ "->"
 					+ coordinates(thisCast.targetI, thisCast.targetJ);
-		}
-		else if (this instanceof ActionFrom)
-		{
+		} else if (this instanceof ActionFrom) {
 			ActionFrom thisCast = (ActionFrom) this;
 			s += coordinates(thisCast.i, thisCast.j);
-		}
-		else if (this instanceof ActionTo)
-		{
+		} else if (this instanceof ActionTo) {
 			ActionTo action = (ActionTo) this;
 			s += coordinates(action.targetI, action.targetJ);
 		}
 
-		try
-		{
+		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			toData(new DataOutputStream(baos));
 			s += " " + Arrays.toString(baos.toByteArray());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
@@ -125,21 +104,18 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		return s;
 	}
 
-	private String coordinates(int i, int j)
-	{
+	private String coordinates(int i, int j) {
 		return "(" + i + "," + j + ")";
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		ru.ancientempires.serializable.SerializableDataHelper.toData(output, this);
 	}
 
-	public Action fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public Action fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		return this;
 	}
 

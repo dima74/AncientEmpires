@@ -28,33 +28,28 @@ import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Game;
 
-public class EditorConfigureActivity extends BaseActivity
-{
-	
+public class EditorConfigureActivity extends BaseActivity {
+
 	private static final int MAX_MAP_SIZE = 50;
 	private boolean isStarting;
 	private String  gameID;
 	private ArrayList<View> frequencyViews = new ArrayList<>();
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor_configure);
-		
-		try
-		{
+
+		try {
 			Client.client.finishPart2();
-		}
-		catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 		MyAssert.a(Client.client.user != null);
 		setText(R.id.textName, Strings.EDITOR_GAME_NAME);
 		setHint(R.id.textNameEdit, Client.client.getNameForNewGame());
-		
+
 		setText(R.id.textHeight, Strings.EDITOR_GAME_HEIGHT);
 		setText(R.id.textWidth, Strings.EDITOR_GAME_WIDTH);
 		new MyTextWatcher(1, MAX_MAP_SIZE).addTo(this, R.id.textHeightEdit, 15);
@@ -63,8 +58,7 @@ public class EditorConfigureActivity extends BaseActivity
 		createFrequencies();
 	}
 
-	private void createFrequencies()
-	{
+	private void createFrequencies() {
 		CellType[] cellTypes = Client.client.rules.cellTypes;
 		int[] frequencies = new int[cellTypes.length];
 		for (int i = 0; i < cellTypes.length; i++)
@@ -73,27 +67,23 @@ public class EditorConfigureActivity extends BaseActivity
 		LinearLayout frequenciesLayout = (LinearLayout) findViewById(R.id.frequencies);
 		frequenciesLayout.removeAllViews();
 		for (int i = 0; i < cellTypes.length; i++)
-			if (!cellTypes[i].isDefault && frequencies[i] > 0)
-			{
+			if (!cellTypes[i].isDefault && frequencies[i] > 0) {
 				View view = createView(cellTypes[i], frequencies[i]);
 				frequencyViews.add(view);
 				frequenciesLayout.addView(view);
 			}
-		
+
 		ImageView buttonAdd = (ImageView) findViewById(R.id.imageAdd);
-		buttonAdd.setOnClickListener(new View.OnClickListener()
-		{
+		buttonAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 
 			}
 		});
 	}
 
 	@NonNull
-	private View createView(CellType cellType, int frequency)
-	{
+	private View createView(CellType cellType, int frequency) {
 		View view = getLayoutInflater().inflate(R.layout.frequency_item, null);
 
 		EditText edit = (EditText) view.findViewById(R.id.textFrequency);
@@ -106,30 +96,25 @@ public class EditorConfigureActivity extends BaseActivity
 		return view;
 	}
 
-	public void onClick()
-	{
+	public void onClick() {
 		if (isStarting)
 			return;
 		isStarting = true;
-		new MyAsyncTask(this)
-		{
+		new MyAsyncTask(this) {
 			@Override
-			public void doInBackground() throws Exception
-			{
+			public void doInBackground() throws Exception {
 				createGame();
 			}
 
 			@Override
-			public void onPostExecute()
-			{
+			public void onPostExecute() {
 				moveTo(EditorActivity.class, new Intent().putExtra(Extras.GAME_ID, gameID));
 			}
 		}.start();
 	}
 
 	// сохраняем игру, в GameEditorActivity передаём только её gameId
-	private void createGame() throws Exception
-	{
+	private void createGame() throws Exception {
 		String name = getValue(R.id.textNameEdit);
 		int h = getIntValue(R.id.textHeightEdit);
 		int w = getIntValue(R.id.textWidthEdit);
@@ -159,12 +144,10 @@ public class EditorConfigureActivity extends BaseActivity
 		writer.close();
 	}
 
-	private int[] getFrequencies()
-	{
+	private int[] getFrequencies() {
 		CellType[] cellTypes = Client.client.rules.cellTypes;
 		int[] frequencies = new int[cellTypes.length];
-		for (View view : frequencyViews)
-		{
+		for (View view : frequencyViews) {
 			CellType cellType = (CellType) view.findViewById(R.id.cellImage).getTag();
 			int frequency = getIntValue(view, R.id.textFrequency);
 			frequencies[cellType.ordinal] = frequency;
@@ -173,26 +156,23 @@ public class EditorConfigureActivity extends BaseActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.game_editor_choose, menu);
 		return true;
 	}
-	
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_create)
-		{
+		if (id == R.id.action_create) {
 			onClick();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }

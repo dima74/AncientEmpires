@@ -14,13 +14,11 @@ import ru.ancientempires.serializable.SerializableData;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.declaration.CtClass;
 
-public class DataProcessor extends MyAbstractManualProcessor
-{
+public class DataProcessor extends MyAbstractManualProcessor {
 
 	public HashMap<Class, String> classToSuffix = new HashMap<>();
 
-	public void initStatic() throws Exception
-	{
+	public void initStatic() throws Exception {
 		initStatic(SerializableData.class);
 		classToSuffix.put(int.class, "Int");
 		classToSuffix.put(boolean.class, "Boolean");
@@ -28,13 +26,10 @@ public class DataProcessor extends MyAbstractManualProcessor
 	}
 
 	@Override
-	public void process()
-	{
-		try
-		{
+	public void process() {
+		try {
 			initStatic();
-			for (Class serializableClass : serializableClasses)
-			{
+			for (Class serializableClass : serializableClasses) {
 				System.out.println("serializable " + serializableClass);
 				CtClass ctClass = getFactory().Class().get(serializableClass);
 				boolean simple = !allSubclasses.contains(ctClass.getActualClass());
@@ -44,22 +39,18 @@ public class DataProcessor extends MyAbstractManualProcessor
 			}
 
 			writeChanges();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void createToData(CtClass ctClass, boolean base)
-	{
+	public void createToData(CtClass ctClass, boolean base) {
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethod(ctClass, "toData", void.class, DataOutputStream.class, "output");
 		String firstStatement = base ? "ru.ancientempires.serializable.SerializableDataHelper.toData(output, this)" : "super.toData(output)";
 		ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(firstStatement));
 		for (Field field : actualClass.getDeclaredFields())
-			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()) && !field.getName().equals("result"))
-			{
+			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()) && !field.getName().equals("result")) {
 				String fieldName = field.getName();
 				Class fieldType = field.getType();
 				System.out.println(actualClass + " " + fieldType + " " + fieldName);
@@ -73,8 +64,7 @@ public class DataProcessor extends MyAbstractManualProcessor
 					statement = String.format("output.writeInt(%s.getNumber())", fieldName);
 				else if (fieldType == boolean[].class)
 					statement = String.format("ru.ancientempires.serializable.SerializableDataHelper.toDataArray(output, %s)", fieldName);
-				else
-				{
+				else {
 					MyAssert.a(SerializableData.class.isAssignableFrom(fieldType));
 					statement = String.format("%s.toData(output)", fieldName);
 				}
@@ -82,15 +72,13 @@ public class DataProcessor extends MyAbstractManualProcessor
 			}
 	}
 
-	public void createFromData(CtClass ctClass, boolean base)
-	{
+	public void createFromData(CtClass ctClass, boolean base) {
 		Class actualClass = ctClass.getActualClass();
 		CtBlock ctBlock = createMethod(ctClass, "fromData", actualClass, DataInputStream.class, "input", LoaderInfo.class, "info");
 		if (!base)
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement("super.fromData(input, info)"));
 		for (Field field : actualClass.getDeclaredFields())
-			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()) && !field.getName().equals("result"))
-			{
+			if (field.getAnnotation(Exclude.class) == null && !Modifier.isStatic(field.getModifiers()) && !field.getName().equals("result")) {
 				String fieldName = field.getName();
 				Class fieldType = field.getType();
 				String fieldTypeName = fieldType.getSimpleName();

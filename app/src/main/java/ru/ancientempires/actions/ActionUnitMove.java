@@ -12,22 +12,19 @@ import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionUnitMove extends ActionFromTo
-{
+public class ActionUnitMove extends ActionFromTo {
 
 	private ActionResultUnitMove result = new ActionResultUnitMove();
 	@Exclude private Unit unit;
 
 	@Override
-	public ActionResultUnitMove perform(Game game)
-	{
+	public ActionResultUnitMove perform(Game game) {
 		performBase(game);
 		return result;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		if (!super.check())
 			return false;
 		Unit unit = game.fieldUnits[i][j];
@@ -37,8 +34,7 @@ public class ActionUnitMove extends ActionFromTo
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		unit = game.fieldUnits[i][j];
 		UnitType type = unit.type;
 
@@ -54,8 +50,7 @@ public class ActionUnitMove extends ActionFromTo
 		handleAfterMoveEffect();
 	}
 
-	private void handleAfterMoveEffect()
-	{
+	private void handleAfterMoveEffect() {
 		if (unit.type.creators.length == 0)
 			return;
 		// TODO если у типа есть несколько сreators
@@ -69,21 +64,18 @@ public class ActionUnitMove extends ActionFromTo
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return String.format("Move (%d %d)->(%d %d) (%s %s)", i, j, targetI, targetJ, game.fieldUnits[i][j], game.fieldUnits[targetI][targetJ]);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionUnitMove fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionUnitMove fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

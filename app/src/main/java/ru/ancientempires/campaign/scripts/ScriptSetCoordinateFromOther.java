@@ -5,34 +5,29 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.model.NamedCoordinates;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptSetCoordinateFromOther extends Script
-{
+public class ScriptSetCoordinateFromOther extends Script {
 
 	private String otherName;
 	private String name;
 	private int    delta;
 
-	public ScriptSetCoordinateFromOther()
-	{}
+	public ScriptSetCoordinateFromOther() {}
 
-	public ScriptSetCoordinateFromOther(String otherName, String name, int delta)
-	{
+	public ScriptSetCoordinateFromOther(String otherName, String name, int delta) {
 		this.otherName = otherName;
 		this.name = name;
 		this.delta = delta;
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		NamedCoordinates.set(name, NamedCoordinates.get(otherName) + delta);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("otherName", otherName);
 		object.addProperty("name", name);
@@ -40,8 +35,7 @@ public class ScriptSetCoordinateFromOther extends Script
 		return object;
 	}
 
-	public ScriptSetCoordinateFromOther fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptSetCoordinateFromOther fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		otherName = object.get("otherName").getAsString();
 		name = object.get("name").getAsString();

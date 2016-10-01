@@ -21,11 +21,9 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.rules.Rules;
 
-public class CellImages extends AbstractImages
-{
+public class CellImages extends AbstractImages {
 
-	public static CellImages get()
-	{
+	public static CellImages get() {
 		return Client.client.images.cell;
 	}
 
@@ -43,32 +41,26 @@ public class CellImages extends AbstractImages
 					MyColor.BLACK
 			};
 
-	public FewBitmaps getCellBitmap(Cell cell, boolean dual)
-	{
+	public FewBitmaps getCellBitmap(Cell cell, boolean dual) {
 		if (cell.type.template != null)
 			return dual ? null : cell.type.template.get(cell);
-		if (dual)
-		{
+		if (dual) {
 			CellBitmap cellBitmap = cellBitmapsDual[cell.type.ordinal];
 			return cellBitmap == null ? null : cellBitmap.getBitmap(cell);
-		}
-		else
+		} else
 			return cellBitmaps[cell.type.ordinal].getBitmap(cell);
 	}
 
-	public boolean containsBitmap(CellType type)
-	{
+	public boolean containsBitmap(CellType type) {
 		return type.template != null || cellBitmaps[type.ordinal] != null;
 	}
 
-	public boolean isCellSmokes(Cell cell)
-	{
+	public boolean isCellSmokes(Cell cell) {
 		return cell.isCapture() && cellBitmaps[cell.type.ordinal].isSmokes;
 	}
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		cellBitmaps = new CellBitmap[rules.cellTypes.length];
 		cellBitmapsDual = new CellBitmap[rules.cellTypes.length];
 
@@ -76,8 +68,7 @@ public class CellImages extends AbstractImages
 		reader.beginObject();
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
-		for (int i = 0; reader.peek() == JsonToken.BEGIN_OBJECT; i++)
-		{
+		for (int i = 0; reader.peek() == JsonToken.BEGIN_OBJECT; i++) {
 			reader.beginObject();
 			CellType type = rules.getCellType(JsonHelper.readString(reader, "type"));
 			MyAssert.a("images", reader.nextName());
@@ -92,11 +83,9 @@ public class CellImages extends AbstractImages
 			cellBitmap.defaultBitmap = new FewBitmaps(defaultBitmaps);
 
 			// colorBitmaps
-			if (type.isCapturing)
-			{
+			if (type.isCapturing) {
 				cellBitmap.colorBitmaps = new FewBitmaps[colors.length];
-				for (int colorI = 0; colorI < colors.length; colorI++)
-				{
+				for (int colorI = 0; colorI < colors.length; colorI++) {
 					Bitmap[] bitmaps = new Bitmap[imageNames.length];
 					for (int j = 0; j < bitmaps.length; j++)
 						bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
@@ -104,8 +93,7 @@ public class CellImages extends AbstractImages
 				}
 			}
 
-			while (reader.peek() == JsonToken.NAME)
-			{
+			while (reader.peek() == JsonToken.NAME) {
 				String name = reader.nextName().intern();
 				// dual
 				if (name == "isDual")
@@ -127,8 +115,7 @@ public class CellImages extends AbstractImages
 	}
 
 	@Override
-	public void load(FileLoader loader, Game game) throws IOException
-	{
+	public void load(FileLoader loader, Game game) throws IOException {
 		playerToColorI = new int[game.players.length];
 		for (Player player : game.players)
 			for (int colorI = 0; colorI < colors.length; colorI++)

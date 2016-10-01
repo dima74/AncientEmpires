@@ -6,24 +6,20 @@ import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ConditionUnitIntoBounds extends Condition
-{
+public class ConditionUnitIntoBounds extends Condition {
 
 	private Player           player;
 	private AbstractBounds[] bounds;
 
-	public ConditionUnitIntoBounds()
-	{}
+	public ConditionUnitIntoBounds() {}
 
-	public ConditionUnitIntoBounds(int player, AbstractBounds... bounds)
-	{
+	public ConditionUnitIntoBounds(int player, AbstractBounds... bounds) {
 		this.player = getGame().players[player];
 		this.bounds = bounds;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		for (Unit unit : player.units)
 			for (AbstractBounds bounds : this.bounds)
 				if (bounds.in(unit.i, unit.j))
@@ -34,16 +30,14 @@ public class ConditionUnitIntoBounds extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());
 		object.add("bounds", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(bounds));
 		return object;
 	}
 
-	public ConditionUnitIntoBounds fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ConditionUnitIntoBounds fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		bounds = AbstractBounds.fromJsonArray(object.get("bounds").getAsJsonArray(), info);

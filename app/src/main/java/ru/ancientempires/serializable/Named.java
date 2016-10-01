@@ -1,6 +1,5 @@
 package ru.ancientempires.serializable;
 
-public interface Named
-{
+public interface Named {
 	String getName();
 }

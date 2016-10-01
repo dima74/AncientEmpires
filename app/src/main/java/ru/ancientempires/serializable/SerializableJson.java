@@ -5,8 +5,7 @@ import com.google.gson.JsonObject;
 import org.atteo.classindex.IndexSubclasses;
 
 @IndexSubclasses
-public interface SerializableJson
-{
+public interface SerializableJson {
 
 	/*
 		toJson --- одинаковый как для простых объектов (например Cell), так и для сложных (например Action/Script),

@@ -6,16 +6,14 @@ import android.graphics.Paint;
 import ru.ancientempires.actions.ActionFromTo;
 import ru.ancientempires.images.Images;
 
-public class DrawAction extends Draw
-{
+public class DrawAction extends Draw {
 
 	public static float mScale = 2.5f;
 	public static int   mA     = (int) (Images.get().bitmapSize * DrawAction.mScale);
 
 	public static Paint whiteAlphaPaint = new Paint();
 
-	static
-	{
+	static {
 		DrawAction.whiteAlphaPaint.setColor(0xDDFFFFFF);
 	}
 
@@ -25,24 +23,20 @@ public class DrawAction extends Draw
 	public int h = ActionImages().h * 2;
 	public int w = w();
 
-	public DrawAction(BaseDrawMain mainBase)
-	{
+	public DrawAction(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public void start(ActionFromTo action1, ActionFromTo action2)
-	{
+	public void start(ActionFromTo action1, ActionFromTo action2) {
 		this.action1 = action1;
 		this.action2 = action2;
 	}
 
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return action1 != null;
 	}
 
-	public boolean touch(float y, float x)
-	{
+	public boolean touch(float y, float x) {
 		if (y < 0 || y > h)
 			return false;
 		ActionFromTo action = x < w / 2 ? action1 : action2;
@@ -51,14 +45,12 @@ public class DrawAction extends Draw
 		return true;
 	}
 
-	private void destroy()
-	{
+	private void destroy() {
 		action1 = action2 = null;
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		canvas.drawRect(0, 0, w, h, DrawAction.whiteAlphaPaint);
 		int y = (h - ActionImages().h) / 2;
 		int delta = w / 3;

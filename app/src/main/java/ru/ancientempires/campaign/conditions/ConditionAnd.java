@@ -5,20 +5,16 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ConditionAnd extends ConditionBoolean
-{
+public class ConditionAnd extends ConditionBoolean {
 
-	public ConditionAnd()
-	{}
+	public ConditionAnd() {}
 
-	public ConditionAnd(Script... scripts)
-	{
+	public ConditionAnd(Script... scripts) {
 		super(scripts);
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		for (Script script : scripts)
 			if (!script.checkGeneral())
 				return false;
@@ -28,14 +24,12 @@ public class ConditionAnd extends ConditionBoolean
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ConditionAnd fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ConditionAnd fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

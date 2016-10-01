@@ -28,27 +28,23 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.client.IClientHelper;
 import ru.ancientempires.helpers.AssetsHelper;
 
-public class FileLoader
-{
+public class FileLoader {
 
 	public AssetsHelper assets;
 	public File         baseDirectory;
 	public String       prefix;
 
-	public FileLoader(IClientHelper helper)
-	{
+	public FileLoader(IClientHelper helper) {
 		baseDirectory = helper.getFilesDir();
 		assets = helper.getAssets();
 		prefix = "";
 	}
 
-	public FileLoader(FileLoader loader)
-	{
+	public FileLoader(FileLoader loader) {
 		this(loader, "");
 	}
 
-	public FileLoader(FileLoader loader, String prefix)
-	{
+	public FileLoader(FileLoader loader, String prefix) {
 		baseDirectory = loader.baseDirectory;
 		assets = loader.assets;
 		this.prefix = loader.prefix + prefix;
@@ -56,105 +52,86 @@ public class FileLoader
 			this.prefix += "/";
 	}
 
-	public File getFile(String name)
-	{
+	public File getFile(String name) {
 		return new File(baseDirectory, prefix + name);
 	}
 
-	public boolean exists(String name)
-	{
+	public boolean exists(String name) {
 		return getFile(name).exists() || assets.exists(prefix + name);
 	}
 
-	public InputStream openIS(String name) throws IOException
-	{
+	public InputStream openIS(String name) throws IOException {
 		if (getFile(name).exists())
 			return new FileInputStream(getFile(name));
 		else
 			return assets.openIS(prefix + name);
 	}
 
-	public DataInputStream openDIS(String name) throws IOException
-	{
+	public DataInputStream openDIS(String name) throws IOException {
 		return new DataInputStream(openIS(name));
 	}
 
-	public FileInputStream openFIS(String name) throws IOException
-	{
+	public FileInputStream openFIS(String name) throws IOException {
 		return new FileInputStream(getFile(name));
 	}
 
-	public JsonReader getReader(String name) throws IOException
-	{
+	public JsonReader getReader(String name) throws IOException {
 		if (getFile(name).exists())
 			return new JsonReader(new FileReader(getFile(name)));
 		else
 			return new JsonReader(new InputStreamReader(openIS(name)));
 	}
 
-	public Scanner getScanner(String name) throws IOException
-	{
+	public Scanner getScanner(String name) throws IOException {
 		return new Scanner(openIS(name));
 	}
 
-	public void mkdirs(String name)
-	{
+	public void mkdirs(String name) {
 		getFile(name).mkdirs();
 	}
 
-	public void mkdirs()
-	{
+	public void mkdirs() {
 		mkdirs("");
 	}
 
-	public OutputStream openOS(String name) throws IOException
-	{
+	public OutputStream openOS(String name) throws IOException {
 		return new FileOutputStream(getFile(name));
 	}
 
-	public DataOutputStream openDOS(String name) throws IOException
-	{
+	public DataOutputStream openDOS(String name) throws IOException {
 		return new DataOutputStream(openOS(name));
 	}
 
-	public FileOutputStream openFOS(String name) throws IOException
-	{
+	public FileOutputStream openFOS(String name) throws IOException {
 		return new FileOutputStream(getFile(name));
 	}
 
-	public FileOutputStream openFOS(String name, boolean append) throws IOException
-	{
+	public FileOutputStream openFOS(String name, boolean append) throws IOException {
 		return new FileOutputStream(getFile(name), append);
 	}
 
-	public JsonWriter getWriter(String name) throws IOException
-	{
+	public JsonWriter getWriter(String name) throws IOException {
 		getFile(name).getParentFile().mkdirs();
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(getFile(name))));
 	}
 
-	public PrintWriter getPrintWriter(String name) throws FileNotFoundException
-	{
+	public PrintWriter getPrintWriter(String name) throws FileNotFoundException {
 		return new PrintWriter(getFile(name));
 	}
 
-	public PrintWriter getPrintWriter(String name, boolean append) throws IOException
-	{
+	public PrintWriter getPrintWriter(String name, boolean append) throws IOException {
 		return new PrintWriter(new FileWriter(getFile(name), append));
 	}
 
-	public FileLoader getLoader(String name)
-	{
+	public FileLoader getLoader(String name) {
 		return new FileLoader(this, name);
 	}
 
-	public void loadLocalization(Client client) throws IOException
-	{
+	public void loadLocalization(Client client) throws IOException {
 		client.localization.loadFull(this);
 	}
 
-	public String[] list(String name) throws IOException
-	{
+	public String[] list(String name) throws IOException {
 		ArrayList<String> list = new ArrayList<>();
 		String[] list1 = getFile(name).list();
 		if (list1 != null)
@@ -165,26 +142,22 @@ public class FileLoader
 		return list.toArray(new String[0]);
 	}
 
-	public Bitmap loadImage(String name) throws IOException
-	{
+	public Bitmap loadImage(String name) throws IOException {
 		return BitmapFactory.decodeStream(openIS(name));
 	}
 
-	public Bitmap loadImageAndResize(String name, float scale) throws IOException
-	{
+	public Bitmap loadImageAndResize(String name, float scale) throws IOException {
 		Bitmap bitmap = loadImage(name);
 		int width = (int) (bitmap.getWidth() * scale);
 		int height = (int) (bitmap.getHeight() * scale);
 		return Bitmap.createScaledBitmap(bitmap, width, height, false);
 	}
 
-	public void deleteFolder(String folder)
-	{
+	public void deleteFolder(String folder) {
 		deleteFolder(getFile(folder));
 	}
 
-	private void deleteFolder(File folder)
-	{
+	private void deleteFolder(File folder) {
 		for (File file : folder.listFiles())
 			if (file.isDirectory())
 				deleteFolder(file);
@@ -194,8 +167,7 @@ public class FileLoader
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return prefix;
 	}
 

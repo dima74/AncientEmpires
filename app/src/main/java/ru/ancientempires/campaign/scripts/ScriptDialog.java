@@ -9,47 +9,40 @@ import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Localize;
 
-public class ScriptDialog extends Script
-{
+public class ScriptDialog extends Script {
 
 	@Localize public    String text;
 	@BitmapPath private String imagePath;
 	private             String align;
 	@Exclude private    Bitmap image;
 
-	public ScriptDialog()
-	{}
+	public ScriptDialog() {}
 
-	public ScriptDialog(String text, String imagePath, String align)
-	{
+	public ScriptDialog(String text, String imagePath, String align) {
 		this.text = text;
 		this.imagePath = imagePath;
 		this.align = align;
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.dialog(image, text, this);
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return super.toString() + " " + imagePath + " " + text;
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("text", text);
 		object.addProperty("imagePath", imagePath);
@@ -57,8 +50,7 @@ public class ScriptDialog extends Script
 		return object;
 	}
 
-	public ScriptDialog fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptDialog fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		text = ru.ancientempires.Localization.get(object.get("text").getAsString());
 		imagePath = object.get("imagePath").getAsString();

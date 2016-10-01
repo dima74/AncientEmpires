@@ -7,11 +7,9 @@ import java.io.IOException;
 import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.FileLoader;
 
-public class StatusesImages extends AbstractImages
-{
+public class StatusesImages extends AbstractImages {
 
-	public static StatusesImages get()
-	{
+	public static StatusesImages get() {
 		return Client.client.images.statuses;
 	}
 
@@ -22,8 +20,7 @@ public class StatusesImages extends AbstractImages
 	public int w;
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		aura = loader.loadImage("aura.png");
 		poison = loader.loadImage("poison.png");
 

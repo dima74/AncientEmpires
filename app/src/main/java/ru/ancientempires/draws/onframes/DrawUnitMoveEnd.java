@@ -6,21 +6,17 @@ import ru.ancientempires.actions.result.ActionResultUnitMove;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.model.Unit;
 
-public class DrawUnitMoveEnd extends DrawOnFramesGroup
-{
+public class DrawUnitMoveEnd extends DrawOnFramesGroup {
 
 	private int    frameUpdateBonus;
 	private Unit[] units;
 
-	public DrawUnitMoveEnd(BaseDrawMain mainBase, ActionResultUnitMove result, int frameToStart)
-	{
+	public DrawUnitMoveEnd(BaseDrawMain mainBase, ActionResultUnitMove result, int frameToStart) {
 		super(mainBase);
 		draws.clear();
-		if (result.sign > 0)
-		{
+		if (result.sign > 0) {
 			units = result.units;
-			for (Unit unit : result.units)
-			{
+			for (Unit unit : result.units) {
 				DrawOnFrames draw = new DrawBitmaps(mainBase)
 						.setYX(unit.i * A, unit.j * A)
 						.setBitmaps(SparksImages().bitmapsDefault)
@@ -34,8 +30,7 @@ public class DrawUnitMoveEnd extends DrawOnFramesGroup
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		super.drawOnFrames(canvas);
 		if (iFrame() == frameUpdateBonus)
 			for (Unit unit : units)

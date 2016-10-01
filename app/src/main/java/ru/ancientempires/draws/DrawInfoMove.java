@@ -4,16 +4,13 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.draws.onframes.DrawOnFrames;
 
-public class DrawInfoMove extends DrawOnFrames
-{
+public class DrawInfoMove extends DrawOnFrames {
 
-	public DrawInfoMove(BaseDrawMain mainBase)
-	{
+	public DrawInfoMove(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public void startShow()
-	{
+	public void startShow() {
 		int frameCount = 0;
 		for (int y = main.infoY; y != 0; y /= 2)
 			frameCount++;
@@ -22,8 +19,7 @@ public class DrawInfoMove extends DrawOnFrames
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		main.infoY /= 2;
 	}
 

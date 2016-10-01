@@ -4,20 +4,17 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.draws.BaseDrawMain;
 
-public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
-{
+public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames {
 
 	public int start;
 	public int end;
 	public int step;
 
-	public DrawOnFramesWithRangeValues(BaseDrawMain mainBase)
-	{
+	public DrawOnFramesWithRangeValues(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawOnFramesWithRangeValues animateRange(int start, int end, int step)
-	{
+	public DrawOnFramesWithRangeValues animateRange(int start, int end, int step) {
 		this.start = start;
 		this.end = end;
 		this.step = step;
@@ -25,14 +22,12 @@ public abstract class DrawOnFramesWithRangeValues extends DrawOnFrames
 		return this;
 	}
 
-	public DrawOnFramesWithRangeValues animateRange(int start, int end)
-	{
+	public DrawOnFramesWithRangeValues animateRange(int start, int end) {
 		return animateRange(start, end, 1);
 	}
 
 	@Override
-	public final void drawOnFrames(Canvas canvas)
-	{
+	public final void drawOnFrames(Canvas canvas) {
 		// draw(canvas, this.start + this.step * this.framePass);
 		int a = frameLeft * start + framePass * end;
 		int b = frameCount - 1;

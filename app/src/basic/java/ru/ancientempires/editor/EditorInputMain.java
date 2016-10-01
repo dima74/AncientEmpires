@@ -13,9 +13,8 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
 
-public class EditorInputMain implements Callback
-{
-	
+public class EditorInputMain implements Callback {
+
 	public EditorActivity activity;
 	public Game           game;
 	public EditorDrawMain drawMain;
@@ -23,17 +22,15 @@ public class EditorInputMain implements Callback
 	public int[]            colorsSelected = new int[3];
 	public EditorStruct[][] structs        = new EditorStruct[3][];
 
-	public EditorInputMain(EditorActivity activity, EditorDrawMain drawMain)
-	{
+	public EditorInputMain(EditorActivity activity, EditorDrawMain drawMain) {
 		this.activity = activity;
 		this.drawMain = drawMain;
 		game = activity.game;
 		drawMain.inputMain = this;
 		createStructs();
 	}
-	
-	private void createStructs()
-	{
+
+	private void createStructs() {
 		Rules rules = game.rules;
 		ArrayList<EditorStruct>[] structsList = new ArrayList[3];
 		for (int i = 0; i < 3; i++)
@@ -52,13 +49,11 @@ public class EditorInputMain implements Callback
 		for (int i = 0; i < 3; i++)
 			drawMain.choose.setStruct(i, structs[i][0]);
 	}
-	
+
 	@Override
-	public void tapChoose(int i)
-	{
+	public void tapChoose(int i) {
 		int selected = drawMain.choose.selected;
-		if (i == selected)
-		{
+		if (i == selected) {
 			MyColor[] colors = null;
 			if (i == 0)
 				colors = MyColor.playersColors();
@@ -69,41 +64,35 @@ public class EditorInputMain implements Callback
 			new EditorChooseDialog().show(activity, structs[i], colors, colorsSelected[selected]);
 		}
 	}
-	
-	public void tapMap(int i, int j)
-	{
+
+	public void tapMap(int i, int j) {
 		int selected = drawMain.choose.selected;
 		EditorStruct struct = drawMain.choose.structs[selected];
-		if (selected == 0)
-		{
+		if (selected == 0) {
 			if (game.fieldUnits[i][j] != null)
 				game.fieldUnits[i][j] = null;
 			else
 				new Unit(((EditorStructUnit) struct).unit)
 						.setIJ(i, j)
 						.addToGame();
-		}
-		else
-		{
+		} else {
 			game.fieldCells[i][j] = new Cell(((EditorStructCell) struct).cell);
 			game.fieldCells[i][j].i = i;
 			game.fieldCells[i][j].j = j;
 			for (int ni = i - 1; ni <= i + 1; ni++)
 				for (int nj = j - 1; nj <= j + 1; nj++)
-					if (game.checkCoordinates(ni, nj))
-					{
+					if (game.checkCoordinates(ni, nj)) {
 						Cell cell = game.fieldCells[ni][nj];
 						if (cell.type.template != null)
 							cell.type.template.update(cell);
 					}
 		}
 	}
-	
-	public void setStruct(int i, int color)
-	{
+
+	public void setStruct(int i, int color) {
 		int selected = drawMain.choose.selected;
 		drawMain.choose.setStruct(selected, structs[selected][i]);
 		colorsSelected[selected] = color;
 	}
-	
+
 }

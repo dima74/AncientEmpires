@@ -9,63 +9,53 @@ import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Player;
 
-public class EditorThread extends BaseThread
-{
+public class EditorThread extends BaseThread {
 
 	public EditorChooseView view;
 	public EditorInputMain  inputMain;
 
-	public EditorThread(EditorActivity activity, SurfaceHolder surfaceHolder)
-	{
+	public EditorThread(EditorActivity activity, SurfaceHolder surfaceHolder) {
 		super(activity, surfaceHolder);
 		drawMain = new EditorDrawMain(activity);
 		inputMain = new EditorInputMain(activity, (EditorDrawMain) drawMain);
-		
+
 		drawMain.cells.update();
 		drawMain.cellsDual.update();
 		drawMain.units.update();
 		drawMain.buildingSmokes.update();
 	}
-	
+
 	@Override
-	public void beforeRun()
-	{
+	public void beforeRun() {
 		// thread = this;
 	}
-	
+
 	@Override
-	public void onRun()
-	{
+	public void onRun() {
 		if (view != null)
 			view.postInvalidate();
 	}
-	
+
 	@Override
-	public void afterRun()
-	{
+	public void afterRun() {
 		// thread = null;
-		try
-		{
+		try {
 			activity.game.trimPlayers();
 			activity.game.currentPlayer = null;
 			eraseDefaults(activity.game);
 			activity.game.setScreenCenters();
 			GameSaver.createBaseGame(activity.game);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
 
-	private void eraseDefaults(Game game)
-	{
+	private void eraseDefaults(Game game) {
 		game.currentTurn = null;
 		game.allowedUnits = null;
 		game.random = null;
-		for (Player player : game.players)
-		{
+		for (Player player : game.players) {
 			player.color = null;
 			player.type = null;
 			player.gold = null;
@@ -73,5 +63,5 @@ public class EditorThread extends BaseThread
 			player.team = null;
 		}
 	}
-	
+
 }

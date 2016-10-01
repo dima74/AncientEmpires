@@ -9,16 +9,14 @@ import ru.ancientempires.actions.ActionUnitRepair;
 import ru.ancientempires.actions.result.ActionResultGetCellBuy;
 import ru.ancientempires.helpers.ActionHelper;
 
-public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
-{
+public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy {
 
 	public int lastTapI;
 	public int lastTapJ;
 
 	public InputUnit inputUnit;
 
-	public InputPlayer(InputMain inputMain)
-	{
+	public InputPlayer(InputMain inputMain) {
 		super(inputMain);
 		inputUnit = new InputUnit(inputMain, this);
 	}
@@ -37,29 +35,23 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		 Конец хода будет в контекстном меню.
 		 */
 	@Override
-	public void tap(int i, int j)
-	{
+	public void tap(int i, int j) {
 		tapWithoutAction(i, j);
 		drawMain.isDrawCursor = true;
 
-		if (!inputUnit.isActive)
-		{
+		if (!inputUnit.isActive) {
 			boolean start = inputUnit.start(i, j);
 			if (!start)
 				tryCellActions(i, j);
-		}
-		else
-		{
+		} else {
 			boolean isUnitAction = inputUnit.tap(i, j); // сам станет неактивным
 			if (isUnitAction)
 				inputUnit.start(i, j);
-			else
-			{
+			else {
 				boolean isSameTap = inputUnit.isSameTap(i, j);
 				if (isSameTap)
 					tryCellActions(i, j);
-				else
-				{
+				else {
 					boolean start = inputUnit.start(i, j);
 					if (!start)
 						tryCellActions(i, j);
@@ -68,8 +60,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		}
 	}
 
-	private void tryCellActions(int i, int j)
-	{
+	private void tryCellActions(int i, int j) {
 		if (new ActionHelper(game).canUnitRepair(i, j))
 			tryRepair(i, j);
 		else if (new ActionHelper(game).canUnitCapture(i, j))
@@ -78,15 +69,13 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 			tryBuy(i, j);
 	}
 
-	public void tapWithoutAction(int i, int j)
-	{
+	public void tapWithoutAction(int i, int j) {
 		lastTapI = i;
 		lastTapJ = j;
 		drawMain.cursorDefault.tap(i, j);
 	}
 
-	private boolean tryRepair(int i, int j)
-	{
+	private boolean tryRepair(int i, int j) {
 		new ActionUnitRepair()
 				.setIJ(i, j)
 				.perform(game);
@@ -94,8 +83,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		return true;
 	}
 
-	private boolean tryCapture(int i, int j)
-	{
+	private boolean tryCapture(int i, int j) {
 		new ActionUnitCapture()
 				.setIJ(i, j)
 				.perform(game);
@@ -103,8 +91,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 		return true;
 	}
 
-	private boolean tryBuy(int i, int j)
-	{
+	private boolean tryBuy(int i, int j) {
 		ActionResultGetCellBuy result = (ActionResultGetCellBuy) new ActionGetCellBuy()
 				.setIJ(i, j)
 				.perform(game);
@@ -113,8 +100,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	}
 
 	@Override
-	public void onUnitBuy(int iUnit)
-	{
+	public void onUnitBuy(int iUnit) {
 		new ActionCellBuy()
 				.setUnit(iUnit)
 				.setIJ(lastTapI, lastTapJ)
@@ -126,8 +112,7 @@ public class InputPlayer extends AbstractPlayerInput implements NoticeUnitBuy
 	}
 
 	@Override
-	public void endTurn()
-	{
+	public void endTurn() {
 		drawMain.saveScreenCenter();
 		if (inputUnit.isActive)
 			inputUnit.destroy();

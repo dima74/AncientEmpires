@@ -1,14 +1,11 @@
 package ru.ancientempires.campaign.scripts;
 
-public class ScriptFocusOnCurrentPlayerCenter extends Script
-{
+public class ScriptFocusOnCurrentPlayerCenter extends Script {
 
-	public ScriptFocusOnCurrentPlayerCenter()
-	{}
+	public ScriptFocusOnCurrentPlayerCenter() {}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.focusOnCurrentPlayerCenter();
 	}
 

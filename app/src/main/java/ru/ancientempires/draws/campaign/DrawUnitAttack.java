@@ -4,11 +4,9 @@ import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
-public class DrawUnitAttack extends DrawOnFramesGroup
-{
+public class DrawUnitAttack extends DrawOnFramesGroup {
 
-	public DrawUnitAttack(BaseDrawMain mainBase, int i, int j)
-	{
+	public DrawUnitAttack(BaseDrawMain mainBase, int i, int j) {
 		super(mainBase);
 		main.units.field[i][j].idleAnimation(16);
 		add(new DrawBitmaps(mainBase)

@@ -6,55 +6,46 @@ import ru.ancientempires.helpers.UnitHelper;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint
-{
+public class ScriptCameraMoveOnKing extends AbstractScriptOnePoint {
 
 	public Player player;
 
-	public ScriptCameraMoveOnKing()
-	{}
+	public ScriptCameraMoveOnKing() {}
 
-	public ScriptCameraMoveOnKing(int player)
-	{
+	public ScriptCameraMoveOnKing(int player) {
 		this.player = getGame().players[player];
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.cameraMove(this);
 	}
 
 	@Override
-	public int i()
-	{
+	public int i() {
 		return new UnitHelper(game).getKing(player).i;
 	}
 
 	@Override
-	public int j()
-	{
+	public int j() {
 		return new UnitHelper(game).getKing(player).j;
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());
 		return object;
 	}
 
-	public ScriptCameraMoveOnKing fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptCameraMoveOnKing fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		return this;

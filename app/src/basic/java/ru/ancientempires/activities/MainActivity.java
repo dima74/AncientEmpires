@@ -16,8 +16,7 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.ii.II;
 import ru.ancientempires.model.Game;
 
-public class MainActivity extends BaseListActivity
-{
+public class MainActivity extends BaseListActivity {
 
 	public static int     skirmish    = 5;
 	public static int     campaign    = 0;
@@ -25,14 +24,12 @@ public class MainActivity extends BaseListActivity
 	public static boolean firstStart  = true;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
-	public MenuActions[] getStrings()
-	{
+	public MenuActions[] getStrings() {
 		return new MenuActions[] {
 				MenuActions.PLAY,
 				MenuActions.ONLINE,
@@ -44,15 +41,13 @@ public class MainActivity extends BaseListActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		final int itemId = item.getItemId();
 		if (itemId == R.id.action_show_application_details)
 			startApplicationDetailsActivity(this);
@@ -60,10 +55,8 @@ public class MainActivity extends BaseListActivity
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id)
-	{
-		switch (getStrings()[position])
-		{
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		switch (getStrings()[position]) {
 			case PLAY:
 				moveTo(PlayMenuActivity.class);
 				break;
@@ -71,13 +64,10 @@ public class MainActivity extends BaseListActivity
 				moveTo(EditorBaseActivity.class);
 				break;
 			case ONLINE:
-				new Thread()
-				{
+				new Thread() {
 					@Override
-					public void run()
-					{
-						try
-						{
+					public void run() {
+						try {
 							Client.client.finishPart2();
 
 							Game game = Client.client.allGames.get("skirmish.5").loadGame(true);
@@ -93,17 +83,13 @@ public class MainActivity extends BaseListActivity
 							//сделать method tracing, пока что всегда только "try to exit form method ... while in method ...", мб попробовать в эмуляторе
 							//или просто поискать method profiling на десктопе
 
-							runOnUiThread(new Runnable()
-							{
+							runOnUiThread(new Runnable() {
 								@Override
-								public void run()
-								{
+								public void run() {
 									Toast.makeText(MainActivity.this, "end", Toast.LENGTH_LONG).show();
 								}
 							});
-						}
-						catch (Exception e)
-						{
+						} catch (Exception e) {
 							e.printStackTrace();
 							MyAssert.a(false);
 						}
@@ -115,14 +101,12 @@ public class MainActivity extends BaseListActivity
 		}
 	}
 
-	public static void testII(String gameID) throws Exception
-	{
+	public static void testII(String gameID) throws Exception {
 		Game game = Client.client.startGame(gameID);
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
 
-		for (int i = 0; i < 1; i++)
-		{
+		for (int i = 0; i < 1; i++) {
 			//System.out.println("i = " + i);
 			if (game.campaign.isDefault)
 				new II(game.rules).turnFull(game);
@@ -139,8 +123,7 @@ public class MainActivity extends BaseListActivity
 		//testLoadGame(game.path.gameID, true);
 	}
 
-	public static void testLoadGame(String gameID, boolean reload) throws Exception
-	{
+	public static void testLoadGame(String gameID, boolean reload) throws Exception {
 		Game game = Client.client.startGame(gameID);
 		game.campaign.iDrawCampaign = new CampaignImmediately(game);
 		game.campaign.start();
@@ -151,11 +134,9 @@ public class MainActivity extends BaseListActivity
 	}
 
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 		super.onResume();
-		if (firstStart)
-		{
+		if (firstStart) {
 			if ("info".equals(gameToStart))
 				startApplicationDetailsActivity(this);
 			else if ("editor".equals(gameToStart))
@@ -168,8 +149,7 @@ public class MainActivity extends BaseListActivity
 	}
 
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed() {
 		finish();
 	}
 

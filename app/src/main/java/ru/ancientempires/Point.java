@@ -4,32 +4,27 @@ import java.util.Objects;
 
 import ru.ancientempires.campaign.points.AbstractPoint;
 
-public class Point
-{
+public class Point {
 
 	public static final Point NULL_POINT = new Point(-1, -1);
 
 	public int i, j;
 
-	public Point(int i, int j)
-	{
+	public Point(int i, int j) {
 		this.i = i;
 		this.j = j;
 	}
 
-	public Point(AbstractPoint point)
-	{
+	public Point(AbstractPoint point) {
 		this(point.getI(), point.getJ());
 	}
 
-	public Point(float i, float j)
-	{
+	public Point(float i, float j) {
 		this(Math.round(i), Math.round(j));
 	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
@@ -40,8 +35,7 @@ public class Point
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return Objects.hash(i, j);
 	}
 

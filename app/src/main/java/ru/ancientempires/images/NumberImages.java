@@ -8,8 +8,7 @@ import java.io.IOException;
 
 import ru.ancientempires.framework.FileLoader;
 
-public abstract class NumberImages extends AbstractImages
-{
+public abstract class NumberImages extends AbstractImages {
 
 	public Bitmap minus;
 	public Bitmap plus;
@@ -22,13 +21,11 @@ public abstract class NumberImages extends AbstractImages
 	public int h;
 	public int w;
 
-	public Bitmap getBitmap(int number)
-	{
+	public Bitmap getBitmap(int number) {
 		return number <= 100 ? numbers[number] : createBitmap(number);
 	}
 
-	public Bitmap createBitmap(int number)
-	{
+	public Bitmap createBitmap(int number) {
 		int copyNumber = number;
 		int numberDigits = 1;
 		while ((copyNumber /= 10) > 0)
@@ -41,13 +38,11 @@ public abstract class NumberImages extends AbstractImages
 		return bitmap;
 	}
 
-	public Bitmap getBitmap(int number, int sign)
-	{
+	public Bitmap getBitmap(int number, int sign) {
 		return sign == 0 ? getBitmap(number) : sign == +1 ? numbersPlus[number] : numbersMinus[number];
 	}
 
-	public void preloadBase(FileLoader loader) throws IOException
-	{
+	public void preloadBase(FileLoader loader) throws IOException {
 		for (int i = 0; i < 10; i++)
 			digits[i] = loader.loadImage(i + ".png");
 		minus = loader.loadImage("-.png");
@@ -60,8 +55,7 @@ public abstract class NumberImages extends AbstractImages
 		numbersMinus = getNumbers(minus);
 	}
 
-	private Bitmap[] getNumbers(Bitmap prefix)
-	{
+	private Bitmap[] getNumbers(Bitmap prefix) {
 		Bitmap[] bitmaps = new Bitmap[101];
 		for (int i = 0; i < 10; i++)
 			bitmaps[i] = getBitmap(prefix, digits[i]);
@@ -71,8 +65,7 @@ public abstract class NumberImages extends AbstractImages
 		return bitmaps;
 	}
 
-	private Bitmap getBitmap(Bitmap b1, Bitmap b2)
-	{
+	private Bitmap getBitmap(Bitmap b1, Bitmap b2) {
 		if (b1 == null)
 			return b2;
 		Bitmap bitmap = Bitmap.createBitmap(w * 2, h, Bitmap.Config.ARGB_8888);
@@ -82,8 +75,7 @@ public abstract class NumberImages extends AbstractImages
 		return bitmap;
 	}
 
-	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3)
-	{
+	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3) {
 		if (b1 == null)
 			return getBitmap(b2, b3);
 		Bitmap bitmap = Bitmap.createBitmap(w * 3, h, Bitmap.Config.ARGB_8888);
@@ -94,8 +86,7 @@ public abstract class NumberImages extends AbstractImages
 		return bitmap;
 	}
 
-	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3, Bitmap b4)
-	{
+	private Bitmap getBitmap(Bitmap b1, Bitmap b2, Bitmap b3, Bitmap b4) {
 		if (b1 == null)
 			return getBitmap(b2, b3, b4);
 		Bitmap bitmap = Bitmap.createBitmap(w * 4, h, Bitmap.Config.ARGB_8888);

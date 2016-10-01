@@ -4,8 +4,7 @@ import ru.ancientempires.client.Client;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.framework.MyLog;
 
-public class GameInit
-{
+public class GameInit {
 	
 	/*
 		Механизм инициализации игры:
@@ -21,20 +20,14 @@ public class GameInit
 	public Thread foldersInitThread;
 	public Thread initThread;
 
-	public void init(final Client client)
-	{
+	public void init(final Client client) {
 		MyLog.l("GameInit.init()");
-		foldersInitThread = new Thread()
-		{
+		foldersInitThread = new Thread() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					client.loadPart1();
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
@@ -42,20 +35,15 @@ public class GameInit
 		};
 		foldersInitThread.start();
 
-		initThread = new Thread()
-		{
+		initThread = new Thread() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					foldersInitThread.join();
 					// Debug.startMethodTracing("traces/client");
 					client.loadPart2();
 					// Debug.stopMethodTracing();
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					MyAssert.a(false);
 					e.printStackTrace();
 				}

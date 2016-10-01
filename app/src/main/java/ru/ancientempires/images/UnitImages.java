@@ -20,11 +20,9 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.rules.Rules;
 
-public class UnitImages extends AbstractImages
-{
+public class UnitImages extends AbstractImages {
 
-	public static UnitImages get()
-	{
+	public static UnitImages get() {
 		return Client.client.images.unit;
 	}
 
@@ -36,27 +34,23 @@ public class UnitImages extends AbstractImages
 	public FewBitmaps[][] unitBitmaps;
 	public Bitmap[][]     unitBitmapsBuy;
 
-	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn)
-	{
+	public FewBitmaps getUnitBitmap(Unit unit, boolean keepTurn) {
 		if (unit.isTurn && !keepTurn)
 			return unitBitmaps[unit.type.ordinal][0];
 		else
 			return unitBitmaps[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 
-	public boolean containsBitmap(UnitType type)
-	{
+	public boolean containsBitmap(UnitType type) {
 		return unitBitmaps[type.ordinal][0] != null;
 	}
 
-	public Bitmap getUnitBitmapBuy(Unit unit)
-	{
+	public Bitmap getUnitBitmapBuy(Unit unit) {
 		return unitBitmapsBuy[unit.type.ordinal][playerToColorI[unit.player.ordinal]];
 	}
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		JsonReader reader = loader.getReader("info.json");
 		reader.beginObject();
 
@@ -64,14 +58,12 @@ public class UnitImages extends AbstractImages
 
 		MyAssert.a("images", reader.nextName());
 		reader.beginArray();
-		while (reader.peek() == JsonToken.BEGIN_OBJECT)
-		{
+		while (reader.peek() == JsonToken.BEGIN_OBJECT) {
 			reader.beginObject();
 			int type = rules.getUnitType(JsonHelper.readString(reader, "type")).ordinal;
 			MyAssert.a("images", reader.nextName());
 			String[] imageNames = new Gson().fromJson(reader, String[].class);
-			for (int colorI = 0; colorI < colors.length; colorI++)
-			{
+			for (int colorI = 0; colorI < colors.length; colorI++) {
 				Bitmap[] bitmaps = new Bitmap[imageNames.length];
 				for (int j = 0; j < bitmaps.length; j++)
 					bitmaps[j] = loader.loadImage(colors[colorI].folderName() + "/" + imageNames[j]);
@@ -86,8 +78,7 @@ public class UnitImages extends AbstractImages
 	}
 
 	@Override
-	public void load(FileLoader loader, Game game) throws IOException
-	{
+	public void load(FileLoader loader, Game game) throws IOException {
 		playerToColorI = new int[game.players.length];
 		for (Player player : game.players)
 			for (int colorI = 0; colorI < colors.length; colorI++)

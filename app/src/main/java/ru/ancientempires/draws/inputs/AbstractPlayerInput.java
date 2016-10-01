@@ -1,10 +1,8 @@
 package ru.ancientempires.draws.inputs;
 
-public abstract class AbstractPlayerInput extends AbstractInput
-{
+public abstract class AbstractPlayerInput extends AbstractInput {
 
-	public AbstractPlayerInput(InputMain inputMain)
-	{
+	public AbstractPlayerInput(InputMain inputMain) {
 		super(inputMain);
 	}
 

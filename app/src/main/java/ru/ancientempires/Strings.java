@@ -1,7 +1,6 @@
 package ru.ancientempires;
 
-public enum Strings
-{
+public enum Strings {
 	TEAM,
 	GOLD,
 	UNITS_LIMIT,
@@ -14,8 +13,7 @@ public enum Strings
 	EDITOR_GAME_NAME_TEMPLATE;
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return Localization.get(name());
 	}
 

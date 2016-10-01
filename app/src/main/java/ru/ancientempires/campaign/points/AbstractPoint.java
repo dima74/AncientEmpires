@@ -15,16 +15,14 @@ import ru.ancientempires.serializable.SerializableData;
 import ru.ancientempires.serializable.SerializableJson;
 
 @IndexSubclasses
-public abstract class AbstractPoint extends AbstractGameHandler implements SerializableJson, SerializableData
-{
+public abstract class AbstractPoint extends AbstractGameHandler implements SerializableJson, SerializableData {
 
 	public abstract int getI();
 
 	public abstract int getJ();
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 777;
 		int result = 1;
 		result = prime * result + getI();
@@ -33,71 +31,59 @@ public abstract class AbstractPoint extends AbstractGameHandler implements Seria
 	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		AbstractPoint p = (AbstractPoint) o;
 		return p.getI() == getI() && p.getJ() == getJ();
 	}
 
-	public static AbstractPoint[] createPoints(Object... points)
-	{
+	public static AbstractPoint[] createPoints(Object... points) {
 		ArrayList<AbstractPoint> list = new ArrayList<>();
-		for (int i = 0; i < points.length; i++)
-		{
+		for (int i = 0; i < points.length; i++) {
 			Object o = points[i];
 			if (o instanceof AbstractPoint)
 				list.add((AbstractPoint) o);
-			else if (o.getClass() == Integer.class)
-			{
+			else if (o.getClass() == Integer.class) {
 				list.add(new PointInteger((int) points[i], (int) points[i + 1]));
 				++i;
-			}
-			else if (o.getClass() == String.class)
+			} else if (o.getClass() == String.class)
 				list.add(new PointNamed((String) o));
 		}
 		return list.toArray(new AbstractPoint[list.size()]);
 	}
 
-	public static AbstractPoint createPoint(Object... points)
-	{
+	public static AbstractPoint createPoint(Object... points) {
 		return createPoints(points)[0];
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "{" + getI() + ", " + getJ() + "}";
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 
-	public AbstractPoint fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public AbstractPoint fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		return this;
 	}
 
-	static public AbstractPoint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public AbstractPoint[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		AbstractPoint[] array = new AbstractPoint[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), AbstractPoint.class);
 		return array;
 	}
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		ru.ancientempires.serializable.SerializableDataHelper.toData(output, this);
 	}
 
-	public AbstractPoint fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public AbstractPoint fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		return this;
 	}
 

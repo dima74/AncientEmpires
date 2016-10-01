@@ -4,43 +4,36 @@ import com.google.gson.JsonObject;
 
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptSnakeMap extends Script
-{
+public class ScriptSnakeMap extends Script {
 
 	public int milliseconds;
 
-	public ScriptSnakeMap()
-	{}
+	public ScriptSnakeMap() {}
 
-	public ScriptSnakeMap(int milliseconds)
-	{
+	public ScriptSnakeMap(int milliseconds) {
 		this.milliseconds = milliseconds;
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.snakeMap(this);
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("milliseconds", milliseconds);
 		return object;
 	}
 
-	public ScriptSnakeMap fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptSnakeMap fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		milliseconds = object.get("milliseconds").getAsInt();
 		return this;

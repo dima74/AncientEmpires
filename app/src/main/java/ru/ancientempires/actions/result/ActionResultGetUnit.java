@@ -1,7 +1,6 @@
 package ru.ancientempires.actions.result;
 
-public class ActionResultGetUnit extends ActionResult
-{
+public class ActionResultGetUnit extends ActionResult {
 
 	public boolean canMove;
 	public boolean canAttack;

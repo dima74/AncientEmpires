@@ -36,8 +36,7 @@ import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.model.Team;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class PlayersConfigureActivity extends BaseActivity
-{
+public class PlayersConfigureActivity extends BaseActivity {
 	
 	/*
 	
@@ -99,16 +98,14 @@ public class PlayersConfigureActivity extends BaseActivity
 				базовой папке и дате последнего изменения + ещё что-то вроде e-mail'а автора.
 		3. Настроить инкрементальное сохранение
 	 */
-	
+
 	private GamePath path;
 	private Player[] players;
 	private View[]   views;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		try
-		{
+	protected void onCreate(Bundle savedInstanceState) {
+		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_players_configure);
 
@@ -146,22 +143,16 @@ public class PlayersConfigureActivity extends BaseActivity
 
 			if (MainActivity.firstStart)
 				onClick();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
 
-	private Bitmap getBitmap(Game game)
-	{
-		try
-		{
+	private Bitmap getBitmap(Game game) {
+		try {
 			Client.client.images.load(Client.client.imagesLoader, game);
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
@@ -193,58 +184,52 @@ public class PlayersConfigureActivity extends BaseActivity
 
 		return bitmap;
 	}
-	
-	private View getView(Player player, int team, int numberTeams)
-	{
+
+	private View getView(Player player, int team, int numberTeams) {
 		View view = getLayoutInflater().inflate(R.layout.players_configure_item, null);
 		TextView textColor = (TextView) view.findViewById(R.id.textColor);
 		Spinner spinnerType = (Spinner) view.findViewById(R.id.spinnerType);
 		Spinner spinnerTeam = (Spinner) view.findViewById(R.id.spinnerTeam);
-		
+
 		textColor.setText(Localization.get(player.color.name()));
 		textColor.setTextColor(player.color.showColor);
-		
+
 		ArrayAdapter<PlayerType> adapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PlayerType.values());
 		spinnerType.setAdapter(adapterType);
 		spinnerType.setSelection(player.type.ordinal());
-		
+
 		String[] teamsNames = new String[numberTeams];
 		for (int i = 0; i < teamsNames.length; i++)
 			teamsNames[i] = Strings.TEAM.toString() + " " + (i + 1);
 		ArrayAdapter<String> adapterTeam = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teamsNames);
 		spinnerTeam.setAdapter(adapterTeam);
 		spinnerTeam.setSelection(team);
-		
+
 		return view;
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.players_configure_menu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		final int itemId = item.getItemId();
-		switch (itemId)
-		{
+		switch (itemId) {
 			case R.id.action_fight:
 				onClick();
 		}
 		return true;
 	}
 
-	public void onClick()
-	{
-		try
-		{
+	public void onClick() {
+		try {
 			int gold = getIntValue(R.id.textGoldEdit);
 			int unitsLimit = getIntValue(R.id.textUnitsLimitEdit);
 
@@ -256,8 +241,7 @@ public class PlayersConfigureActivity extends BaseActivity
 			for (int i = 0; i < teamNumbersSorted.length; i++)
 				teamNumbersToOrdinals[teamNumbersSorted[i]] = i;
 
-			for (int i = 0; i < players.length; i++)
-			{
+			for (int i = 0; i < players.length; i++) {
 				players[i].team = new Team(teamNumbersToOrdinals[teamNumbers[i]]);
 				players[i].type = (PlayerType) ((Spinner) views[i].findViewById(R.id.spinnerType)).getSelectedItem();
 				players[i].gold = gold;
@@ -268,21 +252,18 @@ public class PlayersConfigureActivity extends BaseActivity
 			moveTo(GameActivity.class, new Intent()
 					.putExtra(Extras.GAME_ID, path.gameID)
 					.putExtra(Extras.PLAYERS, SerializableJsonHelper.toJsonArray(players).toString()));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed() {
 		finish();
 		//moveTo(LevelMenuActivity.class, new Intent()
 		//		.putExtra(Extras.FOLDER_ID, path.getFolderID())
 		//		.putExtra(Extras.FOCUS_ON, path.gameID));
 	}
-	
+
 }

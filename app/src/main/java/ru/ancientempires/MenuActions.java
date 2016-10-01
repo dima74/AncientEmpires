@@ -1,7 +1,6 @@
 package ru.ancientempires;
 
-public enum MenuActions
-{
+public enum MenuActions {
 
 	// MainActivity
 	PLAY,
@@ -22,13 +21,11 @@ public enum MenuActions
 	EDIT_GAME;
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return Localization.get(name());
 	}
 
-	public static String[] convertToNames(MenuActions[] actions)
-	{
+	public static String[] convertToNames(MenuActions[] actions) {
 		String[] names = new String[actions.length];
 		for (int i = 0; i < actions.length; i++)
 			names[i] = actions[i].toString();

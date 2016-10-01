@@ -34,8 +34,7 @@ import ru.ancientempires.campaign.scripts.ScriptUnitMove;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.UnitType;
 
-public interface IDrawCampaign
-{
+public interface IDrawCampaign {
 
 	void dialogIntro(Bitmap image, String text, ScriptDialogIntro script);
 

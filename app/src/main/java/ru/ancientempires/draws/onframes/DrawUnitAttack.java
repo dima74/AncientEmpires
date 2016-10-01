@@ -6,8 +6,7 @@ import ru.ancientempires.Strings;
 import ru.ancientempires.actions.result.AttackResult;
 import ru.ancientempires.draws.BaseDrawMain;
 
-public class DrawUnitAttack extends DrawOnFramesGroup
-{
+public class DrawUnitAttack extends DrawOnFramesGroup {
 
 	public AttackResult result;
 
@@ -19,19 +18,16 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 
 	private boolean isDirect = false;
 
-	public DrawUnitAttack(BaseDrawMain mainBase)
-	{
+	public DrawUnitAttack(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawUnitAttack setDirect()
-	{
+	public DrawUnitAttack setDirect() {
 		isDirect = true;
 		return this;
 	}
 
-	public void initPartOne(AttackResult result)
-	{
+	public void initPartOne(AttackResult result) {
 		this.result = result;
 		y = result.targetI * A;
 		x = result.targetJ * A;
@@ -45,10 +41,8 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 				.animateRepeat(2));
 	}
 
-	public DrawUnitAttack initPartTwo(int framesBeforePartTwo)
-	{
-		if (result.effectSign == -1)
-		{
+	public DrawUnitAttack initPartTwo(int framesBeforePartTwo) {
+		if (result.effectSign == -1) {
 			add(new DrawBitmaps(mainBase)
 					.setYX(y, x)
 					.setBitmaps(SparksImages().bitmapsDefault)
@@ -65,8 +59,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 			frameUpdateBonus = draw.frameEnd;
 		}
 
-		if (result.isLevelUp)
-		{
+		if (result.isLevelUp) {
 			DrawOnFrames levelUp = new DrawLevelUp(mainBase)
 					.animate(result.i * A, result.j * A)
 					.increaseFrameStart(framesBeforePartTwo + 4);
@@ -77,8 +70,7 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 		}
 
 		main.units.field[result.targetI][result.targetJ].canUpdateHealth = false;
-		if (!result.isTargetLive)
-		{
+		if (!result.isTargetLive) {
 			main.unitsDead.keep[result.targetI][result.targetJ] = true;
 			main.units.keep[result.targetI][result.targetJ] = true;
 
@@ -105,17 +97,14 @@ public class DrawUnitAttack extends DrawOnFramesGroup
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		super.drawOnFrames(canvas);
-		if (iFrame() == frameStart)
-		{
+		if (iFrame() == frameStart) {
 			main.units.field[result.targetI][result.targetJ].canUpdateHealth = true;
 			if (result.i == main.inputPlayer.lastTapI && result.j == main.inputPlayer.lastTapJ)
 				main.inputPlayer.tapWithoutAction(result.targetI, result.targetJ);
 		}
-		if (iFrame() == frameStartSmoke - 1)
-		{
+		if (iFrame() == frameStartSmoke - 1) {
 			main.unitsDead.keep[result.targetI][result.targetJ] = false;
 			main.units.keep[result.targetI][result.targetJ] = false;
 			main.info.update();

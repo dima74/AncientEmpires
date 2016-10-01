@@ -10,11 +10,9 @@ import ru.ancientempires.Extras;
 import ru.ancientempires.MenuActions;
 import ru.ancientempires.R;
 
-public class PlayMenuActivity extends BaseListActivity
-{
+public class PlayMenuActivity extends BaseListActivity {
 
-	public MenuActions[] getStrings()
-	{
+	public MenuActions[] getStrings() {
 		return new MenuActions[]
 				{
 						MenuActions.CAMPAIGN,
@@ -25,18 +23,15 @@ public class PlayMenuActivity extends BaseListActivity
 	}
 
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 		super.onResume();
 		if (MainActivity.gameToStart != "" && MainActivity.firstStart)
 			start(MainActivity.gameToStart);
 	}
-	
+
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id)
-	{
-		switch (getStrings()[position])
-		{
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		switch (getStrings()[position]) {
 			case CAMPAIGN:
 				start("campaign");
 				break;
@@ -53,33 +48,29 @@ public class PlayMenuActivity extends BaseListActivity
 				break;
 		}
 	}
-	
-	private void start(String folderID)
-	{
+
+	private void start(String folderID) {
 		moveTo(LevelMenuActivity.class, new Intent().putExtra(Extras.FOLDER_ID, folderID));
 	}
-	
+
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.play_menu, menu);
 		return true;
 	}
-	
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings)
-		{
+		if (id == R.id.action_settings) {
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }

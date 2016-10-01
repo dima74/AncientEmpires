@@ -1,7 +1,6 @@
 package ru.ancientempires;
 
-public interface NoticeUnitBuy
-{
+public interface NoticeUnitBuy {
 
 	void onUnitBuy(int iUnit);
 

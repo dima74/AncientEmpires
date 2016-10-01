@@ -11,19 +11,16 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.SerializableJson;
 
 @IndexSubclasses
-public abstract class Task extends AbstractGameHandler implements SerializableJson
-{
+public abstract class Task extends AbstractGameHandler implements SerializableJson {
 
 	@Exclude public int turnToRun;
 
-	public Task setTurn(int differenceTurn)
-	{
+	public Task setTurn(int differenceTurn) {
 		turnToRun = game.currentTurn + differenceTurn;
 		return this;
 	}
 
-	public void register()
-	{
+	public void register() {
 		game.registerTask(this);
 	}
 
@@ -32,19 +29,16 @@ public abstract class Task extends AbstractGameHandler implements SerializableJs
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		return object;
 	}
 
-	public Task fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public Task fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		return this;
 	}
 
-	static public Task[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public Task[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		Task[] array = new Task[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Task.class);

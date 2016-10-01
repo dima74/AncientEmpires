@@ -5,26 +5,22 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.actions.campaign.ActionCampaignSetNamedUnit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptSetNamedUnit extends Script
-{
+public class ScriptSetNamedUnit extends Script {
 
 	private int    i;
 	private int    j;
 	private String name;
 
-	public ScriptSetNamedUnit()
-	{}
+	public ScriptSetNamedUnit() {}
 
-	public ScriptSetNamedUnit(int i, int j, String name)
-	{
+	public ScriptSetNamedUnit(int i, int j, String name) {
 		this.i = i;
 		this.j = j;
 		this.name = name;
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		new ActionCampaignSetNamedUnit(name)
 				.setIJ(i, j)
 				.perform(game);
@@ -33,8 +29,7 @@ public class ScriptSetNamedUnit extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);
 		object.addProperty("j", j);
@@ -42,8 +37,7 @@ public class ScriptSetNamedUnit extends Script
 		return object;
 	}
 
-	public ScriptSetNamedUnit fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptSetNamedUnit fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		i = object.get("i").getAsInt();
 		j = object.get("j").getAsInt();

@@ -13,20 +13,17 @@ import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 
-public class GameConverter
-{
+public class GameConverter {
 
 	public  String[] cellStrings;
 	private Rules    rules;
 
-	public GameConverter(Rules rules)
-	{
+	public GameConverter(Rules rules) {
 		this.rules = rules;
 		initCells();
 	}
 
-	public void initCells()
-	{
+	public void initCells() {
 		cellStrings = new String[48];
 		cellStrings[0] = "WATER";
 		cellStrings[1] = "WATER_SPARKS";
@@ -75,8 +72,7 @@ public class GameConverter
 		cellStrings[46] = "CASTLE";
 	}
 
-	private static boolean imagesEquals(BufferedImage image1, BufferedImage image2)
-	{
+	private static boolean imagesEquals(BufferedImage image1, BufferedImage image2) {
 		if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight())
 			return false;
 
@@ -87,8 +83,7 @@ public class GameConverter
 		return true;
 	}
 
-	public Game convertGame(InputStream in, int iMission, boolean isCampaign) throws IOException
-	{
+	public Game convertGame(InputStream in, int iMission, boolean isCampaign) throws IOException {
 		int[][] money = new int[8][2];
 		money[0][0] = 0;
 		money[0][1] = 0;
@@ -126,8 +121,7 @@ public class GameConverter
 		int[] unitIs = new int[numberUnits];
 		int[] unitJs = new int[numberUnits];
 		for (int i = 0; i < numberUnits; i++)
-			if (isCampaign && iMission == 6 && i > 0)
-			{
+			if (isCampaign && iMission == 6 && i > 0) {
 				unitJs[i] = -i;
 				unitIs[i] = 13;
 				unitTypes[i] = GameConverter.getUnitTypeName(new int[]
@@ -139,9 +133,7 @@ public class GameConverter
 								11
 						}[i], 0);
 				unitPlayerBaseIs[i] = 0;
-			}
-			else if (isCampaign && iMission == 3 && i > 9)
-			{
+			} else if (isCampaign && iMission == 3 && i > 9) {
 				unitJs[i] = 5;
 				unitIs[i] = 9 - i;
 				unitTypes[i] = GameConverter.getUnitTypeName(new int[]
@@ -151,9 +143,7 @@ public class GameConverter
 								3
 						}[i - 10], 0);
 				unitPlayerBaseIs[i] = 0;
-			}
-			else
-			{
+			} else {
 				byte unitType = dis.readByte();
 				unitPlayerBaseIs[i] = unitType / 12;
 				unitType %= 12;
@@ -179,8 +169,7 @@ public class GameConverter
 			player.gold = isCampaign ? money[iMission][playerI] : null;
 		}*/
 
-		for (int i = 0; i < numberUnits; i++)
-		{
+		for (int i = 0; i < numberUnits; i++) {
 			Unit unit = new Unit(game, rules.getUnitType(unitTypes[i]), players[unitPlayerBaseIs[i]]);
 			unit.player.units.add(unit);
 			if (isCampaign && iMission == 4)
@@ -191,21 +180,18 @@ public class GameConverter
 		}
 
 		for (int j = 0; j < w; j++)
-			for (int i = 0; i < h; i++)
-			{
+			for (int i = 0; i < h; i++) {
 				int cellTypeI = fieldBytes[i][j];
 				String cellName = cellStrings[cellTypeI];
 				Cell cell = new Cell(game, rules.getCellType(cellName), i, j);
-				if (cellTypeI >= 39 && cellTypeI <= 46)
-				{
+				if (cellTypeI >= 39 && cellTypeI <= 46) {
 					int cellTypeBasePlayerI = (cellTypeI - 39) / 2;
 					cell.player = players[cellTypeBasePlayerI];
 				}
 				game.fieldCells[i][j] = cell;
 			}
 
-		if (isCampaign)
-		{
+		if (isCampaign) {
 			game.players[0].type = PlayerType.PLAYER;
 			game.players[1].type = PlayerType.COMPUTER;
 			game.players[0].unitsLimit = -1;
@@ -227,8 +213,7 @@ public class GameConverter
 						9
 				}[iMission] : null;
 
-		if (!isCampaign && iMission == 5 && false)
-		{
+		if (!isCampaign && iMission == 5 && false) {
 			game.fieldCells[9][7] = new Cell(game, rules.getCellType("CASTLE"), 9, 7);
 			game.fieldCells[9][7].player = game.players[0];
 
@@ -246,8 +231,7 @@ public class GameConverter
 		return game;
 	}
 
-	public static String getUnitTypeName(int unitType, int team)
-	{
+	public static String getUnitTypeName(int unitType, int team) {
 		String[] names = new String[12];
 		names[0] = "SOLDIER";
 		names[1] = "ARCHER";
@@ -262,8 +246,7 @@ public class GameConverter
 		names[10] = "SKELETON";
 		names[11] = "CRYSTAL";
 
-		if (unitType == 9)
-		{
+		if (unitType == 9) {
 			String[] kings =
 					{
 							"KING_GALAMAR",
@@ -272,8 +255,7 @@ public class GameConverter
 							"KING_SAETH"
 					};
 			return kings[team];
-		}
-		else
+		} else
 			return names[unitType];
 	}
 

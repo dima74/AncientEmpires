@@ -6,8 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 @IndexSubclasses
-public interface SerializableData
-{
+public interface SerializableData {
 
 	void toData(DataOutputStream output) throws Exception;
 

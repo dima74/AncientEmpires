@@ -10,8 +10,7 @@ import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.MyNullable;
 import ru.ancientempires.serializable.SerializableJson;
 
-public class Cell extends AbstractGameHandler implements SerializableJson
-{
+public class Cell extends AbstractGameHandler implements SerializableJson {
 
 	@Exclude
 	public CellType type;
@@ -22,8 +21,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	@MyNullable
 	public Player player;
 
-	public boolean isCapture()
-	{
+	public boolean isCapture() {
 		return player != null;
 	}
 
@@ -33,67 +31,56 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 	public StructInfo structInfo;
 
 	// Чтобы компилировался Cell.fromJsonArray, хотя он не используется
-	public Cell()
-	{
+	public Cell() {
 		MyAssert.a(false);
 	}
 
 	// Для редактора карт
-	public Cell(Game game, CellType type)
-	{
+	public Cell(Game game, CellType type) {
 		setGame(game);
 		this.type = type;
 	}
 
 	// тоже
-	public Cell(Cell cell)
-	{
+	public Cell(Cell cell) {
 		this(cell.game, cell.type);
 		player = cell.player;
 	}
 
-	public Cell(Game game, CellType type, int i, int j)
-	{
+	public Cell(Game game, CellType type, int i, int j) {
 		this(game, type);
 		this.i = i;
 		this.j = j;
 		game.fieldCells[i][j] = this;
 	}
 
-	public Cell setPlayer(int player)
-	{
+	public Cell setPlayer(int player) {
 		this.player = game.players[player];
 		return this;
 	}
 
-	public void destroy()
-	{
+	public void destroy() {
 		new Cell(game, type.destroyingType, i, j);
 	}
 
-	public void repair()
-	{
+	public void repair() {
 		game.fieldCells[i][j] = new Cell(game, type.repairType, i, j);
 	}
 
-	public boolean needSave()
-	{
+	public boolean needSave() {
 		return isCapture();
 	}
 
-	public int getSteps()
-	{
+	public int getSteps() {
 		return type.steps;
 	}
 
-	public Team getTeam()
-	{
+	public Team getTeam() {
 		return player == null ? null : player.team;
 	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		Cell cell = (Cell) o;
 		if (this == cell)
 			return true;
@@ -105,27 +92,23 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 			return false;
 		if (isCapture() != cell.isCapture())
 			return false;
-		if (player == null)
-		{
+		if (player == null) {
 			if (cell.player != null)
 				return false;
-		}
-		else if (player.ordinal != cell.player.ordinal)
+		} else if (player.ordinal != cell.player.ordinal)
 			return false;
 		return true;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return String.format("%s (%d %d)", type.name, i, j);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = new JsonObject();
 		object.addProperty("i", i);
 		object.addProperty("j", j);
@@ -136,8 +119,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		return object;
 	}
 
-	public Cell fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public Cell fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		game = info.game;
 		i = object.get("i").getAsInt();
 		j = object.get("j").getAsInt();
@@ -148,8 +130,7 @@ public class Cell extends AbstractGameHandler implements SerializableJson
 		return this;
 	}
 
-	static public Cell[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public Cell[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		Cell[] array = new Cell[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = new Cell().fromJson((com.google.gson.JsonObject) jsonArray.get(i), info);

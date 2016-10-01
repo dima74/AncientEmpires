@@ -27,22 +27,19 @@ import ru.ancientempires.model.UnitType;
 import ru.ancientempires.model.struct.Struct;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class RulesLoader
-{
+public class RulesLoader {
 
 	private FileLoader loader;
 	public Rules rules = new Rules();
 	public JsonDeserializationContext context;
 	public LoaderInfo                 info;
 
-	public RulesLoader(FileLoader loader)
-	{
+	public RulesLoader(FileLoader loader) {
 		this.loader = loader;
 		info = new LoaderInfo(rules);
 	}
 
-	public Rules load() throws IOException
-	{
+	public Rules load() throws IOException {
 		JsonReader reader = loader.getReader("rules.json");
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Rules.class, new RulesDeserializer())
@@ -58,11 +55,9 @@ public class RulesLoader
 		return rules;
 	}
 
-	public class RulesDeserializer implements JsonDeserializer<Rules>
-	{
+	public class RulesDeserializer implements JsonDeserializer<Rules> {
 		@Override
-		public Rules deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
+		public Rules deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			RulesLoader.this.context = context;
 			JsonObject object = json.getAsJsonObject();
 
@@ -105,16 +100,13 @@ public class RulesLoader
 		}
 	}
 
-	public String[] getStrinsArray(JsonObject object, String name, JsonDeserializationContext context)
-	{
+	public String[] getStrinsArray(JsonObject object, String name, JsonDeserializationContext context) {
 		return context.deserialize(object.get(name), String[].class);
 	}
 
-	public class RangeDeserializer implements JsonDeserializer<Range>
-	{
+	public class RangeDeserializer implements JsonDeserializer<Range> {
 		@Override
-		public Range deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
+		public Range deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject object = json.getAsJsonObject();
 			String name = object.get("name").getAsString();
 			String[] strings = context.deserialize(object.get("table"), String[].class);
@@ -127,11 +119,9 @@ public class RulesLoader
 		}
 	}
 
-	public class UnitTypeDeserializer implements JsonDeserializer<UnitType>
-	{
+	public class UnitTypeDeserializer implements JsonDeserializer<UnitType> {
 		@Override
-		public UnitType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
+		public UnitType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject object = json.getAsJsonObject();
 
 			JsonElement baseTypeJson = object.get("baseType");
@@ -144,8 +134,7 @@ public class RulesLoader
 
 			JsonElement element;
 
-			if ((element = object.get("specializations")) != null)
-			{
+			if ((element = object.get("specializations")) != null) {
 				JsonObject specializations = element.getAsJsonObject();
 				type.specializations = new HashMap<>();
 				for (Entry<String, JsonElement> entry : specializations.entrySet())
@@ -202,8 +191,7 @@ public class RulesLoader
 		}
 	}
 
-	public CellType[] getCellTypes(JsonElement element)
-	{
+	public CellType[] getCellTypes(JsonElement element) {
 		String[] names = context.deserialize(element, String[].class);
 		CellType[] types = new CellType[names.length];
 		for (int i = 0; i < types.length; i++)
@@ -211,16 +199,13 @@ public class RulesLoader
 		return types;
 	}
 
-	public Range getRange(JsonElement element)
-	{
+	public Range getRange(JsonElement element) {
 		return rules.getRange(element.getAsString());
 	}
 
-	public class CellGroupDeserializer implements JsonDeserializer<CellGroup>
-	{
+	public class CellGroupDeserializer implements JsonDeserializer<CellGroup> {
 		@Override
-		public CellGroup deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
+		public CellGroup deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject object = json.getAsJsonObject();
 			CellGroup group = rules.getCellGroup(object.get("name").getAsString());
 			group.baseType = context.deserialize(object.get("baseType"), CellType.class);
@@ -229,11 +214,9 @@ public class RulesLoader
 		}
 	}
 
-	public class CellTypeDeserializer implements JsonDeserializer<CellType>
-	{
+	public class CellTypeDeserializer implements JsonDeserializer<CellType> {
 		@Override
-		public CellType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
+		public CellType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject object = json.getAsJsonObject();
 
 			JsonElement baseTypeJson = object.get("baseType");
@@ -267,15 +250,12 @@ public class RulesLoader
 				type.template = CellTemplate.fromJSON(element, RulesLoader.this, type);
 			type.mapEditorFrequency = object.get("mapEditorFrequency").getAsInt();
 
-			try
-			{
+			try {
 				//if ((element = object.get("struct")) != null)
 				//	type.struct = Struct.fromJSON(element, info);
 				if (object.has("struct"))
 					type.struct = info.fromJson((JsonObject) object.get("struct"), Struct.class);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
@@ -283,8 +263,7 @@ public class RulesLoader
 		}
 	}
 
-	public UnitType[] getUnitTypes(JsonElement element)
-	{
+	public UnitType[] getUnitTypes(JsonElement element) {
 		String[] names = context.deserialize(element, String[].class);
 		UnitType[] types = new UnitType[names.length];
 		for (int i = 0; i < types.length; i++)
@@ -292,17 +271,12 @@ public class RulesLoader
 		return types;
 	}
 
-	public class BonusDeserializer implements JsonDeserializer<Bonus>
-	{
+	public class BonusDeserializer implements JsonDeserializer<Bonus> {
 		@Override
-		public Bonus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
-			try
-			{
+		public Bonus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			try {
 				return info.fromJson(((JsonObject) json), Bonus.class);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 				MyAssert.a(false);
 				return null;
@@ -310,21 +284,16 @@ public class RulesLoader
 		}
 	}
 
-	public class BonusCreatorDeserializer implements JsonDeserializer<BonusCreator>
-	{
+	public class BonusCreatorDeserializer implements JsonDeserializer<BonusCreator> {
 		@Override
-		public BonusCreator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-		{
-			try
-			{
+		public BonusCreator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			try {
 				JsonObject object = json.getAsJsonObject();
 				int ordinal = object.get("type").getAsInt();
 				BonusCreator creator = BonusCreator.classes.get(ordinal).newInstance();
 				creator.loadJSON(object, rules, context);
 				return creator;
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 				MyAssert.a(false);
 				return null;

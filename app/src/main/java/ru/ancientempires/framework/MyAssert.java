@@ -8,21 +8,17 @@ import java.io.PrintWriter;
 import ru.ancientempires.serializable.SerializableJson;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class MyAssert
-{
+public class MyAssert {
 
 	public static DataOutputStream output;
 	public static PrintWriter      outputText;
 
-	public static void a(boolean booleanTrue)
-	{
+	public static void a(boolean booleanTrue) {
 		a(booleanTrue, null);
 	}
 
-	public static void a(boolean booleanTrue, String message)
-	{
-		if (!booleanTrue)
-		{
+	public static void a(boolean booleanTrue, String message) {
+		if (!booleanTrue) {
 			MyLog.l("!!!");
 			new Exception().printStackTrace();
 			System.out.print("");
@@ -31,15 +27,12 @@ public class MyAssert
 		}
 	}
 
-	private static void method()
-	{}
+	private static void method() {}
 
-	public static void a(Object one, Object two)
-	{
+	public static void a(Object one, Object two) {
 		boolean equals = one.equals(two);
 		String message = null;
-		if (!equals)
-		{
+		if (!equals) {
 			if (one instanceof SerializableJson)
 				message = SerializableJsonHelper.diff(((SerializableJson) one), (SerializableJson) two);
 			if (one instanceof JsonObject)

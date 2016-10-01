@@ -19,16 +19,14 @@ import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 
-public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
-{
+public abstract class MyAbstractManualProcessor extends AbstractManualProcessor {
 
 	public HashSet<Class> allSubclasses = new HashSet<>();
 	public HashSet<Class> serializableClasses;
 	public HashSet<Class> indexesClasses;
 	public HashSet<Class> baseClasses;
 
-	public void initStatic(Class<?> interfaceClass) throws Exception
-	{
+	public void initStatic(Class<?> interfaceClass) throws Exception {
 		// serializable --- собственно классы, к которым мы добавляем наши методы fromJson/toJson
 		// serializableBase --- у которых мы генерируем метод toJson, вызывающий toJson у LoaderInfo, а также статические toJson и fromJson для массивов
 
@@ -55,8 +53,7 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 		System.out.println("baseClasses = " + baseClasses);
 	}
 
-	public static HashSet<Class> getSubclasses(Class c) throws Exception
-	{
+	public static HashSet<Class> getSubclasses(Class c) throws Exception {
 		File folder = new File("/home/dima/AndroidStudioProjects/AncientEmpires/processors/build/classes/main/META-INF/services");
 		HashSet<Class> subclasses = new HashSet<>();
 		for (String line : Files.readAllLines(new File(folder, c.getName()).toPath()))
@@ -64,8 +61,7 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 		return subclasses;
 	}
 
-	public static HashSet<Class> getAnnotatedIndexSubclasses() throws Exception
-	{
+	public static HashSet<Class> getAnnotatedIndexSubclasses() throws Exception {
 		File folder = new File("/home/dima/AndroidStudioProjects/AncientEmpires/processors/build/classes/main/META-INF/services");
 		HashSet<Class> subclasses = new HashSet<>();
 		for (String file : folder.list())
@@ -75,34 +71,29 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 
 	public static HashSet<CtMethod> newMethods = new HashSet<>();
 
-	public CtBlock createMethod(CtClass ctClass, String name, Class returnType, Object... parameters)
-	{
+	public CtBlock createMethod(CtClass ctClass, String name, Class returnType, Object... parameters) {
 		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, true, parameters);
 	}
 
-	public CtBlock createMethodNoExcept(CtClass ctClass, String name, Class returnType, Object... parameters)
-	{
+	public CtBlock createMethodNoExcept(CtClass ctClass, String name, Class returnType, Object... parameters) {
 		return createMethod(ctClass, new ModifierKind[] {ModifierKind.PUBLIC}, name, returnType, false, parameters);
 	}
 
-	public CtBlock createMethodStatic(CtClass ctClass, String name, Class returnType, Object... parameters)
-	{
+	public CtBlock createMethodStatic(CtClass ctClass, String name, Class returnType, Object... parameters) {
 		return createMethod(ctClass, new ModifierKind[] {
 				ModifierKind.PUBLIC,
 				ModifierKind.STATIC
 		}, name, returnType, true, parameters);
 	}
 
-	public CtBlock createMethod(CtClass ctClass, ModifierKind[] modifiers, String name, Class returnType, boolean exception, Object... parameters)
-	{
+	public CtBlock createMethod(CtClass ctClass, ModifierKind[] modifiers, String name, Class returnType, boolean exception, Object... parameters) {
 		Set<ModifierKind> modifiersPublic = new HashSet<>(Arrays.asList(modifiers));
 		CtTypeReference ctReturnType = getFactory().Type().createReference(returnType);
 		HashSet<CtTypeReference<? extends Throwable>> thrownTypes = exception ? new HashSet<>(Arrays.asList(getFactory().Type().createReference(Exception.class))) : new HashSet<>();
 
 		assert parameters.length % 2 == 0;
 		ArrayList<CtParameter<?>> ctParameters = new ArrayList<>();
-		for (int i = 0; i < parameters.length; i += 2)
-		{
+		for (int i = 0; i < parameters.length; i += 2) {
 			Class parametrClass = (Class) parameters[i];
 			String parametrName = (String) parameters[i + 1];
 			ctParameters.add(getFactory().Method().createParameter(null, getFactory().Type().createReference(parametrClass), parametrName));
@@ -116,8 +107,7 @@ public abstract class MyAbstractManualProcessor extends AbstractManualProcessor
 		return ctBlock;
 	}
 
-	public void writeChanges() throws IOException
-	{
+	public void writeChanges() throws IOException {
 		PrintWriter output = new PrintWriter("/home/dima/AndroidStudioProjects/changesHandler/changedClasses.txt");
 		newMethods
 				.stream()

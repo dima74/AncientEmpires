@@ -2,8 +2,7 @@ package ru.ancientempires.actions.result;
 
 import ru.ancientempires.model.Unit;
 
-public class ActionResultUnitAttack extends ActionResult
-{
+public class ActionResultUnitAttack extends ActionResult {
 
 	public boolean      isAttackUnit;
 	public AttackResult attackResultDirect;

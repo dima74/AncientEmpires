@@ -12,9 +12,8 @@ import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 
-public class BaseGameActivity extends BaseActivity
-{
-	
+public class BaseGameActivity extends BaseActivity {
+
 	public BaseView     view;
 	public Game         game;
 	public BaseThread   thread;
@@ -22,49 +21,39 @@ public class BaseGameActivity extends BaseActivity
 
 	public Dialog dialog;
 
-	public BaseView getView()
-	{
+	public BaseView getView() {
 		return view;
 	}
-	
-	public BaseThread getThread()
-	{
+
+	public BaseThread getThread() {
 		return thread;
 	}
-	
-	public BaseDrawMain getDrawMain()
-	{
+
+	public BaseDrawMain getDrawMain() {
 		return drawMain;
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MainActivity.firstStart = false;
 	}
-	
+
 	@Override
-	protected void onStop()
-	{
+	protected void onStop() {
 		super.onStop();
 		getThread().isRunning = false;
-		if (dialog != null)
-		{
+		if (dialog != null) {
 			dialog.dismiss();
 			dialog = null;
 		}
-		try
-		{
+		try {
 			getThread().join();
-		}
-		catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
-		if (view != null)
-		{
+		if (view != null) {
 			ViewGroup viewGroup = (ViewGroup) view.getParent();
 			MyAssert.a(viewGroup != null);
 			if (viewGroup != null)
@@ -74,10 +63,9 @@ public class BaseGameActivity extends BaseActivity
 		// activity = null;
 	}
 
-	public void vibrate()
-	{
+	public void vibrate() {
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(400);
 	}
-	
+
 }

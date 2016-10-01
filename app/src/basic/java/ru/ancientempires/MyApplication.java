@@ -16,12 +16,10 @@ import org.acra.annotation.ReportsCrashes;
 
 		mode = ReportingInteractionMode.TOAST,
 		resToastText = R.string.toast_crash)
-public class MyApplication extends Application
-{
+public class MyApplication extends Application {
 
 	@Override
-	public void onCreate()
-	{
+	public void onCreate() {
 		super.onCreate();
 		ACRA.init(this);
 	}

@@ -1,7 +1,6 @@
 package ru.ancientempires.model;
 
-public enum CellTemplateType
-{
+public enum CellTemplateType {
 	WATER,
 	WAY
 }

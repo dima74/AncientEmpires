@@ -5,22 +5,18 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptLoaderAlias extends Script
-{
+public class ScriptLoaderAlias extends Script {
 
 	public int i;
 
-	public ScriptLoaderAlias()
-	{}
+	public ScriptLoaderAlias() {}
 
-	public ScriptLoaderAlias(int i)
-	{
+	public ScriptLoaderAlias(int i) {
 		this.i = i;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		MyAssert.a(false);
 		return false;
 	}
@@ -28,15 +24,13 @@ public class ScriptLoaderAlias extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);
 		return object;
 	}
 
-	public ScriptLoaderAlias fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptLoaderAlias fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		i = object.get("i").getAsInt();
 		return this;

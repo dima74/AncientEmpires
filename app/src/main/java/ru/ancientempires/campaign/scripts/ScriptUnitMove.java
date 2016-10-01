@@ -9,80 +9,66 @@ import ru.ancientempires.campaign.points.AbstractPoint;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.MyNullable;
 
-public class ScriptUnitMove extends Script
-{
+public class ScriptUnitMove extends Script {
 
 	public AbstractPoint[] points;
 	@MyNullable
 	public Script[]        handlers; // не ScriptUnitMoveHandler, чтобы можно было присваивать ScriptAlias
 	public boolean makeSmoke = true;
 
-	public ScriptUnitMove()
-	{}
+	public ScriptUnitMove() {}
 
-	public ScriptUnitMove(Object... points)
-	{
+	public ScriptUnitMove(Object... points) {
 		this.points = AbstractPoint.createPoints(points);
 	}
 
-	public ScriptUnitMove setHandlers(ScriptUnitMoveHandler... handlers)
-	{
+	public ScriptUnitMove setHandlers(ScriptUnitMoveHandler... handlers) {
 		this.handlers = handlers;
 		return this;
 	}
 
-	public ScriptUnitMove disableMakeSmoke()
-	{
+	public ScriptUnitMove disableMakeSmoke() {
 		makeSmoke = false;
 		return this;
 	}
 
-	public void resolveAliases(Script[] scripts)
-	{
+	public void resolveAliases(Script[] scripts) {
 		super.resolveAliases(scripts);
 		if (handlers != null)
 			resolveAliases(handlers, scripts);
 	}
 
-	private AbstractPoint first()
-	{
+	private AbstractPoint first() {
 		return points[0];
 	}
 
-	private AbstractPoint last()
-	{
+	private AbstractPoint last() {
 		return points[points.length - 1];
 	}
 
-	public int i()
-	{
+	public int i() {
 		return first().getI();
 	}
 
-	public int j()
-	{
+	public int j() {
 		return first().getJ();
 	}
 
-	public int targetI()
-	{
+	public int targetI() {
 		return last().getI();
 	}
 
-	public int targetJ()
-	{
+	public int targetJ() {
 		return last().getJ();
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.unitMove(this, true);
 	}
 
 	@Override
-	public void performAction()
-	{
+	public void performAction() {
 		new ActionCampaignUnitChangePosition()
 				.setIJ(i(), j())
 				.setTargetIJ(targetI(), targetJ())
@@ -90,14 +76,12 @@ public class ScriptUnitMove extends Script
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "ScriptUnitMove{" +
 				"points=" + Arrays.toString(points) +
 				", handlers=" + handlers +
@@ -108,8 +92,7 @@ public class ScriptUnitMove extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.add("points", ru.ancientempires.serializable.SerializableJsonHelper.toJsonArray(points));
 		if (handlers != null)
@@ -118,8 +101,7 @@ public class ScriptUnitMove extends Script
 		return object;
 	}
 
-	public ScriptUnitMove fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptUnitMove fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		points = AbstractPoint.fromJsonArray(object.get("points").getAsJsonArray(), info);
 		if (object.has("handlers"))

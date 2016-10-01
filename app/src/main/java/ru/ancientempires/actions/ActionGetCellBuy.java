@@ -14,27 +14,23 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionGetCellBuy extends ActionFrom
-{
+public class ActionGetCellBuy extends ActionFrom {
 
 	private ActionResultGetCellBuy result;
 
 	@Override
-	public boolean changesGame()
-	{
+	public boolean changesGame() {
 		return false;
 	}
 
 	@Override
-	public ActionResultGetCellBuy perform(Game game)
-	{
+	public ActionResultGetCellBuy perform(Game game) {
 		performBase(game);
 		return result;
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		Cell cell = game.fieldCells[i][j];
 		CellType cellType = cell.type;
 
@@ -58,13 +54,11 @@ public class ActionGetCellBuy extends ActionFrom
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionGetCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionGetCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

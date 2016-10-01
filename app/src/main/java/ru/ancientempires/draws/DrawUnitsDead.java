@@ -2,23 +2,19 @@ package ru.ancientempires.draws;
 
 import android.graphics.Canvas;
 
-public class DrawUnitsDead extends Draw
-{
+public class DrawUnitsDead extends Draw {
 
 	public boolean[][] isTombstone = new boolean[game.h][game.w];
 	public boolean[][] keep        = new boolean[game.h][game.w];
 
-	public DrawUnitsDead(BaseDrawMain mainBase)
-	{
+	public DrawUnitsDead(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		for (int i = 0; i < game.h; i++)
-			for (int j = 0; j < game.w; j++)
-			{
+			for (int j = 0; j < game.w; j++) {
 				if (!keep[i][j])
 					isTombstone[i][j] = game.fieldUnitsDead[i][j] != null;
 				if (isTombstone[i][j])

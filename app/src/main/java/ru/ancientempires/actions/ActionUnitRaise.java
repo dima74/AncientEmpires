@@ -8,19 +8,16 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionUnitRaise extends ActionFromTo
-{
+public class ActionUnitRaise extends ActionFromTo {
 
 	@Override
-	public ActionResult perform(Game game)
-	{
+	public ActionResult perform(Game game) {
 		performBase(game);
 		return null;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		if (!super.check())
 			return false;
 
@@ -30,8 +27,7 @@ public class ActionUnitRaise extends ActionFromTo
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		Unit unit = game.fieldUnits[i][j];
 		unit.setTurn();
 
@@ -47,13 +43,11 @@ public class ActionUnitRaise extends ActionFromTo
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionUnitRaise fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionUnitRaise fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

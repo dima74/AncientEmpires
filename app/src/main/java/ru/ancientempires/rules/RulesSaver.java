@@ -24,20 +24,17 @@ import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Range;
 import ru.ancientempires.model.UnitType;
 
-public class RulesSaver
-{
+public class RulesSaver {
 
 	public FileLoader loader;
 	public Rules      rules;
 
-	public RulesSaver(FileLoader loader, Rules rules)
-	{
+	public RulesSaver(FileLoader loader, Rules rules) {
 		this.loader = loader;
 		this.rules = rules;
 	}
 
-	public void save(String name) throws IOException
-	{
+	public void save(String name) throws IOException {
 		new File("assets/rules/").mkdir();
 		JsonWriter writer = loader.getWriter(name);
 		writer.setIndent("\t");
@@ -56,11 +53,9 @@ public class RulesSaver
 		System.exit(0);
 	}
 
-	public class RulesSerializer implements JsonSerializer<Rules>
-	{
+	public class RulesSerializer implements JsonSerializer<Rules> {
 		@Override
-		public JsonElement serialize(Rules rules, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(Rules rules, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject result = new JsonObject();
 			result.addProperty("name", rules.name);
 			result.addProperty("version", rules.version);
@@ -85,18 +80,15 @@ public class RulesSaver
 		}
 	}
 
-	public class RangeSerializer implements JsonSerializer<Range>
-	{
+	public class RangeSerializer implements JsonSerializer<Range> {
 		@Override
-		public JsonElement serialize(Range range, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(Range range, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject result = new JsonObject();
 			result.addProperty("name", range.name);
 
 			JsonArray array = new JsonArray();
 			boolean[][] table = range.table;
-			for (boolean[] line : table)
-			{
+			for (boolean[] line : table) {
 				String s = "";
 				for (boolean b : line)
 					s += b ? '1' : '0';
@@ -107,11 +99,9 @@ public class RulesSaver
 		}
 	}
 
-	public class UnitTypeSerializer implements JsonSerializer<UnitType>
-	{
+	public class UnitTypeSerializer implements JsonSerializer<UnitType> {
 		@Override
-		public JsonElement serialize(UnitType type, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(UnitType type, Type typeOfSrc, JsonSerializationContext context) {
 			UnitType defaultType = type.baseType;
 
 			JsonObject result = new JsonObject();
@@ -119,8 +109,7 @@ public class RulesSaver
 				result.addProperty("baseType", type.baseType.name);
 			result.addProperty("name", type.name);
 
-			if (type.specializations != null)
-			{
+			if (type.specializations != null) {
 				JsonObject specializations = new JsonObject();
 				for (Entry<MyColor, UnitType> entry : type.specializations.entrySet())
 					specializations.addProperty(entry.getKey().name(), entry.getValue().name);
@@ -171,19 +160,16 @@ public class RulesSaver
 		}
 	}
 
-	public JsonArray toArray(CellType[] types)
-	{
+	public JsonArray toArray(CellType[] types) {
 		JsonArray array = new JsonArray();
 		for (CellType type : types)
 			array.add(type.name);
 		return array;
 	}
 
-	public class CellGroupSerializer implements JsonSerializer<CellGroup>
-	{
+	public class CellGroupSerializer implements JsonSerializer<CellGroup> {
 		@Override
-		public JsonElement serialize(CellGroup group, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(CellGroup group, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject result = new JsonObject();
 			result.addProperty("name", group.name);
 			result.add("baseType", context.serialize(group.baseType));
@@ -192,11 +178,9 @@ public class RulesSaver
 		}
 	}
 
-	public class CellTypeSerializer implements JsonSerializer<CellType>
-	{
+	public class CellTypeSerializer implements JsonSerializer<CellType> {
 		@Override
-		public JsonElement serialize(CellType type, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(CellType type, Type typeOfSrc, JsonSerializationContext context) {
 			CellType defaultType = type.baseType;
 
 			JsonObject result = new JsonObject();
@@ -226,13 +210,10 @@ public class RulesSaver
 
 			//if (type.struct != null)
 			//	result.add("struct", type.struct.toJSON());
-			try
-			{
+			try {
 				if (type.struct != null)
 					result.add("struct", type.struct.toJson());
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				MyAssert.a(false);
 				e.printStackTrace();
 			}
@@ -240,25 +221,19 @@ public class RulesSaver
 		}
 	}
 
-	public JsonArray toArray(UnitType[] types)
-	{
+	public JsonArray toArray(UnitType[] types) {
 		JsonArray array = new JsonArray();
 		for (UnitType type : types)
 			array.add(type.name);
 		return array;
 	}
 
-	public class BonusSerializer implements JsonSerializer<Bonus>
-	{
+	public class BonusSerializer implements JsonSerializer<Bonus> {
 		@Override
-		public JsonElement serialize(Bonus bonus, Type typeOfSrc, JsonSerializationContext context)
-		{
-			try
-			{
+		public JsonElement serialize(Bonus bonus, Type typeOfSrc, JsonSerializationContext context) {
+			try {
 				return bonus.toJson();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 				MyAssert.a(false);
 			}
@@ -266,11 +241,9 @@ public class RulesSaver
 		}
 	}
 
-	public class BonusCreatorSerializer implements JsonSerializer<BonusCreator>
-	{
+	public class BonusCreatorSerializer implements JsonSerializer<BonusCreator> {
 		@Override
-		public JsonElement serialize(BonusCreator creator, Type typeOfSrc, JsonSerializationContext context)
-		{
+		public JsonElement serialize(BonusCreator creator, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject result = new JsonObject();
 			result.addProperty("type", creator.ordinal());
 			creator.saveJSON(result, context);

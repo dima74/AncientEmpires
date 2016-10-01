@@ -14,8 +14,7 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class Rules
-{
+public class Rules {
 
 	public String name;
 	public String version;
@@ -41,8 +40,7 @@ public class Rules
 	public JsonObject defaultPlayer;
 	public JsonObject defaultPlayerComputer;
 
-	public void preInitUnitTypes(String[] names)
-	{
+	public void preInitUnitTypes(String[] names) {
 		unitTypes = new UnitType[names.length];
 		for (int i = 0; i < names.length; i++)
 			unitTypes[i] = new UnitType(names[i], i);
@@ -51,8 +49,7 @@ public class Rules
 		defaultUnitType = getUnitType("DEFAULT");
 	}
 
-	public void preInitCellTypes(String[] names)
-	{
+	public void preInitCellTypes(String[] names) {
 		cellTypes = new CellType[names.length];
 		for (int i = 0; i < names.length; i++)
 			cellTypes[i] = new CellType(names[i], i);
@@ -61,8 +58,7 @@ public class Rules
 		defaultCellType = getCellType("DEFAULT");
 	}
 
-	public void preInitCellGroups(String[] names)
-	{
+	public void preInitCellGroups(String[] names) {
 		cellGroups = new CellGroup[names.length];
 		for (int i = 0; i < names.length; i++)
 			cellGroups[i] = new CellGroup(this, names[i], i);
@@ -70,26 +66,22 @@ public class Rules
 			cellGroupsMap.put(group.name, group);
 	}
 
-	public UnitType getUnitType(String name)
-	{
+	public UnitType getUnitType(String name) {
 		MyAssert.a(unitTypesMap.containsKey(name));
 		return unitTypesMap.get(name);
 	}
 
-	public CellType getCellType(String name)
-	{
+	public CellType getCellType(String name) {
 		MyAssert.a(cellTypesMap.containsKey(name));
 		return cellTypesMap.get(name);
 	}
 
-	public CellGroup getCellGroup(String name)
-	{
+	public CellGroup getCellGroup(String name) {
 		MyAssert.a(cellGroupsMap.containsKey(name));
 		return cellGroupsMap.get(name);
 	}
 
-	public void setRanges(Range[] ranges)
-	{
+	public void setRanges(Range[] ranges) {
 		this.ranges = ranges;
 
 		rangesMap = new HashMap<>();
@@ -108,52 +100,44 @@ public class Rules
 		rangeMax = new Range("MAX_RANGE", table);
 	}
 
-	public Range getRange(String name)
-	{
+	public Range getRange(String name) {
 		return rangesMap.get(name);
 	}
 
-	public String[] getAllUnitTypes()
-	{
+	public String[] getAllUnitTypes() {
 		String[] names = new String[unitTypes.length];
 		for (int i = 0; i < names.length; i++)
 			names[i] = unitTypes[i].name;
 		return names;
 	}
 
-	public String[] getAllCellTypes()
-	{
+	public String[] getAllCellTypes() {
 		String[] names = new String[cellTypes.length];
 		for (int i = 0; i < names.length; i++)
 			names[i] = cellTypes[i].name;
 		return names;
 	}
 
-	public String[] getAllCellGroups()
-	{
+	public String[] getAllCellGroups() {
 		String[] names = new String[cellGroups.length];
 		for (int i = 0; i < names.length; i++)
 			names[i] = cellGroups[i].name;
 		return names;
 	}
 
-	public int numberUnitTypes()
-	{
+	public int numberUnitTypes() {
 		return unitTypes.length;
 	}
 
-	public int numberCellTypes()
-	{
+	public int numberCellTypes() {
 		return cellTypes.length;
 	}
 
-	public JsonArray getDefaultsPlayers(int numberPlayers)
-	{
+	public JsonArray getDefaultsPlayers(int numberPlayers) {
 		JsonArray array = new JsonArray();
 		for (int i = 0; i < numberPlayers; i++)
 			array.add(SerializableJsonHelper.deepCopy(numberPlayers == 2 && i == 1 ? defaultPlayerComputer : defaultPlayer));
-		for (int i = 0; i < array.size(); i++)
-		{
+		for (int i = 0; i < array.size(); i++) {
 			JsonObject object = (JsonObject) array.get(i);
 			object.addProperty("team", i);
 			object.addProperty("color", MyColor.playersColors()[i].name());

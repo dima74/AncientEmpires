@@ -7,37 +7,31 @@ import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ConditionCastleNumber extends Condition
-{
+public class ConditionCastleNumber extends Condition {
 
 	private Player player;
 	private int    comparator;    // -1 less, 0 equals, +1 more
 	private int    number;
 
-	public ConditionCastleNumber()
-	{}
+	public ConditionCastleNumber() {}
 
-	public ConditionCastleNumber(int player, int comparator, int value)
-	{
+	public ConditionCastleNumber(int player, int comparator, int value) {
 		this.player = getGame().players[player];
 		this.comparator = comparator;
 		number = value;
 	}
 
-	private static int sign(int x)
-	{
+	private static int sign(int x) {
 		return x == 0 ? 0 : x < 0 ? -1 : 1;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		int number = getCastleNumber(player);
 		return ConditionCastleNumber.sign(this.number - number) == comparator;
 	}
 
-	public int getCastleNumber(Player player)
-	{
+	public int getCastleNumber(Player player) {
 		CellType castle = game.rules.getCellType("CASTLE");
 		int number = 0;
 		for (Cell[] line : game.fieldCells)
@@ -50,8 +44,7 @@ public class ConditionCastleNumber extends Condition
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("player", player.getNumber());
 		object.addProperty("comparator", comparator);
@@ -59,8 +52,7 @@ public class ConditionCastleNumber extends Condition
 		return object;
 	}
 
-	public ConditionCastleNumber fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ConditionCastleNumber fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		player = Player.newInstance(object.get("player").getAsInt(), info);
 		comparator = object.get("comparator").getAsInt();

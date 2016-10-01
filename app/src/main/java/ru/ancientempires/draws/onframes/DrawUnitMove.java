@@ -8,8 +8,7 @@ import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.DrawLevel;
 import ru.ancientempires.images.bitmaps.UnitBitmap;
 
-public class DrawUnitMove extends DrawOnFramesWithRangeValues
-{
+public class DrawUnitMove extends DrawOnFramesWithRangeValues {
 
 	public static int framesForCell   = 8;                            // ii-2, player-4
 	public        int framesForCellMy = DrawUnitMove.framesForCell;
@@ -20,26 +19,22 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	public int        targetJ;
 	public boolean makeSmoke = true;
 
-	public DrawUnitMove(BaseDrawMain mainBase)
-	{
+	public DrawUnitMove(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	private void initFromEnd()
-	{
+	private void initFromEnd() {
 		unitBitmap = new UnitBitmap(game.getUnit(targetI, targetJ));
 	}
 
-	private void initFromStart(int i, int j)
-	{
+	private void initFromStart(int i, int j) {
 		unitBitmap = game.checkCoordinates(i, j)
 				? main.units.field[i][j]
 				: new UnitBitmap(game.getUnit(i, j));
 		unitBitmap.keepTurn = true;
 	}
 
-	public DrawUnitMove start(Point[] points, ActionResultUnitMove result, boolean initFromStart)
-	{
+	public DrawUnitMove start(Point[] points, ActionResultUnitMove result, boolean initFromStart) {
 		this.points = points;
 		targetI = points[points.length - 1].i;
 		targetJ = points[points.length - 1].j;
@@ -49,8 +44,7 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 		else
 			initFromEnd();
 
-		if (game.checkCoordinates(targetI, targetJ))
-		{
+		if (game.checkCoordinates(targetI, targetJ)) {
 			main.units.field[targetI][targetJ] = unitBitmap;
 			main.units.move[targetI][targetJ] = true;
 			main.unitsDead.keep[targetI][targetJ] = true;
@@ -62,22 +56,19 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 		return this;
 	}
 
-	public DrawUnitMove setMakeSmoke(boolean makeSmoke)
-	{
+	public DrawUnitMove setMakeSmoke(boolean makeSmoke) {
 		this.makeSmoke = makeSmoke;
 		return this;
 	}
 
-	public void destroy()
-	{
+	public void destroy() {
 		if (unitBitmap != null)
 			unitBitmap.keepTurn = false;
 		unitBitmap = null;
 	}
 
 	@Override
-	public void draw(Canvas canvas, int value)
-	{
+	public void draw(Canvas canvas, int value) {
 		if (unitBitmap == null)
 			return;
 		int i = value / framesForCellMy;
@@ -87,20 +78,16 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 		unitBitmap.draw(canvas, iFrame());
 		unitBitmap.move();
 
-		if (makeSmoke && value > 0 && (iPart == 0 || iPart == framesForCellMy / 2))
-		{
+		if (makeSmoke && value > 0 && (iPart == 0 || iPart == framesForCellMy / 2)) {
 			int ySmoke = (int) unitBitmap.y;
 			int xSmoke = (int) unitBitmap.x;
 
 			int currentI = iPart == 0 ? i : i + 1;
 			int previousI = iPart == 0 ? i - 1 : i;
-			if (points[currentI].j == points[previousI].j)
-			{
+			if (points[currentI].j == points[previousI].j) {
 				ySmoke += points[currentI].i < points[previousI].i ? 24 : -SmokeImages().hSmall;
 				xSmoke += (24 - SmokeImages().wSmall) / 2;
-			}
-			else
-			{
+			} else {
 				ySmoke += 24 - SmokeImages().hSmall;
 				xSmoke += points[currentI].j < points[previousI].j ? 24 : -SmokeImages().hSmall;
 			}
@@ -115,10 +102,8 @@ public class DrawUnitMove extends DrawOnFramesWithRangeValues
 	}
 
 	@Override
-	public void onEnd()
-	{
-		if (game.checkCoordinates(targetI, targetJ))
-		{
+	public void onEnd() {
+		if (game.checkCoordinates(targetI, targetJ)) {
 			main.units.move[targetI][targetJ] = false;
 			main.unitsDead.keep[targetI][targetJ] = false;
 		}

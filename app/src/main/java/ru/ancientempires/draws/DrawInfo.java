@@ -8,8 +8,7 @@ import android.graphics.Paint;
 import ru.ancientempires.images.Images;
 import ru.ancientempires.model.Cell;
 
-public class DrawInfo extends Draw
-{
+public class DrawInfo extends Draw {
 
 	public static       float mScale = 2.0f;
 	public static       int   mA     = (int) (Images.get().bitmapSize * DrawInfo.mScale);
@@ -20,8 +19,7 @@ public class DrawInfo extends Draw
 	public static final Paint color4 = new Paint();
 	public static final Paint color5 = new Paint();
 
-	static
-	{
+	static {
 		DrawInfo.color1.setColor(0xFFAFB7AB);
 		DrawInfo.color2.setColor(0xFF6D7581);
 		DrawInfo.color3.setColor(0xFF434A64);
@@ -40,8 +38,7 @@ public class DrawInfo extends Draw
 	private Bitmap goldBitmap;
 	private Bitmap amountBitmap;
 
-	public DrawInfo(BaseDrawMain mainBase)
-	{
+	public DrawInfo(BaseDrawMain mainBase) {
 		super(mainBase);
 		backgroundBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas canvas = new Canvas(backgroundBitmap);
@@ -49,8 +46,7 @@ public class DrawInfo extends Draw
 		drawRightPart(canvas, h, w, mW - a);
 	}
 
-	private void drawLeftPart(Canvas canvas, int h, int w)
-	{
+	private void drawLeftPart(Canvas canvas, int h, int w) {
 		// float nh = h / a;
 		// float nw = w / a;
 		canvas.drawRect(0, 0, w, h, DrawInfo.color3);
@@ -87,12 +83,10 @@ public class DrawInfo extends Draw
 	}
 
 	private void drawRect(Canvas canvas, int y, int x, int h, int w, Paint paint,
-	                      boolean axial, boolean vertical, boolean horizontal, boolean needMulti, int nh, int nw)
-	{
+	                      boolean axial, boolean vertical, boolean horizontal, boolean needMulti, int nh, int nw) {
 		if (needMulti)
 			drawRect(canvas, y * a, x * a, h * a, w * a, paint, axial, vertical, horizontal, false, nh, nw);
-		else
-		{
+		else {
 			canvas.drawRect(x, y, x + w, y + h, paint);
 			if (axial)
 				drawRect(canvas, x, y, w, h, paint, false, vertical, horizontal, false, nh, nw);
@@ -103,28 +97,24 @@ public class DrawInfo extends Draw
 		}
 	}
 
-	private void drawRightPart(Canvas canvas, float h, float w, float mW)
-	{
+	private void drawRightPart(Canvas canvas, float h, float w, float mW) {
 		canvas.drawRect(mW, 0, w, h, DrawInfo.color3);
 		canvas.drawRect(mW + a, a, w - a, h - a, DrawInfo.color1);
 		float a3 = a * 3;
 		canvas.drawRect(mW + a3, a3, w - a3, h - a3, DrawInfo.color3);
 	}
 
-	public void update()
-	{
+	public void update() {
 		color = game.currentPlayer.color.showColor;
 		goldBitmap = BigNumberImages().createBitmap(game.currentPlayer.gold);
 		amountBitmap = BigNumberImages().createBitmap(game.currentPlayer.units.size());
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 
-		if (true)
-		{
+		if (true) {
 			Cell cell = game.fieldCells[main.cursorDefault.cursorI][main.cursorDefault.cursorJ];
 			// изображение клеточки
 			canvas.save();
@@ -147,8 +137,7 @@ public class DrawInfo extends Draw
 
 		// градиент по цвету игрока
 		int number = 8;
-		for (int i = 0; i < number; i++)
-		{
+		for (int i = 0; i < number; i++) {
 			DrawInfo.paint.setColor(color & 0x00FFFFFF | 0xFF * (number - i) / number << 24);
 
 			int y1 = (5 + i) * a;

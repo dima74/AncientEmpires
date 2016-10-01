@@ -12,8 +12,7 @@ import ru.ancientempires.campaign.conditions.ConditionUnitIntoBounds;
 import ru.ancientempires.campaign.conditions.ConditionUnitNumber;
 import ru.ancientempires.framework.MyAssert;
 
-public enum ScriptType
-{
+public enum ScriptType {
 	DIALOG_INTRO(ScriptDialogIntro.class),
 	DIALOG(ScriptDialog.class),
 	DIALOG_WITHOUT_IMAGE(ScriptDialogWithoutImage.class),
@@ -75,29 +74,25 @@ public enum ScriptType
 	public boolean                 isSimple;
 	public Class<? extends Script> scriptClass;
 
-	ScriptType(Class<? extends Script> scriptClass)
-	{
+	ScriptType(Class<? extends Script> scriptClass) {
 		this(false, scriptClass);
 	}
 
-	ScriptType(boolean isSimple, Class<? extends Script> scriptClass)
-	{
+	ScriptType(boolean isSimple, Class<? extends Script> scriptClass) {
 		this.isSimple = isSimple;
 		this.scriptClass = scriptClass;
 	}
 
 	private static HashMap<Class<? extends Script>, ScriptType> map = ScriptType.createMap();
 
-	private static HashMap createMap()
-	{
+	private static HashMap createMap() {
 		HashMap map = new HashMap();
 		for (ScriptType type : ScriptType.values())
 			map.put(type.scriptClass, type);
 		return map;
 	}
 
-	public static ScriptType getType(Script script)
-	{
+	public static ScriptType getType(Script script) {
 		ScriptType type = ScriptType.map.get(script.getClass());
 		MyAssert.a(type != null);
 		return type;

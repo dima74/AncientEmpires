@@ -8,51 +8,43 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.model.UnitType;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class BonusAttackForUnit extends Bonus
-{
+public class BonusAttackForUnit extends Bonus {
 
 	public UnitType targetType;
 	public int      bonusAttack;
 	public int      bonusDefence;
 
-	public BonusAttackForUnit()
-	{}
+	public BonusAttackForUnit() {}
 
-	public BonusAttackForUnit(UnitType targetType, int bonusAttack, int bonusDefence)
-	{
+	public BonusAttackForUnit(UnitType targetType, int bonusAttack, int bonusDefence) {
 		this.targetType = targetType;
 		this.bonusAttack = bonusAttack;
 		this.bonusDefence = bonusDefence;
 	}
 
 	@Override
-	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
-	{
+	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit) {
 		return checkUnit(targetUnit) ? bonusAttack : 0;
 	}
 
 	@Override
-	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
-	{
+	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit) {
 		return checkUnit(fromUnit) ? bonusDefence : 0;
 	}
 
-	public boolean checkUnit(Unit unit)
-	{
+	public boolean checkUnit(Unit unit) {
 		return unit != null && unit.type == targetType;
 	}
 
 	@Override
-	public int getSign()
-	{
+	public int getSign() {
 		return (int) Math.signum(bonusAttack + bonusDefence);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("targetType", targetType.getName());
 		object.addProperty("bonusAttack", bonusAttack);
@@ -60,8 +52,7 @@ public class BonusAttackForUnit extends Bonus
 		return object;
 	}
 
-	public BonusAttackForUnit fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public BonusAttackForUnit fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		targetType = UnitType.newInstance(object.get("targetType").getAsString(), info);
 		bonusAttack = object.get("bonusAttack").getAsInt();

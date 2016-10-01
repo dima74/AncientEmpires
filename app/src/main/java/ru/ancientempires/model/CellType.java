@@ -4,11 +4,9 @@ import ru.ancientempires.model.struct.Struct;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.Numbered;
 
-public class CellType implements Numbered
-{
+public class CellType implements Numbered {
 
-	public static CellType newInstance(int i, LoaderInfo info)
-	{
+	public static CellType newInstance(int i, LoaderInfo info) {
 		return info.rules.cellTypes[i];
 	}
 
@@ -38,20 +36,17 @@ public class CellType implements Numbered
 	// Эти поля используются только для копирования в клеточку
 	public boolean isCaptureDefault;
 
-	public CellType(String name, int ordinal)
-	{
+	public CellType(String name, int ordinal) {
 		this.name = name.intern();
 		this.ordinal = ordinal;
 	}
 
 	@Override
-	public int getNumber()
-	{
+	public int getNumber() {
 		return ordinal;
 	}
 
-	public CellType setProperties(CellType type)
-	{
+	public CellType setProperties(CellType type) {
 		baseType = type;
 		steps = type.steps;
 		earn = type.earn;
@@ -67,8 +62,7 @@ public class CellType implements Numbered
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
 	}
 

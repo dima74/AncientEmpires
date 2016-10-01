@@ -5,8 +5,7 @@ import android.graphics.Canvas;
 
 import ru.ancientempires.draws.BaseDrawMain;
 
-public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
-{
+public class DrawBitmapSinus extends DrawOnFramesWithRangeValues {
 
 	// length = 48
 	public static final int[] YS = new int[]
@@ -65,13 +64,11 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 	private int x = 0;
 	private Bitmap bitmap;
 
-	public DrawBitmapSinus(BaseDrawMain mainBase)
-	{
+	public DrawBitmapSinus(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawBitmapSinus animate(int y, int x, Bitmap bitmap, int valuesForFrame)
-	{
+	public DrawBitmapSinus animate(int y, int x, Bitmap bitmap, int valuesForFrame) {
 		this.y = y;
 		this.x = x;
 		this.bitmap = bitmap;
@@ -80,8 +77,7 @@ public class DrawBitmapSinus extends DrawOnFramesWithRangeValues
 	}
 
 	@Override
-	public void draw(Canvas canvas, int value)
-	{
+	public void draw(Canvas canvas, int value) {
 		canvas.drawBitmap(bitmap, x, (int) (y + DrawBitmapSinus.YS[value] * a), null);
 	}
 

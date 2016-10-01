@@ -10,11 +10,9 @@ import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
-public class Images extends AbstractImages
-{
+public class Images extends AbstractImages {
 
-	public static Images get()
-	{
+	public static Images get() {
 		return Client.client.images;
 	}
 
@@ -22,8 +20,7 @@ public class Images extends AbstractImages
 	public int bitmapSize = 24;
 	public Rules rules;
 
-	public void setRules(Rules rules)
-	{
+	public void setRules(Rules rules) {
 		this.rules = rules;
 		cell.rules = rules;
 		unit.rules = rules;
@@ -58,8 +55,7 @@ public class Images extends AbstractImages
 	public int levelUpW;
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		cell.preload(loader.getLoader("cells"));
 		unit.preload(loader.getLoader("units"));
 		action.preload(loader.getLoader("actions"));
@@ -92,8 +88,7 @@ public class Images extends AbstractImages
 	}
 
 	@Override
-	public void load(FileLoader loader, Game game) throws IOException
-	{
+	public void load(FileLoader loader, Game game) throws IOException {
 		cell.load(loader.getLoader("cells"), game);
 		unit.load(loader.getLoader("units"), game);
 	}

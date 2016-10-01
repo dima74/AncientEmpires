@@ -5,12 +5,10 @@ import android.widget.ListView;
 
 import ru.ancientempires.MenuActions;
 
-public class EditorBaseActivity extends BaseListActivity
-{
-	
+public class EditorBaseActivity extends BaseListActivity {
+
 	@Override
-	public MenuActions[] getStrings()
-	{
+	public MenuActions[] getStrings() {
 		return new MenuActions[]
 				{
 						MenuActions.CREATE_GAME,
@@ -19,17 +17,14 @@ public class EditorBaseActivity extends BaseListActivity
 	}
 
 	@Override
-	public void onLoadFinished()
-	{
+	public void onLoadFinished() {
 		super.onLoadFinished();
 		moveTo(EditorConfigureActivity.class);
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id)
-	{
-		switch (getStrings()[position])
-		{
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		switch (getStrings()[position]) {
 			case CREATE_GAME:
 				moveTo(EditorConfigureActivity.class);
 				break;
@@ -37,5 +32,5 @@ public class EditorBaseActivity extends BaseListActivity
 				break;
 		}
 	}
-	
+
 }

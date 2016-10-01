@@ -9,9 +9,8 @@ import ru.ancientempires.activities.BaseGameActivity;
 import ru.ancientempires.framework.Debug;
 import ru.ancientempires.framework.MyAssert;
 
-public abstract class BaseView extends SurfaceView implements SurfaceHolder.Callback
-{
-	
+public abstract class BaseView extends SurfaceView implements SurfaceHolder.Callback {
+
 	public BaseGameActivity activity;
 	public BaseThread       thread;
 	public GestureDetector  detector;
@@ -22,38 +21,32 @@ public abstract class BaseView extends SurfaceView implements SurfaceHolder.Call
 	private boolean isSurfaceCreated;
 	private boolean isSizeChanged;
 
-	public BaseView(BaseGameActivity activity)
-	{
+	public BaseView(BaseGameActivity activity) {
 		super(activity);
 		Debug.onCreate(this);
 		this.activity = activity;
 		activity.view = this;
 		getHolder().addCallback(this);
-		detector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener()
-		{
+		detector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener() {
 			@Override
-			public boolean onDown(MotionEvent e)
-			{
+			public boolean onDown(MotionEvent e) {
 				return thread.drawMain.isActiveGame();
 			}
-			
+
 			@Override
-			public boolean onSingleTapUp(MotionEvent event)
-			{
+			public boolean onSingleTapUp(MotionEvent event) {
 				if (!thread.drawMain.isActiveGame())
 					return false;
-				synchronized (thread)
-				{
+				synchronized (thread) {
 					thread.touchY = event.getY();
 					thread.touchX = event.getX();
 					thread.isTouch = true;
 				}
 				return true;
 			}
-			
+
 			@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-			{
+			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				if (!thread.drawMain.isActiveGame())
 					return false;
 				thread.drawMain.onScroll(distanceY, distanceX);
@@ -61,52 +54,45 @@ public abstract class BaseView extends SurfaceView implements SurfaceHolder.Call
 			}
 		});
 	}
-	
+
 	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
+	public boolean onTouchEvent(MotionEvent event) {
 		return detector.onTouchEvent(event);
 	}
-	
+
 	@Override
-	public void surfaceCreated(SurfaceHolder holder)
-	{
+	public void surfaceCreated(SurfaceHolder holder) {
 		Debug.onStart(this);
 		MyAssert.a(!isSurfaceCreated);
 		isSurfaceCreated = true;
 		onStart();
 	}
-	
+
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-	{}
-	
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
+
 	@Override
-	public void surfaceDestroyed(SurfaceHolder holder)
-	{
+	public void surfaceDestroyed(SurfaceHolder holder) {
 		Debug.onStop(this);
 		thread.isRunning = false;
 	}
-	
+
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh)
-	{
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		MyAssert.a(!isSizeChanged);
 		this.h = h;
 		this.w = w;
 		isSizeChanged = true;
 		onStart();
 	}
-	
+
 	public abstract BaseThread createThread();
-	
-	public final void onStart()
-	{
-		if (isSizeChanged && isSurfaceCreated)
-		{
+
+	public final void onStart() {
+		if (isSizeChanged && isSurfaceCreated) {
 			thread = createThread();
 			thread.start();
 		}
 	}
-	
+
 }

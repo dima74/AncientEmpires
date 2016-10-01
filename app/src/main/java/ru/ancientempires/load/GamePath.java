@@ -24,8 +24,7 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 
 // Этот класс описывает описывает общую информацию сохранения
-public class GamePath
-{
+public class GamePath {
 	public static final String LAST_SNAPSHOT = "lastSnapshot.json";
 	public static final String ACTIONS       = "actions.dat";
 	public static final String SNAPSHOTS     = "snapshots.json";
@@ -96,8 +95,7 @@ public class GamePath
 	public           int        sizeActions;
 	public transient FileLoader loader;
 
-	public void enterCampaign()
-	{
+	public void enterCampaign() {
 		MyAssert.a(!isInCampaign);
 		MyAssert.a(indexActionDisableActiveGame == -1);
 		MyAssert.a(sizeBeforeActionDisableActiveGame == -1);
@@ -106,8 +104,7 @@ public class GamePath
 		sizeBeforeActionDisableActiveGame = sizeActions;
 	}
 
-	public void leaveCampaign()
-	{
+	public void leaveCampaign() {
 		MyAssert.a(isInCampaign);
 		MyAssert.a(indexActionDisableActiveGame >= 0);
 		MyAssert.a(sizeBeforeActionDisableActiveGame >= 0);
@@ -116,26 +113,22 @@ public class GamePath
 		sizeBeforeActionDisableActiveGame = -1;
 	}
 
-	public static class PointScreenCenter
-	{
+	public static class PointScreenCenter {
 		public float i;
 		public float j;
 
-		public PointScreenCenter(int centerI, int centerJ)
-		{
+		public PointScreenCenter(int centerI, int centerJ) {
 			i = centerI + 0.5f;
 			j = centerJ + 0.5f;
 		}
 
-		public PointScreenCenter(float i, float j)
-		{
+		public PointScreenCenter(float i, float j) {
 			this.i = i;
 			this.j = j;
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return String.format("{%f, %f}", i, j);
 		}
 	}
@@ -143,10 +136,8 @@ public class GamePath
 	public PointScreenCenter[] screenCenters;
 
 	// Создаёт новый объект GamePath представляющий собой копию info.json
-	public static GamePath get(Client client, String path, boolean addToAllGames) throws Exception
-	{
-		if (!client.gamesLoader.exists(path + "info.json"))
-		{
+	public static GamePath get(Client client, String path, boolean addToAllGames) throws Exception {
+		if (!client.gamesLoader.exists(path + "info.json")) {
 			MyLog.f("Can't load %s: info.json missing!", path);
 			return null;
 		}
@@ -161,12 +152,10 @@ public class GamePath
 	}
 
 	// только для new Gson().fromJson(...)
-	public GamePath()
-	{}
+	public GamePath() {}
 
 	// только для AllGamesConverter +оказывается для редактора карт
-	public GamePath(Game game, String gameID)
-	{
+	public GamePath(Game game, String gameID) {
 		this.gameID = gameID;
 		client = Client.client;
 		baseGameID = gameID;
@@ -185,12 +174,10 @@ public class GamePath
 			screenCenters[i] = new PointScreenCenter(0, 0);
 		for (int i = 0; i < game.players.length; i++)
 			for (Unit unit : game.players[i].units)
-				if (unit.type.isStatic)
-				{
+				if (unit.type.isStatic) {
 					int centerI = unit.i;
 					int centerJ = unit.j;
-					if (gameID.equals("campaign.4"))
-					{
+					if (gameID.equals("campaign.4")) {
 						centerI = 1;
 						centerJ = 11;
 					}
@@ -199,25 +186,21 @@ public class GamePath
 		game.path = this;
 	}
 
-	public Rules getRules()
-	{
+	public Rules getRules() {
 		return client.rules;
 	}
 
-	public void loadName() throws IOException
-	{
+	public void loadName() throws IOException {
 		FileLoader loader = client.gamesLoader.getLoader(baseGameID.replace('.', '/'));
 		if (loader.exists("strings.json"))
 			name = client.localization.loadName(loader);
 	}
 
-	public FileLoader getLoader()
-	{
+	public FileLoader getLoader() {
 		return loader;
 	}
 
-	public GamePath copyTo(String newPath, String newID) throws IOException
-	{
+	public GamePath copyTo(String newPath, String newID) throws IOException {
 		path = newPath;
 		loader = client.gamesLoader.getLoader(path);
 		gameID = newID;
@@ -227,10 +210,8 @@ public class GamePath
 		return this;
 	}
 
-	public void save() throws IOException
-	{
-		if (isInCampaign)
-		{
+	public void save() throws IOException {
+		if (isInCampaign) {
 			numberActions = indexActionDisableActiveGame;
 			FileOutputStream fos = loader.openFOS(ACTIONS, true);
 			fos.getChannel().truncate(sizeBeforeActionDisableActiveGame);
@@ -241,54 +222,46 @@ public class GamePath
 		writer.close();
 	}
 
-	public GamesFolder getFolder()
-	{
+	public GamesFolder getFolder() {
 		return client.allFolders.get(gameID.substring(0, gameID.lastIndexOf('.')));
 	}
 
-	public String getFolderID()
-	{
+	public String getFolderID() {
 		return gameID.substring(0, gameID.lastIndexOf('.'));
 	}
 
-	public static class SnapshotNote implements Comparable<SnapshotNote>
-	{
+	public static class SnapshotNote implements Comparable<SnapshotNote> {
 		public GamePath path;
 		public int      numberActions;
 		public int      sizeActions;
 		public String   snapshot;
 
-		public SnapshotNote(GamePath path, String name) throws Exception
-		{
+		public SnapshotNote(GamePath path, String name) throws Exception {
 			this.path = path;
 			Scanner scanner = path.getLoader().getScanner(name);
 			load(scanner);
 			scanner.close();
 		}
 
-		public SnapshotNote(GamePath path, Scanner scanner)
-		{
+		public SnapshotNote(GamePath path, Scanner scanner) {
 			this.path = path;
 			load(scanner);
 		}
 
-		public SnapshotNote(GamePath path, int numberActions, int sizeActions, Game game) throws Exception
-		{
+		public SnapshotNote(GamePath path, int numberActions, int sizeActions, Game game) throws Exception {
 			this.path = path;
 			this.numberActions = numberActions;
 			this.sizeActions = sizeActions;
 			this.snapshot = game.toJson().toString();
 		}
 
-		public void load(Scanner scanner)
-		{
+		public void load(Scanner scanner) {
 			numberActions = scanner.nextInt();
 			sizeActions = scanner.nextInt();
 			snapshot = scanner.nextLine().trim();
 		}
 
-		public Game getGame(String players) throws Exception
-		{
+		public Game getGame(String players) throws Exception {
 			JsonObject gameJson = (JsonObject) new JsonParser().parse(snapshot);
 			if (players != null)
 				gameJson.add("players", new JsonParser().parse(players));
@@ -296,37 +269,31 @@ public class GamePath
 		}
 
 		// for debug
-		public Game getGame(int numberActions) throws Exception
-		{
+		public Game getGame(int numberActions) throws Exception {
 			Game game = getGame(null);
 			performActions(game, this, numberActions, true);
 			return game;
 		}
 
-		public JsonObject getGameJsonDebug() throws Exception
-		{
+		public JsonObject getGameJsonDebug() throws Exception {
 			return (JsonObject) new JsonParser().parse(snapshot);
 		}
 
 		@Override
-		public int compareTo(SnapshotNote note)
-		{
+		public int compareTo(SnapshotNote note) {
 			return Integer.compare(numberActions, note.numberActions);
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return String.format("%d %d %s", numberActions, sizeActions, snapshot);
 		}
 
 	}
 
-	public ArrayList<SnapshotNote> getNotes(String name) throws Exception
-	{
+	public ArrayList<SnapshotNote> getNotes(String name) throws Exception {
 		ArrayList<SnapshotNote> notes = new ArrayList<>();
-		if (loader.exists(name))
-		{
+		if (loader.exists(name)) {
 			Scanner scanner = loader.getScanner(name);
 			while (scanner.hasNext())
 				notes.add(new SnapshotNote(this, scanner));
@@ -335,18 +302,15 @@ public class GamePath
 		return notes;
 	}
 
-	public static Game performActions(Game game, SnapshotNote note, int numberActions, boolean dontAddNote) throws Exception
-	{
+	public static Game performActions(Game game, SnapshotNote note, int numberActions, boolean dontAddNote) throws Exception {
 		GamePath path = note.path;
 		MyAssert.a(note.numberActions <= numberActions);
-		if (note.numberActions < numberActions)
-		{
+		if (note.numberActions < numberActions) {
 			FileInputStream fis = path.loader.openFIS(GamePath.ACTIONS);
 			fis.getChannel().position(note.sizeActions);
 			DataInputStream dis = new DataInputStream(fis);
 			ArrayList<Action> actions = new ArrayList<>();
-			for (int i = note.numberActions; i < numberActions; i++)
-			{
+			for (int i = note.numberActions; i < numberActions; i++) {
 				Action action = game.getLoaderInfo().fromData(dis, Action.class);
 				if (!action.checkBase(game))
 					path.findBug(numberActions, i);
@@ -361,8 +325,7 @@ public class GamePath
 		return game;
 	}
 
-	public Action[] getAllActions() throws Exception
-	{
+	public Action[] getAllActions() throws Exception {
 		SnapshotNote note = getNoteBefore(0);
 		Game game = note.getGame(null);
 		FileInputStream fis = loader.openFIS(GamePath.ACTIONS);
@@ -374,8 +337,7 @@ public class GamePath
 		return actions;
 	}
 
-	private void findBug(int numberActions, int lastI) throws Exception
-	{
+	private void findBug(int numberActions, int lastI) throws Exception {
 		SnapshotNote note0 = getNoteBefore(0);
 		SnapshotNote note1 = getNoteBefore(numberActions);
 
@@ -387,37 +349,30 @@ public class GamePath
 		System.out.print("");
 	}
 
-	public JsonObject getSnapshotJsonDebug() throws Exception
-	{
+	public JsonObject getSnapshotJsonDebug() throws Exception {
 		return getNoteBefore(numberActions).getGameJsonDebug();
 	}
 
-	public Game loadGameDebug() throws Exception
-	{
+	public Game loadGameDebug() throws Exception {
 		return loadGame(numberActions, false, null, true);
 	}
 
-	public Game loadGame(boolean loadCampaign) throws Exception
-	{
+	public Game loadGame(boolean loadCampaign) throws Exception {
 		return loadGame(loadCampaign, null);
 	}
 
-	public Game loadGame(boolean loadCampaign, String players) throws Exception
-	{
+	public Game loadGame(boolean loadCampaign, String players) throws Exception {
 		return loadGame(numberActions, loadCampaign, players);
 	}
 
-	public Game loadGame(int numberActions, boolean loadCampaign, String players) throws Exception
-	{
+	public Game loadGame(int numberActions, boolean loadCampaign, String players) throws Exception {
 		return loadGame(numberActions, loadCampaign, players, false);
 	}
 
-	public Game loadGame(int numberActions, boolean loadCampaign, String players, boolean dontAddNote) throws Exception
-	{
+	public Game loadGame(int numberActions, boolean loadCampaign, String players, boolean dontAddNote) throws Exception {
 		SnapshotNote note = getNoteBefore(numberActions);
 		Game game = note.getGame(players);
-		if (loadCampaign)
-		{
+		if (loadCampaign) {
 			FileLoader loader = Client.getGame(baseGameID).loader;
 			client.defaultGameLoader.loadLocalization(client);
 			if (loader.exists("strings.json"))
@@ -431,8 +386,7 @@ public class GamePath
 		return game;
 	}
 
-	public SnapshotNote getNoteBefore(int numberActions) throws Exception
-	{
+	public SnapshotNote getNoteBefore(int numberActions) throws Exception {
 		SnapshotNote note = new SnapshotNote(this, LAST_SNAPSHOT);
 		if (note.numberActions > numberActions)
 			for (SnapshotNote noteMaybe : getNotes(SNAPSHOTS))
@@ -441,11 +395,9 @@ public class GamePath
 		return note;
 	}
 
-	public void addNote(SnapshotNote newNote) throws Exception
-	{
+	public void addNote(SnapshotNote newNote) throws Exception {
 		SnapshotNote lastNote = new SnapshotNote(this, LAST_SNAPSHOT);
-		if (lastNote.numberActions < newNote.numberActions)
-		{
+		if (lastNote.numberActions < newNote.numberActions) {
 			PrintWriter writerLastSnapshot = loader.getPrintWriter(LAST_SNAPSHOT);
 			writerLastSnapshot.println(newNote);
 			writerLastSnapshot.close();
@@ -453,9 +405,7 @@ public class GamePath
 			PrintWriter writerSnapshots = loader.getPrintWriter(SNAPSHOTS, true);
 			writerSnapshots.println(lastNote);
 			writerSnapshots.close();
-		}
-		else
-		{
+		} else {
 			ArrayList<SnapshotNote> notes = getNotes(SNAPSHOTS);
 			notes.add(newNote);
 			Collections.sort(notes);
@@ -467,16 +417,14 @@ public class GamePath
 		++numberSnapshots;
 	}
 
-	public void addNoteInitial(Game game) throws Exception
-	{
+	public void addNoteInitial(Game game) throws Exception {
 		PrintWriter writerLastSnapshot = loader.getPrintWriter(LAST_SNAPSHOT);
 		writerLastSnapshot.println(new SnapshotNote(this, 0, 0, game));
 		writerLastSnapshot.close();
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return String.format("%s (%s)", gameID, name);
 	}
 

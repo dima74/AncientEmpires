@@ -11,24 +11,20 @@ import ru.ancientempires.load.GameSaver;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.rules.Rules;
 
-public class ClientServer extends Server
-{
+public class ClientServer extends Server {
 
 	public Client client;
 	public Game   game;
 
-	public ClientServer(Client client)
-	{
+	public ClientServer(Client client) {
 		this.client = client;
 	}
 
-	public Game startGame(String gameID) throws Exception
-	{
+	public Game startGame(String gameID) throws Exception {
 		return startGame(gameID, null);
 	}
 
-	public Game startGame(String gameID, String players) throws Exception
-	{
+	public Game startGame(String gameID, String players) throws Exception {
 		MyLog.l("");
 		MyLog.l("");
 		MyLog.l("===================================================".substring(0, ("startGame " + gameID).length()));
@@ -39,8 +35,7 @@ public class ClientServer extends Server
 		GamePath path = Client.getGame(gameID);
 		Rules rules = path.getRules();
 		game = path.loadGame(true, players);
-		if (path.isBaseGame)
-		{
+		if (path.isBaseGame) {
 			String newID = "save." + client.numberSaves();
 			String newPath = newID.replace('.', '/') + "/";
 			client.gamesLoader.getLoader(newPath).mkdirs();
@@ -60,23 +55,18 @@ public class ClientServer extends Server
 	}
 
 	@Override
-	public void stopGame() throws Exception
-	{
+	public void stopGame() throws Exception {
 		game.saver.finishSave();
 	}
 
-	public void commit(Action action) throws IOException
-	{
+	public void commit(Action action) throws IOException {
 		// action.saveBase(MyAssert.output);
 		if (MyAssert.outputText != null)
 			MyAssert.outputText.println(action);
-		try
-		{
+		try {
 			// Вот здесь у него поменялось значение поля Game!
 			game.saver.save(action);
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}

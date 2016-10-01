@@ -5,8 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 // У этой аннотации две функции
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WithNumbered
-{
+public @interface WithNumbered {
 	String value();
 
 	boolean checkGameForNull() default false;

@@ -71,8 +71,7 @@ import ru.ancientempires.campaign.scripts.ScriptUnitMoveHandlerPoint;
 import ru.ancientempires.campaign.scripts.ScriptVibrate;
 import ru.ancientempires.model.Game;
 
-public class CampaignEditor
-{
+public class CampaignEditor {
 
 	// framesForCell = 48 / Unit.speed
 	// delta = mapStepMax / 2
@@ -93,15 +92,13 @@ public class CampaignEditor
 	public int  h;
 	public int  w;
 
-	public CampaignEditor(Game game)
-	{
+	public CampaignEditor(Game game) {
 		this.game = game;
 		h = game.h;
 		w = game.w;
 	}
 
-	public void createCampaign(int iMission) throws IOException
-	{
+	public void createCampaign(int iMission) throws IOException {
 		CampaignEditorGame.game = game;
 		if (iMission == 0)
 			mission0();
@@ -123,8 +120,7 @@ public class CampaignEditor
 		save();
 	}
 
-	public void createDefaultGameCampaign() throws IOException
-	{
+	public void createDefaultGameCampaign() throws IOException {
 		CampaignEditorGame.game = game;
 
 		ContainerList c = addRoot(new ScriptDisableActiveGame());
@@ -138,8 +134,7 @@ public class CampaignEditor
 		save();
 	}
 
-	public void createTestGameCampaign() throws IOException
-	{
+	public void createTestGameCampaign() throws IOException {
 		CampaignEditorGame.game = game;
 
 		ContainerList c = addRoot(new ScriptDisableActiveGame());
@@ -150,8 +145,7 @@ public class CampaignEditor
 		save();
 	}
 
-	public void save() throws IOException
-	{
+	public void save() throws IOException {
 		allContainers = allContainerLists.toArray(new ScriptContainer[0]);
 		used = new HashSet<ScriptContainer>();
 		scripts = new ArrayList<Script>();
@@ -165,8 +159,7 @@ public class CampaignEditor
 		game.campaign.scripts = scripts.toArray(new Script[0]);
 	}
 
-	public void dfs(ScriptContainer container)
-	{
+	public void dfs(ScriptContainer container) {
 		for (ScriptContainer prev : container.prev)
 			if (!scripts.contains(prev.script))
 				return;
@@ -187,43 +180,36 @@ public class CampaignEditor
 			dfs(next);
 	}
 
-	public ContainerList addRoot(Script... scripts)
-	{
+	public ContainerList addRoot(Script... scripts) {
 		ContainerList list = new ContainerList((Object[]) scripts);
 		for (ScriptContainer container : list)
 			allContainerLists.add(container);
 		return list;
 	}
 
-	public ContainerList add(Script... scripts)
-	{
+	public ContainerList add(Script... scripts) {
 		return new ContainerList((Object[]) scripts);
 	}
 
-	public ContainerList addConditionOr(ContainerList c, Script... scripts)
-	{
+	public ContainerList addConditionOr(ContainerList c, Script... scripts) {
 		ContainerList list = c.add((Object[]) scripts);
 		return addRoot(new ConditionOr(scripts));
 	}
 
-	public ContainerList addConditionAnd(ContainerList c, Script... scripts)
-	{
+	public ContainerList addConditionAnd(ContainerList c, Script... scripts) {
 		ContainerList list = c.add((Object[]) scripts);
 		return addRoot(new ConditionOr(scripts));
 	}
 
-	public ConditionOr createConditionOr(ContainerList c)
-	{
+	public ConditionOr createConditionOr(ContainerList c) {
 		return new ConditionOr(c.stream().map(c2 -> c2.script).toArray(Script[]::new));
 	}
 
-	public ConditionAnd createConditionAnd(ContainerList c)
-	{
+	public ConditionAnd createConditionAnd(ContainerList c) {
 		return new ConditionAnd(c.stream().map(c2 -> c2.script).toArray(Script[]::new));
 	}
 
-	public void mission0() throws IOException
-	{
+	public void mission0() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -302,8 +288,7 @@ public class CampaignEditor
 		// */
 	}
 
-	public void mission1() throws IOException
-	{
+	public void mission1() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -376,8 +361,7 @@ public class CampaignEditor
 		c = c.add(new ScriptGameOver());
 	}
 
-	public void mission2() throws IOException
-	{
+	public void mission2() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -461,8 +445,7 @@ public class CampaignEditor
 		c = c.add(new ScriptGameOver());
 	}
 
-	public void mission3() throws IOException
-	{
+	public void mission3() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -528,8 +511,7 @@ public class CampaignEditor
 		c = c.add(new ScriptGameOver());
 	}
 
-	public void mission4() throws IOException
-	{
+	public void mission4() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -632,8 +614,7 @@ public class CampaignEditor
 		c = c.add(new ScriptGameOver());
 	}
 
-	public void mission5() throws IOException
-	{
+	public void mission5() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -666,8 +647,7 @@ public class CampaignEditor
 
 	}
 
-	public void mission6() throws IOException
-	{
+	public void mission6() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -814,8 +794,7 @@ public class CampaignEditor
 		c = c.add(new ScriptGameOver());
 	}
 
-	public void mission7() throws IOException
-	{
+	public void mission7() throws IOException {
 		ContainerList c0 = addRoot(new ScriptDisableActiveGame());
 		c0 = c0.add(new ScriptBlackScreen());
 		c0 = c0.add(new ScriptHideInfoImmediately());
@@ -1189,8 +1168,7 @@ public class CampaignEditor
 	}
 	*/
 
-	public void convert(int iMission) throws IOException
-	{
+	public void convert(int iMission) throws IOException {
 		//for (int iMission = iMission2; iMission <= iMission2; iMission++)
 		{
 			Scanner input = new Scanner(new File("../campaigns/" + iMission + ".txt"));
@@ -1211,8 +1189,7 @@ public class CampaignEditor
 			*/
 
 			// int n = 0;
-			if (0 == 1)
-			{
+			if (0 == 1) {
 				for (String s : strings)
 					// if (!s.contains("getUnit") && !s.contains("createUnit") && s.contains("plotRoute"))
 					if (s.contains("mapStepMax"))
@@ -1231,14 +1208,12 @@ public class CampaignEditor
 
 			int n = 0;
 			ArrayList<ArrayList<String>> cases = new ArrayList<ArrayList<String>>();
-			for (int iStart = 0, iEnd = 0; iStart < strings.length; iStart = iEnd + 2, iEnd = iStart)
-			{
+			for (int iStart = 0, iEnd = 0; iStart < strings.length; iStart = iEnd + 2, iEnd = iStart) {
 				while (!strings[iEnd + 1].contains("case"))
 					iEnd++;
 
 				ArrayList<String> scriptsStrings = new ArrayList<String>();
-				for (int i = iStart; i <= iEnd; i++)
-				{
+				for (int i = iStart; i <= iEnd; i++) {
 					String s = strings[i];
 					if (s.equals("\tbreak;"))
 						continue;
@@ -1248,58 +1223,46 @@ public class CampaignEditor
 						scriptsStrings.add("new ScriptShowCursor()");
 					else if (s.contains("setScriptDelay("))
 						scriptsStrings.add("new ScriptDelay(" + Integer.valueOf(s.replace("setScriptDelay(", "").replace(");", "").trim()) * 1000 / 15 + ")");
-					else if (s.contains("updateAlphaDrap = true;") || s.contains("drawAlphaDrap = true;") || s.contains("inverseDrapAlpha = true;"))
-					{
+					else if (s.contains("updateAlphaDrap = true;") || s.contains("drawAlphaDrap = true;") || s.contains("inverseDrapAlpha = true;")) {
 						scriptsStrings.add("new Script" + alphaChange + "BlackScreen()");
 						alphaChange = alphaChange == "Hide" ? "Show" : "Hide";
-					}
-					else if (s.contains("getUnit") && s.contains("plotRoute"))
-					{
+					} else if (s.contains("getUnit") && s.contains("plotRoute")) {
 						String[] args = s.replace("getUnit(", "").replace("0).plotRoute(", "").replace(", false);", "").replace(", true);", "").split(",");
 						scriptsStrings.add("new ScriptUnitMove(" + args[1] + ", " + args[0] + ", " + args[3] + ", " + args[2] + ")");
-					}
-					else if (s.contains("moveMapAndCursor(fraction"))
+					} else if (s.contains("moveMapAndCursor(fraction"))
 						scriptsStrings.add("new ScriptCameraMoveOnKing(" + (s.contains("0") ? 0 : 1) + ")");
-					else if (s.contains("moveMapAndCursor") && !s.contains("crystall"))
-					{
+					else if (s.contains("moveMapAndCursor") && !s.contains("crystall")) {
 						String[] args = s.replace("moveMapAndCursor(", "").replace(");", "").split(",");
 						scriptsStrings.add("new ScriptCameraMove(" + args[1] + ", " + args[0] + ")");
-					}
-					else if (s.contains("createDialogScreen"))
+					} else if (s.contains("createDialogScreen"))
 						scriptsStrings.add("new ScriptDialog(\"dialog." + n++ + "\", \"campaign/portrait/" + s.charAt(57) + ".png\", \"LEFT\")");
 						// createDialogScreen(PaintableObject.getLocaleString(221), (byte)2, (byte)4);
 						// new ScriptDialog("dialog.0", "campaign/portrait/2.png", "LEFT")).addDependent(
 					else if (s.contains("moveMapAndCursor(fractionKings"))
 						scriptsStrings.add("new ScriptCameraMoveOnKing(" + s.replace("moveMapAndCursor(fractionKings[", "").charAt(0) + ")");
-					else if (s.contains("startNormalPlay"))
-					{
+					else if (s.contains("startNormalPlay")) {
 						scriptsStrings.add("new ScriptShowTarget(\"name\", \"target\")).addDependent(");
 						scriptsStrings.add("new ScriptShowCursor()");
 						scriptsStrings.add("new ScriptShowInfoBar()");
 						scriptsStrings.add("new ScriptEnableActiveGame()");
 						scriptsStrings.add("new ScriptSetUnitSpeed(8)");
 						scriptsStrings.add("new ScriptSetCameraSpeed(6)");
-					}
-					else if (s.contains("if(countUnits(-1, -1, (byte)1) == 0)"))
+					} else if (s.contains("if(countUnits(-1, -1, (byte)1) == 0)"))
 						scriptsStrings.add("\t//.setConditions(new ConditionUnitNumber(1, 0, 0))");
 					else if (s.contains("if(countUnits(-1, -1, (byte)1) == 0 && countCastles(1) == 0)"))
 						scriptsStrings.add("\t//.setConditions(new ConditionUnitNumber(1, 0, 0), new ConditionCastleNumber(1, 0, 0))");
-					else if (s.contains("createUnit(") && !s.contains("MapPos"))
-					{
+					else if (s.contains("createUnit(") && !s.contains("MapPos")) {
 						String[] args = s.replaceFirst(".*createUnit\\(", "").split(",");
 						scriptsStrings.add("new ScriptUnitCreate(" + args[3].split("\\)")[0] + ", " + args[2] + ", \"" + GameConverter.getUnitTypeName(Integer.valueOf(args[0]), 0) + "\", " + args[1] + ")");
-						if (s.contains("plotRoute"))
-						{
+						if (s.contains("plotRoute")) {
 							String[] args2 = s.split("plotRoute")[1].replace("Ex", "").substring(1).replace(");", "").split(",");
 							scriptsStrings.add("new ScriptUnitMoveAbout(" + args[3].split("\\)")[0] + ", " + args[2] + ", " + args2[1] + ", " + args2[0] + ")");
 							// new ScriptUnitCreate(1, 1, "ARCHER", 1),
 							// new ScriptUnitMoveAbout(1, 1, 2, 1)
 						}
-					}
-					else if (s.contains("activeFlag"))
+					} else if (s.contains("activeFlag"))
 						scriptsStrings.add("new Script" + (s.contains("true") ? "Enable" : "Disable") + "ActiveGame()");
-					else if (s.contains("Unit.speed"))
-					{
+					else if (s.contains("Unit.speed")) {
 						String speed = s.replace("Unit.speed = ", "").replace(";", "");
 						if (speed.contains("SLOW"))
 							speed = "8";
@@ -1308,9 +1271,7 @@ public class CampaignEditor
 						else
 							speed = "" + 48 / Integer.valueOf(speed);
 						scriptsStrings.add("new ScriptSetUnitSpeed(" + speed + ")");
-					}
-					else if (s.contains("mapStepMax"))
-					{
+					} else if (s.contains("mapStepMax")) {
 						String speed = s.replace("mapStepMax = ", "").replace(";", "");
 						speed = "" + Integer.valueOf(speed) / 2;
 						scriptsStrings.add("new ScriptSetCameraSpeed(" + speed + ")");
@@ -1320,8 +1281,7 @@ public class CampaignEditor
 				}
 				int lastI = -1;
 				for (int i = 0; i < scriptsStrings.size() - 1; i++)
-					if (!scriptsStrings.get(i).startsWith("\t//"))
-					{
+					if (!scriptsStrings.get(i).startsWith("\t//")) {
 						scriptsStrings.set(i, scriptsStrings.get(i) + ",// ).addDependent(");
 						lastI = i;
 					}
@@ -1346,8 +1306,7 @@ public class CampaignEditor
 			// cases.add(0, new ArrayList<String>(Arrays.asList("new ScriptBlackScreen(")));
 			cases.add(0, new ArrayList<String>(Arrays.asList("new ScriptTitle(\"title\"")));
 			cases.get(1).add(0, "new ScriptHideBlackScreen(),// ).addDependent(");
-			for (ArrayList<String> arrayList : cases)
-			{
+			for (ArrayList<String> arrayList : cases) {
 				for (String string : arrayList)
 					System.out.println(string);
 				System.out.println(").addDependent(");

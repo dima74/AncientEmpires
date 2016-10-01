@@ -6,21 +6,18 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 import ru.ancientempires.serializable.WithNumbered;
 
-public abstract class TaskUnitWithValue extends Task
-{
+public abstract class TaskUnitWithValue extends Task {
 
 	@WithNumbered("numberedUnits")
 	public Unit unit;
 	public int  value;
 
-	public TaskUnitWithValue setUnit(Unit unit)
-	{
+	public TaskUnitWithValue setUnit(Unit unit) {
 		this.unit = unit;
 		return this;
 	}
 
-	public TaskUnitWithValue setValue(int value)
-	{
+	public TaskUnitWithValue setValue(int value) {
 		this.value = value;
 		return this;
 	}
@@ -28,16 +25,14 @@ public abstract class TaskUnitWithValue extends Task
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("unit", game.numberedUnits.add(unit));
 		object.addProperty("value", value);
 		return object;
 	}
 
-	public TaskUnitWithValue fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public TaskUnitWithValue fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		unit = game.numberedUnits.get(object.get("unit").getAsInt());
 		value = object.get("value").getAsInt();

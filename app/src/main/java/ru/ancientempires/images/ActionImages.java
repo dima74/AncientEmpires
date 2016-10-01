@@ -15,21 +15,18 @@ import ru.ancientempires.actions.ActionUnitRaise;
 import ru.ancientempires.actions.ActionUnitRepair;
 import ru.ancientempires.framework.FileLoader;
 
-public class ActionImages extends AbstractImages
-{
+public class ActionImages extends AbstractImages {
 
 	private HashMap<Class<? extends Action>, Bitmap> actionBitmaps;
 	public  int                                      h;
 	public  int                                      w;
 
-	public Bitmap getActionBitmap(Action action)
-	{
+	public Bitmap getActionBitmap(Action action) {
 		return actionBitmaps.get(action.getClass());
 	}
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		actionBitmaps = new HashMap<>();
 		String[] actionImageNames = new String[]
 				{

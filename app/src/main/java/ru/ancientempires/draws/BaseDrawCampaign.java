@@ -44,16 +44,13 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Player;
 import ru.ancientempires.model.UnitType;
 
-public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
-{
+public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign {
 
-	private class SimpleDraw
-	{
+	private class SimpleDraw {
 		public DrawOnFrames draw;
 		public Script       script;
 
-		public SimpleDraw(DrawOnFrames draw, Script script)
-		{
+		public SimpleDraw(DrawOnFrames draw, Script script) {
 			this.draw = draw;
 			this.script = script;
 		}
@@ -61,31 +58,25 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 
 	public HashSet<SimpleDraw> draws = new HashSet<>();
 
-	public BaseDrawCampaign(BaseDrawMain mainBase)
-	{
+	public BaseDrawCampaign(BaseDrawMain mainBase) {
 		super(mainBase);
 		game.campaign.iDrawCampaign = this;
 	}
 
-	public void add(DrawOnFrames draw, Script script)
-	{
+	public void add(DrawOnFrames draw, Script script) {
 		main.add(draw);
 		draws.add(new SimpleDraw(draw, script));
 	}
 
-	public void addWithoutMain(DrawOnFrames draw, Script script)
-	{
+	public void addWithoutMain(DrawOnFrames draw, Script script) {
 		draws.add(new SimpleDraw(draw, script));
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
-		for (Iterator<SimpleDraw> iterator = draws.iterator(); iterator.hasNext(); )
-		{
+	public void draw(Canvas canvas) {
+		for (Iterator<SimpleDraw> iterator = draws.iterator(); iterator.hasNext(); ) {
 			SimpleDraw simple = iterator.next();
-			if (simple.draw.isEndDrawing)
-			{
+			if (simple.draw.isEndDrawing) {
 				simple.script.finish();
 				iterator.remove();
 			}
@@ -94,19 +85,13 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 
 	//
 	@Override
-	public void delay(final int milliseconds, final ScriptDelay script)
-	{
-		new Thread(new Runnable()
-		{
+	public void delay(final int milliseconds, final ScriptDelay script) {
+		new Thread(new Runnable() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					Thread.sleep(milliseconds);
-				}
-				catch (InterruptedException e)
-				{
+				} catch (InterruptedException e) {
 					MyAssert.a(false);
 					e.printStackTrace();
 				}
@@ -117,54 +102,46 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 
 	//
 	@Override
-	public void showBlackScreen(ScriptShowBlackScreen script)
-	{
+	public void showBlackScreen(ScriptShowBlackScreen script) {
 		main.blackScreen.startShow();
 		addWithoutMain(main.blackScreen, script);
 	}
 
 	@Override
-	public void hideBlackScreen(ScriptHideBlackScreen script)
-	{
+	public void hideBlackScreen(ScriptHideBlackScreen script) {
 		main.blackScreen.startHide();
 		addWithoutMain(main.blackScreen, script);
 	}
 
 	@Override
-	public void blackScreen(ScriptBlackScreen script)
-	{
+	public void blackScreen(ScriptBlackScreen script) {
 		main.isBlackScreen = true;
 	}
 
 	//
 	@Override
-	public void hideCursor(ScriptHideCursor script)
-	{
+	public void hideCursor(ScriptHideCursor script) {
 		main.isDrawCursor = false;
 	}
 
 	@Override
-	public void showCursor(ScriptShowCursor script)
-	{
+	public void showCursor(ScriptShowCursor script) {
 		main.isDrawCursor = true;
 	}
 
 	@Override
-	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script)
-	{
+	public void setCursorPosition(int i, int j, ScriptSetCursorPosition script) {
 		main.inputPlayer.tapWithoutAction(i, j);
 	}
 
 	//
 	@Override
-	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script)
-	{
+	public void setCameraSpeed(int delta, ScriptSetCameraSpeed script) {
 		DrawCameraMove.delta = delta;
 	}
 
 	@Override
-	public void cameraMove(AbstractScriptOnePoint script)
-	{
+	public void cameraMove(AbstractScriptOnePoint script) {
 		int targetI = script.i();
 		int targetJ = script.j();
 		main.inputPlayer.tapWithoutAction(targetI, targetJ);
@@ -174,32 +151,27 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 
 	@Override
-	public void setMapPosition(float i, float j)
-	{
+	public void setMapPosition(float i, float j) {
 		main.focusOnCell(i, j);
 	}
 
 	@Override
-	public void focusOnCurrentPlayerCenter()
-	{
+	public void focusOnCurrentPlayerCenter() {
 		main.focusOnCurrentPlayerCenter();
 	}
 
 	//
 	@Override
-	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script)
-	{
+	public void setUnitSpeed(int framesForCell, ScriptSetUnitSpeed script) {
 		DrawUnitMove.framesForCell = framesForCell;
 	}
 
 	@Override
-	public void unitMove(ScriptUnitMove script, boolean initFromStart)
-	{
+	public void unitMove(ScriptUnitMove script, boolean initFromStart) {
 		if (!initFromStart)
 			script.performAction();
 		DrawUnitMove draw = new DrawUnitMove(mainBase).setMakeSmoke(script.makeSmoke).start(getPoints(script.points), null, initFromStart);
-		if (script.handlers != null)
-		{
+		if (script.handlers != null) {
 			draw.unitBitmap.handlers = new ScriptUnitMoveHandler[script.handlers.length];
 			for (int i = 0; i < script.handlers.length; i++)
 				draw.unitBitmap.handlers[i] = ((ScriptUnitMoveHandler) script.handlers[i]);
@@ -209,8 +181,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 			script.performAction();
 	}
 
-	public Point[] getPoints(AbstractPoint[] keyPoints)
-	{
+	public Point[] getPoints(AbstractPoint[] keyPoints) {
 		int length = 1;
 		for (int i = 1; i < keyPoints.length; i++)
 			length += Math.abs(keyPoints[i].getI() - keyPoints[i - 1].getI())
@@ -218,8 +189,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 
 		Point[] points = new Point[length];
 		int nPoint = 0;
-		for (int iKeyPoint = 1; iKeyPoint < keyPoints.length; iKeyPoint++)
-		{
+		for (int iKeyPoint = 1; iKeyPoint < keyPoints.length; iKeyPoint++) {
 			int iStart = keyPoints[iKeyPoint - 1].getI();
 			int jStart = keyPoints[iKeyPoint - 1].getJ();
 			int iEnd = keyPoints[iKeyPoint].getI();
@@ -237,51 +207,44 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	//
 
 	@Override
-	public void unitAttack(int i, int j, ScriptUnitAttack script)
-	{
+	public void unitAttack(int i, int j, ScriptUnitAttack script) {
 		vibrate();
 		add(new DrawUnitAttack(mainBase, i, j), script);
 	}
 
 	@Override
-	public void unitDie(int i, int j, ScriptUnitDie script)
-	{
+	public void unitDie(int i, int j, ScriptUnitDie script) {
 		script.performAction();
 		add(new DrawUnitDie(mainBase, i, j), script);
 	}
 
 	@Override
-	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script)
-	{
+	public void unitCreate(int i, int j, UnitType unitType, Player player, ScriptUnitCreate script) {
 		script.performAction();
 		if (game.checkCoordinates(i, j))
 			main.units.updateUnit(i, j);
 	}
 
 	@Override
-	public void removeUnit(int i, int j, ScriptRemoveUnit script)
-	{
+	public void removeUnit(int i, int j, ScriptRemoveUnit script) {
 		script.performAction();
 		if (game.checkCoordinates(i, j))
 			main.units.updateUnit(i, j);
 	}
 
 	@Override
-	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script)
-	{
+	public void unitChangePosition(int i, int j, int iNew, int jNew, ScriptUnitChangePosition script) {
 		script.performAction();
 	}
 
 	@Override
-	public void citadelAttack(ScriptOnePoint script)
-	{
+	public void citadelAttack(ScriptOnePoint script) {
 		add(new DrawCitadelAttack(mainBase, script.i(), script.j()), script);
 	}
 
 	//
 	@Override
-	public void sparksDefault(int i, int j, ScriptSparkDefault script)
-	{
+	public void sparksDefault(int i, int j, ScriptSparkDefault script) {
 		DrawBitmaps draw = new DrawBitmaps(mainBase)
 				.setBitmaps(SparksImages().bitmapsDefault)
 				.setYX(i * A, j * A).animateRepeat(1);
@@ -289,8 +252,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 
 	@Override
-	public void sparksAttack(int i, int j, ScriptSparkAttack script)
-	{
+	public void sparksAttack(int i, int j, ScriptSparkAttack script) {
 		DrawBitmaps draw = new DrawBitmaps(mainBase)
 				.setBitmaps(SparksImages().bitmapsAttack)
 				.setYX(i * A, j * A).animateRepeat(1);
@@ -298,8 +260,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 
 	@Override
-	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script)
-	{
+	public void cellAttackPartTwo(int i, int j, ScriptCellAttackPartTwo script) {
 		script.performAction();
 		main.buildingSmokes.update();
 
@@ -307,14 +268,12 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 
 	@Override
-	public void hideInfoImmediately(Script script)
-	{
+	public void hideInfoImmediately(Script script) {
 		main.infoY = main.info.h;
 	}
 
 	@Override
-	public void enableActiveGame(ScriptEnableActiveGame script)
-	{
+	public void enableActiveGame(ScriptEnableActiveGame script) {
 		main.isActiveGame = true;
 		main.isDrawCursor = false;
 		DrawUnitMove.framesForCell = 8;
@@ -327,14 +286,12 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 	}
 
 	@Override
-	public void updateCampaign()
-	{
+	public void updateCampaign() {
 		postUpdateCampaign();
 	}
 
 	@Override
-	public void closeMission() throws Exception
-	{
+	public void closeMission() throws Exception {
 		Client.client.stopGame();
 		if (game.path.nextGameID != null)
 			((GameActivity) main.activity).startGame(game.path.nextGameID, null);

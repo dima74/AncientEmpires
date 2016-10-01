@@ -4,26 +4,22 @@ import com.google.gson.JsonObject;
 
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptHideInfoImmediately extends Script
-{
+public class ScriptHideInfoImmediately extends Script {
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.hideInfoImmediately(this);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ScriptHideInfoImmediately fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptHideInfoImmediately fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

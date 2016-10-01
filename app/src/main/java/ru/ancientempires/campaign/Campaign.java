@@ -18,8 +18,7 @@ import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class Campaign
-{
+public class Campaign {
 
 	public Game game;
 
@@ -29,13 +28,11 @@ public class Campaign
 	public boolean isDefault = false;
 	public boolean needActionRewriteScriptsStatus;
 
-	public Campaign(Game game)
-	{
+	public Campaign(Game game) {
 		this.game = game;
 	}
 
-	public void save(FileLoader loader) throws Exception
-	{
+	public void save(FileLoader loader) throws Exception {
 		JsonWriter writer = loader.getWriter("campaign.json");
 		JsonObject object = new JsonObject();
 		object.add("scripts", SerializableJsonHelper.toJsonArray(scripts));
@@ -45,8 +42,7 @@ public class Campaign
 		writer.close();
 	}
 
-	public void load(FileLoader loader) throws Exception
-	{
+	public void load(FileLoader loader) throws Exception {
 		JsonReader reader = loader.getReader("campaign.json");
 		JsonObject object = (JsonObject) new JsonParser().parse(reader);
 		reader.close();
@@ -54,8 +50,7 @@ public class Campaign
 		this.scripts = game.getLoaderInfo().fromJsonArray((JsonArray) object.get("scripts"), Script.class);
 
 		int i = 0;
-		for (Script script : this.scripts)
-		{
+		for (Script script : this.scripts) {
 			script.campaign = this;
 			//script.game = game;
 			MyAssert.a(script.game == game);
@@ -69,26 +64,22 @@ public class Campaign
 		arrayState = null;
 	}
 
-	public void start()
-	{
+	public void start() {
 		update();
 	}
 
 	public boolean isUpdate;
 	//public boolean needSaveSnapshot;
 
-	public void update()
-	{
+	public void update() {
 		if (isUpdate)
 			return;
 		isUpdate = true;
 		boolean change = true;
-		while (change)
-		{
+		while (change) {
 			change = false;
 			for (Script script : scripts)
-				if (!script.isStarting && script.checkGeneral())
-				{
+				if (!script.isStarting && script.checkGeneral()) {
 					change = true;
 					script.isStarting = true;
 					script.start();
@@ -98,8 +89,7 @@ public class Campaign
 		}
 
 		isUpdate = false;
-		if (needActionRewriteScriptsStatus)
-		{
+		if (needActionRewriteScriptsStatus) {
 			new ActionCampaignRewriteScriptsStatus(game.campaign.scripts).perform(game);
 			needActionRewriteScriptsStatus = false;
 		}
@@ -119,49 +109,40 @@ public class Campaign
 		*/
 	}
 
-	public void finish(Script script)
-	{
+	public void finish(Script script) {
 		script.isFinishing = true;
 		iDrawCampaign.updateCampaign();
 	}
 
-	public void saveState(FileLoader loader) throws IOException
-	{
+	public void saveState(FileLoader loader) throws IOException {
 		DataOutputStream output = loader.openDOS("campaignState.dat");
-		for (Script script : scripts)
-		{
+		for (Script script : scripts) {
 			output.writeBoolean(script.isStarting);
 			output.writeBoolean(script.isFinishing);
 		}
 		output.close();
 	}
 
-	public void loadState(FileLoader loader) throws IOException
-	{
+	public void loadState(FileLoader loader) throws IOException {
 		DataInputStream input = loader.openDIS("campaignState.dat");
-		for (Script script : scripts)
-		{
+		for (Script script : scripts) {
 			script.isStarting = input.readBoolean();
 			script.isFinishing = input.readBoolean();
 		}
 		input.close();
 	}
 
-	public JsonArray toJsonState()
-	{
+	public JsonArray toJsonState() {
 		JsonArray array = new JsonArray();
-		for (Script script : scripts)
-		{
+		for (Script script : scripts) {
 			array.add(new JsonPrimitive(script.isStarting ? 1 : 0));
 			array.add(new JsonPrimitive(script.isFinishing ? 1 : 0));
 		}
 		return array;
 	}
 
-	public void fromJsonState(JsonArray array) throws IOException
-	{
-		for (int i = 0; i < scripts.length; i++)
-		{
+	public void fromJsonState(JsonArray array) throws IOException {
+		for (int i = 0; i < scripts.length; i++) {
 			scripts[i].isStarting = array.get(i * 2).getAsInt() == 1;
 			scripts[i].isFinishing = array.get(i * 2 + 1).getAsInt() == 1;
 		}

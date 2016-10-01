@@ -10,25 +10,21 @@ import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionUnitRepair extends ActionFrom
-{
+public class ActionUnitRepair extends ActionFrom {
 
 	@Override
-	public ActionResult perform(Game game)
-	{
+	public ActionResult perform(Game game) {
 		performBase(game);
 		return null;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		return super.check() && new ActionHelper(game).canUnitRepair(i, j);
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		Unit unit = game.getUnit(i, j);
 		Cell cell = game.fieldCells[i][j];
 		cell.repair();
@@ -38,13 +34,11 @@ public class ActionUnitRepair extends ActionFrom
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionUnitRepair fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionUnitRepair fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

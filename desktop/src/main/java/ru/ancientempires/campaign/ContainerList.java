@@ -8,44 +8,35 @@ import java.util.function.Consumer;
 import ru.ancientempires.campaign.scripts.Script;
 import ru.ancientempires.framework.MyAssert;
 
-public class ContainerList extends ArrayList<ScriptContainer>
-{
+public class ContainerList extends ArrayList<ScriptContainer> {
 
-	public ContainerList(ArrayList<ScriptContainer> containers)
-	{
+	public ContainerList(ArrayList<ScriptContainer> containers) {
 		super(containers);
 	}
 
-	public ContainerList(ScriptContainer... containers)
-	{
+	public ContainerList(ScriptContainer... containers) {
 		super(Arrays.asList(containers));
 	}
 
-	public ContainerList(Object... scripts)
-	{
+	public ContainerList(Object... scripts) {
 		Arrays
 				.stream(scripts)
-				.forEachOrdered(new Consumer<Object>()
-				{
+				.forEachOrdered(new Consumer<Object>() {
 					@Override
-					public void accept(Object o)
-					{
+					public void accept(Object o) {
 						if (o instanceof Script)
 							add(new ScriptContainer((Script) o));
-						else if (o instanceof ContainerList)
-						{
+						else if (o instanceof ContainerList) {
 							ScriptContainer[] containers = ((ContainerList) o).root();
 							for (ScriptContainer container : containers)
 								add(container);
-						}
-						else
+						} else
 							MyAssert.a(false);
 					}
 				});
 	}
 
-	public ScriptContainer[] root()
-	{
+	public ScriptContainer[] root() {
 		HashSet<ScriptContainer> allContainers = new HashSet<ScriptContainer>();
 		for (ScriptContainer container : this)
 			ContainerList.addSubTree(allContainers, container);
@@ -55,29 +46,25 @@ public class ContainerList extends ArrayList<ScriptContainer>
 				.toArray(ScriptContainer[]::new);
 	}
 
-	private static void addSubTree(HashSet<ScriptContainer> allContainers, ScriptContainer container)
-	{
+	private static void addSubTree(HashSet<ScriptContainer> allContainers, ScriptContainer container) {
 		allContainers.add(container);
 		for (ScriptContainer prev : container.prev)
 			ContainerList.addSubTree(allContainers, prev);
 	}
 
 	// Script and ContainerList
-	public ContainerList add(Object... scripts)
-	{
+	public ContainerList add(Object... scripts) {
 		ContainerList list = new ContainerList(scripts);
 		for (ScriptContainer container : this)
 			container.add(list);
 		return list;
 	}
 
-	public ContainerList first()
-	{
+	public ContainerList first() {
 		return new ContainerList(get(0));
 	}
 
-	public ContainerList last()
-	{
+	public ContainerList last() {
 		return new ContainerList(get(size() - 1));
 	}
 

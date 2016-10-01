@@ -5,19 +5,16 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.actions.campaign.ActionCampaignUnitChangePosition;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptUnitChangePosition extends Script
-{
+public class ScriptUnitChangePosition extends Script {
 
 	private int i;
 	private int j;
 	private int targetI;
 	private int targetJ;
 
-	public ScriptUnitChangePosition()
-	{}
+	public ScriptUnitChangePosition() {}
 
-	public ScriptUnitChangePosition(int i, int j, int targetI, int targetJ)
-	{
+	public ScriptUnitChangePosition(int i, int j, int targetI, int targetJ) {
 		this.i = i;
 		this.j = j;
 		this.targetI = targetI;
@@ -25,14 +22,12 @@ public class ScriptUnitChangePosition extends Script
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		campaign.iDrawCampaign.unitChangePosition(i, j, targetI, targetJ, this);
 	}
 
 	@Override
-	public void performAction()
-	{
+	public void performAction() {
 		new ActionCampaignUnitChangePosition()
 				.setIJ(i, j)
 				.setTargetIJ(targetI, targetJ)
@@ -42,8 +37,7 @@ public class ScriptUnitChangePosition extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		object.addProperty("i", i);
 		object.addProperty("j", j);
@@ -52,8 +46,7 @@ public class ScriptUnitChangePosition extends Script
 		return object;
 	}
 
-	public ScriptUnitChangePosition fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptUnitChangePosition fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		i = object.get("i").getAsInt();
 		j = object.get("j").getAsInt();

@@ -12,8 +12,7 @@ import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.draws.inputs.InputPlayer;
 import ru.ancientempires.draws.onframes.DrawBlackScreen;
 
-public class DrawMain extends BaseDrawMain
-{
+public class DrawMain extends BaseDrawMain {
 
 	public InputMain   inputMain;
 	public InputPlayer inputPlayer;
@@ -52,29 +51,24 @@ public class DrawMain extends BaseDrawMain
 	 * инфо
 	 */
 
-	public void add(Draw draw)
-	{
+	public void add(Draw draw) {
 		add(draw, DrawLevel.MIDDLE);
 	}
 
-	public void add(Draw draw, DrawLevel level)
-	{
+	public void add(Draw draw, DrawLevel level) {
 		draws[level.ordinal()].add(draw);
 	}
 
-	public void remove(Draw draw)
-	{
+	public void remove(Draw draw) {
 		remove(draw, DrawLevel.MIDDLE);
 	}
 
-	public void remove(Draw draw, DrawLevel level)
-	{
+	public void remove(Draw draw, DrawLevel level) {
 		draws[level.ordinal()].remove(draw);
 	}
 
 	@Override
-	public void setVisibleMapSize()
-	{
+	public void setVisibleMapSize() {
 		visibleMapH = h() - info.h;
 		visibleMapW = w();
 	}
@@ -85,8 +79,7 @@ public class DrawMain extends BaseDrawMain
 		// Хотя, казалось бы раз они в BaseDrawMain, то им main и не нужен...
 	}
 
-	public DrawMain(BaseGameActivity activity)
-	{
+	public DrawMain(BaseGameActivity activity) {
 		super(activity);
 
 		action = new DrawAction(this);
@@ -110,15 +103,13 @@ public class DrawMain extends BaseDrawMain
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		if (isDrawCursor)
 			cursorDefault.draw(canvas);
 
 		for (DrawLevel level : DrawLevel.values())
-			for (Iterator<Draw> iterator = draws[level.ordinal()].iterator(); iterator.hasNext(); )
-			{
+			for (Iterator<Draw> iterator = draws[level.ordinal()].iterator(); iterator.hasNext(); ) {
 				Draw draw = iterator.next();
 				draw.draw(canvas);
 				if (draw.isEnd())
@@ -139,8 +130,7 @@ public class DrawMain extends BaseDrawMain
 		info.draw(canvas);
 		canvas.restore();
 
-		if (action.isActive())
-		{
+		if (action.isActive()) {
 			canvas.save();
 			canvas.translate(0, actionY);
 			action.draw(canvas);
@@ -156,20 +146,17 @@ public class DrawMain extends BaseDrawMain
 	}
 
 	@Override
-	public boolean isActiveGame()
-	{
+	public boolean isActiveGame() {
 		return isActiveGame;
 	}
 
 	@Override
-	public void touch(float touchY, float touchX)
-	{
+	public void touch(float touchY, float touchX) {
 		// проверка по иксу немного странная ---
 		// ведь GameView (пока что) всегда имеет ширину равный ширине экрана
 		if (!isActiveGame || touchY < 0 || touchX < 0 || touchY > h() - info.h || touchX > w())
 			return;
-		if (action.isActive())
-		{
+		if (action.isActive()) {
 			action.touch(touchY - actionY, touchX);
 			return;
 		}
@@ -177,8 +164,7 @@ public class DrawMain extends BaseDrawMain
 	}
 
 	@Override
-	public void tap(int i, int j)
-	{
+	public void tap(int i, int j) {
 		inputMain.tap(i, j);
 	}
 

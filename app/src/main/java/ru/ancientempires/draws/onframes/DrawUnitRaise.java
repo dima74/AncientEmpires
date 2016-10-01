@@ -5,8 +5,7 @@ import android.graphics.Canvas;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.images.SparksImages;
 
-public class DrawUnitRaise extends DrawOnFramesGroup
-{
+public class DrawUnitRaise extends DrawOnFramesGroup {
 
 	private static final int FRAME_LENGTH = SparksImages.get().amountDefault * 3 * 2;
 
@@ -15,8 +14,7 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 
 	private int frameUpdateTargetUnit = -1;
 
-	public DrawUnitRaise(BaseDrawMain mainBase, int targetI, int targetJ)
-	{
+	public DrawUnitRaise(BaseDrawMain mainBase, int targetI, int targetJ) {
 		super(mainBase);
 		this.targetI = targetI;
 		this.targetJ = targetJ;
@@ -42,19 +40,16 @@ public class DrawUnitRaise extends DrawOnFramesGroup
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		super.drawOnFrames(canvas);
-		if (iFrame() == frameUpdateTargetUnit)
-		{
+		if (iFrame() == frameUpdateTargetUnit) {
 			main.unitsDead.keep[targetI][targetJ] = false;
 			main.units.keep[targetI][targetJ] = false;
 		}
 	}
 
 	@Override
-	public void onEnd()
-	{
+	public void onEnd() {
 		postUpdateCampaign();
 	}
 

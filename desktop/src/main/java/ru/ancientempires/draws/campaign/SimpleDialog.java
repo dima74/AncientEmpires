@@ -12,13 +12,10 @@ import javax.swing.WindowConstants;
 import ru.ancientempires.activities.GameActivity;
 import ru.ancientempires.campaign.scripts.Script;
 
-public class SimpleDialog
-{
+public class SimpleDialog {
 
-	public static void create(GameActivity activity, String text, Script script)
-	{
-		if (1 == 1)
-		{
+	public static void create(GameActivity activity, String text, Script script) {
+		if (1 == 1) {
 			script.finish();
 			return;
 		}
@@ -40,11 +37,9 @@ public class SimpleDialog
 		frame.toFront();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		textArea.addMouseListener(new MouseAdapter()
-		{
+		textArea.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e)
-			{
+			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
 				script.finish();
 				activity.getView().needUpdateCampaign = true;

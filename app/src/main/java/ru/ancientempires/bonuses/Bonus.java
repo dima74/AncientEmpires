@@ -15,69 +15,57 @@ import ru.ancientempires.serializable.WithNumbered;
 
 @IndexSubclasses
 @WithNumbered(value = "numberedBonuses", checkGameForNull = true)
-public abstract class Bonus extends AbstractGameHandler implements SerializableJson
-{
+public abstract class Bonus extends AbstractGameHandler implements SerializableJson {
 
-	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit)
-	{
+	public int getBonusAttack(Game game, Unit unit, Cell cell, Unit targetUnit) {
 		return 0;
 	}
 
-	public final int getBonusAttack(Game game, Unit unit, Unit targetUnit)
-	{
+	public final int getBonusAttack(Game game, Unit unit, Unit targetUnit) {
 		return getBonusAttack(game, unit, unit.getCell(), targetUnit);
 	}
 
-	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit)
-	{
+	public int getBonusDefence(Game game, Unit unit, Cell cell, Unit fromUnit) {
 		return 0;
 	}
 
-	public final int getBonusDefence(Game game, Unit unit, Unit fromUnit)
-	{
+	public final int getBonusDefence(Game game, Unit unit, Unit fromUnit) {
 		return getBonusDefence(game, unit, unit.getCell(), fromUnit);
 	}
 
-	public int getBonusMove(Game game, Unit unit, Cell targetCell)
-	{
+	public int getBonusMove(Game game, Unit unit, Cell targetCell) {
 		return 0;
 	}
 
-	public int getBonusMoveStart(Game game, Unit unit)
-	{
+	public int getBonusMoveStart(Game game, Unit unit) {
 		return 0;
 	}
 
-	public int getBonusCost(Game game, Unit unit)
-	{
+	public int getBonusCost(Game game, Unit unit) {
 		return 0;
 	}
 
-	public int getSign()
-	{
+	public int getSign() {
 		return 0;
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = ru.ancientempires.serializable.SerializableJsonHelper.toJson(this);
 		if (game != null)
 			game.numberedBonuses.toJsonPart(object, this);
 		return object;
 	}
 
-	public Bonus fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public Bonus fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		if (game != null)
 			game.numberedBonuses.fromJsonPart(object, this);
 		return this;
 	}
 
-	static public Bonus[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception
-	{
+	static public Bonus[] fromJsonArray(JsonArray jsonArray, LoaderInfo info) throws Exception {
 		Bonus[] array = new Bonus[jsonArray.size()];
 		for (int i = 0; i < array.length; i++)
 			array[i] = info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), Bonus.class);

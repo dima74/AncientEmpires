@@ -1,7 +1,6 @@
 package ru.ancientempires.model;
 
-public abstract class GameHandler extends AbstractGameHandler
-{
+public abstract class GameHandler extends AbstractGameHandler {
 
 	public Cell[][] fieldCells;
 	public Unit[][] fieldUnits;
@@ -11,8 +10,7 @@ public abstract class GameHandler extends AbstractGameHandler
 	public int      numberPlayers;
 
 	@Override
-	public void setGame(Game game)
-	{
+	public void setGame(Game game) {
 		super.setGame(game);
 		if (game == null)
 			return;

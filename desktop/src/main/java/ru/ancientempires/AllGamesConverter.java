@@ -25,64 +25,54 @@ import ru.ancientempires.model.PlayerType;
 import ru.ancientempires.rules.DefaultRules;
 import ru.ancientempires.rules.Rules;
 
-public class AllGamesConverter
-{
+public class AllGamesConverter {
 
-	public enum Language
-	{
+	public enum Language {
 		RU("_ru_RU"),
 		EN("");
 
 		public String suffix;
 
-		Language(String suffix)
-		{
+		Language(String suffix) {
 			this.suffix = suffix;
 		}
 	}
 
-	public class LocalizationFull
-	{
+	public class LocalizationFull {
 		public FileLoader         loader;
 		public LocalizationPart[] parts;	/*= Stream
 												.of(Language.values())
 												.map(LocalizationPart::new)
 												.toArray(LocalizationPart[]::new);*/
 
-		public LocalizationFull(String path)
-		{
+		public LocalizationFull(String path) {
 			parts = new LocalizationPart[Language.values().length];
 			for (int i = 0; i < Language.values().length; i++)
 				parts[i] = new LocalizationPart(Language.values()[i]);
 			loader = AllGamesConverter.this.loader.getLoader(path);
 		}
 
-		public LocalizationFull save() throws IOException
-		{
+		public LocalizationFull save() throws IOException {
 			for (LocalizationPart part : parts)
 				part.save(loader);
 			return this;
 		}
 
-		public LocalizationFull add(Enum e, String... strings)
-		{
+		public LocalizationFull add(Enum e, String... strings) {
 			return add(e.name(), strings);
 		}
 
-		public LocalizationFull add(String s, String... strings)
-		{
+		public LocalizationFull add(String s, String... strings) {
 			for (int i = 0; i < strings.length; i++)
 				parts[i].strings.put(s, strings[i]);
 			return this;
 		}
 
-		public LocalizationFull add(int iAE, String name)
-		{
+		public LocalizationFull add(int iAE, String name) {
 			return add(iAE, name, s -> s);
 		}
 
-		public LocalizationFull add(int iAE, String name, Function<String, String> mapper)
-		{
+		public LocalizationFull add(int iAE, String name, Function<String, String> mapper) {
 			for (LocalizationPart part : parts)
 				part.strings.put(name, mapper.apply(stringsAE[part.language.ordinal()][iAE]));
 			return this;
@@ -90,18 +80,15 @@ public class AllGamesConverter
 
 	}
 
-	public class LocalizationPart
-	{
+	public class LocalizationPart {
 		public Language language;
 		public Map<String, String> strings = new LinkedHashMap<>();
 
-		public LocalizationPart(Language language)
-		{
+		public LocalizationPart(Language language) {
 			this.language = language;
 		}
 
-		public void save(FileLoader loader) throws IOException
-		{
+		public void save(FileLoader loader) throws IOException {
 			JsonWriter writer = loader.getWriter("strings" + language.suffix + ".json");
 			new Gson().toJson(strings, Map.class, writer);
 			writer.close();
@@ -112,8 +99,7 @@ public class AllGamesConverter
 	public FileLoader loader;
 	public String[][] stringsAE = new String[Language.values().length][];
 
-	public void create() throws Exception
-	{
+	public void create() throws Exception {
 		if (Client.client.gamesLoader.exists(""))
 			Client.client.gamesLoader.deleteFolder("");
 		rules = new DefaultRules().create();
@@ -142,8 +128,7 @@ public class AllGamesConverter
 		// System.exit(0);
 	}
 
-	public void createTestGame() throws Exception
-	{
+	public void createTestGame() throws Exception {
 		Game game = new Game(rules)
 				.setSize(3, 3)
 				.setNumberPlayers(3);
@@ -171,8 +156,7 @@ public class AllGamesConverter
 		new LocalizationFull("games/test/").add("name", "Тест", "Test").save();
 	}
 
-	public void createDefaultGame() throws Exception
-	{
+	public void createDefaultGame() throws Exception {
 		Game game = new Game(rules);
 		game.campaign.isDefault = true;
 		new CampaignEditor(game).createDefaultGameCampaign();
@@ -184,16 +168,14 @@ public class AllGamesConverter
 		localization.save();
 	}
 
-	public void createFolderNames() throws IOException
-	{
+	public void createFolderNames() throws IOException {
 		new LocalizationFull("games/campaign/").add("name", "Кампания", "Campaign").save();
 		new LocalizationFull("games/skirmish/").add("name", "Схватка", "Skirmish").save();
 		new LocalizationFull("games/save/").add("name", "Сохранения", "Saves").save();
 		new LocalizationFull("games/user/").add("name", "Свои карты", "User maps").save();
 	}
 
-	public void createStrings() throws IOException
-	{
+	public void createStrings() throws IOException {
 		LocalizationFull localization = new LocalizationFull("");
 		localization.add(MenuActions.PLAY, "Играть", "Play");
 		localization.add(MenuActions.ONLINE, "Онлайн", "Online");
@@ -238,11 +220,9 @@ public class AllGamesConverter
 		localization.save();
 	}
 
-	public void createRulesLocalization() throws IOException
-	{
+	public void createRulesLocalization() throws IOException {
 		LocalizationFull localization = new LocalizationFull("rules/");
-		for (int i = 0; i < 12; i++)
-		{
+		for (int i = 0; i < 12; i++) {
 			String name = GameConverter.getUnitTypeName(i, 0);
 			if (i == 9)
 				name = "KING";
@@ -256,10 +236,8 @@ public class AllGamesConverter
 		localization.save();
 	}
 
-	public void createGames(String prefixAEM, int n, String prefixID, boolean isCampaign) throws Exception
-	{
-		for (int iMission = 0; iMission < n; iMission++)
-		{
+	public void createGames(String prefixAEM, int n, String prefixID, boolean isCampaign) throws Exception {
+		for (int iMission = 0; iMission < n; iMission++) {
 			FileInputStream input = new FileInputStream("/home/dima/projects/AE/maps/" + prefixAEM + iMission + ".aem");
 			Game game = new GameConverter(rules).convertGame(input, iMission, isCampaign);
 
@@ -289,14 +267,12 @@ public class AllGamesConverter
 		folder.save();
 	}
 
-	public void initLocalization() throws IOException
-	{
+	public void initLocalization() throws IOException {
 		exctractStrings(Language.RU);
 		exctractStrings(Language.EN);
 	}
 
-	public void exctractStrings(Language language) throws IOException
-	{
+	public void exctractStrings(Language language) throws IOException {
 		DataInputStream input = new DataInputStream(new FileInputStream("/home/dima/projects/Test/lang" + language.suffix + ".dat"));
 		int n = input.readInt();
 		String[] stringsPart = new String[n];
@@ -309,8 +285,7 @@ public class AllGamesConverter
 		input.close();
 	}
 
-	public void createLocalization(LocalizationFull localization, int iMission)
-	{
+	public void createLocalization(LocalizationFull localization, int iMission) {
 		localization.add(121 + iMission, "name");
 		localization.add(113 + iMission, "title");
 		localization.add(129 + iMission, "target");
@@ -339,8 +314,7 @@ public class AllGamesConverter
 		// System.out.printf("%d %d %d\n", iMission, 221 + sum, 221 + sum + number - 1);
 	}
 
-	public void createLocalization(int[] numbers, int indexStart, String prefix, LocalizationFull localization, int iMission)
-	{
+	public void createLocalization(int[] numbers, int indexStart, String prefix, LocalizationFull localization, int iMission) {
 		int number = numbers[iMission];
 		int sum = Arrays.stream(numbers).limit(iMission).sum();
 		for (int i = 0; i < number; i++)

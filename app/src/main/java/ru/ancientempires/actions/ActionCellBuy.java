@@ -12,41 +12,35 @@ import ru.ancientempires.model.Player;
 import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionCellBuy extends ActionFrom
-{
+public class ActionCellBuy extends ActionFrom {
 
 	private int iUnit;
 
-	public ActionCellBuy setUnit(int iUnit)
-	{
+	public ActionCellBuy setUnit(int iUnit) {
 		this.iUnit = iUnit;
 		return this;
 	}
 
 	@Override
-	public ActionResult perform(Game game)
-	{
+	public ActionResult perform(Game game) {
 		performBase(game);
 		return null;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		if (!(super.check() && checkPlayer()))
 			return false;
 		Unit unit = getUnit();
 		return new ActionHelper(game).isEmptyCells(i, j, unit);
 	}
 
-	private boolean checkPlayer()
-	{
+	private boolean checkPlayer() {
 		Player player = game.fieldCells[i][j].player;
 		return player == game.currentPlayer && player.numberUnits() < player.unitsLimit();
 	}
 
-	private Unit getUnit()
-	{
+	private Unit getUnit() {
 		ActionGetCellBuy actionGet = new ActionGetCellBuy();
 		actionGet.setIJ(i, j);
 		ActionResultGetCellBuy result = actionGet.perform(game);
@@ -57,8 +51,7 @@ public class ActionCellBuy extends ActionFrom
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		Unit unit = getUnit();
 		unit.health = unit.type.healthDefault;
 		unit.player = game.currentPlayer;
@@ -67,8 +60,7 @@ public class ActionCellBuy extends ActionFrom
 		game.currentPlayer.gold -= unit.getCost();
 		game.setUnit(i, j, unit);
 
-		if (unit.type.isStatic)
-		{
+		if (unit.type.isStatic) {
 			MyAssert.a(game.unitsStaticDead[unit.player.ordinal].contains(unit));
 			game.unitsStaticDead[unit.player.ordinal].remove(unit);
 			unit.numberBuys++;
@@ -78,14 +70,12 @@ public class ActionCellBuy extends ActionFrom
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 		output.writeInt(iUnit);
 	}
 
-	public ActionCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionCellBuy fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		iUnit = input.readInt();
 		return this;

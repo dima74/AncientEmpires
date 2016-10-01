@@ -4,8 +4,7 @@ import com.google.gson.JsonObject;
 
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptUnitMoveExtended extends Script
-{
+public class ScriptUnitMoveExtended extends Script {
 	/*
 	public Point[]	keyPoints;
 	public boolean	makeSmoke	= true;
@@ -68,14 +67,12 @@ public class ScriptUnitMoveExtended extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ScriptUnitMoveExtended fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptUnitMoveExtended fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

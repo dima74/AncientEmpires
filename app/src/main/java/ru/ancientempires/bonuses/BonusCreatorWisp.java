@@ -14,33 +14,26 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.rules.Rules;
 import ru.ancientempires.tasks.TaskRemoveBonus;
 
-public class BonusCreatorWisp extends BonusCreator
-{
+public class BonusCreatorWisp extends BonusCreator {
 
 	public Range   range;
 	public Bonus[] bonuses;
 
-	public BonusCreatorWisp()
-	{}
+	public BonusCreatorWisp() {}
 
-	public BonusCreatorWisp(Range range, Bonus... bonuses)
-	{
+	public BonusCreatorWisp(Range range, Bonus... bonuses) {
 		this.range = range;
 		this.bonuses = bonuses;
 	}
 
 	@Override
-	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit)
-	{
+	public BonusCreate[] applyBonusesAfterMove(final Game game, final Unit unit) {
 		final ArrayList<BonusCreate> creates = new ArrayList<>();
-		new ActionHelper(game).forUnitInRange(unit.i, unit.j, range, new CheckerUnit()
-		{
+		new ActionHelper(game).forUnitInRange(unit.i, unit.j, range, new CheckerUnit() {
 			@Override
-			public boolean check(Unit targetUnit)
-			{
+			public boolean check(Unit targetUnit) {
 				if (targetUnit != null && unit.player == targetUnit.player)
-					for (Bonus bonus0 : bonuses)
-					{
+					for (Bonus bonus0 : bonuses) {
 						Bonus bonus = copy(bonus0, game);
 						creates.add(new BonusCreate(targetUnit, bonus));
 						targetUnit.addBonus(bonus);
@@ -57,15 +50,13 @@ public class BonusCreatorWisp extends BonusCreator
 	}
 
 	@Override
-	public void saveJSON(JsonObject object, JsonSerializationContext context)
-	{
+	public void saveJSON(JsonObject object, JsonSerializationContext context) {
 		object.addProperty("range", range.name);
 		object.add("bonuses", context.serialize(bonuses));
 	}
 
 	@Override
-	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context)
-	{
+	public void loadJSON(JsonObject object, Rules rules, JsonDeserializationContext context) {
 		range = rules.getRange(object.get("range").getAsString());
 		bonuses = context.deserialize(object.get("bonuses"), Bonus[].class);
 	}

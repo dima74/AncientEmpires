@@ -5,15 +5,13 @@ import android.graphics.Canvas;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.DrawCellAttackPartTwo;
 
-public class DrawCitadelAttack extends DrawOnFramesGroup
-{
+public class DrawCitadelAttack extends DrawOnFramesGroup {
 
 	private int               i;
 	private int               j;
 	private DrawBitmapsMoving drawBlast;
 
-	public DrawCitadelAttack(BaseDrawMain mainBase, int i, int j)
-	{
+	public DrawCitadelAttack(BaseDrawMain mainBase, int i, int j) {
 		super(mainBase);
 		this.i = i;
 		this.j = j;
@@ -27,12 +25,10 @@ public class DrawCitadelAttack extends DrawOnFramesGroup
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		super.drawOnFrames(canvas);
 
-		if (iFrame() == drawBlast.frameEnd)
-		{
+		if (iFrame() == drawBlast.frameEnd) {
 			main.campaign.vibrate();
 			add(new DrawSnakeMap(mainBase).animate(20));
 			add(new DrawCellAttackPartTwo(mainBase, i, j));
@@ -41,8 +37,7 @@ public class DrawCitadelAttack extends DrawOnFramesGroup
 		}
 
 		if (!drawBlast.isEnd() && iFrame() % 2 == 0)
-			for (int i = 0; i < 3; ++i)
-			{
+			for (int i = 0; i < 3; ++i) {
 				int framesForBitmap = 2 + random.nextInt(5); // [2, 6]
 				//int framesForBitmap = 6;
 				int deltaY = -2 + random.nextInt(2); // [-2, -1]

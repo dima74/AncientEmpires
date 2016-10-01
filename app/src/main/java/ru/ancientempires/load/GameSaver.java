@@ -9,8 +9,7 @@ import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 
-public class GameSaver
-{
+public class GameSaver {
 
 	public Game            mainGame;
 	public Game            game;
@@ -20,8 +19,7 @@ public class GameSaver
 	public FileOutputStream actionsFOS;
 	public DataOutputStream actionsDOS;
 
-	public GameSaver(Game mainGame, boolean isNewSave) throws Exception
-	{
+	public GameSaver(Game mainGame, boolean isNewSave) throws Exception {
 		this.mainGame = mainGame;
 		if (isNewSave)
 			mainGame.path.addNoteInitial(mainGame);
@@ -37,8 +35,7 @@ public class GameSaver
 	}
 
 	// всё, кроме strings
-	public static void createBaseGame(Game game) throws Exception
-	{
+	public static void createBaseGame(Game game) throws Exception {
 		FileLoader loader = game.path.getLoader();
 		loader.mkdirs();
 		//loader.getFile(GamePath.ACTIONS).createNewFile();
@@ -92,18 +89,15 @@ public class GameSaver
 	}
 	*/
 
-	public class SaveAction implements Save
-	{
+	public class SaveAction implements Save {
 		public Action action;
 
-		public SaveAction(Action action)
-		{
+		public SaveAction(Action action) {
 			this.action = action;
 		}
 
 		@Override
-		public int save() throws Exception
-		{
+		public int save() throws Exception {
 			action.checkBase(game);
 			action.performQuickBase(game);
 			action.toData(actionsDOS);
@@ -114,45 +108,38 @@ public class GameSaver
 		}
 	}
 
-	public static class SaveWithRC implements Save
-	{
+	public static class SaveWithRC implements Save {
 		int rc;
 
-		public SaveWithRC(int rc)
-		{
+		public SaveWithRC(int rc) {
 			this.rc = rc;
 		}
 
 		@Override
-		public int save() throws Exception
-		{
+		public int save() throws Exception {
 			return rc;
 		}
 	}
 
-	public void save(Action action) throws IOException
-	{
+	public void save(Action action) throws IOException {
 		add(new SaveAction(action));
 	}
 
-	public void waitSave() throws Exception
-	{
+	public void waitSave() throws Exception {
 		MyAssert.a(thread.isAlive());
 		add(new SaveWithRC(1));
 		thread.reverseQueue.take();
 		actionsDOS.flush();
 	}
 
-	public void finishSave() throws Exception
-	{
+	public void finishSave() throws Exception {
 		add(new SaveWithRC(2));
 		thread.join();
 		actionsDOS.close();
 		game.path.save();
 	}
 
-	public void add(Save save)
-	{
+	public void add(Save save) {
 		thread.queue.add(save);
 	}
 

@@ -5,20 +5,16 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.actions.campaign.ActionCampaignActivateStruct;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptUnitActivateStruct extends ScriptOnePoint
-{
+public class ScriptUnitActivateStruct extends ScriptOnePoint {
 
-	public ScriptUnitActivateStruct()
-	{}
+	public ScriptUnitActivateStruct() {}
 
-	public ScriptUnitActivateStruct(Object... point)
-	{
+	public ScriptUnitActivateStruct(Object... point) {
 		super(point);
 	}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		new ActionCampaignActivateStruct()
 				.setIJ(i(), j())
 				.perform(game);
@@ -27,14 +23,12 @@ public class ScriptUnitActivateStruct extends ScriptOnePoint
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ScriptUnitActivateStruct fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptUnitActivateStruct fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

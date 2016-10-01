@@ -4,8 +4,7 @@ import android.graphics.Bitmap;
 
 import ru.ancientempires.draws.BaseDrawMain;
 
-public class DrawLevelUp extends DrawOnFramesGroup
-{
+public class DrawLevelUp extends DrawOnFramesGroup {
 
 	// 2 2 2 2 40
 	// 21 17 13 9 5
@@ -14,13 +13,11 @@ public class DrawLevelUp extends DrawOnFramesGroup
 	private static final int FRAME_ANIMATE_MOTION = 16;
 	private static final int FRAME_ANIMATE_STATIC = 32;
 
-	public DrawLevelUp(BaseDrawMain mainBase)
-	{
+	public DrawLevelUp(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawLevelUp animate(int y, int x)
-	{
+	public DrawLevelUp animate(int y, int x) {
 		int levelUpX = x + (A - Images().levelUpW) / 2;
 		int levelUpYStart = (int) (y - A + 20 * a);
 		int levelUpYEnd = (int) (y - A + 5 * a);

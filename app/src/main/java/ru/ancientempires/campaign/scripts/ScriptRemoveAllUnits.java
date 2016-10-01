@@ -5,21 +5,17 @@ import com.google.gson.JsonObject;
 import ru.ancientempires.actions.campaign.ActionCampaignRemoveAllUnits;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ScriptRemoveAllUnits extends Script
-{
+public class ScriptRemoveAllUnits extends Script {
 
-	public ScriptRemoveAllUnits()
-	{}
+	public ScriptRemoveAllUnits() {}
 
 	@Override
-	public void start()
-	{
+	public void start() {
 		performAction();
 	}
 
 	@Override
-	public void performAction()
-	{
+	public void performAction() {
 		new ActionCampaignRemoveAllUnits()
 				.perform(game);
 	}
@@ -27,14 +23,12 @@ public class ScriptRemoveAllUnits extends Script
 	// =/({||})\=
 	// from spoon
 
-	public JsonObject toJson()
-	{
+	public JsonObject toJson() {
 		JsonObject object = super.toJson();
 		return object;
 	}
 
-	public ScriptRemoveAllUnits fromJson(JsonObject object, LoaderInfo info) throws Exception
-	{
+	public ScriptRemoveAllUnits fromJson(JsonObject object, LoaderInfo info) throws Exception {
 		super.fromJson(object, info);
 		return this;
 	}

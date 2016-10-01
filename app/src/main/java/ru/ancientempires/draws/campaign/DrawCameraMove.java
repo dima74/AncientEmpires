@@ -6,18 +6,15 @@ import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 import ru.ancientempires.draws.onframes.DrawOnFramesWithRangeFloat;
 
-public class DrawCameraMove extends DrawOnFramesGroup
-{
+public class DrawCameraMove extends DrawOnFramesGroup {
 
 	public static float delta = 6;
 
-	public DrawCameraMove(BaseDrawMain mainBase)
-	{
+	public DrawCameraMove(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public void start(int iEnd, int jEnd)
-	{
+	public void start(int iEnd, int jEnd) {
 		float startOffsetY = main.offsetY;
 		float startOffsetX = main.offsetX;
 
@@ -32,24 +29,18 @@ public class DrawCameraMove extends DrawOnFramesGroup
 		float stepY = deltaY == 0 ? 1 : deltaY / frameLength;
 		float stepX = deltaX == 0 ? 1 : deltaX / frameLength;
 
-		add(new DrawOnFramesWithRangeFloat(mainBase)
-		{
+		add(new DrawOnFramesWithRangeFloat(mainBase) {
 			@Override
-			public void draw(Canvas canvas, float value)
-			{
-				synchronized (main)
-				{
+			public void draw(Canvas canvas, float value) {
+				synchronized (main) {
 					main.nextOffsetY = value;
 				}
 			}
 		}.animateRange(startOffsetY, endOffsetY, stepY));
-		add(new DrawOnFramesWithRangeFloat(mainBase)
-		{
+		add(new DrawOnFramesWithRangeFloat(mainBase) {
 			@Override
-			public void draw(Canvas canvas, float value)
-			{
-				synchronized (main)
-				{
+			public void draw(Canvas canvas, float value) {
+				synchronized (main) {
 					main.nextOffsetX = value;
 				}
 			}

@@ -6,12 +6,10 @@ import java.io.DataOutputStream;
 import ru.ancientempires.model.Cell;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionActivateStruct extends ActionFrom
-{
+public class ActionActivateStruct extends ActionFrom {
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		Cell cell = game.fieldCells[i][j];
 		cell.type.struct.activate(cell);
 	}
@@ -19,13 +17,11 @@ public class ActionActivateStruct extends ActionFrom
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionActivateStruct fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionActivateStruct fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

@@ -20,8 +20,7 @@ import ru.ancientempires.model.struct.Struct;
 import ru.ancientempires.model.struct.StructInfo;
 import ru.ancientempires.tasks.Task;
 
-public class SerializableHelper
-{
+public class SerializableHelper {
 
 	private static Class<?>[] baseClasses = new Class<?>[] {
 			Script.class,
@@ -37,11 +36,9 @@ public class SerializableHelper
 	public static HashMap<Class<?>, ClassInfo>  saveMap = createSave();
 	public static HashMap<Class<?>, Class<?>[]> loadMap = createLoad();
 
-	private static HashMap<Class<?>, ClassInfo> createSave()
-	{
+	private static HashMap<Class<?>, ClassInfo> createSave() {
 		HashMap<Class<?>, ClassInfo> map = new HashMap<>(200);
-		for (Class<?> base : baseClasses)
-		{
+		for (Class<?> base : baseClasses) {
 			MyAssert.a(base.isAnnotationPresent(IndexSubclasses.class));
 			int size = ((List) ClassIndex.getSubclasses(base)).size();
 			int i = 0;
@@ -50,12 +47,9 @@ public class SerializableHelper
 		}
 
 		for (Map.Entry<Class<?>, ClassInfo> entry : map.entrySet())
-			try
-			{
+			try {
 				entry.getKey().getConstructor();
-			}
-			catch (NoSuchMethodException e)
-			{
+			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
 				MyAssert.a(false);
 			}
@@ -63,24 +57,20 @@ public class SerializableHelper
 		return map;
 	}
 
-	private static HashMap<Class<?>, Class<?>[]> createLoad()
-	{
+	private static HashMap<Class<?>, Class<?>[]> createLoad() {
 		HashMap<Class<?>, Class<?>[]> map = new HashMap<>();
 		for (Class<?> base : baseClasses)
 			map.put(base, getSubclasses(base));
 		return map;
 	}
 
-	public static Class<?>[] getSubclasses(Class<?> base)
-	{
+	public static Class<?>[] getSubclasses(Class<?> base) {
 		ArrayList<Class<?>> subclasses = new ArrayList<>();
 		for (Class<?> c : ClassIndex.getSubclasses(base))
 			subclasses.add(c);
-		Collections.sort(subclasses, new Comparator<Class<?>>()
-		{
+		Collections.sort(subclasses, new Comparator<Class<?>>() {
 			@Override
-			public int compare(Class<?> o1, Class<?> o2)
-			{
+			public int compare(Class<?> o1, Class<?> o2) {
 				return o1.getSimpleName().compareTo(o2.getSimpleName());
 			}
 		});

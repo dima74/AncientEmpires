@@ -29,13 +29,11 @@ import ru.ancientempires.model.UnitType;
 import ru.ancientempires.model.struct.StructCitadel;
 import ru.ancientempires.serializable.SerializableJsonHelper;
 
-public class DefaultRules
-{
+public class DefaultRules {
 
 	public Rules rules = new Rules();
 
-	public Rules create() throws IOException
-	{
+	public Rules create() throws IOException {
 		/*
 		Files
 				.lines(new File("1.txt").toPath())
@@ -247,8 +245,7 @@ public class DefaultRules
 	public CellType water_way_group;
 	public CellType water_group;
 
-	public void initVariables()
-	{
+	public void initVariables() {
 		emptyRange = rules.getRange("EMPTY");
 		defaultRange = rules.getRange("DEFAULT");
 		archerRange = rules.getRange("ARCHER");
@@ -307,8 +304,7 @@ public class DefaultRules
 
 	// END AUTO GENERATE
 
-	public void createRanges()
-	{
+	public void createRanges() {
 		Range[] ranges = new Range[]
 				{
 						new Range("EMPTY", 1, 0),
@@ -319,8 +315,7 @@ public class DefaultRules
 		rules.setRanges(ranges);
 	}
 
-	public void createUnitTypes()
-	{
+	public void createUnitTypes() {
 		createDefaultUnitType();
 		for (UnitType type : rules.unitTypes)
 			type.setProperties(rules.defaultUnitType);
@@ -419,8 +414,7 @@ public class DefaultRules
 		king_saeth.setProperties(king);
 	}
 
-	public void createDefaultUnitType()
-	{
+	public void createDefaultUnitType() {
 		defaultUnitType.baseType = defaultUnitType;
 		defaultUnitType.templateType = null;
 		defaultUnitType.specializations = null;
@@ -448,16 +442,14 @@ public class DefaultRules
 		defaultUnitType.creators = new BonusCreator[0];
 	}
 
-	public CellType[] getCellTypes(String... names)
-	{
+	public CellType[] getCellTypes(String... names) {
 		CellType[] types = new CellType[names.length];
 		for (int i = 0; i < names.length; i++)
 			types[i] = rules.getCellType(names[i]);
 		return types;
 	}
 
-	public void createCellGroups()
-	{
+	public void createCellGroups() {
 		defaultGroup.setTypes(mount, hill, two_trees, three_trees, plain, citadel_left, citadel_right, citadel_up, building_destroying);
 		buildings.setTypes(castle, building);
 		healing.setTypes(building, castle, camp, temple, citadel);
@@ -472,8 +464,7 @@ public class DefaultRules
 				water_sparks);
 	}
 
-	public void createCellTypes()
-	{
+	public void createCellTypes() {
 		createDefaultCellType();
 		for (CellType type : rules.cellTypes)
 			type.setProperties(rules.defaultCellType);
@@ -551,16 +542,14 @@ public class DefaultRules
 				.setFriendsUp(temple);
 	}
 
-	public UnitType[] getUnitTypes(String... names)
-	{
+	public UnitType[] getUnitTypes(String... names) {
 		UnitType[] types = new UnitType[names.length];
 		for (int i = 0; i < names.length; i++)
 			types[i] = rules.getUnitType(names[i]);
 		return types;
 	}
 
-	public void createDefaultCellType()
-	{
+	public void createDefaultCellType() {
 		defaultCellType.isDefault = true;
 		defaultCellType.baseType = defaultCellType;
 		defaultCellType.steps = 1;
@@ -573,8 +562,7 @@ public class DefaultRules
 		defaultCellType.repairType = null;
 	}
 
-	private void createDefaultGame()
-	{
+	private void createDefaultGame() {
 		// при изменении также проверять EditorThread.eraseDefaults()
 		JsonObject object = new JsonObject();
 		object.addProperty("currentTurn", 0);
@@ -582,8 +570,7 @@ public class DefaultRules
 		rules.defaultGame = object;
 	}
 
-	private void createDefaultPlayers()
-	{
+	private void createDefaultPlayers() {
 		String[] keys = {
 				"gold",
 				"unitsLimit",
@@ -604,8 +591,7 @@ public class DefaultRules
 		rules.defaultPlayerComputer = SerializableJsonHelper.leaveOnly(computer.toJson(), keys);
 	}
 
-	private void createMapEditorFrequencies()
-	{
+	private void createMapEditorFrequencies() {
 		plain.mapEditorFrequency = 100;
 		hill.mapEditorFrequency = 50;
 		three_trees.mapEditorFrequency = 50;

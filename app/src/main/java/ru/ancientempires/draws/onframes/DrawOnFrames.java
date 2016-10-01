@@ -5,8 +5,7 @@ import android.graphics.Canvas;
 import ru.ancientempires.draws.BaseDrawMain;
 import ru.ancientempires.draws.Draw;
 
-public abstract class DrawOnFrames extends Draw
-{
+public abstract class DrawOnFrames extends Draw {
 
 	public int frameCount;
 	public int framePass;
@@ -15,13 +14,11 @@ public abstract class DrawOnFrames extends Draw
 	public int     frameEnd;
 	public boolean isEndDrawing;
 
-	public DrawOnFrames(BaseDrawMain mainBase)
-	{
+	public DrawOnFrames(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public DrawOnFrames animate(int frameCount)
-	{
+	public DrawOnFrames animate(int frameCount) {
 		frameStart = iFrame() + 1;
 		frameEnd = frameStart + frameCount - 1;
 		framePass = 0;
@@ -30,53 +27,45 @@ public abstract class DrawOnFrames extends Draw
 		return this;
 	}
 
-	public DrawOnFrames increaseFrameStart(int framesBeforeStart)
-	{
+	public DrawOnFrames increaseFrameStart(int framesBeforeStart) {
 		frameStart += framesBeforeStart;
 		frameEnd += framesBeforeStart;
 		return this;
 	}
 
-	public DrawOnFrames setFrameStart(int frameStart)
-	{
+	public DrawOnFrames setFrameStart(int frameStart) {
 		this.frameStart = frameStart;
 		frameEnd = frameStart + frameCount;
 		return this;
 	}
 
 	@Override
-	public boolean isEnd()
-	{
+	public boolean isEnd() {
 		return isEndDrawing;
 	}
 
 	@Override
-	public final void draw(Canvas canvas)
-	{
+	public final void draw(Canvas canvas) {
 		if (frameLeft == 0 || iFrame() < frameStart)
 			return;
 		if (iFrame() == frameStart)
 			onStart();
 		frameLeft--;
 		drawOnFrames(canvas);
-		if (frameLeft == 0)
-		{
+		if (frameLeft == 0) {
 			onEnd();
 			isEndDrawing = true;
 		}
 		framePass++;
 	}
 
-	public void onStart()
-	{}
+	public void onStart() {}
 
 	public abstract void drawOnFrames(Canvas canvas);
 
-	public void onEnd()
-	{}
+	public void onEnd() {}
 
-	public void reAnimate()
-	{
+	public void reAnimate() {
 		animate(frameCount);
 	}
 

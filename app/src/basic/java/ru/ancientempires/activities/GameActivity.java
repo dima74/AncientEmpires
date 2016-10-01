@@ -24,42 +24,35 @@ import ru.ancientempires.model.Cell;
 import ru.ancientempires.model.CellType;
 import ru.ancientempires.model.Unit;
 
-public class GameActivity extends BaseGameActivity
-{
+public class GameActivity extends BaseGameActivity {
 
 	public String baseGameID;
 	public String gameID;
 
 	@Override
-	public GameView getView()
-	{
+	public GameView getView() {
 		return (GameView) view;
 	}
 
 	@Override
-	public GameThread getThread()
-	{
+	public GameThread getThread() {
 		return (GameThread) thread;
 	}
 
 	@Override
-	public DrawMain getDrawMain()
-	{
+	public DrawMain getDrawMain() {
 		return (DrawMain) drawMain;
 	}
 
-	public InputMain getInputMain()
-	{
+	public InputMain getInputMain() {
 		return getDrawMain().inputMain;
 	}
-	
-	public void postUpdateCampaign()
-	{
+
+	public void postUpdateCampaign() {
 		getThread().needUpdateCampaign = true;
 	}
-	
-	public static boolean startGame(Activity activity, String gameID, String lastTeams)
-	{
+
+	public static boolean startGame(Activity activity, String gameID, String lastTeams) {
 		GamePath path = Client.getGame(gameID);
 
 		Intent intent = new Intent();
@@ -73,102 +66,85 @@ public class GameActivity extends BaseGameActivity
 		return path.canChooseTeams;
 	}
 
-	public void startGame(String gameID, String lastTeams)
-	{
+	public void startGame(String gameID, String lastTeams) {
 		startGame(this, gameID, lastTeams);
 		finish();
 	}
 
-	public void restartGame()
-	{
-		try
-		{
+	public void restartGame() {
+		try {
 			String lastTeams = game.path.loadGame(0, false, null).toJson().get("players").toString();
 			startGame(game.path.baseGameID, lastTeams);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			MyAssert.a(false);
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		baseGameID = getIntent().getStringExtra(Extras.GAME_ID);
 		if (savedInstanceState != null)
 			gameID = savedInstanceState.getString("gameID");
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
+	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("gameID", gameID);
 	}
-	
+
 	@Override
-	protected void onStart()
-	{
+	protected void onStart() {
 		super.onStart();
-		new MyAsyncTask(this)
-		{
+		new MyAsyncTask(this) {
 			@Override
-			public void doInBackground() throws Exception
-			{
+			public void doInBackground() throws Exception {
 				Client.client.finishPart2();
 				String players = getIntent().getStringExtra(Extras.PLAYERS);
 				game = Client.client.startGame(gameID == null ? baseGameID : gameID, players);
 				gameID = game.path.gameID;
 			}
-			
+
 			@Override
-			public void onPostExecute()
-			{
+			public void onPostExecute() {
 				setTitle(game.path.name);
 				view = new GameView(GameActivity.this);
 				setContentView(view);
 			}
 		}.start();
 	}
-	
+
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		boolean isActiveGame = getDrawMain() != null
-		                       && getThread().drawMain != null
-		                       && getThread().drawMain.isActiveGame();
+				&& getThread().drawMain != null
+				&& getThread().drawMain.isActiveGame();
 		if (isActiveGame)
 			getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
 	}
-	
+
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
+	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.action_wisp);
 		if (item != null && game != null && game.currentPlayer != null && getDrawMain() != null)
 			item.setVisible(new ActionHelper(game).isUnitActive(getDrawMain().cursorDefault.cursorI, getDrawMain().cursorDefault.cursorJ) && game.checkFloating());
 		return true;
 	}
-	
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		final int itemId = item.getItemId();
-		Runnable runnable = new Runnable()
-		{
+		Runnable runnable = new Runnable() {
 			@Override
-			public void run()
-			{
-				switch (itemId)
-				{
+			public void run() {
+				switch (itemId) {
 					case android.R.id.home:
 						MyLog.l("GameActivity up");
 						finish();
@@ -192,8 +168,7 @@ public class GameActivity extends BaseGameActivity
 						getInputMain().inputPlayer.inputUnit.start(i, j);
 						break;
 					case R.id.action_kill_unit:
-						while (!game.players[1].units.isEmpty())
-						{
+						while (!game.players[1].units.isEmpty()) {
 							Unit unit = game.players[1].units.get(0);
 							new ActionCampaignRemoveUnit().setIJ(unit.i, unit.j).perform(game);
 						}
@@ -204,8 +179,7 @@ public class GameActivity extends BaseGameActivity
 						CellType type = game.rules.getCellType("CASTLE");
 						for (Cell[] line : game.fieldCells)
 							for (Cell cell : line)
-								if (cell.type == type && cell.player != null && cell.player.ordinal == 1)
-								{
+								if (cell.type == type && cell.player != null && cell.player.ordinal == 1) {
 									cell.player = game.players[0];
 									getThread().needUpdateCampaign = true;
 								}
@@ -213,11 +187,10 @@ public class GameActivity extends BaseGameActivity
 				}
 			}
 		};
-		synchronized (view.thread)
-		{
+		synchronized (view.thread) {
 			view.thread.runOnGameThread(runnable);
 		}
 		return true;
 	}
-	
+
 }

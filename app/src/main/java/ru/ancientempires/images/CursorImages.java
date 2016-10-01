@@ -7,8 +7,7 @@ import java.io.IOException;
 import ru.ancientempires.framework.FileLoader;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 
-public class CursorImages extends AbstractImages
-{
+public class CursorImages extends AbstractImages {
 
 	public Bitmap cursorWay;
 	public Bitmap cursorAttack;
@@ -22,8 +21,7 @@ public class CursorImages extends AbstractImages
 	public int cursorW;
 
 	@Override
-	public void preload(FileLoader loader) throws IOException
-	{
+	public void preload(FileLoader loader) throws IOException {
 		cursorWay = loader.loadImage("cursor_way.png");
 		cursorAttack = loader.loadImage("cursor_attack.png");
 		cursorMixed = loader.loadImage("cursor_mixed.png");

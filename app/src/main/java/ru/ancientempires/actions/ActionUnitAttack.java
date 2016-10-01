@@ -14,46 +14,39 @@ import ru.ancientempires.model.Unit;
 import ru.ancientempires.serializable.Exclude;
 import ru.ancientempires.serializable.LoaderInfo;
 
-public class ActionUnitAttack extends ActionFromTo
-{
+public class ActionUnitAttack extends ActionFromTo {
 
 	private ActionResultUnitAttack result = new ActionResultUnitAttack();
 	@Exclude private Unit unit;
 
 	@Override
-	public ActionResultUnitAttack perform(Game game)
-	{
+	public ActionResultUnitAttack perform(Game game) {
 		performBase(game);
 		return result;
 	}
 
 	@Override
-	public boolean check()
-	{
+	public boolean check() {
 		return super.check() && checkAttack() && (checkAttackUnit() || checkAttackCell());
 	}
 
-	private boolean checkAttack()
-	{
+	private boolean checkAttack() {
 		unit = game.fieldUnits[i][j];
 		return unit != null && !unit.isTurn && unit.type.attackRange.checkAccess(unit, targetI, targetJ);
 	}
 
-	private boolean checkAttackCell()
-	{
+	private boolean checkAttackCell() {
 		Cell targetCell = game.fieldCells[targetI][targetJ];
 		return targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 	}
 
-	private boolean checkAttackUnit()
-	{
+	private boolean checkAttackUnit() {
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
 		return targetUnit != null && unit.player.team != targetUnit.player.team;
 	}
 
 	@Override
-	public void performQuick()
-	{
+	public void performQuick() {
 		unit = game.fieldUnits[i][j];
 		if (checkAttackUnit())
 			attackUnit();
@@ -61,8 +54,7 @@ public class ActionUnitAttack extends ActionFromTo
 			attackCell();
 	}
 
-	private void attackCell()
-	{
+	private void attackCell() {
 		result.isAttackUnit = false;
 
 		Cell targetCell = game.fieldCells[targetI][targetJ];
@@ -71,8 +63,7 @@ public class ActionUnitAttack extends ActionFromTo
 		targetCell.destroy();
 	}
 
-	private void attackUnit()
-	{
+	private void attackUnit() {
 		Unit targetUnit = game.fieldUnits[targetI][targetJ];
 		result.isAttackUnit = true;
 
@@ -91,8 +82,7 @@ public class ActionUnitAttack extends ActionFromTo
 		unit.setTurn();
 	}
 
-	private AttackResult attack(Unit unit, Unit targetUnit, boolean reverse)
-	{
+	private AttackResult attack(Unit unit, Unit targetUnit, boolean reverse) {
 		int decreaseHealth = new UnitHelper(game).getDecreaseHealth(unit, targetUnit);
 		targetUnit.health -= decreaseHealth;
 		new UnitHelper(game).checkDied(targetUnit);
@@ -106,8 +96,7 @@ public class ActionUnitAttack extends ActionFromTo
 		result.decreaseHealth = decreaseHealth;
 		result.isTargetLive = targetUnit.health > 0;
 		unit.updateName();
-		if (unit.isLevelUp())
-		{
+		if (unit.isLevelUp()) {
 			result.isLevelUp = true;
 			result.isPromotion = unit.levelUp();
 		}
@@ -115,8 +104,7 @@ public class ActionUnitAttack extends ActionFromTo
 		return result;
 	}
 
-	private int handleAfterAttackEffect(Unit unit, Unit targetUnit)
-	{
+	private int handleAfterAttackEffect(Unit unit, Unit targetUnit) {
 		if (unit.type.creators.length == 0)
 			return 0;
 		// TODO если у типа есть несколько сreators
@@ -128,21 +116,18 @@ public class ActionUnitAttack extends ActionFromTo
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return String.format("Attack (%d %d)->(%d %d) (%s %s)", i, j, targetI, targetJ, game.fieldUnits[i][j], game.fieldUnits[targetI][targetJ]);
 	}
 
 	// =/({||})\=
 	// from spoon
 
-	public void toData(DataOutputStream output) throws Exception
-	{
+	public void toData(DataOutputStream output) throws Exception {
 		super.toData(output);
 	}
 
-	public ActionUnitAttack fromData(DataInputStream input, LoaderInfo info) throws Exception
-	{
+	public ActionUnitAttack fromData(DataInputStream input, LoaderInfo info) throws Exception {
 		super.fromData(input, info);
 		return this;
 	}

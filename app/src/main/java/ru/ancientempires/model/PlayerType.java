@@ -2,15 +2,13 @@ package ru.ancientempires.model;
 
 import ru.ancientempires.Localization;
 
-public enum PlayerType
-{
+public enum PlayerType {
 	PLAYER,
 	COMPUTER,
 	NONE;
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return Localization.get(name());
 	}
 }

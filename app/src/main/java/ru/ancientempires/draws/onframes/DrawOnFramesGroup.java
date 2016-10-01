@@ -6,18 +6,15 @@ import java.util.ArrayList;
 
 import ru.ancientempires.draws.BaseDrawMain;
 
-public class DrawOnFramesGroup extends DrawOnFrames
-{
+public class DrawOnFramesGroup extends DrawOnFrames {
 
 	public ArrayList<DrawOnFrames> draws = new ArrayList<>();
 
-	public DrawOnFramesGroup(BaseDrawMain mainBase)
-	{
+	public DrawOnFramesGroup(BaseDrawMain mainBase) {
 		super(mainBase);
 	}
 
-	public void add(DrawOnFrames gameDraw)
-	{
+	public void add(DrawOnFrames gameDraw) {
 		draws.add(gameDraw);
 		int frameStart = Math.max(iFrame() + 1, getFrameStart());
 		int frameEnd = getFrameEnd();
@@ -25,16 +22,14 @@ public class DrawOnFramesGroup extends DrawOnFrames
 		super.increaseFrameStart(frameStart - iFrame() - 1);
 	}
 
-	public int getFrameStart()
-	{
+	public int getFrameStart() {
 		int frameStart = Integer.MAX_VALUE;
 		for (DrawOnFrames gameDrawOnFrames : draws)
 			frameStart = Math.min(frameStart, gameDrawOnFrames.frameStart);
 		return frameStart;
 	}
 
-	public int getFrameEnd()
-	{
+	public int getFrameEnd() {
 		int frameEnd = 0;
 		for (DrawOnFrames gameDrawOnFrames : draws)
 			frameEnd = Math.max(frameEnd, gameDrawOnFrames.frameEnd);
@@ -42,8 +37,7 @@ public class DrawOnFramesGroup extends DrawOnFrames
 	}
 
 	@Override
-	public DrawOnFrames increaseFrameStart(int framesBeforeStart)
-	{
+	public DrawOnFrames increaseFrameStart(int framesBeforeStart) {
 		super.increaseFrameStart(framesBeforeStart);
 		for (DrawOnFrames draw : draws)
 			draw.increaseFrameStart(framesBeforeStart);
@@ -51,8 +45,7 @@ public class DrawOnFramesGroup extends DrawOnFrames
 	}
 
 	@Override
-	public void drawOnFrames(Canvas canvas)
-	{
+	public void drawOnFrames(Canvas canvas) {
 		for (DrawOnFrames gameDrawOnFrames : draws)
 			gameDrawOnFrames.draw(canvas);
 	}

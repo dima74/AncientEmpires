@@ -5,14 +5,12 @@ import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawBitmapsMoving;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
-public class DrawUnitDie extends DrawOnFramesGroup
-{
+public class DrawUnitDie extends DrawOnFramesGroup {
 
 	private int i;
 	private int j;
 
-	public DrawUnitDie(BaseDrawMain mainBase, int i, int j)
-	{
+	public DrawUnitDie(BaseDrawMain mainBase, int i, int j) {
 		super(mainBase);
 		this.i = i;
 		this.j = j;
@@ -33,8 +31,7 @@ public class DrawUnitDie extends DrawOnFramesGroup
 	}
 
 	@Override
-	public void onEnd()
-	{
+	public void onEnd() {
 		super.onEnd();
 		main.units.updateUnit(i, j);
 	}

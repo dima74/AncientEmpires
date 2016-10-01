@@ -20,8 +20,7 @@ import ru.ancientempires.draws.inputs.InputMain;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.model.Game;
 
-public class GameComponent extends JComponent implements MouseListener, MouseMotionListener
-{
+public class GameComponent extends JComponent implements MouseListener, MouseMotionListener {
 
 	public int h = 700;
 	public int w = 600;
@@ -47,15 +46,13 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 
 	public Runnable runnable;
 
-	public void runOnGameThread(Runnable runnable)
-	{
+	public void runOnGameThread(Runnable runnable) {
 		MyAssert.a(this.runnable == null);
 		MyAssert.a(runnable != null);
 		this.runnable = runnable;
 	}
 
-	public GameComponent(Game game, JFrame frame)
-	{
+	public GameComponent(Game game, JFrame frame) {
 		this.frame = frame;
 		setPreferredSize(new Dimension(w, h));
 		GameActivity activity = new GameActivity();
@@ -70,8 +67,7 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 	}
 
 	@Override
-	public void paint(Graphics graphics)
-	{
+	public void paint(Graphics graphics) {
 		Graphics2D g = (Graphics2D) graphics;
 
 		long current = System.currentTimeMillis();
@@ -89,10 +85,8 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 
 		boolean isTouch = false;
 		float touchY = 0, touchX = 0;
-		synchronized (this)
-		{
-			if (this.isTouch)
-			{
+		synchronized (this) {
+			if (this.isTouch) {
 				this.isTouch = false;
 				isTouch = true;
 				touchY = this.touchY;
@@ -101,25 +95,21 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 		}
 		if (isTouch)
 			drawMain.touch(touchY, touchX);
-		if (runnable != null)
-		{
+		if (runnable != null) {
 			runnable.run();
 			runnable = null;
 		}
 
-		if (needUpdateCampaign)
-		{
+		if (needUpdateCampaign) {
 			game.campaign.update();
 			needUpdateCampaign = false;
 		}
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e)
-	{
+	public void mouseClicked(MouseEvent e) {
 		if (drawMain.isActiveGame())
-			synchronized (this)
-			{
+			synchronized (this) {
 				isTouch = true;
 				touchY = e.getY();
 				touchX = e.getX();
@@ -127,8 +117,7 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		if (!drawMain.isActiveGame())
 			return;
 		isDrag = true;
@@ -137,24 +126,19 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		isDrag = false;
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e)
-	{}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e)
-	{}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseDragged(MouseEvent e)
-	{
-		if (isDrag && drawMain.isActiveGame())
-		{
+	public void mouseDragged(MouseEvent e) {
+		if (isDrag && drawMain.isActiveGame()) {
 			int y = e.getY();
 			int x = e.getX();
 			int distanceY = y - lastY;
@@ -166,7 +150,6 @@ public class GameComponent extends JComponent implements MouseListener, MouseMot
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e)
-	{}
+	public void mouseMoved(MouseEvent e) {}
 
 }

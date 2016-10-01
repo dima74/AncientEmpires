@@ -4,11 +4,9 @@ import ru.ancientempires.draws.onframes.DrawBitmaps;
 import ru.ancientempires.draws.onframes.DrawBitmapsMoving;
 import ru.ancientempires.draws.onframes.DrawOnFramesGroup;
 
-public class DrawCellAttackPartTwo extends DrawOnFramesGroup
-{
+public class DrawCellAttackPartTwo extends DrawOnFramesGroup {
 
-	public DrawCellAttackPartTwo(BaseDrawMain mainBase, int targetI, int targetJ)
-	{
+	public DrawCellAttackPartTwo(BaseDrawMain mainBase, int targetI, int targetJ) {
 		super(mainBase);
 		int y = targetI * A;
 		int x = targetJ * A;
@@ -20,8 +18,7 @@ public class DrawCellAttackPartTwo extends DrawOnFramesGroup
 				.setFramesForBitmap(4)
 				.animateRepeat(1));
 
-		for (int i = 0; i < 5; ++i)
-		{
+		for (int i = 0; i < 5; ++i) {
 			int framesForBitmap = 2 + random.nextInt(7);
 			int framesCount = framesForBitmap * 4;
 			int deltaY = -2 + random.nextInt(2); // [-2,-1]
