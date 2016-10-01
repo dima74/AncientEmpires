@@ -367,7 +367,7 @@ public class Unit extends AbstractGameHandler implements SerializableJson
 		// return (type.attackMin + type.attackMax + getOffenceBonusAgainstUnitEx(targetUnit, j, i)
 		// + type.defence + getDefenceBonusAgainstUnitEx(targetUnit, j, i)) * health / 100;
 		return (type.attackMin + type.attackMax + getBonusAttack(i, j, targetUnit)
-		        + type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
+				+ type.defence + getBonusDefence(i, j, targetUnit)) * health / 100;
 	}
 
 	public Unit[] getUnitsWithinRange(int x, int y, int minRange, int maxRange, byte b)

@@ -99,10 +99,10 @@ public class ScriptUnitMove extends Script
 	public String toString()
 	{
 		return "ScriptUnitMove{" +
-		       "points=" + Arrays.toString(points) +
-		       ", handlers=" + handlers +
-		       ", makeSmoke=" + makeSmoke +
-		       '}';
+				"points=" + Arrays.toString(points) +
+				", handlers=" + handlers +
+				", makeSmoke=" + makeSmoke +
+				'}';
 	}
 
 	// =/({||})\=

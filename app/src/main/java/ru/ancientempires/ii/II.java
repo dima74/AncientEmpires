@@ -545,7 +545,7 @@ public class II extends GameHandler
 					if (var7.player.team != game.currentPlayer.team && !isKingLive)
 						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, null) * 2;
 					else if (game.currentTurn >= 15 && var7.player.team != game.currentPlayer.team && var7.player.units.size() < 4
-					         && game.currentPlayer.units.size() >= 8)
+							&& game.currentPlayer.units.size() >= 8)
 						var_395f[var2][2] += var7.sub_462(var7.j, var7.i, null) * 2;
 					else if (var7.player != game.currentPlayer)
 						var7 = null;
@@ -740,8 +740,8 @@ public class II extends GameHandler
 			
 			for (int var29 = mapAlphaData[var21].length; var23 < var29; ++var23)
 				if (mapAlphaData[var21][var23] > 0 && ((var28 = getUnitEx(var21, var23)) == null
-				                                       || var28 == var1 && game.checkFloating()
-				                                       || var28 != var1 && var_381f == null && var28.player == var1.player && !var28.isMove))
+						|| var28 == var1 && game.checkFloating()
+						|| var28 != var1 && var_381f == null && var28.player == var1.player && !var28.isMove))
 				{
 					if (var1.type.canDoTwoActionAfterOne || var28 == var1)
 					{

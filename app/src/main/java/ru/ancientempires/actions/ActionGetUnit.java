@@ -157,7 +157,7 @@ public class ActionGetUnit extends ActionFrom
 				Unit targetUnit = game.fieldUnits[targetI][targetJ];
 				Cell targetCell = game.fieldCells[targetI][targetJ];
 				boolean can = targetUnit != null && targetUnit.player.team != unit.player.team
-				              || targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
+						|| targetUnit == null && targetCell.getTeam() != unit.player.team && unit.canDestroy(targetCell.type);
 				result.canAttack |= can;
 				return can;
 			}

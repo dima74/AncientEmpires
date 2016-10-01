@@ -36,7 +36,7 @@ public class Point
 			return false;
 		Point point = (Point) o;
 		return i == point.i &&
-		       j == point.j;
+				j == point.j;
 	}
 
 	@Override

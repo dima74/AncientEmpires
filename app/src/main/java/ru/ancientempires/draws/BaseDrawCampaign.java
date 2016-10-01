@@ -214,7 +214,7 @@ public abstract class BaseDrawCampaign extends Draw implements IDrawCampaign
 		int length = 1;
 		for (int i = 1; i < keyPoints.length; i++)
 			length += Math.abs(keyPoints[i].getI() - keyPoints[i - 1].getI())
-			          + Math.abs(keyPoints[i].getJ() - keyPoints[i - 1].getJ());
+					+ Math.abs(keyPoints[i].getJ() - keyPoints[i - 1].getJ());
 
 		Point[] points = new Point[length];
 		int nPoint = 0;

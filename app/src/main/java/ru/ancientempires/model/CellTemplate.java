@@ -183,7 +183,7 @@ public class CellTemplate
 			return true;
 		Cell target = cell.game.fieldCells[i][j];
 		return cellType == target.type || friends.contains(target.type)
-		       || j == cell.j && i + 1 == cell.i && friendsUp.contains(target.type);
+				|| j == cell.j && i + 1 == cell.i && friendsUp.contains(target.type);
 	}
 	
 	@Override

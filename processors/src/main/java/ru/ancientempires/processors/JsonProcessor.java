@@ -67,9 +67,9 @@ public class JsonProcessor extends MyAbstractManualProcessor
 						: "info.fromJson(((com.google.gson.JsonObject) jsonArray.get(i)), %s.class);", simpleName);
 				CtBlock ctBlock = createMethodStatic(ctClass, "fromJsonArray", Array.newInstance(baseClass, 0).getClass(), JsonArray.class, "jsonArray", LoaderInfo.class, "info");
 				String statement = String.format("%s[] array = new %s[jsonArray.size()];\n" +
-				                                 "\tfor (int i = 0; i < array.length; i++)\n" +
-				                                 "\t\t%s\n" +
-				                                 "\treturn array", simpleName, simpleName, inLoop);
+						"\tfor (int i = 0; i < array.length; i++)\n" +
+						"\t\t%s\n" +
+						"\treturn array", simpleName, simpleName, inLoop);
 				ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 			}
 
@@ -109,9 +109,9 @@ public class JsonProcessor extends MyAbstractManualProcessor
 
 			CtBlock ctBlock = createMethodStatic(ctClass, "newInstanceArray" + suffixMethod, Array.newInstance(c, 0).getClass(), JsonArray.class, "jsonArray", LoaderInfo.class, "info");
 			String statement = String.format("%s[] array = new %s[jsonArray.size()];\n" +
-			                                 "\tfor (int i = 0; i < array.length; i++)\n" +
-			                                 "\t\tarray[i] = newInstance(jsonArray.get(i).getAs%s(), info);\n" +
-			                                 "\treturn array", simpleName, simpleName, suffixGetAs);
+					"\tfor (int i = 0; i < array.length; i++)\n" +
+					"\t\tarray[i] = newInstance(jsonArray.get(i).getAs%s(), info);\n" +
+					"\treturn array", simpleName, simpleName, suffixGetAs);
 			ctBlock.addStatement(getFactory().Code().createCodeSnippetStatement(statement));
 		}
 	}

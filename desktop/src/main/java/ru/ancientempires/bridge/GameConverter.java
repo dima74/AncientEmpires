@@ -119,8 +119,8 @@ public class GameConverter
 				fieldBytes[i][j] = dis.readByte();
 		dis.skip(dis.readInt() * 4);
 		int numberUnits = dis.readInt()
-		                  + (isCampaign && iMission == 3 ? 3 : 0)
-		                  + (isCampaign && iMission == 6 ? 4 : 0);
+				+ (isCampaign && iMission == 3 ? 3 : 0)
+				+ (isCampaign && iMission == 6 ? 4 : 0);
 		String[] unitTypes = new String[numberUnits];
 		int[] unitPlayerBaseIs = new int[numberUnits];
 		int[] unitIs = new int[numberUnits];

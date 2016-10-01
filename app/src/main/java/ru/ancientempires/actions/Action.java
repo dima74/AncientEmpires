@@ -95,8 +95,8 @@ public abstract class Action extends AbstractGameHandler implements Serializable
 		{
 			ActionFromTo thisCast = (ActionFromTo) this;
 			s += coordinates(thisCast.i, thisCast.j)
-			     + "->"
-			     + coordinates(thisCast.targetI, thisCast.targetJ);
+					+ "->"
+					+ coordinates(thisCast.targetI, thisCast.targetJ);
 		}
 		else if (this instanceof ActionFrom)
 		{
