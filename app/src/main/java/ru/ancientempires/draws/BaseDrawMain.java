@@ -58,7 +58,7 @@ public class BaseDrawMain extends Draw
 	}
 
 	public void setVisibleMapSize() {}
-	
+
 	public final void initOffset()
 	{
 		setVisibleMapSize();
@@ -77,7 +77,7 @@ public class BaseDrawMain extends Draw
 			maxOffsetX = 0;
 		}
 	}
-	
+
 	@Override
 	public void draw(Canvas canvas)
 	{
@@ -89,7 +89,7 @@ public class BaseDrawMain extends Draw
 		}
 		setBounds();
 		canvas.drawColor(Color.WHITE);
-		
+
 		canvas.save();
 		canvas.scale(mapScale, mapScale);
 		canvas.translate(offsetX, offsetY);
@@ -104,40 +104,32 @@ public class BaseDrawMain extends Draw
 
 	public void setBounds()
 	{
-		for (int i = 0; i < game.h; i++)
-			if (i * A <= -offsetY)
-				iMin = i;
-		for (int i = game.h; i >= 0; i--)
-			if (i * A >= -offsetY + visibleMapH / mapScale)
-				iMax = i;
-		for (int j = 0; j < game.w; j++)
-			if (j * A <= -offsetX)
-				jMin = j;
-		for (int j = game.w; j >= 0; j--)
-			if (j * A >= -offsetX + visibleMapW / mapScale)
-				jMax = j;
-		iMin = Math.max(0, iMin - 1);
-		iMax = Math.min(game.h, iMax + 1);
-		jMin = Math.max(0, jMin - 1);
-		jMax = Math.min(game.w, jMax + 1);
+		iMin = (int) (-offsetY / A);
+		iMax = game.h - (int) ((mapH + offsetY - visibleMapH) / A);
+		iMin = (int) (-offsetX / A);
+		jMax = game.w - (int) ((mapW + offsetX - visibleMapW) / A);
+		iMin = Math.max(iMin, 0);
+		jMin = Math.max(jMin, 0);
+		iMax = Math.min(iMax, game.h);
+		jMax = Math.min(jMax, game.w);
 	}
-	
+
 	public boolean isActiveGame()
 	{
 		return true;
 	}
-	
+
 	synchronized public void onScroll(float distanceY, float distanceX)
 	{
 		setNextOffset(nextOffsetY - distanceY / mapScale, nextOffsetX - distanceX / mapScale);
 	}
-	
+
 	synchronized public void setNextOffset(float offsetY, float offsetX)
 	{
 		nextOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, offsetY));
 		nextOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, offsetX));
 	}
-	
+
 	// Обрабатывает только тап по клеточке
 	public void touch(float touchY, float touchX)
 	{
@@ -154,7 +146,7 @@ public class BaseDrawMain extends Draw
 				e.printStackTrace();
 			}
 	}
-	
+
 	public void tap(int i, int j)
 	{}
 
