@@ -72,12 +72,16 @@ public class BaseGameActivity extends BaseActivity {
 
 	private static final String KEY_SCALE = "KEY_SCALE";
 
+	public float getDensity() {
+		return getResources().getDisplayMetrics().density;
+	}
+
 	public float getMapScale() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.contains(KEY_SCALE))
 			return preferences.getFloat(KEY_SCALE, 0);
 
-		float mapScale = getResources().getDisplayMetrics().density * (4.5f / 3f);
+		float mapScale = getDensity() * (4.5f / 3f);
 		setMapScale(mapScale);
 		return mapScale;
 	}

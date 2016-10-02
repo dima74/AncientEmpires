@@ -14,9 +14,16 @@ import android.app.Application;
 //		resToastText = R.string.toast_crash)
 public class MyApplication extends Application {
 
+	public static MyApplication application;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 //		ACRA.init(this);
+		application = this;
+	}
+
+	public static float getDensity() {
+		return application.getResources().getDisplayMetrics().density;
 	}
 }

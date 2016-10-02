@@ -14,6 +14,10 @@ public class BaseGameActivity {
 		return view;
 	}
 
+	public float getDensity() {
+		return 3.0f;
+	}
+
 	public float getMapScale() {
 		return 2;
 	}
