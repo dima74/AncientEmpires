@@ -14,7 +14,9 @@ public class BaseGameActivity {
 		return view;
 	}
 
-	public float getDensity() {
-		return 3;
+	public float getMapScale() {
+		return 2;
 	}
+
+	public void setMapScale(float scale) {}
 }

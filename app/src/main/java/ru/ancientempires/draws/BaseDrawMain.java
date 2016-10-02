@@ -46,7 +46,7 @@ public class BaseDrawMain extends Draw {
 
 	public BaseDrawMain(BaseGameActivity activity) {
 		this(activity.game);
-		mapScale = activity.getDensity() * (4.5f / 3f);
+		mapScale = activity.getMapScale();
 		this.activity = activity;
 		activity.drawMain = this;
 	}
@@ -88,6 +88,7 @@ public class BaseDrawMain extends Draw {
 	public void setScale(float scale) {
 		GamePath.PointScreenCenter center = getScreenCenter();
 		mapScale = scale;
+		activity.setMapScale(scale);
 		setOffsetBounds();
 		focusOn(center);
 	}

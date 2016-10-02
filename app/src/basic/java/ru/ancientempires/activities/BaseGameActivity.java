@@ -2,8 +2,10 @@ package ru.ancientempires.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.ViewGroup;
 
 import ru.ancientempires.BaseThread;
@@ -68,7 +70,20 @@ public class BaseGameActivity extends BaseActivity {
 		v.vibrate(400);
 	}
 
-	public float getDensity() {
-		return getResources().getDisplayMetrics().density;
+	private static final String KEY_SCALE = "KEY_SCALE";
+
+	public float getMapScale() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences.contains(KEY_SCALE))
+			return preferences.getFloat(KEY_SCALE, 0);
+
+		float mapScale = getResources().getDisplayMetrics().density * (4.5f / 3f);
+		setMapScale(mapScale);
+		return mapScale;
+	}
+
+	public void setMapScale(float mapScale) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.edit().putFloat(KEY_SCALE, mapScale).commit();
 	}
 }
