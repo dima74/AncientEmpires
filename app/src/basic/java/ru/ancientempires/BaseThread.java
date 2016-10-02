@@ -31,11 +31,16 @@ public class BaseThread extends Thread {
 	}
 
 	public Runnable runnable;
+	public Runnable runnableScale; // У меня получилось сделать чтобы за один такт дважды вызвался runOnGameThread, мб стоит сделать LinkedBlockingQueue<Runnable>
 
 	public void runOnGameThread(Runnable runnable) {
 		MyAssert.a(this.runnable == null);
 		MyAssert.a(runnable != null);
 		this.runnable = runnable;
+	}
+
+	public void runOnGameThreadScale(Runnable runnable) {
+		this.runnableScale = runnable;
 	}
 
 	public void beforeRun() {}
@@ -73,6 +78,10 @@ public class BaseThread extends Thread {
 			try {
 				if (isTouch)
 					drawMain.touch(touchY, touchX);
+				if (runnableScale != null) {
+					runnableScale.run();
+					runnableScale = null;
+				}
 				if (runnable != null) {
 					runnable.run();
 					runnable = null;

@@ -141,7 +141,7 @@ public class MainActivity extends BaseListActivity {
 				startApplicationDetailsActivity(this);
 			else if ("editor".equals(gameToStart))
 				moveTo(EditorBaseActivity.class);
-			else if ("TestActivity".equals(gameToStart))
+			else if ("test".equals(gameToStart))
 				moveTo(TestActivity.class);
 			else if (gameToStart != "")
 				moveTo(PlayMenuActivity.class);

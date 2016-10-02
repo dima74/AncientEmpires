@@ -8,11 +8,13 @@ import ru.ancientempires.draws.onframes.DrawBuildingSmokes;
 import ru.ancientempires.framework.MyAssert;
 import ru.ancientempires.images.bitmaps.FewBitmaps;
 import ru.ancientempires.load.GamePath;
+import ru.ancientempires.model.Game;
 
 public class BaseDrawMain extends Draw {
 
 	public BaseGameActivity activity;
 
+	public float mapScale = 2;
 	public int mapH;
 	public int mapW;
 	public int visibleMapH;
@@ -43,11 +45,17 @@ public class BaseDrawMain extends Draw {
 	public DrawBuildingSmokes buildingSmokes;
 
 	public BaseDrawMain(BaseGameActivity activity) {
-		super(null);
-		mainBase = this;
+		this(activity.game);
+		mapScale = activity.getDensity() * (4.5f / 3f);
 		this.activity = activity;
-		game = activity.game;
 		activity.drawMain = this;
+	}
+
+	public BaseDrawMain(Game game) {
+		super(null);
+		this.game = game;
+		mapScale = 1;
+		mainBase = this;
 		cells = new DrawCells(this);
 		cellsDual = new DrawCells(this).setDual();
 		unitsDead = new DrawUnitsDead(this);
@@ -58,9 +66,13 @@ public class BaseDrawMain extends Draw {
 	public void setVisibleMapSize() {}
 
 	public final void initOffset() {
-		setVisibleMapSize();
 		mapH = game.h * A;
 		mapW = game.w * A;
+		setVisibleMapSize();
+		setOffsetBounds();
+	}
+
+	private void setOffsetBounds() {
 		minOffsetY = maxOffsetY = -(mapH - visibleMapH / mapScale) / 2;
 		minOffsetX = maxOffsetX = -(mapW - visibleMapW / mapScale) / 2;
 		if (minOffsetY < 0) {
@@ -73,6 +85,13 @@ public class BaseDrawMain extends Draw {
 		}
 	}
 
+	public void setScale(float scale) {
+		GamePath.PointScreenCenter center = getScreenCenter();
+		mapScale = scale;
+		setOffsetBounds();
+		focusOn(center);
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
 		FewBitmaps.ordinal = iFrame / 8;
@@ -80,7 +99,7 @@ public class BaseDrawMain extends Draw {
 			offsetY = nextOffsetY;
 			offsetX = nextOffsetX;
 		}
-		setBounds();
+		setDiscreteBounds();
 		canvas.drawColor(Color.WHITE);
 
 		canvas.save();
@@ -95,11 +114,11 @@ public class BaseDrawMain extends Draw {
 		units.draw(canvas);
 	}
 
-	public void setBounds() {
+	public void setDiscreteBounds() {
 		iMin = (int) (-offsetY / A);
-		iMax = game.h - (int) ((mapH + offsetY - visibleMapH) / A);
-		iMin = (int) (-offsetX / A);
-		jMax = game.w - (int) ((mapW + offsetX - visibleMapW) / A);
+		iMax = game.h - (int) ((mapH + offsetY - visibleMapH / mapScale) / A);
+		jMin = (int) (-offsetX / A);
+		jMax = game.w - (int) ((mapW + offsetX - visibleMapW / mapScale) / A);
 		iMin = Math.max(iMin, 0);
 		jMin = Math.max(jMin, 0);
 		iMax = Math.min(iMax, game.h);
@@ -155,8 +174,8 @@ public class BaseDrawMain extends Draw {
 	}
 
 	public GamePath.PointScreenCenter getScreenCenter() {
-		float i = (-offsetY + visibleMapH / mapScale / 2 - maxOffsetY) / A;
-		float j = (-offsetX + visibleMapW / mapScale / 2 - maxOffsetX) / A;
+		float i = (-offsetY + visibleMapH / mapScale / 2) / A;
+		float j = (-offsetX + visibleMapW / mapScale / 2) / A;
 		return new GamePath.PointScreenCenter(i, j);
 	}
 }

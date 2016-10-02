@@ -1,10 +1,12 @@
 package ru.ancientempires.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
 
 import ru.ancientempires.Extras;
 import ru.ancientempires.GameThread;
@@ -135,12 +137,48 @@ public class GameActivity extends BaseGameActivity {
 		return true;
 	}
 
+	private void showSeekBar() {
+		SeekBar bar = new SeekBar(this);
+		bar.setMax(10);
+		bar.setProgress(Math.round(drawMain.mapScale * 2 - 1));
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog dialog = builder.create();
+		dialog.getWindow().getAttributes().verticalMargin = 0.4F;
+		dialog.show();
+		dialog.getWindow().setContentView(bar);
+
+		bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
+				thread.runOnGameThreadScale(new Runnable() {
+					@Override
+					public void run() {
+						drawMain.setScale((progress + 1) / 2.0f);
+					}
+				});
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				dialog.dismiss();
+			}
+		});
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		final int itemId = item.getItemId();
+		if (itemId == R.id.action_scale) {
+			showSeekBar();
+			return true;
+		}
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {

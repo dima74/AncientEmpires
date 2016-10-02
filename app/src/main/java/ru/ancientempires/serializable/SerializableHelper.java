@@ -41,6 +41,7 @@ public class SerializableHelper {
 		for (Class<?> base : baseClasses) {
 			MyAssert.a(base.isAnnotationPresent(IndexSubclasses.class));
 			int size = ((List) ClassIndex.getSubclasses(base)).size();
+			MyAssert.a(size >= 0);
 			int i = 0;
 			for (Class<?> c : getSubclasses(base))
 				map.put(c, new ClassInfo(i++, size));

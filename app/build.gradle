@@ -21,7 +21,8 @@ android {
 	sourceSets {
 		main {
 			java.srcDirs += 'src/basic/java'
-			resources.srcDirs = ["build/intermediates/classes/debug"]
+			// Not working with Instant Run
+			//resources.srcDirs = ["build/intermediates/classes/debug"]
 		}
 	}
 }
@@ -36,5 +37,18 @@ dependencies {
 
 	compile 'com.google.code.gson:gson:2.7'
 	compile 'org.atteo.classindex:classindex:3.3'
-	compile 'ch.acra:acra:4.9.0'
+	//compile 'ch.acra:acra:4.9.0'
+}
+
+// Package the preprocessed Annotations (ClassIndex) into the APK
+tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+	android.applicationVariants.all { variant ->
+		def String variantName = variant.getName().capitalize()
+		if (pkgTask.getName().indexOf(variantName) != -1) {
+			copy {
+				from new File(buildDir, "intermediates/classes/$variant.dirName/META-INF/services/")
+				into new File(buildDir, "intermediates/sourceFolderJavaResources/$variant.dirName/META-INF/services/");
+			}
+		}
+	}
 }

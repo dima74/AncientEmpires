@@ -24,7 +24,9 @@
 			android:label="@string/title_activity_play_menu" />
 		<activity android:name=".activities.LevelMenuActivity" /> <!-- label = название игры -->
 		<activity android:name=".activities.PlayersConfigureActivity" /> <!-- label = название игры -->
-		<activity android:name=".activities.GameActivity" /> <!-- label = название игры -->
+		<activity
+			android:name=".activities.GameActivity"
+			android:screenOrientation="portrait" /> <!-- label = название игры -->
 		<activity
 			android:name=".activities.SettingsActivity"
 			android:label="@string/title_activity_settings">

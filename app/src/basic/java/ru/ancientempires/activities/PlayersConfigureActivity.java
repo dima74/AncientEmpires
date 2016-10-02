@@ -157,9 +157,7 @@ public class PlayersConfigureActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 
-		BaseGameActivity activity = new BaseGameActivity();
-		activity.game = game;
-		BaseDrawMain mainBase = new BaseDrawMain(activity);
+		BaseDrawMain mainBase = new BaseDrawMain(game);
 		mainBase.iMax = game.h;
 		mainBase.jMax = game.w;
 

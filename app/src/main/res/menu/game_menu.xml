@@ -28,5 +28,10 @@
 		android:orderInCategory="100"
 		android:title="Capture castle"
 		app:showAsAction="never" />
+	<item
+		android:id="@+id/action_scale"
+		android:orderInCategory="100"
+		android:title="Масштаб"
+		app:showAsAction="never" />
 
 </menu>

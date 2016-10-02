@@ -13,4 +13,8 @@ public class BaseGameActivity {
 	public GameComponent getView() {
 		return view;
 	}
+
+	public float getDensity() {
+		return 3;
+	}
 }

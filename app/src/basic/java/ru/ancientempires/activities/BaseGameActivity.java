@@ -67,4 +67,8 @@ public class BaseGameActivity extends BaseActivity {
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(400);
 	}
+
+	public float getDensity() {
+		return getResources().getDisplayMetrics().density;
+	}
 }

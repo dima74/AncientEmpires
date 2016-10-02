@@ -75,8 +75,6 @@ public class Draw {
 	public DrawMain     main;
 	public BaseDrawMain mainBase;
 	public Game         game;
-	public float mapScale = 2;
-	public float fA       = 24 * mapScale;
 
 	public Draw(BaseDrawMain mainBase) {
 		this.mainBase = mainBase;
