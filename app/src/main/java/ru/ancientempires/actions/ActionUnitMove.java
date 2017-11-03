@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 
 import ru.ancientempires.actions.result.ActionResultUnitMove;
 import ru.ancientempires.bonuses.BonusCreate;
+import ru.ancientempires.bonuses.BonusCreator;
 import ru.ancientempires.helpers.ActionHelper;
 import ru.ancientempires.model.Game;
 import ru.ancientempires.model.Unit;
@@ -53,14 +54,16 @@ public class ActionUnitMove extends ActionFromTo {
 	private void handleAfterMoveEffect() {
 		if (unit.type.creators.length == 0)
 			return;
-		// TODO если у типа есть несколько сreators
-		BonusCreate[] creates = unit.type.creators[0].applyBonusesAfterMove(game, unit);
-		result.sign = 0;
-		for (BonusCreate create : creates)
-			result.sign += create.bonus.getSign();
-		result.units = new Unit[creates.length];
-		for (int i = 0; i < creates.length; i++)
-			result.units[i] = creates[i].unit;
+
+		for (BonusCreator creator : unit.type.creators) {
+			BonusCreate[] creates = creator.applyBonusesAfterMove(game, unit);
+			result.sign = 0;
+			for (BonusCreate create : creates)
+				result.sign += create.bonus.getSign();
+			result.units = new Unit[creates.length];
+			for (int i = 0; i < creates.length; i++)
+				result.units[i] = creates[i].unit;
+		}
 	}
 
 	@Override
